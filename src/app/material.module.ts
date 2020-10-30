@@ -6,14 +6,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
-
-const myCompm =[
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDividerModule } from "@angular/material/divider";
+const myCompm = [
   MatCardModule,
   MatToolbarModule,
   MatIconModule,
   MatFormFieldModule,
   MatInputModule,
-  MatButtonModule
+  MatButtonModule,
+  MatStepperModule,
+  MatDividerModule
 ];
 
 @NgModule({

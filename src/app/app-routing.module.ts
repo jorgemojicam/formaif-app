@@ -4,10 +4,10 @@ import { PostComponent } from './components/posts/post/post.component';
 
 
 const routes: Routes = [
-{path: '',redirectTo:'/cruces',pathMatch:'full'},
+{path: '',redirectTo:'cruces',pathMatch:'full'},
 { path: 'home', loadChildren: () => import('./components/pages/home/home.module').then(m => m.HomeModule) }, 
-{ path: 'posts/:id', component:PostComponent },
-{ path: 'cruces', loadChildren: () => import('./components/cruces/ventas/ventas.module').then(m => m.VentasModule) }];
+{ path: 'posts/:id', component:PostComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

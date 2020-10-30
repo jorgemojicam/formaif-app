@@ -11,6 +11,8 @@ import { ToolbarComponent } from './components/shared/toolbar/toolbar.component'
 import { VentasModule } from './components/cruces/ventas/ventas.module';
 import { VentasComponent } from './components/cruces/ventas/ventas.component';
 import { FormsModule,ReactiveFormsModule } from "@angular/forms";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { FormsModule,ReactiveFormsModule } from "@angular/forms";
     NewPostModule,
     VentasModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
