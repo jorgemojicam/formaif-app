@@ -5,7 +5,7 @@ import { VentasHis } from "../../../model/ventas-historicas";
 @Component({
   selector: 'app-ventas',
   templateUrl: './ventas.component.html',
-  styleUrls: ['./ventas.component.sass']
+  styleUrls: ['./ventas.component.scss']
 })
 export class VentasComponent implements OnInit {
 

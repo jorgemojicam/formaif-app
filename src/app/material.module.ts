@@ -8,6 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatDividerModule } from "@angular/material/divider";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatListModule } from "@angular/material/list";
+
 const myCompm = [
   MatCardModule,
   MatToolbarModule,
@@ -16,7 +19,9 @@ const myCompm = [
   MatInputModule,
   MatButtonModule,
   MatStepperModule,
-  MatDividerModule
+  MatDividerModule,
+  MatSidenavModule,
+  MatListModule
 ];
 
 @NgModule({

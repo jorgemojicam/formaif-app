@@ -13,6 +13,8 @@ import { VentasComponent } from './components/cruces/ventas/ventas.component';
 import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
+import { AdminModule } from './components/admin/admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { environment } from '../environments/environment';
     NewPostComponent,
     PostComponent,
     ToolbarComponent,
-    VentasComponent
+    VentasComponent,
+    ContainerAppComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { environment } from '../environments/environment';
     VentasModule,
     ReactiveFormsModule,
     FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
