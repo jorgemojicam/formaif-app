@@ -12,6 +12,7 @@ export class VentasComponent implements OnInit {
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  public onlineOffline: boolean = navigator.onLine;
 
   constructor(private _formBuilder: FormBuilder) { }
 
@@ -40,7 +41,11 @@ export class VentasComponent implements OnInit {
   }
 
   saveVentas(form: VentasHis) {
-    console.log('form', form)
+    if(this.onlineOffline){
+      console.log("tiene internet")
+    }else{
+      console.log("no tiene internet")
+    }
     localStorage.setItem('ventasHis', JSON.stringify(form));
   }
 
