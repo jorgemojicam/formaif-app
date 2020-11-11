@@ -18,30 +18,35 @@ export class InventarioComponent implements OnInit {
   public inventarioForm: FormGroup;
 
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.inventarioForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()])
     });
 
-    this.srvInvibd.get().subscribe((inventa)=>{
-      for(let i = 0;i < inventa.length;i++){
-        this.formArr.push(this.loadItemRows(inventa[i]));
-      };
-    });    
-   
+    this.srvInvibd.get().subscribe((inventa: Inventario[]) => {
+      if (inventa.length == 0) {
+
+      } else {
+        for (let i = 0; i < inventa.length; i++) {
+          console.log(inventa[i])
+          this.formArr.push(this.loadItemRows(inventa[i]));
+        }
+      }
+    });
+
   }
   get formArr() {
     return this.inventarioForm.get('itemRows') as FormArray;
   }
   initItemRows() {
     return this._fb.group({
-      tipo: ['ds'],
+      tipo: [''],
       cantidad: [''],
       descripcion: [''],
       valor: ['']
     });
   }
-  loadItemRows(inv:Inventario) {
+  loadItemRows(inv: Inventario) {
     return this._fb.group({
       tipo: [inv.tipo],
       cantidad: [inv.cantidad],
@@ -57,7 +62,7 @@ export class InventarioComponent implements OnInit {
     this.formArr.removeAt(index);
   }
 
-  onSubmit(bal:any) {
+  onSubmit(bal: any) {
     console.log(bal.itemRows);
     this.srvInvibd.saveInventario(bal.itemRows);
   }
