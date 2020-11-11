@@ -5,7 +5,6 @@ import { ContainerAppComponent } from "./components/pages/container-app/containe
 
 
 const routes: Routes = [
-<<<<<<< HEAD
   {
     path: '', component: ContainerAppComponent,
     children: [
@@ -13,14 +12,10 @@ const routes: Routes = [
       { path: 'posts/:id', component: PostComponent }
     ]
   },  
-  { path: 'admin', loadChildren: () => import('./components/admin/admin/admin.module').then(m => m.AdminModule) },  
+  { path: 'admin', loadChildren: () => import('./components/admin/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'balance', loadChildren: () => import('./components/balance/balance/balance.module').then(m => m.BalanceModule) },
+  { path: 'gastos', loadChildren: () => import('./components/gastos/gastos/gastos.module').then(m => m.GastosModule) },  
 
-=======
-{path: '',redirectTo:'cruces',pathMatch:'full'},
-{ path: 'cruces', loadChildren: () => import('./components/cruces/ventas/ventas.module').then(m => m.VentasModule) }, 
-{ path: 'home', loadChildren: () => import('./components/pages/home/home.module').then(m => m.HomeModule) }, 
-{ path: 'posts/:id', component:PostComponent }
->>>>>>> 3d2c0f5960a1b66172eee25de1a21c409195cbeb
 ];
 
 @NgModule({

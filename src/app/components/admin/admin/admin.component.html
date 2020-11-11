@@ -1,36 +1,34 @@
-
 <mat-toolbar color="primary" class="navbar">
-    <span color="primary" (click)="opened = !opened">
+    <span color="primary" (click)="drawer.toggle()">
         <mat-icon class="mat-18">menu</mat-icon>
-    </span>
-    <a routerLink="/" class="logo">
-        <span>Cruces</span>
-    </a>
+    </span>    
+    <span>Asesor Agil</span>    
     <span class="fill-remaining-space"></span>
 </mat-toolbar>
 
-<mat-sidenav-container>
-    <mat-sidenav #sideNav [(opened)]="opened" mode="side">
-        <mat-nav-list>
-            <a mat-list-item routerLink="ventas">
-                <mat-icon class="mat-18">book</mat-icon>Ventas
-            </a>
-        </mat-nav-list>
-        <mat-divider></mat-divider>
-        <mat-nav-list>
-            <a mat-list-item routerLink="profile">
-                <mat-icon class="mat-18">book</mat-icon>Gastos
-            </a>
-        </mat-nav-list>
-        <mat-divider></mat-divider>
-        <mat-nav-list>
-            <a mat-list-item routerLink="profile">
-                <mat-icon class="mat-18">book</mat-icon>Balance
-            </a>
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
+<mat-drawer-container class="menu-container" hasBackdrop="true">
+    <mat-drawer #drawer mode="over">
+        <mat-list>
+            <mat-list-item routerLink="balance">
+                <mat-icon mat-list-icon>assessment</mat-icon>
+                <div mat-line>Balance</div>
+            </mat-list-item>
+            <mat-list-item routerLink="ventas">
+                <mat-icon mat-list-icon>work</mat-icon>
+                <div mat-line>Cruces</div>
+            </mat-list-item>
+            <mat-list-item routerLink="gastos">
+                <mat-icon mat-list-icon>payment</mat-icon>
+                <div mat-line>Gastos</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <mat-icon mat-list-icon>power_settings_new</mat-icon>
+                <div mat-line>Cerrar Session</div>
+            </mat-list-item>
+        </mat-list>
+    </mat-drawer>
+    <mat-drawer-content>
         <router-outlet></router-outlet>
-    </mat-sidenav-content>
-    
-</mat-sidenav-container>
+    </mat-drawer-content>
+</mat-drawer-container>

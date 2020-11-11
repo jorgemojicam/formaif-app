@@ -9,6 +9,16 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
+        path: 'balance',
+        loadChildren: () =>
+          import('../../balance/balance/balance.module').then(m => m.BalanceModule)
+      },
+      {
+        path: 'gastos',
+        loadChildren: () =>
+          import('../../gastos/gastos/gastos.module').then(m => m.GastosModule)
+      },
+      {
         path: 'ventas',
         loadChildren: () =>
           import('../../cruces/ventas/ventas.module').then(m => m.VentasModule)
@@ -19,10 +29,7 @@ const routes: Routes = [
       },
     ]
   }
-
 ];
-
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
