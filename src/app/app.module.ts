@@ -15,6 +15,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
 import { AdminModule } from './components/admin/admin/admin.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AdminModule } from './components/admin/admin/admin.module';
     ReactiveFormsModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    AdminModule
+    AdminModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

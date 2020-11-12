@@ -7,6 +7,7 @@ import { InventarioComponent } from './inventario/inventario.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [BalanceComponent,InventarioComponent],
@@ -15,7 +16,8 @@ import { MaterialModule } from 'src/app/material.module';
     BalanceRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    FlexLayoutModule
   ]
 })
 export class BalanceModule { }
