@@ -11,7 +11,7 @@ const routes: Routes = [
       {
         path: 'balance',
         loadChildren: () =>
-          import('../../balance/balance/balance.module').then(m => m.BalanceModule)
+          import('../../balance/balance.module').then(m => m.BalanceModule)
       },
       {
         path: 'gastos',

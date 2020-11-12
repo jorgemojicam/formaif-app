@@ -13,7 +13,7 @@ const routes: Routes = [
     ]
   },  
   { path: 'admin', loadChildren: () => import('./components/admin/admin/admin.module').then(m => m.AdminModule) },
-  { path: 'balance', loadChildren: () => import('./components/balance/balance/balance.module').then(m => m.BalanceModule) },
+  { path: 'balance', loadChildren: () => import('./components/balance/balance.module').then(m => m.BalanceModule) },
   { path: 'gastos', loadChildren: () => import('./components/gastos/gastos/gastos.module').then(m => m.GastosModule) },  
 
 ];
