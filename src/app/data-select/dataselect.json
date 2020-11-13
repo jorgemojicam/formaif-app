@@ -35,6 +35,33 @@
     {
       "id":4,
       "name":"Otros"
+    },
+    {
+      "id":5,
+      "name":"Animales"
+    }
+  ],
+  "TipoActivoFam":[
+    {
+      "id":1,
+      "name":"Muebles y enseres"
+    },
+    {
+      "id":2,
+      "name":"Electrodomesticos"
+    },
+    {
+      "id":3,
+      "name":"Vehiculos"
+    },
+    {
+      "id":4,
+      "name":"Inuebles o terrenos"
+    }
+    ,
+    {
+      "id":5,
+      "name":"Otros"
     }
   ]
 }

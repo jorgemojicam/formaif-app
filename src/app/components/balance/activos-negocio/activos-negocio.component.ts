@@ -32,7 +32,7 @@ export class ActivosNegocioComponent implements OnInit {
     return this.formbuild.group({
       tipo: ['',Validators.required],
       detalle: ['',Validators.required],
-      valor: ['',Validators.required]
+      valor: [null,Validators.required]
     });
   }
 

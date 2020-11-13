@@ -1,6 +1,28 @@
-mat-form-field{
-    width: 100%;  
+mat-form-field {
+    width: 100%;
 }
-.gr{
+
+.gr {
     margin-right: 20px;
+}
+
+hr {
+    display: block;
+    margin: 10px 0 10px 0;
+    border-top: 1px solid rgba(0, 0, 0, .12);
+    width: 100%
+}
+
+div.alternate>div:nth-of-type(odd) {
+    background: rgba(239, 239, 239, 0.58);
+}
+
+.contentinventario {
+    border-radius: 8px;
+    padding: 8px 8px 8px 8px;
+}
+
+.btnadd {
+    position: absolute;
+    top: 92%;
 }
