@@ -11,6 +11,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatSelectModule } from "@angular/material/select";
 
 const myCompm = [
   MatCardModule,
@@ -23,7 +24,8 @@ const myCompm = [
   MatDividerModule,
   MatSidenavModule,
   MatListModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSelectModule
 ];
 
 @NgModule({

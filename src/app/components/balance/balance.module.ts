@@ -8,9 +8,10 @@ import { InventarioComponent } from './inventario/inventario.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ActivosNegocioComponent } from './activos-negocio/activos-negocio.component';
 
 @NgModule({
-  declarations: [BalanceComponent,InventarioComponent],
+  declarations: [BalanceComponent,InventarioComponent, ActivosNegocioComponent],
   imports: [
     CommonModule,
     BalanceRoutingModule,

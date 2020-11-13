@@ -15,10 +15,15 @@
 
           <div class="gr" fxFlex="20%" fxFlex.xs="55%" fxFlex.sm="33%">
             <mat-form-field>
-              <input type="text" matInput placeholder="Tipo" id="tipo{{i}}" formControlName="tipo">
+              <mat-label>Tipo</mat-label>
+              <mat-select formControlName="tipo" id="tipo{{i}}" required>
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let tip of tipoInventario" [value]="tip">
+                  {{tip.name}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
-
           <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
             <mat-form-field>
               <input type="number" matInput placeholder="Cantidad" id="cantidad{{i}}" formControlName="cantidad">
@@ -40,17 +45,12 @@
               <mat-icon>delete</mat-icon>
             </button>
           </div>
-
         </div>
-
       </div>
-
       <button mat-fab aria-label="add" type="button" color="accent" (click)="addNewRow()">
         <mat-icon>add</mat-icon>
-      </button> 
-
+      </button>
     </mat-card-content>
-
   </mat-card>
-  <button mat-raised-button color="primary">Guardar</button>
+  <button mat-raised-button type="submit" color="primary">Guardar</button>
 </form>

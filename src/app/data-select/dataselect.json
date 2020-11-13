@@ -1,0 +1,40 @@
+{
+  "TipoInventario": [
+    {
+      "id": 1,
+      "name": "Materia Prima"
+     
+    },
+    {
+      "id": 2,
+      "name": "Producto Proceso"
+     
+    },
+    {
+      "id": 3,
+      "name": "Producto Terminado"
+    },
+    {
+      "id": 4,
+      "name": "Inventario Comercial"
+    }
+  ],
+  "TipoActivoNeg":[
+    {
+      "id":1,
+      "name":"Maquinaria y Equipo"
+    },
+    {
+      "id":2,
+      "name":"Muebles y enseres"
+    },
+    {
+      "id":3,
+      "name":"Inmuebles o terrenos"
+    },
+    {
+      "id":4,
+      "name":"Otros"
+    }
+  ]
+}

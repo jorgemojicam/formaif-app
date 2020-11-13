@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from "@angular/forms";
-import sampleData from './dataselect.json';
+import DataSelect from '../../../data-select/dataselect.json';
 
 import { Inventario } from 'src/app/model/inventario';
 import { IdbInventarioService } from "../inventario/idb-inventario.service";
@@ -13,15 +13,15 @@ import { IdbInventarioService } from "../inventario/idb-inventario.service";
 })
 export class InventarioComponent implements OnInit {
 
-  tipoInventario:any = sampleData;
-
   constructor(
     private _fb: FormBuilder,
     private srvInvibd: IdbInventarioService,
     private ref: ChangeDetectorRef
   ) { }
+
   public inventarioForm: FormGroup;
   summed: number;
+  tipoInventario:any = DataSelect.TipoInventario;
 
   ngOnInit(): void {
     this.inventarioForm = this._fb.group({
@@ -33,8 +33,7 @@ export class InventarioComponent implements OnInit {
       if (inventa) {
         if (inventa.length == 0) {
         } else {
-          for (let i = 0; i < inventa.length; i++) {
-            console.log(inventa[i])
+          for (let i = 0; i < inventa.length; i++) { 
             this.formArr.push(this.loadItemRows(inventa[i]));
           }
         }
@@ -58,18 +57,18 @@ export class InventarioComponent implements OnInit {
 
   initItemRows() {
     return this._fb.group({
-      tipo: [''],
-      cantidad: [''],
-      descripcion: [''],
-      valor: ['']
+      tipo: ['',Validators.required],
+      cantidad: ['',Validators.required],
+      descripcion: ['',Validators.required],
+      valor: ['',Validators.required]
     });
   }
   loadItemRows(inv: Inventario) {
     return this._fb.group({
-      tipo: [inv.tipo],
-      cantidad: [inv.cantidad],
-      descripcion: [inv.descripcion],
-      valor: [inv.valor]
+      tipo: [inv.tipo,Validators.required],
+      cantidad: [inv.cantidad,Validators.required],
+      descripcion: [inv.descripcion,Validators.required],
+      valor: [inv.valor,Validators.required]
     });
   }
   addNewRow() {
