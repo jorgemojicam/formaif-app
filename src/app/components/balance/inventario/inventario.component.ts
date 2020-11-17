@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from "@angular/forms";
 import DataSelect from '../../../data-select/dataselect.json';
 import { CurrencyPipe } from "@angular/common";
@@ -20,11 +20,16 @@ export class InventarioComponent implements OnInit {
     private curPipe: CurrencyPipe
   ) { }
 
+  @Input() dataa:any;
+
   public inventarioForm: FormGroup;
   summed: number;
   tipoInventario: any = DataSelect.TipoInventario;
 
   ngOnInit(): void {
+
+    console.log(this.dataa)
+    
     this.inventarioForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()]),
       summed: [null]
@@ -56,7 +61,6 @@ export class InventarioComponent implements OnInit {
       let langArr = <FormArray>this.inventarioForm.controls["itemRows"];
       for (let i = 0; i < langArr.controls.length; i++) {
         if (langArr.controls[i].get('valor').value) {
-          console.log("cosa")
           langArr.controls[i].patchValue({
             valor: this.curPipe.transform(langArr.controls[i].get('valor').value.replace(/\D/g, '').replace(/^0+/, ''), 'USD', 'symbol', '1.0-0')
           }, { emitEvent: false });

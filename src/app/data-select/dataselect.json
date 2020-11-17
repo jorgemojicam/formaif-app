@@ -3,12 +3,10 @@
     {
       "id": 1,
       "name": "Materia Prima"
-     
     },
     {
       "id": 2,
       "name": "Producto Proceso"
-     
     },
     {
       "id": 3,
@@ -19,49 +17,109 @@
       "name": "Inventario Comercial"
     }
   ],
-  "TipoActivoNeg":[
+  "TipoActivoNeg": [
     {
-      "id":1,
-      "name":"Maquinaria y Equipo"
+      "id": 1,
+      "name": "Maquinaria y Equipo"
     },
     {
-      "id":2,
-      "name":"Muebles y enseres"
+      "id": 2,
+      "name": "Muebles y enseres"
     },
     {
-      "id":3,
-      "name":"Inmuebles o terrenos"
+      "id": 3,
+      "name": "Inmuebles o terrenos"
     },
     {
-      "id":4,
-      "name":"Otros"
+      "id": 4,
+      "name": "Otros"
     },
     {
-      "id":5,
-      "name":"Animales"
+      "id": 5,
+      "name": "Animales"
     }
   ],
-  "TipoActivoFam":[
+  "TipoActivoFam": [
+    {
+      "id": 1,
+      "name": "Muebles y enseres"
+    },
+    {
+      "id": 2,
+      "name": "Electrodomesticos"
+    },
+    {
+      "id": 3,
+      "name": "Vehiculos"
+    },
+    {
+      "id": 4,
+      "name": "Inuebles o terrenos"
+    },
+    {
+      "id": 5,
+      "name": "Otros"
+    }
+  ],
+  "TipoPasivo": [
+    {
+      "id": 1,
+      "name": "Entidades Financieras",
+      "template":"entfinan"
+    },
+    {
+      "id": 2,
+      "name": "Hipotecario",
+      "template":"hipo"
+    },
+    {
+      "id": 3,
+      "name": "Libranza",
+      "template":"libran"
+    },
+    {
+      "id": 4,
+      "name": "Pagadiario",
+      "template":"pagad"
+    },
+    {
+      "id": 5,
+      "name": "Educativos",
+      "template":"pagad"
+    },
+    {
+      "id": 6,
+      "name": "Tarjetas de Crédito",
+      "template":"pagad"
+    }
+  ],
+  "ClasePasivo":[
     {
       "id":1,
-      "name":"Muebles y enseres"
+      "name":"Familiar"
     },
     {
       "id":2,
-      "name":"Electrodomesticos"
+      "name":"Negocio"
+    }
+  ],
+  "Periodo":[
+    {
+      "id":1,
+      "name":"Mensual"
+    },
+    {
+      "id":2,
+      "name":"Bimestral"
     },
     {
       "id":3,
-      "name":"Vehiculos"
+      "name":"Trimestral"
     },
     {
       "id":4,
-      "name":"Inuebles o terrenos"
-    }
-    ,
-    {
-      "id":5,
-      "name":"Otros"
+      "name":"Semestal"
     }
   ]
+
 }
