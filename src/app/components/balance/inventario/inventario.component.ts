@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from "@angular/forms";
+import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter, Host, OnChanges } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, FormArray } from "@angular/forms";
 import DataSelect from '../../../data-select/dataselect.json';
 import { CurrencyPipe } from "@angular/common";
 import { Inventario } from 'src/app/model/inventario';
-
+import { IdbBalanceService } from '../idb-balance.service';
+import { Balance } from 'src/app/model/balance';
 
 @Component({
   selector: 'app-inventario',
@@ -12,37 +13,39 @@ import { Inventario } from 'src/app/model/inventario';
 })
 export class InventarioComponent implements OnInit {
 
-  @Input() bal: any
+  @Input() data
   @Output() save = new EventEmitter<any>()
 
   constructor(
     private _fb: FormBuilder,
     private ref: ChangeDetectorRef,
-    private curPipe: CurrencyPipe
+    private curPipe: CurrencyPipe,
+    private srvBalance: IdbBalanceService
   ) { }
 
   public inventarioForm: FormGroup;
   summed: number;
   tipoInventario: any = DataSelect.TipoInventario;
 
-  ngOnInit(): void {
-    console.log(this.bal)
+  ngOnInit() {
+
     this.inventarioForm = this._fb.group({
-      itemRows: this._fb.array([this.initItemRows()]),
+      itemRows: this._fb.array([]),
       summed: [null]
     });
-    /*
-    this.srvInvibd.get().subscribe((inventa: Inventario[]) => {
-      if (inventa) {
-        if (inventa.length == 0) {
+
+    this.srvBalance.get().subscribe((balance: Balance) => {
+      if (balance) {
+        if (balance.Inventario.length == 0) {
+          this.formArr.push(this.initItemRows());
         } else {
-          for (let i = 0; i < inventa.length; i++) {
-            this.formArr.push(this.loadItemRows(inventa[i]));
+          for (let i = 0; i < balance.Inventario.length; i++) {
+            this.formArr.push(this.loadItemRows(balance.Inventario[i]));
           }
         }
       }
     });
-    */
+
 
     this.inventarioForm.get('itemRows').valueChanges.subscribe(values => {
       this.summed = 0;
@@ -81,6 +84,7 @@ export class InventarioComponent implements OnInit {
     });
   }
   loadItemRows(inv: Inventario) {
+    
     return this._fb.group({
       tipo: [inv.tipo, Validators.required],
       cantidad: [inv.cantidad, Validators.required],

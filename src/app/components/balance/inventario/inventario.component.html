@@ -18,7 +18,7 @@
               <mat-label>Tipo</mat-label>
               <mat-select formControlName="tipo" id="tipo{{i}}" required>
                 <mat-option>--</mat-option>
-                <mat-option *ngFor="let tip of tipoInventario" [value]="tip">
+                <mat-option *ngFor="let tip of tipoInventario" [value]="tip.id">
                   {{tip.name}}
                 </mat-option>
               </mat-select>
@@ -53,4 +53,5 @@
     </mat-card-content>
   </mat-card>
 </form>
+
 
