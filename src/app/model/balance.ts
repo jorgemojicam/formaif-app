@@ -6,4 +6,10 @@ export class Balance {
         valor: number;    
     }[];
     totalInventario:number;
+    ActivosFamilia:{
+        tipo:number;
+        detalle:string;
+        valor:number;
+    }[];
+    totalActivosFamilia:number;
 }

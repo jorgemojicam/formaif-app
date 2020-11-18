@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IdbInventarioService } from './idb-inventario.service';
+import { IdbBalanceService } from './idb-balance.service';
 
-describe('IdbInventarioService', () => {
-  let service: IdbInventarioService;
+describe('IdbBalanceService', () => {
+  let service: IdbBalanceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(IdbInventarioService);
+    service = TestBed.inject(IdbBalanceService);
   });
 
   it('should be created', () => {

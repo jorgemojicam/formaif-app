@@ -1,10 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from "@angular/forms";
 import DataSelect from '../../../data-select/dataselect.json';
 import { CurrencyPipe } from "@angular/common";
-
 import { Inventario } from 'src/app/model/inventario';
-import { IdbInventarioService } from "../inventario/idb-inventario.service";
+
 
 @Component({
   selector: 'app-inventario',
@@ -13,28 +12,26 @@ import { IdbInventarioService } from "../inventario/idb-inventario.service";
 })
 export class InventarioComponent implements OnInit {
 
+  @Input() bal: any
+  @Output() save = new EventEmitter<any>()
+
   constructor(
     private _fb: FormBuilder,
-    private srvInvibd: IdbInventarioService,
     private ref: ChangeDetectorRef,
     private curPipe: CurrencyPipe
   ) { }
-
-  @Input() dataa:any;
 
   public inventarioForm: FormGroup;
   summed: number;
   tipoInventario: any = DataSelect.TipoInventario;
 
   ngOnInit(): void {
-
-    console.log(this.dataa)
-    
+    console.log(this.bal)
     this.inventarioForm = this._fb.group({
       itemRows: this._fb.array([this.initItemRows()]),
       summed: [null]
     });
-
+    /*
     this.srvInvibd.get().subscribe((inventa: Inventario[]) => {
       if (inventa) {
         if (inventa.length == 0) {
@@ -45,11 +42,12 @@ export class InventarioComponent implements OnInit {
         }
       }
     });
+    */
 
     this.inventarioForm.get('itemRows').valueChanges.subscribe(values => {
       this.summed = 0;
       const ctrl = <FormArray>this.inventarioForm.controls['itemRows'];
-      
+      this.save.emit(values);
       ctrl.controls.forEach(x => {
         let parsed = parseInt(x.get('valor').value == "" || x.get('valor').value == null ? 0 : x.get('valor').value.replace(/\D/g, '').replace(/^0+/, ''))
         this.summed += parsed
@@ -96,10 +94,5 @@ export class InventarioComponent implements OnInit {
 
   deleteRow(index: number) {
     this.formArr.removeAt(index);
-  }
-
-  onSubmit(bal: any) {
-    console.log(bal.itemRows);
-    this.srvInvibd.saveInventario(bal.itemRows);
   }
 }

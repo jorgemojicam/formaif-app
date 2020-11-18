@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Balance } from 'src/app/model/balance';
+import {IdbBalanceService} from './idb-balance.service'
 
 @Component({
   selector: 'app-balance',
@@ -7,27 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BalanceComponent implements OnInit {
 
-  constructor() { }
-  datosBalance:any[] = []
+  bal:any=["cosa"];
+  dataBalance:Balance = new Balance();  
 
-  dataa:any = {
-    "Inventario":[
-      {"Cosa":1},
-      {"Cosa":2}
-    ],
-    "Activos":[
-      {"mas":1},
-      {"mas":2}
-    ],
-    "ActivosNeg":[
-      {"opt":1},
-      {"opt":2},
-      {"opt":3}
-    ]    
+  constructor(
+    private srv:IdbBalanceService
+  ) { }
+
+  ngOnInit() {
+    //this.srv.get().subscribe((res) => this.bal = res as Balance);    
+    console.log(this.bal)
   }
 
-  ngOnInit(): void {
-    this.datosBalance = this.dataa
+  saveInventario(inventario:any){     
+    this.dataBalance.Inventario = inventario; 
+    this.srv.save(this.dataBalance);
   }
 
 }

@@ -12,13 +12,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ActivosNegocioComponent } from './activos-negocio/activos-negocio.component';
 import { ActivosFamiliaComponent } from './activos-familia/activos-familia.component';
 import { PasivosComponent } from './pasivos/pasivos.component';
+import { ProveedoresComponent } from './proveedores/proveedores.component';
 
 @NgModule({
   declarations: [
     BalanceComponent,
     InventarioComponent, 
     ActivosNegocioComponent, 
-    ActivosFamiliaComponent, PasivosComponent
+    ActivosFamiliaComponent, PasivosComponent, ProveedoresComponent
   ],
   imports: [
     CommonModule,
