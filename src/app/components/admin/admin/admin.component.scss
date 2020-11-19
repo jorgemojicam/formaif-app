@@ -14,8 +14,7 @@ mat-sidenav{
   background: white;
   position: fixed;
   top: 55px;
-  z-index: 1000;
-  
+  z-index: 1000;  
 }
 .mat-list-base .mat-list-item,a{
   text-decoration: none;
@@ -30,5 +29,5 @@ mat-sidenav{
 }
 
 mat-drawer-content {
-  padding: 12px;
+  padding: 15px 15px 0px 15px;  
 }

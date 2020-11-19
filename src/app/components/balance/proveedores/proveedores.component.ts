@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-proveedores',
@@ -8,9 +8,37 @@ import { FormGroup } from '@angular/forms';
 })
 export class ProveedoresComponent implements OnInit {
 
-  constructor() { }
-  ngOnInit(): void {
+  public proveedoresForm: FormGroup;
+  total: number;
 
+  constructor(
+    private _fb:FormBuilder
+  ) { }
+  ngOnInit(): void {
+    this.proveedoresForm = this._fb.group({
+      itemRows: this._fb.array([]),
+      total: [null]
+    });
+    this.formArr.push(this.initItemRows());
+
+  }
+
+  get formArr() {
+    return this.proveedoresForm.get('itemRows') as FormArray;
+  }
+
+  initItemRows() {
+    return this._fb.group({  
+      descripcion: ['', Validators.required],
+      valor: ['']
+    });
+  }
+  addNewRow() {
+    this.formArr.push(this.initItemRows());
+  }
+
+  deleteRow(index: number) {
+    this.formArr.removeAt(index);
   }
 
 }

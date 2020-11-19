@@ -12,6 +12,8 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatSelectModule } from "@angular/material/select";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const myCompm = [
   MatCardModule,
@@ -25,7 +27,9 @@ const myCompm = [
   MatSidenavModule,
   MatListModule,
   MatChipsModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
