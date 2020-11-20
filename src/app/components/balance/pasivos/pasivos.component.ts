@@ -56,6 +56,13 @@ export class PasivosComponent implements OnInit {
           });
         }
 
+        if(netocuota > 0){
+          for (let cuo = 0; cuo <netocuota; cuo++) {          
+            this.addCuotas(index)
+          }
+          
+        }
+
         if (tipo.id == "1") {
 
           let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
@@ -105,13 +112,24 @@ export class PasivosComponent implements OnInit {
       cuota: [''],
       valor: [''],
       periodo: [''],
+      tasa:[''],
+      pago:[''],//Periodico =1, Irregular=2
+      calculoint:[''],
+      periodoint:[''],
+      fechaproxint:[null],
+      calculocap:[''],
+      periodocap:[''],
+      fechaproxcap:[''],
       cuotaN: [''],
       cuotaF: [''],
       proyeccion: [''],
       corrienteF: [],
       nocorrienteF: [],
       corrienteN: [],
-      nocorrienteN: []
+      nocorrienteN: [],
+      cuotasarr:this.formBuild.group({
+        pasivosRows: this.formBuild.array([this.itemsCuotas()])
+      })
 
     });
   }
@@ -122,4 +140,27 @@ export class PasivosComponent implements OnInit {
   deleteRow(index: number) {
     this.formArr.removeAt(index);
   }
+
+  pasivos(): FormArray {
+    return this.pasivosForm.get("itemRow") as FormArray
+  }
+
+  newCuotas(): FormGroup {
+    return this.formBuild.group({    
+      cuotasirre: this.formBuild.array([this.itemsCuotas])
+    })
+  }
+  cuotas(ti): FormArray {
+    return this.pasivos().at(ti).get("cuotasarr") as FormArray
+  }
+  addCuotas(ti: number) {
+    this.cuotas(ti).push(this.newCuotas());
+  }
+  itemsCuotas() {
+    return this.formBuild.group({
+      fecha: [''],
+      cuota: [''],
+    });
+  }
+
 }

@@ -11,7 +11,7 @@ const routes: Routes = [
       { path: 'home', loadChildren: () => import('./components/pages/home/home.module').then(m => m.HomeModule) },
       { path: 'posts/:id', component: PostComponent }
     ]
-  },  
+  },
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule) },
   { path: 'balance', loadChildren: () => import('./components/balance/balance.module').then(m => m.BalanceModule) },
   { path: 'gastos', loadChildren: () => import('./components/gastos/gastos.module').then(m => m.GastosModule) },

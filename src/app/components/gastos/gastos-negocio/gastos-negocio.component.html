@@ -1,1 +1,62 @@
-<p>gastos-negocio works!</p>
+<form [formGroup]="gastosnForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Gastos del Negocio</mat-card-title>
+            <mat-card-subtitle>gastos del negocio</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+              <mat-chip color="accent" selected>{{total}}</mat-chip>
+              <input readonly style="display: none;" formControlName="total" />
+            </mat-chip-list>
+          </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row wrap" class="content">              
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Alquilar" id="alquiler" formControlName="alquiler">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Servicios" id="servicios"
+                            formControlName="servicios">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Transporte" id="transporte"
+                            formControlName="transporte">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Fletes" id="fletes"
+                            formControlName="fletes">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Impuestos" id="impuestos" formControlName="impuestos">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Mantenimiento" id="mantenimiento"
+                            formControlName="mantenimiento">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Imprevistos" id="imprevistos"
+                            formControlName="imprevistos">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Otros" id="otros"
+                            formControlName="otros">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -91,6 +91,16 @@
       "id": 6,
       "name": "Tarjetas de Crédito",
       "template":"pagad"
+    },
+    {
+      "id": 7,
+      "name": "Otras periodicidades",
+      "template":"periodicidad"
+    },
+    {
+      "id": 5,
+      "name": "Sector Real",
+      "template":"entfinan"
     }
   ],
   "ClasePasivo":[
@@ -122,8 +132,44 @@
     },
     {
       "id":4,
-      "name":"Semestal",
+      "name":"Cuatrimestral",
       "period":4
+    },
+    {
+      "id":5,
+      "name":"Semestral",
+      "period":6
+    },    
+    {
+      "id":6,
+      "name":"Anual",
+      "period":12
+    }
+  ],
+  "OtrosIngresosFamiliar":[
+    {
+      "id":1,
+      "name":"Conyuge"
+    },
+    {
+      "id":2,
+      "name":"Arriendo"
+    },
+    {
+      "id":3,
+      "name":"Transporte"
+    },
+    {
+      "id":4,
+      "name":"Hijos"
+    },
+    {
+      "id":5,
+      "name":"Pensiones"
+    },
+    {
+      "id":6,
+      "name":"Otros"
     }
   ]
 

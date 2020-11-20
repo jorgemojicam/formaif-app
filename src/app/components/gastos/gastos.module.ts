@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule,CurrencyPipe } from '@angular/common';
 
 
 import { GastosRoutingModule } from './gastos-routing.module';
@@ -14,13 +14,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [GastosComponent, RemuneracionComponent, GastosNegocioComponent, GastosFamiliaComponent, OtrosIngresosFamComponent],
+  declarations: [GastosComponent,
+    RemuneracionComponent,
+    GastosNegocioComponent,
+    GastosFamiliaComponent,
+    OtrosIngresosFamComponent
+  ],
   imports: [
     CommonModule,
     GastosRoutingModule,
     MaterialModule,
     FlexLayoutModule,
     ReactiveFormsModule
+  ],
+  providers:[
+    CurrencyPipe
   ]
+
 })
 export class GastosModule { }

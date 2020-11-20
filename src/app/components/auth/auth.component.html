@@ -1,9 +1,9 @@
 <div fxLayout="row" fxLayoutAlign="space-around center">
     <mat-card>
-        <mat-card-header>
-            <mat-card-title>Inicio Sesion</mat-card-title>
-        </mat-card-header>
+
+        <img mat-card-image src="assets/pictures/fdlmlog.png" alt="Photo of a Shiba Inu">
         <mat-card-content>
+            <mat-card-title>Inicio Sesion</mat-card-title>
             <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
                 <p>
                     <mat-form-field appearance="outline">

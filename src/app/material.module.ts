@@ -14,6 +14,11 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
 
 const myCompm = [
   MatCardModule,
@@ -29,7 +34,11 @@ const myCompm = [
   MatChipsModule,
   MatSelectModule,
   MatSlideToggleModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatRadioModule,
+  MatDatepickerModule,
+  MatNativeDateModule
+  
 ];
 
 @NgModule({

@@ -63,7 +63,7 @@
                                         formControlName="saldo">
                                 </mat-form-field>
                             </div>
-                            
+
                             <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
                                 <mat-form-field>
                                     <input type="number" matInput placeholder="# Cuota" id="cuota{{i}}"
@@ -95,7 +95,8 @@
                             </div>
                             <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Proyeccion" id="proyeccion{{i}}" formControlName="proyeccion" readonly>
+                                    <input type="number" matInput placeholder="Proyeccion" id="proyeccion{{i}}"
+                                        formControlName="proyeccion" readonly>
                                 </mat-form-field>
                             </div>
 
@@ -122,17 +123,17 @@
 
                                 <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
                                     <mat-form-field>
-                                        <input type="number" matInput placeholder="Corriente" id="corrienteF{{i}}" formControlName="corrienteF" readonly>
+                                        <input type="number" matInput placeholder="Corriente" id="corrienteF{{i}}"
+                                            formControlName="corrienteF" readonly>
                                     </mat-form-field>
                                 </div>
                                 <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
                                     <mat-form-field>
-                                        <input type="number" matInput placeholder="No corriente" id="nocorrienteF{{i}}" formControlName="nocorrienteF" readonly>
+                                        <input type="number" matInput placeholder="No corriente" id="nocorrienteF{{i}}"
+                                            formControlName="nocorrienteF" readonly>
                                     </mat-form-field>
                                 </div>
-
                             </ng-template>
-                            
 
                         </ng-container>
 
@@ -205,10 +206,202 @@
                             </fieldset>
                         </ng-container>
 
+                        <ng-container *ngSwitchCase="'periodicidad'">
 
+                            <div class="gr" fxFlex="10%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                <mat-form-field>
+                                    <mat-label>Clase</mat-label>
+                                    <mat-select formControlName="clase" id="clase{{i}}" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let cla of clasePasivo" [value]="cla.id">
+                                            {{cla.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="Acreedor" id="acreedor{{i}}"
+                                        formControlName="acreedor">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="number" matInput placeholder="Monto" id="monto{{i}}"
+                                        formControlName="monto">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="number" matInput placeholder="Saldo Actual" id="saldo{{i}}"
+                                        formControlName="saldo">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="5%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="number" matInput placeholder="Plazo" id="plazo{{i}}"
+                                        formControlName="plazo">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="number" matInput placeholder="# Cuota" id="cuota{{i}}"
+                                        formControlName="cuota">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <mat-label>Periodo</mat-label>
+                                    <mat-select formControlName="periodo" id="periodo{{i}}" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                            {{pe.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="Destino" id="destino{{i}}"
+                                        formControlName="destino">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <mat-form-field>
+                                    <input type="number" max="4" matInput placeholder="Tasa" id="tasa{{i}}"
+                                        formControlName="tasa">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="90%" fxFlex.xs="90%" fxFlex.sm="90%">
+                                <mat-radio-group formControlName="pago" aria-label="Select an option">
+                                    <mat-radio-button value="1">Pago Periodico</mat-radio-button>
+                                    <mat-radio-button value="2">Pago Irregular</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <ng-container *ngIf="itemrow.value.clase ==2;then nego ;else fam"></ng-container>
+                            <ng-container *ngIf="itemrow.value.pago ==2;then irregular ;else periodico"></ng-container>
+
+                            <ng-template #periodico>
+
+                                <fieldset fxLayout="row wrap">
+                                    <legend>Cuotas de interes Periodica</legend>
+
+                                    <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <input type="number" matInput placeholder="Interes" id="calculoint{{i}}"
+                                                formControlName="calculoint">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <mat-label>Periodo Interes</mat-label>
+                                            <mat-select formControlName="periodoint" id="periodoint{{i}}" required>
+                                                <mat-option>-Seleccione-</mat-option>
+                                                <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                                    {{pe.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <mat-label>Proximo</mat-label>
+                                            <input matInput [matDatepicker]="dp3" formControlName="fechaproxint">
+                                            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+
+                                </fieldset>
+
+                                <fieldset fxLayout="row wrap">
+                                    <legend>Cuotas de capital Periodica</legend>
+
+                                    <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <input type="number" matInput placeholder="Capital" id="calculocap{{i}}"
+                                                formControlName="calculocap">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <mat-label>Periodo Capital</mat-label>
+                                            <mat-select formControlName="periodocap" id="periodocap{{i}}" required>
+                                                <mat-option>-Seleccione-</mat-option>
+                                                <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                                    {{pe.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                        <mat-form-field>
+                                            <mat-label>Proximo</mat-label>
+                                            <input matInput [matDatepicker]="dp4" formControlName="fechaproxint">
+                                            <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+                                            <mat-datepicker #dp4 disabled="false"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </fieldset>
+
+                            </ng-template>
+                            <ng-template #irregular>
+
+                                <div *ngFor="let cuotaint of cuotas(i).controls; let cu=index">
+                                    <div [formGroupName]="cu">
+                                        <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                            <mat-form-field>
+                                                <input type="number" matInput placeholder="cuota" id="cuota{{cu}}"
+                                                    formControlName="cuota">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </ng-template>
+
+                            <ng-template #nego>
+
+                                <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="Corriente" id="corriente{{i}}"
+                                            formControlName="corrienteN" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="No corriente" id="nocorriente{{i}}"
+                                            formControlName="nocorrienteN" readonly>
+                                    </mat-form-field>
+                                </div>
+
+                            </ng-template>
+
+                            <ng-template #fam>
+
+                                <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="Corriente" id="corrienteF{{i}}"
+                                            formControlName="corrienteF" readonly>
+                                    </mat-form-field>
+                                </div>
+                                <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="No corriente" id="nocorrienteF{{i}}"
+                                            formControlName="nocorrienteF" readonly>
+                                    </mat-form-field>
+                                </div>
+
+                            </ng-template>
+
+                        </ng-container>
                     </ng-container>
-
-
 
                     <div class="gr" fxFlex="10%" fxFlex.xs="15%" fxFlex.sm="15%">
                         <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteRow(i)">
