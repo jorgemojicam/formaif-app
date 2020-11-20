@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,8 +17,12 @@ import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
-import { AdminModule } from './components/admin/admin/admin.module';
+import { AdminModule } from './components/admin/admin.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AdminComponent } from "./components/admin/admin.component";
+
+import { AuthGuard } from './helpers/auth.guard';
+import { AuthInterceptor } from "./helpers/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -24,7 +31,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     PostComponent,
     ToolbarComponent,
     VentasComponent,
-    ContainerAppComponent
+    ContainerAppComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +45,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AdminModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:AuthInterceptor,
+      multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

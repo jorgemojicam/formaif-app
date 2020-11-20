@@ -11,22 +11,18 @@ const routes: Routes = [
       {
         path: 'balance',
         loadChildren: () =>
-          import('../../balance/balance.module').then(m => m.BalanceModule)
+          import('../balance/balance.module').then(m => m.BalanceModule)
       },
       {
         path: 'gastos',
         loadChildren: () =>
-          import('../../gastos/gastos/gastos.module').then(m => m.GastosModule)
+          import('../gastos/gastos.module').then(m => m.GastosModule)
       },
       {
         path: 'ventas',
         loadChildren: () =>
-          import('../../cruces/ventas/ventas.module').then(m => m.VentasModule)
-      },
-      {
-        path: 'profile', loadChildren: () =>
-          import('../../../components/admin/profile/profile.module').then(m => m.ProfileModule)
-      },
+          import('../cruces/ventas/ventas.module').then(m => m.VentasModule)
+      }      
     ]
   }
 ];

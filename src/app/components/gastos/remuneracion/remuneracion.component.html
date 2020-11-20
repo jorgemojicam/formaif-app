@@ -1,0 +1,41 @@
+<form [formGroup]="remuneracionForm">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Remuneración de Personal</mat-card-title>
+        <mat-card-subtitle>Sueldo que paga a sus empleados</mat-card-subtitle>
+        <mat-chip-list class="pull-right">
+          <mat-chip color="accent" selected>{{total}}</mat-chip>
+        </mat-chip-list>
+      </mat-card-header>
+      <mat-card-content>
+        <input readonly style="display: none;" formControlName="total" />
+        <div formArrayName="itemRows" class="alternate">
+          <div fxLayout="row wrap" class="contentinventario" *ngFor="let itemrow of remuneracionForm.controls.itemRows['controls']; let i=index"
+            [formGroupName]="i">  
+         
+            <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+              <mat-form-field>
+                <input type="number" matInput placeholder="Cargo" id="cargo{{i}}" formControlName="cargo">
+              </mat-form-field>
+            </div>  
+            <div class="gr" fxFlex="15%" fxFlex.xs="70%" fxFlex.sm="33%">
+              <mat-form-field>
+                <input pattern="[0-9]" matInput placeholder="Valor" id="valor{{i}}" formControlName="valor">
+              </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+              <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteRow(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>     
+          </div>
+        </div>
+        <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent" (click)="addNewRow()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </form>
+  
+  
+  

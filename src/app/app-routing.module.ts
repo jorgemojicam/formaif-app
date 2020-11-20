@@ -12,9 +12,10 @@ const routes: Routes = [
       { path: 'posts/:id', component: PostComponent }
     ]
   },  
-  { path: 'admin', loadChildren: () => import('./components/admin/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule) },
   { path: 'balance', loadChildren: () => import('./components/balance/balance.module').then(m => m.BalanceModule) },
-  { path: 'gastos', loadChildren: () => import('./components/gastos/gastos/gastos.module').then(m => m.GastosModule) },  
+  { path: 'gastos', loadChildren: () => import('./components/gastos/gastos.module').then(m => m.GastosModule) },
+  { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },  
 
 ];
 
