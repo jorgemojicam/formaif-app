@@ -49,18 +49,17 @@ export class PasivosComponent implements OnInit {
         let meses = 12
         let netocuota = plazo - numcuota
 
-        if(numcuota > plazo){
+        if (numcuota > plazo) {
           x.get("cuota").setValue("", { emitEvent: false });
           this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
             duration: 3000,
           });
         }
 
-        if(netocuota > 0){
-          for (let cuo = 0; cuo <netocuota; cuo++) {          
-            this.addCuotas(index)
-          }
-          
+        if (netocuota > 0 && numcuota > 0) {
+          x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
+        } else {
+
         }
 
         if (tipo.id == "1") {
@@ -112,14 +111,14 @@ export class PasivosComponent implements OnInit {
       cuota: [''],
       valor: [''],
       periodo: [''],
-      tasa:[''],
-      pago:[''],//Periodico =1, Irregular=2
-      calculoint:[''],
-      periodoint:[''],
-      fechaproxint:[null],
-      calculocap:[''],
-      periodocap:[''],
-      fechaproxcap:[''],
+      tasa: [''],
+      pago: [''],//Periodico =1, Irregular=2
+      calculoint: [''],
+      periodoint: [''],
+      fechaproxint: [null],
+      calculocap: [''],
+      periodocap: [''],
+      fechaproxcap: [''],
       cuotaN: [''],
       cuotaF: [''],
       proyeccion: [''],
@@ -127,9 +126,8 @@ export class PasivosComponent implements OnInit {
       nocorrienteF: [],
       corrienteN: [],
       nocorrienteN: [],
-      cuotasarr:this.formBuild.group({
-        pasivosRows: this.formBuild.array([this.itemsCuotas()])
-      })
+      numcoutaneto: [],
+      cuotasRow: this.formBuild.array([])
 
     });
   }
@@ -141,20 +139,12 @@ export class PasivosComponent implements OnInit {
     this.formArr.removeAt(index);
   }
 
-  pasivos(): FormArray {
-    return this.pasivosForm.get("itemRow") as FormArray
-  }
-
-  newCuotas(): FormGroup {
-    return this.formBuild.group({    
-      cuotasirre: this.formBuild.array([this.itemsCuotas])
-    })
+  //Agragar las cuotas
+  pasivos() {
+    return this.pasivosForm.get('pasivosRows') as FormArray;
   }
   cuotas(ti): FormArray {
-    return this.pasivos().at(ti).get("cuotasarr") as FormArray
-  }
-  addCuotas(ti: number) {
-    this.cuotas(ti).push(this.newCuotas());
+    return this.pasivos().at(ti).get("cuotasRow") as FormArray
   }
   itemsCuotas() {
     return this.formBuild.group({
@@ -162,5 +152,14 @@ export class PasivosComponent implements OnInit {
       cuota: [''],
     });
   }
+  addCuotas(ti: number) {
+    let neto = this.pasivos().at(ti).get("numcoutaneto").value
+    this.cuotas(ti).clear();
+    
+    for (let cuo = 0; cuo < neto; cuo++) {
+      this.cuotas(ti).push(this.itemsCuotas());
+    }
+  }
+
 
 }

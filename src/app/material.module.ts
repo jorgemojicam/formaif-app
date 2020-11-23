@@ -17,6 +17,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatTabsModule } from "@angular/material/tabs";
 
 
 
@@ -37,7 +38,8 @@ const myCompm = [
   MatSnackBarModule,
   MatRadioModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTabsModule
   
 ];
 

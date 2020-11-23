@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule) },
   { path: 'balance', loadChildren: () => import('./components/balance/balance.module').then(m => m.BalanceModule) },
   { path: 'gastos', loadChildren: () => import('./components/gastos/gastos.module').then(m => m.GastosModule) },
-  { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },  
+  { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
+  { path: 'cruces', loadChildren: () => import('./components/cruces/cruces.module').then(m => m.CrucesModule) },  
 
 ];
 

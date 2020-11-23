@@ -1,0 +1,22 @@
+<form [formGroup]="produccionForm">
+    <div formArrayName="produccionRow" class="alternate">
+        <div fxLayout="row wrap" class="content" *ngFor="let itemrow of produccionForm.controls.produccionRow['controls']; let i=index"
+          [formGroupName]="i">
+          <mat-card>
+              <mat-card-header>
+                  <mat-card-title>Produccion</mat-card-title>                 
+              </mat-card-header>
+      
+              <mat-card-content>
+                <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <mat-form-field>
+                      <input type="number" matInput placeholder="nombre" id="nombre{{i}}" formControlName="nombre">
+                    </mat-form-field>
+                  </div>
+                
+              </mat-card-content>
+       
+          </mat-card>           
+        </div>
+    </div>
+</form>

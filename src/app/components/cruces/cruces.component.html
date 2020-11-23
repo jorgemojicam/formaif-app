@@ -1,0 +1,62 @@
+<form [formGroup]="actividadesForm">
+
+    <mat-tab-group mat-align-tabs="start" [selectedIndex]="selected.value"
+        (selectedIndexChange)="selected.setValue($event)">
+        <div formArrayName="act" fxFlex="90%">
+
+            <mat-tab *ngFor="let acti of actividades().controls; let ac=index" label="Act {{ac}}">
+                <div [formGroupName]="ac">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>Ventas B R M</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+
+                            <div fxLayout="row wrap">
+                                <div class="gr" fxFlex="20%" fxFlex.xs="55%" fxFlex.sm="33%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="Valor B" id="valorB{{ac}}"
+                                            formControlName="valorB">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap">
+                                <div class="gr" fxFlex="20%" fxFlex.xs="55%" fxFlex.sm="33%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="Valor " id="valorR{{ac}}"
+                                            formControlName="valorR">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap">
+                                <div class="gr" fxFlex="20%" fxFlex.xs="55%" fxFlex.sm="33%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="Valor " id="diasB{{ac}}"
+                                            formControlName="diasB">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>Ventas Historicas</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+
+                        </mat-card-content>
+                    </mat-card>
+
+                    <br>
+                    <app-produccion [produccionForm]="produccionForm"></app-produccion>
+                </div>
+            </mat-tab>
+        </div>
+    </mat-tab-group>
+    <button mat-fab type="button" class="addact" color="primary" mat-mini-fab (click)="addActividad()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+
+</form>

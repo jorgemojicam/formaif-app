@@ -11,8 +11,6 @@ import { NewPostComponent } from './components/posts/new-post/new-post.component
 import { NewPostModule } from './components/posts/new-post/new-post.module';
 import { PostComponent } from './components/posts/post/post.component';
 import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
-import { VentasModule } from './components/cruces/ventas/ventas.module';
-import { VentasComponent } from './components/cruces/ventas/ventas.component';
 import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -30,7 +28,6 @@ import { AuthInterceptor } from "./helpers/auth.interceptor";
     NewPostComponent,
     PostComponent,
     ToolbarComponent,
-    VentasComponent,
     ContainerAppComponent,
     AdminComponent
   ],
@@ -40,7 +37,6 @@ import { AuthInterceptor } from "./helpers/auth.interceptor";
     BrowserAnimationsModule,
     MaterialModule,
     NewPostModule,
-    VentasModule,
     ReactiveFormsModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

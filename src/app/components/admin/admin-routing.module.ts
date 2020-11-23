@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: 'ventas',
         loadChildren: () =>
-          import('../cruces/ventas/ventas.module').then(m => m.VentasModule)
+          import('../cruces/cruces.module').then(m => m.CrucesModule)
       }      
     ]
   }
