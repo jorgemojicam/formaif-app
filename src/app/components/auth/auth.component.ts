@@ -13,8 +13,8 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class AuthComponent implements OnInit {
 
   loginForm = new FormGroup({
-    user: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
+    Username: new FormControl('', Validators.required),
+    Passw: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -28,6 +28,7 @@ export class AuthComponent implements OnInit {
 
 
   onLogin(form: User) {
+    console.log(form)
     this.authServ.login(form)
       .subscribe(
         res => {
@@ -37,7 +38,7 @@ export class AuthComponent implements OnInit {
           this.route.navigate(['/']);
         },
         err => {
-          console.log('Error' + err)
+          console.log('Error' , err)
         }
       )
   }

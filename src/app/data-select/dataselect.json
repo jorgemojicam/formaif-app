@@ -171,6 +171,101 @@
       "id":6,
       "name":"Otros"
     }
+  ],
+  "Frecuencia":[
+    {
+      "id":1,
+      "name":"Diaria"
+    },
+    {
+      "id":2,
+      "name":"Semanal"
+    },
+    {
+      "id":3,
+      "name":"Quincenal"
+    },
+    {
+      "id":4,
+      "name":"Mensual"
+    },
+    {
+      "id":5,
+      "name":"Anual"
+    }
+
+  ],
+  "DiasSemana":[
+    {
+      "id":1,
+      "name":"Lunes"
+    },
+    {
+      "id":2,
+      "name":"Martes"
+    },
+    {
+      "id":3,
+      "name":"Miercoles"
+    },
+    {
+      "id":4,
+      "name":"Jueves"
+    },
+    {
+      "id":5,
+      "name":"Viernes"
+    },
+    {
+      "id":6,
+      "name":"Sabado"
+    },
+    {
+      "id":7,
+      "name":"Domingo"
+    }
+  ],
+  "Semanas":[
+    {
+      "id":1,
+      "name":"Semana 1"
+    },
+    {
+      "id":2,
+      "name":"Semana 2"
+    },
+    {
+      "id":3,
+      "name":"Semana 3"
+    },
+    {
+      "id":4,
+      "name":"Semana 4"
+    }
+  ],
+  "Quince":[
+    {
+      "id":1,
+      "name":"Quince 1"
+    },
+    {
+      "id":2,
+      "name":"Quince 2"
+    }    
+  ],
+  "TipoActividadUrban":[
+    {
+      "id":1,
+      "name":"Comercial"
+    },
+    {
+      "id":2,
+      "name":"Produccion"
+    },
+    {
+      "id":3,
+      "name":"Servicios"
+    }
   ]
 
 }
