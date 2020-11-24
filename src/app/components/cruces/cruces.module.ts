@@ -8,10 +8,11 @@ import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { VentasHisComponent } from './ventas-his/ventas-his.component';
 import { ProduccionComponent } from './produccion/produccion.component';
+import { MateriaprimaComponent } from './materiaprima/materiaprima.component';
 
 
 @NgModule({
-  declarations: [CrucesComponent, VentasHisComponent, ProduccionComponent],
+  declarations: [CrucesComponent, VentasHisComponent, ProduccionComponent, MateriaprimaComponent],
   imports: [
     CommonModule,
     CrucesRoutingModule,

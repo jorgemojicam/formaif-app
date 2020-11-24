@@ -33,10 +33,11 @@ export class CrucesComponent implements OnInit {
   ngOnInit(): void {
     this.actividadesForm = this.fb.group({
       act: this.fb.array([this.itemactividad()])
-    })
+    })   
 
     this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
+      console.log(values)
       const ctrl = <FormArray>this.actividadesForm.controls['act'];
 
       ctrl.controls.forEach((x, index) => {
@@ -73,7 +74,8 @@ export class CrucesComponent implements OnInit {
       ventasHis: this.fb.array([this.itemventas()]),
       produccion: this.fb.array([this.itemProd()]),
       compras: this.fb.array([this.itemCompras()]),
-      costoventa: this.fb.array([this.itemCostoventa()])
+      costoventa: this.fb.array([this.itemCostoventa()]),
+      materiaprima : this.fb.array([this.itemMateriaprima()]),
     })
   }
 
@@ -158,4 +160,16 @@ export class CrucesComponent implements OnInit {
     })
   }
   //------------------------------------------------------------------
+
+  //----------------materia prima -------------------------------
+
+  materiaprima(ti){
+    return this.actividades().at(ti).get("materiaprima") as FormArray
+  }
+  itemMateriaprima() {
+    return this.fb.group({
+      nombre: '',
+
+    })
+  }
 }

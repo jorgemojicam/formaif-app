@@ -23,12 +23,12 @@ export class AuthComponent implements OnInit {
     private tokenStorage: TokenStorageService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
 
 
   onLogin(form: User) {
-    console.log(form)
+   
     this.authServ.login(form)
       .subscribe(
         res => {

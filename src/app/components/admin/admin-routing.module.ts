@@ -9,6 +9,11 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
+        path: '',
+        loadChildren: () =>
+          import('../balance/balance.module').then(m => m.BalanceModule)
+      },
+      {
         path: 'balance',
         loadChildren: () =>
           import('../balance/balance.module').then(m => m.BalanceModule)
