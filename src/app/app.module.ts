@@ -10,7 +10,6 @@ import { MaterialModule } from './material.module';
 import { NewPostComponent } from './components/posts/new-post/new-post.component';
 import { NewPostModule } from './components/posts/new-post/new-post.module';
 import { PostComponent } from './components/posts/post/post.component';
-import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
 import { FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
@@ -21,15 +20,20 @@ import { AdminComponent } from "./components/admin/admin.component";
 
 import { AuthGuard } from './helpers/auth.guard';
 import { AuthInterceptor } from "./helpers/auth.interceptor";
+import { HomeComponent } from './components/admin/home/home.component';
+import { ModalComponent } from './shared/modal/modal.component';
+import { InitComponent } from './components/admin/init/init.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NewPostComponent,
     PostComponent,
-    ToolbarComponent,
     ContainerAppComponent,
-    AdminComponent
+    AdminComponent,
+    HomeComponent,
+    ModalComponent,
+    InitComponent
   ],
   imports: [
     BrowserModule,
@@ -43,6 +47,9 @@ import { AuthInterceptor } from "./helpers/auth.interceptor";
     AdminModule,
     FlexLayoutModule,
     HttpClientModule
+  ],
+  entryComponents:[
+    ModalComponent
   ],
   providers: [
     AuthGuard,

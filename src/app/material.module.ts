@@ -14,12 +14,15 @@ import { MatChipsModule } from "@angular/material/chips";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-import {MatRadioModule} from '@angular/material/radio';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTabsModule } from "@angular/material/tabs";
-import {MatExpansionModule} from '@angular/material/expansion';
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 const myCompm = [
   MatCardModule,
@@ -40,8 +43,11 @@ const myCompm = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatTabsModule,
-  MatExpansionModule
-  
+  MatExpansionModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatDialogModule,
+  MatButtonToggleModule
 ];
 
 @NgModule({

@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PostComponent } from './components/posts/post/post.component';
 import { ContainerAppComponent } from "./components/pages/container-app/container-app.component";
+import { HomeComponent } from './components/admin/home/home.component';
 
 
 const routes: Routes = [
   {
     path: '', component: ContainerAppComponent,
     children: [
-      { path: 'home', loadChildren: () => import('./components/pages/home/home.module').then(m => m.HomeModule) },
+      { path: 'home', component:HomeComponent },
       { path: 'posts/:id', component: PostComponent }
     ]
   },

@@ -39,13 +39,14 @@
                         </mat-form-field>
                     </div>
                     <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                        <button mat-fab type="button" mat-mini-fab (click)="deleteRow(i)">
+                        <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteRow(i)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
                 </div>
             </div>
-            <button mat-fab aria-label="add" type="button" color="accent" (click)="addNewRow()">
+            
+            <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent" (click)="addNewRow()">
                 <mat-icon>add</mat-icon>
             </button>
         </mat-card-content>

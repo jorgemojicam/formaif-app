@@ -1,0 +1,30 @@
+<form [formGroup]="initForm" (ngSubmit)="onSave(initForm.value)">
+    <mat-card>
+        <mat-card-content>
+            <div fxLayout="row wrap">
+                <div class="gr" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="solicitud" formControlName="solicitud">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="cedula" formControlName="cedula">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <mat-button-toggle-group name="fontStyle" formControlName="asesor" aria-label="Font Style">
+                        <mat-button-toggle value="1">Urbano</mat-button-toggle>
+                        <mat-button-toggle value="2">Rural</mat-button-toggle>         
+                    </mat-button-toggle-group>
+                </div>
+                <br>
+                <div class="gr" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <button type="submit" mat-raised-button color="primary">Guardar</button>
+                </div>
+            </div>
+
+            
+        </mat-card-content>
+    </mat-card>
+</form>
