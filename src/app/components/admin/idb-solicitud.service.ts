@@ -10,15 +10,23 @@ export class IdbSolicitudService {
     private storage: StorageMap
   ) { }
 
-  save(data: any) {
-    this.storage.set('solicitudes', data).subscribe(() => { });
+  saveSol(name:string,data: any) {
+    this.storage.set(name, data).subscribe(() => { });
   }
+  getSol(name:string): any {
+    return this.storage.get(name);
+  }  
+  deleteSol(name:string) {
+    this.storage.delete(name).subscribe(() => { });
+  } 
 
   delete() {
     this.storage.delete('solicitudes').subscribe(() => { });
+  }  
+  save(data:any){
+    this.storage.set("solicitudes", data).subscribe(() => { });
   }
-
   get(): any {
-    return this.storage.get('solicitudes');
-  }
+    return this.storage.get("solicitudes");
+  } 
 }

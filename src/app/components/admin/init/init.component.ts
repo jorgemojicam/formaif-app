@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../idb-solicitud.service';
 
@@ -12,29 +13,46 @@ export class InitComponent implements OnInit {
 
   public initForm = new FormGroup({
     solicitud: new FormControl('', Validators.required),
-    cedula: new FormControl('',Validators.required),
-    asesor: new FormControl("1",Validators.required)
+    cedula: new FormControl('', Validators.required),
+    asesor: new FormControl("1", Validators.required)
   });
 
+  private newSolicitud: Solicitud = new Solicitud();
+  solis=[];
   constructor(
-    public srvSol: IdbSolicitudService
+    public srvSol: IdbSolicitudService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
-  
+
   }
 
-  onSave(data:Solicitud){
+  onSave(data: any) {
 
-    const sol = []
-    this.srvSol.get()
+    const numsol = data.solicitud.toString()
+    this.newSolicitud = Object.assign(this.newSolicitud, data);
+    let hoy: Date = new Date();  
+    this.newSolicitud.fechacreacion = hoy
+
+    this.srvSol.getSol(numsol)
       .subscribe((sol) => {
-        console.log(sol)
+        if (sol) {
+          this._snackBar.open("La solicitud ya se encuentra almacenada", "Ok!", {
+            duration: 3000,
+          });
+        } else {
+          this.srvSol.get().subscribe((sols) => {            
+            if (sols) {
+              this.solis = sols
+            }
+            this.solis.push(this.newSolicitud)
+            this.srvSol.save(this.solis)
+            this.srvSol.saveSol(numsol, this.newSolicitud)
+          })
+        }
       });
-    
-    sol.push(data)
-    console.log(sol)
-    this.srvSol.save(sol)
+
   }
 
 }

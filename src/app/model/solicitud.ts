@@ -1,12 +1,9 @@
 export class Solicitud {
-    Solicitudes: [
-        {
-            numero: number;
-            cedula: number;
-            asesor: number;
-            Balance: {};
-            Cruces: {}[];
-            Gastos: {};
-        }
-    ]
+     solicitud: number;
+    cedula: number;
+    asesor: number;
+    fechacreacion:Date;
+    Balance: {};
+    Cruces: {}[];
+    Gastos: {}; 
 }

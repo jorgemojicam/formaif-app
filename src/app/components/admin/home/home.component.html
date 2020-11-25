@@ -23,29 +23,38 @@
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
 
-        <!-- ID Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+  
+        <ng-container matColumnDef="solicitud">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Solicitud </th>
+          <td mat-cell *matCellDef="let row"> {{row.solicitud}} </td>
         </ng-container>
+      
+       <ng-container matColumnDef="cliente">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+          <td mat-cell *matCellDef="let row"> {{row.cedula}}</td>
+        </ng-container> 
 
-        <!-- Progress Column -->
-        <ng-container matColumnDef="progress">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-          <td mat-cell *matCellDef="let row"> {{row.progress}}% </td>
+        <ng-container matColumnDef="gestion">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-mini-fab  color="accent" (click)="onGestion(element)" >
+              <mat-icon>play_circle_filled</mat-icon>
+            </button>   
+          </td>
+    
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
+        <!-- <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
           <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-        </ng-container>
+        </ng-container> -->
 
         <!-- Color Column -->
-        <ng-container matColumnDef="color">
+        <!-- <ng-container matColumnDef="color">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Color </th>
           <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </td>
-        </ng-container>
+        </ng-container> -->
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
