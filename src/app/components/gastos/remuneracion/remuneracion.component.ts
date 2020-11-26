@@ -10,18 +10,15 @@ export class RemuneracionComponent implements OnInit {
 
   constructor(private _fb:FormBuilder) { }
 
-  public remuneracionForm:FormGroup;
+  public gastosForm:FormGroup;
   total:number;
 
   ngOnInit(): void {
-    this.remuneracionForm = this._fb.group({
-      itemRows: this._fb.array([]),
-      total: [null]
-    });
+
   }
 
   get formArr(){
-    return this.remuneracionForm.get('itemRows') as FormArray;
+    return this.gastosForm.get('itemRows') as FormArray;
   }
 
   initItemRows() {

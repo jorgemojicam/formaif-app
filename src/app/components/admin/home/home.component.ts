@@ -7,6 +7,7 @@ import { ModalComponent } from "../../../shared/modal/modal.component";
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../idb-solicitud.service';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['solicitud','cliente','gestion'];
+  displayedColumns: string[] = ['solicitud','cliente','gestion','delete','upload'];
   dataSource: MatTableDataSource<Solicitud>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -24,7 +25,8 @@ export class HomeComponent implements AfterViewInit {
   constructor(
     public dialog: MatDialog,
     private srvSol: IdbSolicitudService,
-    private route:Router
+    private route:Router,
+    private tokenStorage: TokenStorageService
   ) {
   }
 
@@ -56,15 +58,23 @@ export class HomeComponent implements AfterViewInit {
         content: ''
       }
     };
-
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      this.srvSol.get().subscribe((sol) => {
+        this.dataSource = new MatTableDataSource(sol);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      })
     })
+  }
+  onLogout(){    
+    this.tokenStorage.signOut()
+    this.route.navigate(['auth'])
   }
 
   onGestion(element){
-    this.route.navigate(['admin'])
+    this.route.navigate(['admin'],{queryParams:{solicitud:element.solicitud}})
   }
 }
 

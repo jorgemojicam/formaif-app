@@ -1,7 +1,225 @@
-<app-remuneracion></app-remuneracion>
-<br>
-<app-gastos-negocio></app-gastos-negocio>
-<br>
-<app-gastos-familia></app-gastos-familia>
-<br>
-<app-otros-ingresos-fam></app-otros-ingresos-fam>
+<form [formGroup]="gastosForm">
+    <!-- remuneracion de personal -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Remuneración de Personal</mat-card-title>
+            <mat-card-subtitle>Sueldo que paga a sus empleados</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+                <mat-chip color="accent" selected></mat-chip>
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <input readonly style="display: none;" formControlName="totalRemuneracion" />
+            <div formArrayName="remuneracionRow" class="alternate">
+                <div fxLayout="row wrap" class="content"
+                    *ngFor="let itemrow of gastosForm.controls.remuneracionRow['controls']; let re=index"
+                    [formGroupName]="re">
+
+                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="Cargo" id="cargo{{re}}" formControlName="cargo">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="15%" fxFlex.xs="70%" fxFlex.sm="33%">
+                        <mat-form-field>
+                            <input pattern="[0-9]" matInput placeholder="Valor" id="valor{{re}}"
+                                formControlName="valor">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteRemuneraRow(re)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                (click)="addRemuneraRow()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- gastos del negocio -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Gastos del Negocio</mat-card-title>
+            <mat-card-subtitle>gastos del negocio</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+              <mat-chip color="accent" selected>{{totalgatosN}}</mat-chip>
+              <input readonly style="display: none;" formControlName="totalN" />
+            </mat-chip-list>
+          </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row wrap" class="content">              
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Alquilar" id="alquilerN" formControlName="alquilerN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Servicios" id="serviciosN"
+                            formControlName="serviciosN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Transporte" id="transporteN"
+                            formControlName="transporteN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Fletes" id="fletesN"
+                            formControlName="fletesN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Impuestos" id="impuestosN" formControlName="impuestosN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Mantenimiento" id="mantenimientoN"
+                            formControlName="mantenimientoN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Imprevistos" id="imprevistosN"
+                            formControlName="imprevistosN">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Otros" id="otrosN"
+                            formControlName="otrosN">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- gastos de la familia -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Gastos Familia</mat-card-title>
+            <mat-card-subtitle>gastos familiares mensuales</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+                <mat-chip color="accent" selected></mat-chip>
+                <input readonly style="display: none;" formControlName="totalF" />
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row wrap" class="content">
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Arriendo" id="arriendo" formControlName="arriendoF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Alimentacion" id="alimentacion"
+                            formControlName="alimentacionF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Educacion" id="educacion"
+                            formControlName="educacionF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Vestuario" id="vestuario"
+                            formControlName="vestuarioF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Salud" id="saludF" formControlName="saludF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Transporte" id="transporteF"
+                            formControlName="transporteF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Servicios" id="serviciosF"
+                            formControlName="serviciosF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Entretenimiento" id="entretenimientoF"
+                            formControlName="entretenimientoF">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
+                    <mat-form-field>
+                        <input type="number" matInput placeholder="Otros" id="otrosF" formControlName="otrosF">
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Otros Ingresos Familiares -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Otros Ingresos Familiares</mat-card-title>
+            <mat-card-subtitle>Otros ingresos familiares</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+                <mat-chip color="accent" selected></mat-chip>
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <input readonly style="display: none;" formControlName="totalOtros" />
+            <div formArrayName="otrosIngresosRow" class="alternate">
+                <div fxLayout="row wrap" class="content"
+                    *ngFor="let itemrow of gastosForm.controls.otrosIngresosRow['controls']; let ot=index"
+                    [formGroupName]="ot">
+
+                    <div class="ot" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="26%">
+                        <mat-form-field>
+                            <mat-label>Ingreso</mat-label>
+                            <mat-select formControlName="ingreso" id="ingreso{{ot}}" required>
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let ing of otroIngreso" [value]="ing.id">
+                                    {{ing.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="26%">
+                        <mat-form-field>
+                            <input type="tel" pattern="^\d+(\.|\,)\d{2}$" matInput placeholder="Valor" id="valor{{ot}}" formControlName="valor">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="26%">
+                        <mat-form-field>
+                            <input type="text" matInput placeholder="Observacion" id="observacion{{ot}}" formControlName="observacion">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteOtrosRow(ot)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                (click)="addOtrosRow()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-card-content>
+    </mat-card>
+</form>

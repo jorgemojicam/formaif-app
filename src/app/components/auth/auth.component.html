@@ -15,11 +15,19 @@
                 <p>
                     <mat-form-field appearance="outline">
                         <mat-label>Contraseña</mat-label>
-                        <input type="password" matInput placeholder="Ingrese contraseña" formControlName="Passw">
+                        <input [type]="hidenPass ? 'text' : 'password'" matInput placeholder="Ingrese contraseña"
+                            formControlName="Passw">
                         <mat-icon matSuffix>lock</mat-icon>
+                        <mat-hint>
+
+                            <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
+                            </mat-checkbox>
+                        </mat-hint>
                     </mat-form-field>
                 </p>
-                <button type="submit" mat-raised-button color="primary">Login</button>
+                <p>
+                    <button type="submit" mat-raised-button color="primary">Login</button>
+                </p>
 
             </form>
         </mat-card-content>

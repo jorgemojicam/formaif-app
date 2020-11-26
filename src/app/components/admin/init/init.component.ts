@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../idb-solicitud.service';
 
@@ -21,7 +23,9 @@ export class InitComponent implements OnInit {
   solis=[];
   constructor(
     public srvSol: IdbSolicitudService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private route:Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +53,11 @@ export class InitComponent implements OnInit {
             this.solis.push(this.newSolicitud)
             this.srvSol.save(this.solis)
             this.srvSol.saveSol(numsol, this.newSolicitud)
+            this.dialog.closeAll()
+            this._snackBar.open("Se inicio la solicitud "+numsol, "Ok!", {
+              duration: 3000,
+            });
+            this.route.navigate(['admin'])
           })
         }
       });

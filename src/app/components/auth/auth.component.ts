@@ -17,30 +17,33 @@ export class AuthComponent implements OnInit {
     Passw: new FormControl('', Validators.required)
   });
 
+  hidenPass: boolean = false
+
   constructor(
     private authServ: AuthService,
     private route: Router,
     private tokenStorage: TokenStorageService
   ) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
   }
 
-
+  showPass(ev) {
+    this.hidenPass=ev.checked
+  }
   onLogin(form: User) {
-   
+
     this.authServ.login(form)
       .subscribe(
         res => {
           console.log(res)
-          this.tokenStorage.saveToken(res.accessToken);
-          this.tokenStorage.saveUser(res);
-          this.route.navigate(['/']);
+          this.tokenStorage.saveToken(res);
+          this.tokenStorage.saveUser(form.Username);
+          this.route.navigate(['home']);
         },
         err => {
-          console.log('Error' , err)
+          console.log('Error', err)
         }
       )
   }
-
 }

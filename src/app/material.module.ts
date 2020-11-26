@@ -23,6 +23,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const myCompm = [
   MatCardModule,
@@ -47,7 +48,8 @@ const myCompm = [
   MatTableModule,
   MatPaginatorModule,
   MatDialogModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

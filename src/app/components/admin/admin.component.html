@@ -2,6 +2,7 @@
     <span color="primary" (click)="drawer.toggle()">
         <mat-icon class="mat-18">menu</mat-icon>
     </span>
+    <span class="fill-remaining-space"></span>
     <span>Asesor Agil</span>
     <span class="fill-remaining-space"></span>
     <span class="example-spacer"></span>
@@ -13,21 +14,21 @@
 <mat-drawer-container class="menu-container" hasBackdrop="true">
     <mat-drawer #drawer mode="over">
         <mat-list>
-            <mat-list-item routerLink="balance">
+            <mat-list-item routerLink="balance" [queryParams]= "{solicitud:sol}">
                 <mat-icon mat-list-icon>assessment</mat-icon>
                 <div mat-line>Balance</div>
             </mat-list-item>
-            <mat-list-item routerLink="ventas">
+            <mat-list-item [routerLink]="['ventas']" [queryParams]= "{solicitud:sol}">
                 <mat-icon mat-list-icon>work</mat-icon>
                 <div mat-line>Cruces</div>
             </mat-list-item>
-            <mat-list-item routerLink="gastos">
+            <mat-list-item [routerLink]="['gastos']" [queryParams]= "{solicitud:sol}">
                 <mat-icon mat-list-icon>payment</mat-icon>
                 <div mat-line>Gastos</div>
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
-                <mat-icon mat-list-icon>power_settings_new</mat-icon>
+                <mat-icon mat-list-icon>exit_to_app</mat-icon>
                 <div mat-line>Cerrar Session</div>
             </mat-list-item>
         </mat-list>

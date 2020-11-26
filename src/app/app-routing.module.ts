@@ -1,25 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PostComponent } from './components/posts/post/post.component';
-import { ContainerAppComponent } from "./components/pages/container-app/container-app.component";
+import { NotfoundComponent } from './components/admin/notfound/notfound.component';
 import { HomeComponent } from './components/admin/home/home.component';
+import { AuthGuard } from './helpers/auth.guard';
 
 
 const routes: Routes = [
   {
-    path: '', component: ContainerAppComponent,
+    path: '', component: HomeComponent,
     children: [
-      { path: 'home', component:HomeComponent },
-      { path: 'posts/:id', component: PostComponent }
-    ]
+      { path: 'home', component: HomeComponent }
+    ], canActivate: [AuthGuard]
   },
-  { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule) },
-  { path: 'balance', loadChildren: () => import('./components/balance/balance.module').then(m => m.BalanceModule) },
-  { path: 'gastos', loadChildren: () => import('./components/gastos/gastos.module').then(m => m.GastosModule) },
+  { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard] },
   { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
-  { path: 'cruces', loadChildren: () => import('./components/cruces/cruces.module').then(m => m.CrucesModule) },
-  { path: 'cruces-agro', loadChildren: () => import('./components/cruces-agro/cruces-agro.module').then(m => m.CrucesAgroModule) },  
-
+  { path: '404', component: NotfoundComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({

@@ -19,7 +19,7 @@ export class InventarioComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private ref: ChangeDetectorRef,
-    private curPipe: CurrencyPipe,
+    private curPipe: CurrencyPipe,  
     private srvBalance: IdbBalanceService
   ) { }
 

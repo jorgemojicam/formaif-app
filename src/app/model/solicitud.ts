@@ -1,9 +1,11 @@
+import { Balance } from './balance';
+
 export class Solicitud {
-     solicitud: number;
+    solicitud: number;
     cedula: number;
     asesor: number;
-    fechacreacion:Date;
-    Balance: {};
+    fechacreacion: Date;
+    Balance: Balance;    
     Cruces: {}[];
-    Gastos: {}; 
+    Gastos: {};    
 }

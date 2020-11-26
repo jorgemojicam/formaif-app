@@ -1,15 +1,15 @@
+import { ActivosFamilia } from './activosfamilia';
+import { ActivosNegocio } from './activosnegocio';
+import { Inventario } from './inventario';
+import { Pasivos } from './pasivos';
+
 export class Balance {
-    Inventario: {
-        tipo: number;
-        cantidad: number;
-        descripcion: string;
-        valor: number;    
-    }[];
+    Inventario: Inventario[];
     totalInventario:number;
-    ActivosFamilia:{
-        tipo:number;
-        detalle:string;
-        valor:number;
-    }[];
+    ActivosFamilia:ActivosFamilia[];
     totalActivosFamilia:number;
+    ActivosNegocio:ActivosNegocio[];
+    totalActivosNegocio:number;
+    Pasivos:Pasivos[];
+    
 }
