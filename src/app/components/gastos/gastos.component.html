@@ -5,7 +5,7 @@
             <mat-card-title>Remuneración de Personal</mat-card-title>
             <mat-card-subtitle>Sueldo que paga a sus empleados</mat-card-subtitle>
             <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected></mat-chip>
+                <mat-chip color="accent" selected>{{totalRemuneracion}}</mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
@@ -14,13 +14,12 @@
                 <div fxLayout="row wrap" class="content"
                     *ngFor="let itemrow of gastosForm.controls.remuneracionRow['controls']; let re=index"
                     [formGroupName]="re">
-
-                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
                             <input type="number" matInput placeholder="Cargo" id="cargo{{re}}" formControlName="cargo">
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="15%" fxFlex.xs="70%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="40%" fxFlex.xs="30%" fxFlex.sm="30%">
                         <mat-form-field>
                             <input pattern="[0-9]" matInput placeholder="Valor" id="valor{{re}}"
                                 formControlName="valor">
@@ -46,12 +45,12 @@
             <mat-card-title>Gastos del Negocio</mat-card-title>
             <mat-card-subtitle>gastos del negocio</mat-card-subtitle>
             <mat-chip-list class="pull-right">
-              <mat-chip color="accent" selected>{{totalgatosN}}</mat-chip>
-              <input readonly style="display: none;" formControlName="totalN" />
+                <mat-chip color="accent" selected>{{totalgatosN}}</mat-chip>
+                <input readonly style="display: none;" formControlName="totalN" />
             </mat-chip-list>
-          </mat-card-header>
+        </mat-card-header>
         <mat-card-content>
-            <div fxLayout="row wrap" class="content">              
+            <div fxLayout="row wrap" class="content">
                 <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
                     <mat-form-field>
                         <input type="number" matInput placeholder="Alquilar" id="alquilerN" formControlName="alquilerN">
@@ -71,13 +70,13 @@
                 </div>
                 <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
                     <mat-form-field>
-                        <input type="number" matInput placeholder="Fletes" id="fletesN"
-                            formControlName="fletesN">
+                        <input type="number" matInput placeholder="Fletes" id="fletesN" formControlName="fletesN">
                     </mat-form-field>
                 </div>
                 <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
                     <mat-form-field>
-                        <input type="number" matInput placeholder="Impuestos" id="impuestosN" formControlName="impuestosN">
+                        <input type="number" matInput placeholder="Impuestos" id="impuestosN"
+                            formControlName="impuestosN">
                     </mat-form-field>
                 </div>
                 <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
@@ -94,8 +93,7 @@
                 </div>
                 <div class="gr" fxFlex="10%" fxFlex.xs="29%" fxFlex.sm="30%">
                     <mat-form-field>
-                        <input type="number" matInput placeholder="Otros" id="otrosN"
-                            formControlName="otrosN">
+                        <input type="number" matInput placeholder="Otros" id="otrosN" formControlName="otrosN">
                     </mat-form-field>
                 </div>
             </div>
@@ -108,7 +106,7 @@
             <mat-card-title>Gastos Familia</mat-card-title>
             <mat-card-subtitle>gastos familiares mensuales</mat-card-subtitle>
             <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected></mat-chip>
+                <mat-chip color="accent" selected>{{totalgatosF}}</mat-chip>
                 <input readonly style="display: none;" formControlName="totalF" />
             </mat-chip-list>
         </mat-card-header>
@@ -199,13 +197,15 @@
 
                     <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="26%">
                         <mat-form-field>
-                            <input type="tel" pattern="^\d+(\.|\,)\d{2}$" matInput placeholder="Valor" id="valor{{ot}}" formControlName="valor">
+                            <input type="tel" pattern="^\d+(\.|\,)\d{2}$" matInput placeholder="Valor" id="valor{{ot}}"
+                                formControlName="valor">
                         </mat-form-field>
                     </div>
 
                     <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="26%">
                         <mat-form-field>
-                            <input type="text" matInput placeholder="Observacion" id="observacion{{ot}}" formControlName="observacion">
+                            <input type="text" matInput placeholder="Observacion" id="observacion{{ot}}"
+                                formControlName="observacion">
                         </mat-form-field>
                     </div>
 

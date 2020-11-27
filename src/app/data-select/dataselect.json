@@ -65,207 +65,791 @@
     {
       "id": 1,
       "name": "Entidades Financieras",
-      "template":"entfinan"
+      "template": "entfinan"
     },
     {
       "id": 2,
       "name": "Hipotecario",
-      "template":"hipo"
+      "template": "hipo"
     },
     {
       "id": 3,
       "name": "Libranza",
-      "template":"libran"
+      "template": "libran"
     },
     {
       "id": 4,
       "name": "Pagadiario",
-      "template":"pagad"
+      "template": "pagad"
     },
     {
       "id": 5,
       "name": "Educativos",
-      "template":"pagad"
+      "template": "pagad"
     },
     {
       "id": 6,
       "name": "Tarjetas de Crédito",
-      "template":"pagad"
+      "template": "pagad"
     },
     {
       "id": 7,
       "name": "Otras periodicidades",
-      "template":"periodicidad"
+      "template": "periodicidad"
     },
     {
       "id": 5,
       "name": "Sector Real",
-      "template":"entfinan"
+      "template": "entfinan"
     }
   ],
-  "ClasePasivo":[
+  "ClasePasivo": [
     {
-      "id":1,
-      "name":"Familiar"
+      "id": 1,
+      "name": "Familiar"
     },
     {
-      "id":2,
-      "name":"Negocio"
+      "id": 2,
+      "name": "Negocio"
     }
   ],
-  "Periodo":[
+  "Periodo": [
     {
-      "id":1,
-      "name":"Mensual",
-      "period":1
-
+      "id": 1,
+      "name": "Mensual",
+      "period": 1
     },
     {
-      "id":2,
-      "name":"Bimestral",
-      "period":2
+      "id": 2,
+      "name": "Bimestral",
+      "period": 2
     },
     {
-      "id":3,
-      "name":"Trimestral",
-      "period":3
+      "id": 3,
+      "name": "Trimestral",
+      "period": 3
     },
     {
-      "id":4,
-      "name":"Cuatrimestral",
-      "period":4
+      "id": 4,
+      "name": "Cuatrimestral",
+      "period": 4
     },
     {
-      "id":5,
-      "name":"Semestral",
-      "period":6
-    },    
+      "id": 5,
+      "name": "Semestral",
+      "period": 6
+    },
     {
-      "id":6,
-      "name":"Anual",
-      "period":12
+      "id": 6,
+      "name": "Anual",
+      "period": 12
     }
   ],
-  "OtrosIngresosFamiliar":[
+  "OtrosIngresosFamiliar": [
     {
-      "id":1,
-      "name":"Conyuge"
+      "id": 1,
+      "name": "Conyuge"
     },
     {
-      "id":2,
-      "name":"Arriendo"
+      "id": 2,
+      "name": "Arriendo"
     },
     {
-      "id":3,
-      "name":"Transporte"
+      "id": 3,
+      "name": "Transporte"
     },
     {
-      "id":4,
-      "name":"Hijos"
+      "id": 4,
+      "name": "Hijos"
     },
     {
-      "id":5,
-      "name":"Pensiones"
+      "id": 5,
+      "name": "Pensiones"
     },
     {
-      "id":6,
-      "name":"Otros"
+      "id": 6,
+      "name": "Otros"
     }
   ],
-  "Frecuencia":[
+  "Frecuencia": [
     {
-      "id":1,
-      "name":"Diaria"
+      "id": 1,
+      "name": "Diaria"
     },
     {
-      "id":2,
-      "name":"Semanal"
+      "id": 2,
+      "name": "Semanal"
     },
     {
-      "id":3,
-      "name":"Quincenal"
+      "id": 3,
+      "name": "Quincenal"
     },
     {
-      "id":4,
-      "name":"Mensual"
+      "id": 4,
+      "name": "Mensual"
     },
     {
-      "id":5,
-      "name":"Anual"
-    }
-
-  ],
-  "DiasSemana":[
-    {
-      "id":1,
-      "name":"Lunes"
-    },
-    {
-      "id":2,
-      "name":"Martes"
-    },
-    {
-      "id":3,
-      "name":"Miercoles"
-    },
-    {
-      "id":4,
-      "name":"Jueves"
-    },
-    {
-      "id":5,
-      "name":"Viernes"
-    },
-    {
-      "id":6,
-      "name":"Sabado"
-    },
-    {
-      "id":7,
-      "name":"Domingo"
+      "id": 5,
+      "name": "Anual"
     }
   ],
-  "Semanas":[
+  "DiasSemana": [
     {
-      "id":1,
-      "name":"Semana 1"
+      "id": 1,
+      "name": "Lunes"
     },
     {
-      "id":2,
-      "name":"Semana 2"
+      "id": 2,
+      "name": "Martes"
     },
     {
-      "id":3,
-      "name":"Semana 3"
+      "id": 3,
+      "name": "Miercoles"
     },
     {
-      "id":4,
-      "name":"Semana 4"
+      "id": 4,
+      "name": "Jueves"
+    },
+    {
+      "id": 5,
+      "name": "Viernes"
+    },
+    {
+      "id": 6,
+      "name": "Sabado"
+    },
+    {
+      "id": 7,
+      "name": "Domingo"
     }
   ],
-  "Quince":[
+  "Semanas": [
     {
-      "id":1,
-      "name":"Quince 1"
+      "id": 1,
+      "name": "Semana 1"
     },
     {
-      "id":2,
-      "name":"Quince 2"
-    }    
+      "id": 2,
+      "name": "Semana 2"
+    },
+    {
+      "id": 3,
+      "name": "Semana 3"
+    },
+    {
+      "id": 4,
+      "name": "Semana 4"
+    }
   ],
-  "TipoActividadUrban":[
+  "Quince": [
     {
-      "id":1,
-      "name":"Comercial"
+      "id": 1,
+      "name": "Quince 1"
     },
     {
-      "id":2,
-      "name":"Produccion"
+      "id": 2,
+      "name": "Quince 2"
+    }
+  ],
+  "TipoActividadUrban": [
+    {
+      "id": 1,
+      "name": "Comercial"
     },
     {
-      "id":3,
-      "name":"Servicios"
+      "id": 2,
+      "name": "Produccion"
+    },
+    {
+      "id": 3,
+      "name": "Servicios"
+    }
+  ],
+  "TipoActividadRural": [
+    {
+      "id": 1,
+      "name": "Agricola"
+    },
+    {
+      "id": 2,
+      "name": "Pecuario"
+    }
+  ],
+  "ActividadRural": [
+    {
+      "name": "Achiote",
+      "id": 1,
+      "actividad": 1
+    },
+    {
+      "name": "Aguacate",
+      "id": 2,
+      "actividad": 1
+    },
+    {
+      "name": "Ahuyama",
+      "id": 3,
+      "actividad": 1
+    },
+    {
+      "name": "Ají",
+      "id": 4,
+      "actividad": 1
+    },
+    {
+      "name": "Ajo",
+      "id": 5,
+      "actividad": 1
+    },
+    {
+      "name": "Ajonjolí",
+      "id": 6,
+      "actividad": 1
+    },
+    {
+      "name": "Albahaca",
+      "id": 7,
+      "actividad": 1
+    },
+    {
+      "name": "Algodón",
+      "id": 8,
+      "actividad": 1
+    },
+    {
+      "name": "Apio  ",
+      "id": 9,
+      "actividad": 1
+    },
+    {
+      "name": "Aromática",
+      "id": 10,
+      "actividad": 1
+    },
+    {
+      "name": "Arroz ",
+      "id": 11,
+      "actividad": 1
+    },
+    {
+      "name": "Arveja ",
+      "id": 12,
+      "actividad": 1
+    },
+    {
+      "name": "Badea ",
+      "id": 13,
+      "actividad": 1
+    },
+    {
+      "name": "Banano ",
+      "id": 14,
+      "actividad": 1
+    },
+    {
+      "name": "Breva ",
+      "id": 15,
+      "actividad": 1
+    },
+    {
+      "name": "Brócoli",
+      "id": 16,
+      "actividad": 1
+    },
+    {
+      "name": "Cacao ",
+      "id": 17,
+      "actividad": 1
+    },
+    {
+      "name": "Café  ",
+      "id": 18,
+      "actividad": 1
+    },
+    {
+      "name": "Calabacín",
+      "id": 19,
+      "actividad": 1
+    },
+    {
+      "name": "Caña  ",
+      "id": 20,
+      "actividad": 1
+    },
+    {
+      "name": "Caucho ",
+      "id": 21,
+      "actividad": 1
+    },
+    {
+      "name": "Cebolla Cabezona  ",
+      "id": 22,
+      "actividad": 1
+    },
+    {
+      "name": "Cebolla Larga",
+      "id": 23,
+      "actividad": 1
+    },
+    {
+      "name": "Cebollin",
+      "id": 24,
+      "actividad": 1
+    },
+    {
+      "name": "Cilantro",
+      "id": 25,
+      "actividad": 1
+    },
+    {
+      "name": "Ciruela",
+      "id": 26,
+      "actividad": 1
+    },
+    {
+      "name": "Coliflor",
+      "id": 27,
+      "actividad": 1
+    },
+    {
+      "name": "Cubios ",
+      "id": 28,
+      "actividad": 1
+    },
+    {
+      "name": "Curuba ",
+      "id": 29,
+      "actividad": 1
+    },
+    {
+      "name": "Durazno",
+      "id": 30,
+      "actividad": 1
+    },
+    {
+      "name": "Espárragos  ",
+      "id": 31,
+      "actividad": 1
+    },
+    {
+      "name": "Espinaca",
+      "id": 32,
+      "actividad": 1
+    },
+    {
+      "name": "Fique ",
+      "id": 33,
+      "actividad": 1
+    },
+    {
+      "name": "Flores ",
+      "id": 34,
+      "actividad": 1
+    },
+    {
+      "name": "Fresa ",
+      "id": 35,
+      "actividad": 1
+    },
+    {
+      "name": "Frijol ",
+      "id": 36,
+      "actividad": 1
+    },
+    {
+      "name": "Girasol",
+      "id": 37,
+      "actividad": 1
+    },
+    {
+      "name": "Granadilla  ",
+      "id": 38,
+      "actividad": 1
+    },
+    {
+      "name": "Guanabana",
+      "id": 39,
+      "actividad": 1
+    },
+    {
+      "name": "Guayaba Pera ",
+      "id": 40,
+      "actividad": 1
+    },
+    {
+      "name": "Guayaba",
+      "id": 41,
+      "actividad": 1
+    },
+    {
+      "name": "Guineo ",
+      "id": 42,
+      "actividad": 1
+    },
+    {
+      "name": "Gulupa ",
+      "id": 43,
+      "actividad": 1
+    },
+    {
+      "name": "Haba  ",
+      "id": 44,
+      "actividad": 1
+    },
+    {
+      "name": "Habichuela  ",
+      "id": 45,
+      "actividad": 1
+    },
+    {
+      "name": "Lechuga Hidroponica",
+      "id": 46,
+      "actividad": 1
+    },
+    {
+      "name": "Lechuga",
+      "id": 47,
+      "actividad": 1
+    },
+    {
+      "name": "Limón Criollo",
+      "id": 48,
+      "actividad": 1
+    },
+    {
+      "name": "Limón Tahití ",
+      "id": 49,
+      "actividad": 1
+    },
+    {
+      "name": "Limón ",
+      "id": 50,
+      "actividad": 1
+    },
+    {
+      "name": "Limonaria",
+      "id": 51,
+      "actividad": 1
+    },
+    {
+      "name": "Lulo  ",
+      "id": 52,
+      "actividad": 1
+    },
+    {
+      "name": "Maiz  ",
+      "id": 53,
+      "actividad": 1
+    },
+    {
+      "name": "Mamoncillo  ",
+      "id": 54,
+      "actividad": 1
+    },
+    {
+      "name": "Mandarina",
+      "id": 55,
+      "actividad": 1
+    },
+    {
+      "name": "Mango Tommy ",
+      "id": 56,
+      "actividad": 1
+    },
+    {
+      "name": "Mango ",
+      "id": 57,
+      "actividad": 1
+    },
+    {
+      "name": "Maní  ",
+      "id": 58,
+      "actividad": 1
+    },
+    {
+      "name": "Manzana",
+      "id": 59,
+      "actividad": 1
+    },
+    {
+      "name": "Maracuyá",
+      "id": 60,
+      "actividad": 1
+    },
+    {
+      "name": "Mazorca",
+      "id": 61,
+      "actividad": 1
+    },
+    {
+      "name": "Melón ",
+      "id": 62,
+      "actividad": 1
+    },
+    {
+      "name": "Mojarra",
+      "id": 63,
+      "actividad": 1
+    },
+    {
+      "name": "Mora  ",
+      "id": 64,
+      "actividad": 1
+    },
+    {
+      "name": "Naranja Tangelo",
+      "id": 65,
+      "actividad": 1
+    },
+    {
+      "name": "Naranja",
+      "id": 66,
+      "actividad": 1
+    },
+    {
+      "name": "Ñame  ",
+      "id": 67,
+      "actividad": 1
+    },
+    {
+      "name": "Palma De Aceite",
+      "id": 68,
+      "actividad": 1
+    },
+    {
+      "name": "Papa Criolla/ Amarilla  ",
+      "id": 69,
+      "actividad": 1
+    },
+    {
+      "name": "Papa Pastusa ",
+      "id": 70,
+      "actividad": 1
+    },
+    {
+      "name": "Papa  ",
+      "id": 71,
+      "actividad": 1
+    },
+    {
+      "name": "Papaya ",
+      "id": 72,
+      "actividad": 1
+    },
+    {
+      "name": "Patilla",
+      "id": 73,
+      "actividad": 1
+    },
+    {
+      "name": "Pepino ",
+      "id": 74,
+      "actividad": 1
+    },
+    {
+      "name": "Pera  ",
+      "id": 75,
+      "actividad": 1
+    },
+    {
+      "name": "Pimentón",
+      "id": 76,
+      "actividad": 1
+    },
+    {
+      "name": "Pimienta",
+      "id": 77,
+      "actividad": 1
+    },
+    {
+      "name": "Piña Oro Miel",
+      "id": 78,
+      "actividad": 1
+    },
+    {
+      "name": "Piña  ",
+      "id": 79,
+      "actividad": 1
+    },
+    {
+      "name": "Pitahaya",
+      "id": 80,
+      "actividad": 1
+    },
+    {
+      "name": "Plátano",
+      "id": 81,
+      "actividad": 1
+    },
+    {
+      "name": "Remolacha",
+      "id": 82,
+      "actividad": 1
+    },
+    {
+      "name": "Repollo",
+      "id": 83,
+      "actividad": 1
+    },
+    {
+      "name": "Sábila ",
+      "id": 84,
+      "actividad": 1
+    },
+    {
+      "name": "Tabaco ",
+      "id": 85,
+      "actividad": 1
+    },
+    {
+      "name": "Tilapia",
+      "id": 86,
+      "actividad": 1
+    },
+    {
+      "name": "Tomate Chonto",
+      "id": 87,
+      "actividad": 1
+    },
+    {
+      "name": "Tomate De Árbol",
+      "id": 88,
+      "actividad": 1
+    },
+    {
+      "name": "Tomate ",
+      "id": 89,
+      "actividad": 1
+    },
+    {
+      "name": "Tomillo",
+      "id": 90,
+      "actividad": 1
+    },
+    {
+      "name": "Trigo ",
+      "id": 91,
+      "actividad": 1
+    },
+    {
+      "name": "Uchuva ",
+      "id": 92,
+      "actividad": 1
+    },
+    {
+      "name": "Uva",
+      "id": 93,
+      "actividad": 1
+    },
+    {
+      "name": "Yuca  ",
+      "id": 94,
+      "actividad": 1
+    },
+    {
+      "name": "Zanahoria",
+      "id": 95,
+      "actividad": 1
+    },
+    {
+      "name": "Apicultura",
+      "id": 96,
+      "actividad": 2
+    },
+    {
+      "name": "Cabras/Chivos",
+      "id": 97,
+      "actividad": 2
+    },
+    {
+      "name": "Cachama",
+      "id": 98,
+      "actividad": 2
+    },
+    {
+      "name": "Camuros",
+      "id": 99,
+      "actividad": 2
+    },
+    {
+      "name": "CerdaDeCría",
+      "id": 100,
+      "actividad": 2
+    },
+    {
+      "name": "CerdosDeCeba",
+      "id": 101,
+      "actividad": 2
+    },
+    {
+      "name": "CerdosDeLevante",
+      "id": 102,
+      "actividad": 2
+    },
+    {
+      "name": "Codorniz(Huevo)",
+      "id": 103,
+      "actividad": 2
+    },
+    {
+      "name": "Conejos",
+      "id": 104,
+      "actividad": 2
+    },
+    {
+      "name": "Cuyes",
+      "id": 105,
+      "actividad": 2
+    },
+    {
+      "name": "GallinasCriollas",
+      "id": 106,
+      "actividad": 2
+    },
+    {
+      "name": "GallinasPonedoras",
+      "id": 107,
+      "actividad": 2
+    },
+    {
+      "name": "GanaderíaDeCeba",
+      "id": 108,
+      "actividad": 2
+    },
+    {
+      "name": "GanaderíaDeLeche",
+      "id": 109,
+      "actividad": 2
+    },
+    {
+      "name": "GanaderíaDeLevante",
+      "id": 110,
+      "actividad": 2
+    },
+    {
+      "name": "GanadoDoblePropósito",
+      "id": 111,
+      "actividad": 2
+    },
+    {
+      "name": "Ovejas",
+      "id": 112,
+      "actividad": 2
+    },
+    {
+      "name": "PolloCriollo",
+      "id": 113,
+      "actividad": 2
+    },
+    {
+      "name": "PolloDeEngorde",
+      "id": 114,
+      "actividad": 2
+    },
+    {
+      "name": "Trucha",
+      "id": 115,
+      "actividad": 2
     }
   ]
-
 }

@@ -56,8 +56,8 @@ export class InitComponent implements OnInit {
             this.dialog.closeAll()
             this._snackBar.open("Se inicio la solicitud "+numsol, "Ok!", {
               duration: 3000,
-            });
-            this.route.navigate(['admin'])
+            });       
+            this.route.navigate(['admin'],{queryParams:{solicitud:numsol}})
           })
         }
       });

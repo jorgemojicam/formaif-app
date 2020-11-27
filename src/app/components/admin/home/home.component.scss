@@ -7,12 +7,10 @@
 table {
   width: 100%;
 }
-
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 }
-td,
-th {
-  width: 25%;
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+  padding-left: 10px;
 }
