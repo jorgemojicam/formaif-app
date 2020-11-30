@@ -6,13 +6,17 @@ import { CrucesComponent } from './cruces.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { VentasHisComponent } from './ventas-his/ventas-his.component';
-import { ProduccionComponent } from './produccion/produccion.component';
-import { MateriaprimaComponent } from './materiaprima/materiaprima.component';
+
+import { RuralComponent } from './rural/rural.component';
+import { UrbanoComponent } from './urbano/urbano.component';
 
 
 @NgModule({
-  declarations: [CrucesComponent, VentasHisComponent, ProduccionComponent, MateriaprimaComponent],
+  declarations: [
+    CrucesComponent,
+    RuralComponent,
+    UrbanoComponent
+  ],
   imports: [
     CommonModule,
     CrucesRoutingModule,

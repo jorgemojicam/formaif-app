@@ -1,0 +1,72 @@
+mat-form-field {
+  width: 100%;
+}
+
+.gr {
+  margin-right: 20px;
+}
+
+.mat-stepper-vertical {
+  margin-top: 2px;
+}
+.cardlote{
+  padding: 5px;
+}
+
+div.alternate>div:nth-of-type(odd) {
+  background: rgba(239, 239, 239, 0.58);
+}
+
+.contentingresos{
+  background: rgba(239, 239, 239, 0.58);
+  border-radius: 8px;
+}
+
+.mat-radio-button~.mat-radio-button {
+  margin-left: 5px;
+}
+
+.content {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.encabezado {
+  margin-bottom: 23px;
+}
+
+fieldset {
+  width: 100%;
+  border-radius: 5px;
+  border-color: #94949454;
+}
+
+.btnadd {
+  position: absolute;
+  right: 24px;
+  bottom: -20px;
+}
+
+.addact {
+  position: absolute;
+  right: 10px;
+  top: 2px;
+}
+
+::ng-deep .tabs .mat-tab-header {
+  width: 60%;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field+.mat-form-field {
+  margin-left: 8px;
+}

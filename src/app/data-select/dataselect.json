@@ -273,583 +273,732 @@
     {
       "id": 2,
       "name": "Pecuario"
+    },
+    {
+      "id": 3,
+      "name": "Otras Actividades"
     }
   ],
   "ActividadRural": [
     {
-      "name": "Achiote",
       "id": 1,
-      "actividad": 1
+      "name": "Achiote",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Aguacate",
       "id": 2,
-      "actividad": 1
+      "name": "Aguacate",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Ahuyama",
       "id": 3,
-      "actividad": 1
+      "name": "Ahuyama",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Ají",
       "id": 4,
-      "actividad": 1
+      "name": "Aji",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Ajo",
       "id": 5,
-      "actividad": 1
+      "name": "Ajo",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Ajonjolí",
       "id": 6,
-      "actividad": 1
+      "name": "Ajonjoli",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Albahaca",
       "id": 7,
-      "actividad": 1
+      "name": "Albahaca",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Algodón",
       "id": 8,
-      "actividad": 1
+      "name": "Algodón",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Apio  ",
       "id": 9,
-      "actividad": 1
+      "name": "Apio",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Aromática",
       "id": 10,
-      "actividad": 1
+      "name": "Arroz",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Arroz ",
       "id": 11,
-      "actividad": 1
+      "name": "Arveja",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Arveja ",
       "id": 12,
-      "actividad": 1
+      "name": "Arracacha",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Badea ",
       "id": 13,
-      "actividad": 1
+      "name": "Badea",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Banano ",
       "id": 14,
-      "actividad": 1
+      "name": "Banano",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Breva ",
       "id": 15,
-      "actividad": 1
+      "name": "Berenjena",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Brócoli",
       "id": 16,
-      "actividad": 1
+      "name": "Breva",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Cacao ",
       "id": 17,
-      "actividad": 1
+      "name": "Brocolí",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Café  ",
       "id": 18,
-      "actividad": 1
+      "name": "Cacao",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Calabacín",
       "id": 19,
-      "actividad": 1
+      "name": "Café",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Caña  ",
       "id": 20,
-      "actividad": 1
+      "name": "Calabacin",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Caucho ",
       "id": 21,
-      "actividad": 1
+      "name": "Calabaza",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Cebolla Cabezona  ",
       "id": 22,
-      "actividad": 1
+      "name": "Caña",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Cebolla Larga",
       "id": 23,
-      "actividad": 1
+      "name": "Caucho",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Cebollin",
       "id": 24,
-      "actividad": 1
+      "name": "CebollaCabezona",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Cilantro",
       "id": 25,
-      "actividad": 1
+      "name": "CebollaLarga",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Ciruela",
       "id": 26,
-      "actividad": 1
+      "name": "Cebollin",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Coliflor",
       "id": 27,
-      "actividad": 1
+      "name": "Cilantro",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Cubios ",
       "id": 28,
-      "actividad": 1
+      "name": "Ciruela",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Curuba ",
       "id": 29,
-      "actividad": 1
+      "name": "Coliflor",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Durazno",
       "id": 30,
-      "actividad": 1
+      "name": "Cubios",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Espárragos  ",
       "id": 31,
-      "actividad": 1
+      "name": "Curuba",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Espinaca",
       "id": 32,
-      "actividad": 1
+      "name": "Durazno",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Fique ",
       "id": 33,
-      "actividad": 1
+      "name": "Esparragos",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Flores ",
       "id": 34,
-      "actividad": 1
+      "name": "Espinaca",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Fresa ",
       "id": 35,
-      "actividad": 1
+      "name": "Fique",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Frijol ",
       "id": 36,
-      "actividad": 1
+      "name": "Flores",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Girasol",
       "id": 37,
-      "actividad": 1
+      "name": "Fresa",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Granadilla  ",
       "id": 38,
-      "actividad": 1
+      "name": "Frijol",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Guanabana",
       "id": 39,
-      "actividad": 1
+      "name": "Frijolseco",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Guayaba Pera ",
       "id": 40,
-      "actividad": 1
+      "name": "Girasol",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Guayaba",
       "id": 41,
-      "actividad": 1
+      "name": "Granadilla",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Guineo ",
       "id": 42,
-      "actividad": 1
+      "name": "Guanabana",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Gulupa ",
       "id": 43,
-      "actividad": 1
+      "name": "Guayaba",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Haba  ",
       "id": 44,
-      "actividad": 1
+      "name": "GuayabaPera",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Habichuela  ",
       "id": 45,
-      "actividad": 1
+      "name": "Guineo",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Lechuga Hidroponica",
       "id": 46,
-      "actividad": 1
+      "name": "Gulupa",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Lechuga",
       "id": 47,
-      "actividad": 1
+      "name": "Haba",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Limón Criollo",
       "id": 48,
-      "actividad": 1
+      "name": "Habichuela",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Limón Tahití ",
       "id": 49,
-      "actividad": 1
+      "name": "Lechuga",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Limón ",
       "id": 50,
-      "actividad": 1
+      "name": "Lechugahidroponica",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Limonaria",
       "id": 51,
-      "actividad": 1
+      "name": "Limón",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Lulo  ",
       "id": 52,
-      "actividad": 1
+      "name": "Limóncriollo",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Maiz  ",
       "id": 53,
-      "actividad": 1
+      "name": "LimónTahití",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Mamoncillo  ",
       "id": 54,
-      "actividad": 1
+      "name": "Lulo",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Mandarina",
       "id": 55,
-      "actividad": 1
+      "name": "Maiz",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Mango Tommy ",
       "id": 56,
-      "actividad": 1
+      "name": "MaizMazorca",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Mango ",
       "id": 57,
-      "actividad": 1
+      "name": "Mandarina",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Maní  ",
       "id": 58,
-      "actividad": 1
+      "name": "Mango",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Manzana",
       "id": 59,
-      "actividad": 1
+      "name": "MangoTommy",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Maracuyá",
       "id": 60,
-      "actividad": 1
+      "name": "Mani",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Mazorca",
       "id": 61,
-      "actividad": 1
+      "name": "Manzana",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Melón ",
       "id": 62,
-      "actividad": 1
+      "name": "Maracuya",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Mojarra",
       "id": 63,
-      "actividad": 1
+      "name": "Mazorca",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Mora  ",
       "id": 64,
-      "actividad": 1
+      "name": "Melón",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Naranja Tangelo",
       "id": 65,
-      "actividad": 1
+      "name": "Mora",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Naranja",
       "id": 66,
-      "actividad": 1
+      "name": "Naranja",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Ñame  ",
       "id": 67,
-      "actividad": 1
+      "name": "NaranjaTangelo",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Palma De Aceite",
       "id": 68,
-      "actividad": 1
+      "name": "NaranjaValencia",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Papa Criolla/ Amarilla  ",
       "id": 69,
-      "actividad": 1
+      "name": "Ñame",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Papa Pastusa ",
       "id": 70,
-      "actividad": 1
+      "name": "PalmadeAceite",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Papa  ",
       "id": 71,
-      "actividad": 1
+      "name": "papa",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Papaya ",
       "id": 72,
-      "actividad": 1
+      "name": "Papacriolla/Amarilla",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Patilla",
       "id": 73,
-      "actividad": 1
+      "name": "papaPastusa",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Pepino ",
       "id": 74,
-      "actividad": 1
+      "name": "Papaya",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Pera  ",
       "id": 75,
-      "actividad": 1
+      "name": "Patilla",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Pimentón",
       "id": 76,
-      "actividad": 1
+      "name": "Pepino",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Pimienta",
       "id": 77,
-      "actividad": 1
+      "name": "Pera",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Piña Oro Miel",
       "id": 78,
-      "actividad": 1
+      "name": "Perejil",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Piña  ",
       "id": 79,
-      "actividad": 1
+      "name": "Pimenton",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Pitahaya",
       "id": 80,
-      "actividad": 1
+      "name": "Pimienta",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Plátano",
       "id": 81,
-      "actividad": 1
+      "name": "Piña",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Remolacha",
       "id": 82,
-      "actividad": 1
+      "name": "PiñaPerolera",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Repollo",
       "id": 83,
-      "actividad": 1
+      "name": "Pitahaya",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Sábila ",
       "id": 84,
-      "actividad": 1
+      "name": "Plátano",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Tabaco ",
       "id": 85,
-      "actividad": 1
+      "name": "Remolacha",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Tilapia",
       "id": 86,
-      "actividad": 1
+      "name": "Repollo",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Tomate Chonto",
       "id": 87,
-      "actividad": 1
+      "name": "Rusco",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Tomate De Árbol",
       "id": 88,
-      "actividad": 1
+      "name": "Sabila",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Tomate ",
       "id": 89,
-      "actividad": 1
+      "name": "Soya",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Tomillo",
       "id": 90,
-      "actividad": 1
+      "name": "Tabaco",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Trigo ",
       "id": 91,
-      "actividad": 1
+      "name": "Tomate",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Uchuva ",
       "id": 92,
-      "actividad": 1
+      "name": "TomateChonto",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Uva",
       "id": 93,
-      "actividad": 1
+      "name": "TomateDeÁrbol",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Yuca  ",
       "id": 94,
-      "actividad": 1
+      "name": "Tomillo",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Zanahoria",
       "id": 95,
-      "actividad": 1
+      "name": "Trigo",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Apicultura",
       "id": 96,
-      "actividad": 2
+      "name": "Uchuva",
+      "tipo": 1,
+      "tipoproducto": "Permanentes"
     },
     {
-      "name": "Cabras/Chivos",
       "id": 97,
-      "actividad": 2
+      "name": "Uva",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Cachama",
       "id": 98,
-      "actividad": 2
+      "name": "Yuca",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "Camuros",
       "id": 99,
-      "actividad": 2
+      "name": "Zanahoria",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "CerdaDeCría",
       "id": 100,
-      "actividad": 2
+      "name": "CañaFlecha",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "CerdosDeCeba",
       "id": 101,
-      "actividad": 2
+      "name": "Follaje(Ruscos)",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "CerdosDeLevante",
       "id": 102,
-      "actividad": 2
+      "name": "Follaje(Cinta)",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Codorniz(Huevo)",
       "id": 103,
-      "actividad": 2
+      "name": "Follaje(Cocculus)",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Conejos",
       "id": 104,
-      "actividad": 2
+      "name": "Follaje(Palma)",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "Cuyes",
       "id": 105,
-      "actividad": 2
+      "name": "Aromatica(Albahaca)",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "GallinasCriollas",
       "id": 106,
-      "actividad": 2
+      "name": "Aromatica(Limonaria)",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
     },
     {
-      "name": "GallinasPonedoras",
       "id": 107,
-      "actividad": 2
+      "name": "Banano Bocadillo",
+      "tipo": 1,
+      "tipoproducto": "Permanente"
     },
     {
-      "name": "GanaderíaDeCeba",
       "id": 108,
-      "actividad": 2
+      "name": "Tomate Cherry",
+      "tipo": 1,
+      "tipoproducto": "Transitorio"
+    }
+  ],
+  "PeriodoEdad": [
+    {
+      "id": 1,
+      "name": "Dias"
     },
     {
-      "name": "GanaderíaDeLeche",
-      "id": 109,
-      "actividad": 2
+      "id": 2,
+      "name": "Meses"
     },
     {
-      "name": "GanaderíaDeLevante",
-      "id": 110,
-      "actividad": 2
+      "id": 3,
+      "name": "Años"
+    }
+  ],
+  "Unidades": [
+    {
+      "id": 1,
+      "name": "Arroba"
     },
     {
-      "name": "GanadoDoblePropósito",
-      "id": 111,
-      "actividad": 2
+      "id": 2,
+      "name": "Canastillas "
     },
     {
-      "name": "Ovejas",
-      "id": 112,
-      "actividad": 2
+      "id": 3,
+      "name": "Carga "
     },
     {
-      "name": "PolloCriollo",
-      "id": 113,
-      "actividad": 2
+      "id": 4,
+      "name": "Cubetas"
     },
     {
-      "name": "PolloDeEngorde",
-      "id": 114,
-      "actividad": 2
+      "id": 5,
+      "name": "Guacal"
     },
     {
-      "name": "Trucha",
-      "id": 115,
-      "actividad": 2
+      "id": 6,
+      "name": "kilos "
+    },
+    {
+      "id": 7,
+      "name": "Libras"
+    },
+    {
+      "id": 8,
+      "name": "Litros"
+    },
+    {
+      "id": 9,
+      "name": "Manojo"
+    },
+    {
+      "id": 10,
+      "name": "Unidad"
+    },
+    {
+      "id": 11,
+      "name": "Botellas "
+    },
+    {
+      "id": 12,
+      "name": "Bulto "
+    },
+    {
+      "id": 13,
+      "name": "Caja  "
+    },
+    {
+      "id": 14,
+      "name": "Puchas"
     }
   ]
 }
