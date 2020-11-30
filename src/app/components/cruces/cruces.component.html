@@ -98,7 +98,7 @@
                                                 <mat-form-field>
                                                     <mat-label>Buenas</mat-label>
                                                     <mat-select formControlName="diasB" multiple>
-                                                        <mat-option *ngFor="let d of diasSema" [value]="d.id"
+                                                        <mat-option *ngFor="let d of diasSemana" [value]="d.id"
                                                             [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
                                                             {{d.name}}
                                                         </mat-option>
@@ -108,50 +108,50 @@
 
                                             <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                 <mat-form-field>
-                                                    <input type="number" matInput placeholder="Valor B"
+                                                    <input type="number" matInput placeholder="Valor Buenas"
                                                         id="valorB{{ac}}" formControlName="valorB">
                                                 </mat-form-field>
                                             </div>
 
                                             <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                 <mat-form-field>
-                                                    <input type="number" matInput placeholder="Total" id="totalB{{ac}}"
-                                                        formControlName="totalB">
+                                                    <input type="number" readonly matInput placeholder="Total"
+                                                        id="totalB{{ac}}" formControlName="totalB">
                                                 </mat-form-field>
                                             </div>
-
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                <mat-form-field>
-                                                    <mat-label>Regulares</mat-label>
-                                                    <mat-select formControlName="diasR" multiple>
-                                                        <mat-option *ngFor="let d of diasSema"
-                                                            [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0"
-                                                            [value]="d.id">
-                                                            {{d.name}}
-                                                        </mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                <mat-form-field>
-                                                    <input type="number" matInput placeholder="Valor " id="valorR{{ac}}"
-                                                        formControlName="valorR">
-                                                </mat-form-field>
-                                            </div>
-
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                <mat-form-field>
-                                                    <input type="number" matInput placeholder="Total" id="totalR{{ac}}"
-                                                        formControlName="totalR">
-                                                </mat-form-field>
-                                            </div>
+                                            <ng-content *ngIf="acti.value.periodoventas !=2; then regulares"></ng-content>
+                                            <ng-template #regulares>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <mat-label>Regulares</mat-label>
+                                                        <mat-select formControlName="diasR" multiple>
+                                                            <mat-option *ngFor="let d of diasSemana"
+                                                                [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0"
+                                                                [value]="d.id">
+                                                                {{d.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <input type="number" matInput placeholder="Valor Regulares"
+                                                            id="valorR{{ac}}" formControlName="valorR">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <input type="number" readonly matInput placeholder="Total"
+                                                            id="totalR{{ac}}" formControlName="totalR">
+                                                    </mat-form-field>
+                                                </div>
+                                            </ng-template>
 
                                             <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                 <mat-form-field>
                                                     <mat-label>Malos</mat-label>
                                                     <mat-select formControlName="diasM" multiple>
-                                                        <mat-option *ngFor="let d of diasSema"
+                                                        <mat-option *ngFor="let d of diasSemana"
                                                             [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasR.indexOf(d.id) >= 0"
                                                             [value]="d.id">
                                                             {{d.name}}
@@ -162,15 +162,33 @@
 
                                             <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                 <mat-form-field>
-                                                    <input type="number" matInput placeholder="Valor" id="valorM{{ac}}"
-                                                        formControlName="valorM">
+                                                    <input type="number" matInput placeholder="Valor Malas"
+                                                        id="valorM{{ac}}" formControlName="valorM">
                                                 </mat-form-field>
                                             </div>
 
                                             <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                 <mat-form-field>
-                                                    <input type="number" matInput placeholder="Total" id="totalM{{ac}}"
-                                                        formControlName="totalM">
+                                                    <input type="number" readonly matInput placeholder="Total"
+                                                        id="totalM{{ac}}" formControlName="totalM">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="number" readonly matInput placeholder="Promedio"
+                                                        id="promedio{{ac}}" formControlName="promedio">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                                <mat-form-field>
+                                                    <input type="number" matInput placeholder="Dias"
+                                                        id="totalDias{{ac}}" formControlName="totalDias">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="32%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="number" readonly matInput placeholder="Total Promedio"
+                                                        id="totalPromedio{{ac}}" formControlName="totalPromedio">
                                                 </mat-form-field>
                                             </div>
                                         </div>
@@ -179,7 +197,7 @@
 
                             </mat-expansion-panel>
 
-                            <ng-container *ngIf="tipoAsesor ==1;then cruceurban"></ng-container>
+                            <ng-container *ngIf="tipoAsesor ==1;then cruceurban,else crucerural"></ng-container>
                             <ng-template #cruceurban>
 
                                 <mat-expansion-panel>
@@ -199,27 +217,44 @@
                                         </mat-card-header>
 
                                         <mat-card-content>
-                                            <div formArrayName="ventasHis" class="alternate">
-                                                <div *ngFor="let vent of ventashistoricas(ac).controls; let ven=index">
-                                                    <div [formGroupName]="ven">
-                                                        <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
-                                                            <mat-form-field>
-                                                                <input type="number" matInput placeholder="Dia"
-                                                                    value="{{ven}}" id="dia{{ven}}"
-                                                                    formControlName="dia" readonly>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
-                                                            <mat-form-field>
-                                                                <input type="number" matInput placeholder="Valor"
-                                                                    id="valor{{ven}}" formControlName="valor">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
-                                                            <button mat-fab type="button" color="warn" mat-mini-fab
-                                                                (click)="removeVentas(ac,ven)">
-                                                                <mat-icon>delete</mat-icon>
-                                                            </button>
+                                            <div fxLayout="row wrap">
+                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <mat-form-field>
+                                                        <mat-label>Frecuencia</mat-label>
+                                                        <mat-select formControlName="periodohistoricas">
+                                                            <mat-option *ngFor="let fre of frecuencia" [value]="fre">
+                                                                {{fre.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                                <div formArrayName="ventasHis" class="alternate">
+                                                    <div
+                                                        *ngFor="let vent of ventashistoricas(ac).controls; let ven=index">
+                                                        <div [formGroupName]="ven" fxLayout="row wrap">
+                                                            <div class="gr" fxFlex="10%" fxFlex.xs="25%"
+                                                                fxFlex.sm="25%">
+                                                                <mat-form-field>
+                                                                    <input type="number" matInput
+                                                                        placeholder="{{acti.value.periodohistoricas.name}}"
+                                                                        value="{{ven}}" id="dia{{ven}}"
+                                                                        formControlName="dia" readonly>
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="gr" fxFlex="60%" fxFlex.xs="45%"
+                                                                fxFlex.sm="45%">
+                                                                <mat-form-field>
+                                                                    <input type="number" matInput placeholder="Valor"
+                                                                        id="valor{{ven}}" formControlName="valor">
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="gr" fxFlex="10%" fxFlex.xs="10%"
+                                                                fxFlex.sm="33%">
+                                                                <button mat-fab type="button" color="warn" mat-mini-fab
+                                                                    (click)="removeVentas(ac,ven)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -388,7 +423,9 @@
                             </ng-template>
                         </mat-accordion>
 
-
+                        <ng-template #crucerural>
+                            rural
+                        </ng-template>
                     </div>
 
                 </mat-tab>

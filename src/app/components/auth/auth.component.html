@@ -1,35 +1,40 @@
-<div fxLayout="row" fxLayoutAlign="space-around center">
+<div fxLayout="row" class="content" fxLayoutAlign="center center">
     <mat-card>
-
         <img mat-card-image src="assets/pictures/fdlmlog.png" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-            <mat-card-title>Inicio Sesion</mat-card-title>
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                <p>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Usuario</mat-label>
-                        <input matInput placeholder="Ingrese usuario" formControlName="Username">
-                        <mat-icon matSuffix>person</mat-icon>
-                    </mat-form-field>
-                </p>
-                <p>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Contraseña</mat-label>
-                        <input [type]="hidenPass ? 'text' : 'password'" matInput placeholder="Ingrese contraseña"
-                            formControlName="Passw">
-                        <mat-icon matSuffix>lock</mat-icon>
-                        <mat-hint>
+        <mat-card-content>            
+            <ng-container *ngIf="!isLogged; else loading">
+                <mat-card-title>Inicio Sesion</mat-card-title>
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Usuario</mat-label>
+                            <input matInput placeholder="Ingrese usuario" formControlName="Username">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contraseña</mat-label>
+                            <input [type]="hidenPass ? 'text' : 'password'" matInput placeholder="Ingrese contraseña"
+                                formControlName="Passw">
+                            <mat-icon matSuffix>lock</mat-icon>
+                            <mat-hint>
 
-                            <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
-                            </mat-checkbox>
-                        </mat-hint>
-                    </mat-form-field>
-                </p>
-                <p>
-                    <button type="submit" mat-raised-button color="primary">Login</button>
-                </p>
-
-            </form>
+                                <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
+                                </mat-checkbox>
+                            </mat-hint>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <button type="submit" mat-raised-button color="primary">Login</button>
+                    </p>
+                </form>
+            </ng-container>
+            <ng-template #loading>
+                <div class="container-spinner">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-template>
         </mat-card-content>
     </mat-card>
 </div>

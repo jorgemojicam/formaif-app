@@ -24,6 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 const myCompm = [
   MatCardModule,
@@ -49,7 +50,8 @@ const myCompm = [
   MatPaginatorModule,
   MatDialogModule,
   MatButtonToggleModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({
