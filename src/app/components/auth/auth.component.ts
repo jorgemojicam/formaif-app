@@ -15,7 +15,7 @@ export class AuthComponent implements OnInit {
 
   isLogged:Boolean = false
   loginForm = new FormGroup({
-    Username: new FormControl('', Validators.required),
+    Username: new FormControl('',  [Validators.pattern('^[A-Za-z0-9]+$')]),
     Passw: new FormControl('', Validators.required)
   });
 
@@ -47,10 +47,13 @@ export class AuthComponent implements OnInit {
         },
         err => {          
           let errMsg = ""
+          console.log(err.status)
           if(err.status ==401){
             errMsg="Usuario o contraseña incorrecta"
+          }else if(err.status ==0){
+            errMsg ="¡Error al ingresar! verifique la conexión a intenet."
           }else{
-            errMsg ="Se presento error al momento de hacer la conexion"
+            errMsg ="Se presento error con la conexion con el servidor."
           }
           this._snackBar.open(errMsg, "Ok!", {
             duration: 3000,

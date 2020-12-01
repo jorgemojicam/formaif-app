@@ -3,7 +3,7 @@
         <img mat-card-image src="assets/pictures/fdlmlog.png" alt="Photo of a Shiba Inu">
         <mat-card-content>            
             <ng-container *ngIf="!isLogged; else loading">
-                <mat-card-title>Inicio Sesion</mat-card-title>
+                <mat-card-title>Inicio Sesión</mat-card-title>
                 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
                     <p>
                         <mat-form-field appearance="outline">
@@ -26,7 +26,7 @@
                         </mat-form-field>
                     </p>
                     <p>
-                        <button type="submit" mat-raised-button color="primary">Login</button>
+                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid" color="primary">Login</button>
                     </p>
                 </form>
             </ng-container>

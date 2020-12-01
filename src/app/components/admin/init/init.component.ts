@@ -18,8 +18,8 @@ export class InitComponent implements OnInit {
       Validators.min(999999999),
       Validators.max(9999999999)]),
     cedula: new FormControl('', [Validators.required,
-    Validators.min(1000000),
-    Validators.max(1000000000)]),
+    Validators.min(99999),
+    Validators.max(9999999999)]),
     asesor: new FormControl("1", Validators.required)
   });
 

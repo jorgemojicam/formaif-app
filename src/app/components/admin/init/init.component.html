@@ -1,32 +1,27 @@
 <form [formGroup]="initForm" (ngSubmit)="onSave()">
-    <mat-card>
-        <mat-card-content>
-            <div fxLayout="row wrap">
-                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                    <mat-form-field>
-                        <input type="number" matInput placeholder="solicitud" formControlName="solicitud">
-                    </mat-form-field>
-                </div>
-                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                    <mat-form-field>
-                        <input type="number" matInput placeholder="cedula" formControlName="cedula">
-                    </mat-form-field>
-                </div>
-                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                    <mat-button-toggle-group name="fontStyle" formControlName="asesor" aria-label="Font Style">
-                        <mat-button-toggle value="1">Urbano</mat-button-toggle>
-                        <mat-button-toggle value="2">Rural</mat-button-toggle>
-                    </mat-button-toggle-group>
-                </div>
-            </div>
-        </mat-card-content>
-        <mat-card-footer>
-            <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                <button type="submit" mat-raised-button [disabled]="!initForm.valid" color="primary">Guardar</button>
-            </div>
-            <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                <button mat-raised-button mat-dialog-close>Cerrar</button>
-            </div>
-        </mat-card-footer>
-    </mat-card>
+    <div fxLayout="row wrap">
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="number" matInput placeholder="# Solicitud" formControlName="solicitud">
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Cédula" formControlName="cedula">
+            </mat-form-field>
+        </div>
+        <div class="btntoggle" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-button-toggle-group name="fontStyle" formControlName="asesor" aria-label="Font Style">
+                <mat-button-toggle value="1">PCS</mat-button-toggle>
+                <mat-button-toggle value="2">Agro</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+        <br>
+        <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button type="submit" mat-raised-button [disabled]="!initForm.valid" color="primary">Guardar</button>
+        </div>
+        <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button mat-raised-button mat-dialog-close>Cerrar</button>
+        </div>
+    </div>
 </form>

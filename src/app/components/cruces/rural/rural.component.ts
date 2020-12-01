@@ -35,6 +35,8 @@ export class RuralComponent implements OnInit {
   ActRural: any = DataSelect.ActividadRural;
   edadPeriodo: any = DataSelect.PeriodoEdad;
   unidades: any = DataSelect.Unidades;
+  meses: any = DataSelect.Meses;
+
 
   diasSema: any = [];
   sol: string;
@@ -200,35 +202,38 @@ export class RuralComponent implements OnInit {
       unidadventa: '',
       edadcult: '',
       periodoedad: '',
-      rendiemientolote:'',
-      unidadestotales:'',
-      perdida:'',
-      preciomin:'',
-      precioactual:'',
-      preciopromedio:'',
-      totalIngreso:'',
-      cocecha:'',
+      rendiemientolote: '',
+      unidadestotales: '',
+      perdida: '',
+      preciomin: '',
+      precioactual: '',
+      preciopromedio: '',
+      totalIngreso: '',
+      cocecha: '',
 
-      mesCos:'',
-      rendimientoCos:'',
-      unidadesCos:'',
-      perdidaCos:'',
-      procentageCos:'',
-      totalCos:'',
+      mesCos: '',
+      rendimientoCos: '',
+      unidadesCos: '',
+      perdidaCos: '',
+      procentageCos: '',
+      totalCos: '',
 
-      mesTra:'',
-      rendimientoTra:'',
-      unidadesTra:'',
-      perdidaTra:'',
-      procentageTra:'',
-      totalTra:'',
+      mesTra: '',
+      rendimientoTra: '',
+      unidadesTra: '',
+      perdidaTra: '',
+      procentageTra: '',
+      totalTra: '',
 
-      mesPepeo:'',
-      rendimientoPepeo:'',
-      unidadesPepeo:'',
-      perdidaPepeo:'',
-      procentagePepeo:'',
-      totalPepeo:'',
+      mesPepeo: '',
+      rendimientoPepeo: '',
+      unidadesPepeo: '',
+      perdidaPepeo: '',
+      procentagePepeo: '',
+      totalPepeo: '',
+      egresosAdecuacion: this.fb.array([this.itemEgresosAdecuacion()]),
+      egresosSiembra: this.fb.array([this.itemEgresosSiembra()]),
+      egresosMante: this.fb.array([this.itemEgresosMante()]),
 
     })
   }
@@ -236,6 +241,66 @@ export class RuralComponent implements OnInit {
     this.lotes(act).removeAt(lote);
   }
   //--------------------------------------------------------------------
+
+  //-------------------------------Egresos Adecuacion------------------------------
+
+  egresadosAdecuacion(lot, egre): FormArray {
+    return this.lotes(lot).at(egre).get("egresosAdecuacion") as FormArray
+  }
+  addEgresosAdecuacion(act:number,lot:number) {
+    console.log(act,lot)
+    this.egresadosAdecuacion(act,lot).push(this.itemEgresosAdecuacion());
+  }
+
+  itemEgresosAdecuacion() {
+    return this.fb.group({
+      descripcion: '',
+      detalle: '',
+      cantidad: '',
+      valorunitario: '',
+      total: '',
+      mes: ''
+    })
+  }
+  //--------------------------------------------------------------------------------
+
+  //-------------------------------Egresos Siembra------------------------------
+  egresadosSiembra(lot, egre): FormArray {
+    return this.lotes(lot).at(egre).get("egresosSiembra") as FormArray
+  }
+  addEgresosSiembra(act:number,lot:number) {    
+    this.egresadosSiembra(act,lot).push(this.itemEgresosAdecuacion());
+  }
+  itemEgresosSiembra() {
+    return this.fb.group({
+      descripcion: '',
+      detalle: '',
+      cantidad: '',
+      valorunitario: '',
+      total: '',
+      mes: ''
+    })
+  }
+  //-------------------------------------------------------------------
+
+  //-------------------------------Egresos Mantinimiento------------------------------
+  egresadosMante(lot, egre): FormArray {
+    return this.lotes(lot).at(egre).get("egresosMante") as FormArray
+  }
+  addEgresosMantenimiento(act:number,lot:number) {    
+    this.egresadosMante(act,lot).push(this.itemEgresosMante());
+  }
+  itemEgresosMante() {
+    return this.fb.group({
+      descripcion: '',
+      detalle: '',
+      cantidad: '',
+      valorunitario: '',
+      total: '',
+      mes: ''
+    })
+  }
+  //-------------------------------------------------------------------
 
 
   formatNumber(num: string) {
