@@ -191,7 +191,7 @@
                                             <div formArrayName="ventasHis" class="alternate">
                                                 <div *ngFor="let vent of ventashistoricas(ac).controls; let ven=index">
                                                     <div [formGroupName]="ven" fxLayout="row wrap">
-                                                        <div class="gr" fxFlex="10%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                                        <div class="gr" fxFlex="40%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                             <mat-form-field>
                                                                 <input type="number" matInput
                                                                     placeholder="{{acti.value.periodohistoricas.name}}"
@@ -218,7 +218,10 @@
                                     </mat-card-content>
 
                                     <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
-                                        color="accent" (click)="addVentashis(ac)">
+                                        color="accent" 
+                                        (click)="addVentashis(ac)"
+                                        [disabled]="(acti.value.periodohistoricas.id ==1 && ventashistoricas(ac).length >= 7) ||
+                                        (acti.value.periodohistoricas.id==2 && ventashistoricas(ac).length >= 4)">
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </mat-card>
@@ -227,29 +230,58 @@
                                 <mat-card>
                                     <mat-card-header>
                                         <mat-card-title>Produccion</mat-card-title>
+                                        <mat-chip-list class="pull-right">
+                                            <mat-chip color="accent" selected>{{acti.value.totalProduccion}}</mat-chip>
+                                        </mat-chip-list>
                                     </mat-card-header>
 
                                     <mat-card-content>
-                                        <div formArrayName="produccion">
+                                        <div formArrayName="produccion" class="alternate">
                                             <div *ngFor="let prod of produccion(ac).controls; let pro=index">
                                                 <div [formGroupName]="pro" fxLayout="row wrap">
-                                                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                                                    <div class="gr" fxFlex="20%" fxFlex.xs="30%" fxFlex.sm="33%">
                                                         <mat-form-field>
                                                             <input type="text" matInput placeholder="Nombre"
-                                                                id="nombre{{pro}}" formControlName="nombre">
+                                                                id="nombre-{{ac}}-{{pro}}" formControlName="nombre">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                                                    <div class="gr" fxFlex="5%" fxFlex.xs="15%" fxFlex.sm="15%">
                                                         <mat-form-field>
                                                             <input type="number" matInput placeholder="Cantidad"
-                                                                id="cantidad{{pro}}" formControlName="cantidad">
+                                                                id="cantidad-{{ac}}-{{pro}}" formControlName="cantidad">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                                                    <div class="gr" fxFlex="15%" fxFlex.xs="32%" fxFlex.sm="33%">
                                                         <mat-form-field>
                                                             <input type="number" matInput placeholder="Precio"
-                                                                id="valor{{pro}}" formControlName="valor">
+                                                                id="valor-{{ac}}-{{pro}}" formControlName="valor">
                                                         </mat-form-field>
+                                                    </div>
+                                                    <div class="gr" fxFlex="20%" fxFlex.xs="35%" fxFlex.sm="33%">
+                                                        <mat-form-field>
+                                                            <mat-label>Frecuencia</mat-label>
+                                                            <mat-select formControlName="frecuencia"
+                                                                id="frecuencia-{{ac}}-{{pro}}" required>
+                                                                <mat-option>--</mat-option>
+                                                                <mat-option *ngFor="let frec of frecuencia"
+                                                                    [value]="frec">
+                                                                    {{frec.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="gr" fxFlex="15%" fxFlex.xs="35%" fxFlex.sm="33%">
+                                                        <mat-form-field>
+                                                            <input type="number" matInput placeholder="Total"
+                                                                id="total-{{ac}}-{{pro}}" readonly
+                                                                formControlName="total">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="33%">
+                                                        <button mat-fab type="button" color="warn" mat-mini-fab
+                                                        (click)="removeProduccion(ac,pro)">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,7 +289,7 @@
                                     </mat-card-content>
 
                                     <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
-                                        color="accent" (click)="addProduccion(ac)">
+                                        color="accent" (click)="addProduccion(ac)" [disabled]="produccion(ac).length >= 5">
                                         <mat-icon>add</mat-icon>
                                     </button>
                                 </mat-card>

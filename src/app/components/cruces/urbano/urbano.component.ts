@@ -69,9 +69,23 @@ export class UrbanoComponent implements OnInit {
       })
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
-
+            
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x, index) => {
+
+          const produccionArr = <FormArray>x.get('produccion')
+          let totalprod = 0
+          produccionArr.controls.forEach((prod, idxprod) => {           
+            let valor =this.formatNumber(prod.get("valor").value)
+            let cantidad = this.formatNumber(prod.get("cantidad").value)
+            let frec = this.formatNumber(prod.get("frecuencia").value.dias)
+            let total = valor * cantidad * frec
+            prod.get("total").setValue(total, { emitEvent: false });            
+            totalprod += total
+          })
+          x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
+     
+
           let cantperiodo = 0
           let valorpromedio = 0
           let periodoventas = x.get('periodoventas').value
@@ -110,6 +124,7 @@ export class UrbanoComponent implements OnInit {
       })
     })
   }
+
   itemactividad() {
     return this.fb.group({
       nombre: [''],
@@ -130,6 +145,7 @@ export class UrbanoComponent implements OnInit {
       totalPromedio: '',
       ventasHis: this.fb.array([this.itemventas()]),
       produccion: this.fb.array([this.itemProd()]),
+      totalProduccion:'',
       compras: this.fb.array([this.itemCompras()]),
       costoventa: this.fb.array([this.itemCostoventa()]),
       materiaprima: this.fb.array([this.itemMateriaprima()])
@@ -160,7 +176,8 @@ export class UrbanoComponent implements OnInit {
           totalPromedio: '',
           periodohistoricas: '',
           ventasHis: this.fb.array([this.itemventas()]),
-          produccion: this.fb.array([this.itemProd()]),
+          produccion: this.loadProd(cruces[cru].produccion),
+          totalProduccion:'',
           compras: this.fb.array([this.itemCompras()]),
           costoventa: this.fb.array([this.itemCostoventa()]),
           materiaprima: this.fb.array([this.itemMateriaprima()]),
@@ -209,13 +226,31 @@ export class UrbanoComponent implements OnInit {
   addProduccion(ti) {
     this.produccion(ti).push(this.itemProd());
   }
+  loadProd(produccion:any){
+    let produArr = this.fb.array([])        
+    produccion.forEach(pro => {
+      produArr.push(
+        this.fb.group({
+          nombre: pro.nombre,
+          cantidad: pro.cantidad,
+          valor: pro.valor,
+          frecuencia: pro.frecuencia.id,
+          total:pro.total
+        }))      
+    });
+    return produArr
+  }
   itemProd() {
     return this.fb.group({
       nombre: '',
       cantidad: '',
       valor: '',
-      fecuencia: ''
+      frecuencia: '',
+      total:''
     })
+  }
+  removeProduccion(act: number, venta: number) {
+    this.produccion(act).removeAt(venta);
   }
   //-----------------------------------------------------------------
 

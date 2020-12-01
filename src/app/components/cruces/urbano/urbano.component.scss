@@ -21,7 +21,7 @@ div.alternate>div:nth-of-type(odd) {
 
 .btnadd {
     position: absolute;
-    right: 24px;
+    left: 24px;
     bottom: -20px;
 }
 .addact {
@@ -29,6 +29,12 @@ div.alternate>div:nth-of-type(odd) {
     right: 10px;
     top: 2px;
 }
+.pull-right{
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
 ::ng-deep .tabs .mat-tab-header { 
     width: 60%;
 }

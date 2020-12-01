@@ -174,23 +174,28 @@
   "Frecuencia": [
     {
       "id": 1,
-      "name": "Diaria"
+      "name": "Diaria",
+      "dias":26
     },
     {
       "id": 2,
-      "name": "Semanal"
+      "name": "Semanal",
+      "dias":4
     },
     {
       "id": 3,
-      "name": "Quincenal"
+      "name": "Quincenal",
+      "dias":2
     },
     {
       "id": 4,
-      "name": "Mensual"
+      "name": "Mensual",
+      "dias":1
     },
     {
       "id": 5,
-      "name": "Anual"
+      "name": "Anual",
+      "dias":1
     }
   ],
   "DiasSemana": [
