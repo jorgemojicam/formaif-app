@@ -88,7 +88,7 @@ export class RuralComponent implements OnInit {
             let unidadestotales = this.formatNumber(prod.get("unidadestotales").value)
             let rendiemientolote = this.formatNumber(prod.get("rendiemientolote").value)
          
-            let perdida = 1 -(unidadestotales / rendiemientolote)
+            let perdida = (1 -(unidadestotales / rendiemientolote)) + 100
             prod.get("perdida").setValue(perdida, { emitEvent: false });
           })
 
