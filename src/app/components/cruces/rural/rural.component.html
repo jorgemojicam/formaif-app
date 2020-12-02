@@ -188,7 +188,7 @@
 
                         <ng-template #actrural>
                             <!-- Lotes agro -->
-                            <mat-card >
+                            <mat-card>
                                 <mat-card-content>
                                     <div formArrayName="lotesAgro">
                                         <div *ngFor="let lote of lotes(ac).controls; let lot=index" class="content"
@@ -217,7 +217,6 @@
                                                                 </mat-option>
                                                             </mat-select>
                                                         </mat-form-field>
-
                                                     </div>
 
                                                     <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
@@ -269,7 +268,7 @@
                                                         </div>
                                                     </ng-container>
 
-                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="25%">
+                                                    <div class="gr" fxFlex="48%" fxFlex.xs="40%" fxFlex.sm="25%">
                                                         <mat-form-field>
                                                             <input type="number" matInput
                                                                 placeholder="# plantas/semillas del lote"
@@ -278,7 +277,7 @@
                                                         </mat-form-field>
                                                     </div>
 
-                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="25%">
+                                                    <div class="gr" fxFlex="50%" fxFlex.xs="40%" fxFlex.sm="25%">
                                                         <mat-form-field>
                                                             <mat-label>Unidad Venta</mat-label>
                                                             <mat-select formControlName="unidadventa"
@@ -290,9 +289,10 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
+                                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%">
+                                                        <h3><b>Ingresos</b></h3>
+                                                    </div>
 
-
-                                                    <h3><b>Ingresos</b></h3>
                                                     <ng-container
                                                         *ngIf="acti.value.nombre.tipoproducto=='Transitorio';then transitoria;else permanentes">
                                                     </ng-container>
@@ -351,9 +351,6 @@
                                                                         formControlName="totalIngreso">
                                                                 </mat-form-field>
                                                             </div>
-
-
-
                                                         </div>
                                                     </ng-template>
 
@@ -527,15 +524,16 @@
 
                                                         </mat-vertical-stepper>
                                                     </ng-template>
-
-                                                    <h3><b>Egresos</b></h3>
+                                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%">
+                                                        <h3><b>Egresos</b></h3>
+                                                    </div>
                                                     <ng-container
-                                                        *ngIf="acti.value.nombre.tipoproducto=='Transitorio';then egresotransitorio;else egresopermanente">
+                                                        *ngIf="acti.value.nombre.tipoproducto=='Transitorio';then egresotransitorio">
                                                     </ng-container>
 
                                                     <ng-template #egresotransitorio>
-
-                                                        <mat-card>
+                                                        <!-- fase adecuacion -->
+                                                        <mat-card class="mat-card-fases">
                                                             <mat-card-header>
                                                                 <mat-card-title>Fase Adecuacion</mat-card-title>
                                                                 <mat-chip-list class="pull-right">
@@ -609,15 +607,25 @@
                                                                                 </mat-select>
                                                                             </mat-form-field>
                                                                         </div>
+                                                                        <div class="gr" fxFlex="10%" fxFlex.xs="10%"
+                                                                            fxFlex.sm="10%">
+                                                                            <button mat-fab type="button" color="warn"
+                                                                                mat-mini-fab
+                                                                                (click)="removeEgresosAdecuacion(ac,lot,eg)">
+                                                                                <mat-icon>delete</mat-icon>
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <button mat-fab aria-label="add" (click)="addEgresosAdecuacion(ac,lot)" mat-mini-fab class="btnadd" type="button" color="accent">
+                                                                <button mat-fab aria-label="add"
+                                                                    (click)="addEgresosAdecuacion(ac,lot)" mat-mini-fab
+                                                                    class="btnadd" type="button" color="accent">
                                                                     <mat-icon>add</mat-icon>
                                                                 </button>
                                                             </mat-card-content>
                                                         </mat-card>
-
-                                                        <mat-card>
+                                                        <!-- Fase Siembra -->
+                                                        <mat-card class="mat-card-fases">
                                                             <mat-card-header>
                                                                 <mat-card-title>Fase Siembra</mat-card-title>
                                                                 <mat-chip-list class="pull-right">
@@ -625,8 +633,7 @@
                                                                 </mat-chip-list>
                                                             </mat-card-header>
                                                             <mat-card-content>
-                                                                <div formArrayName="egresosSiembra"
-                                                                    class="alternate">
+                                                                <div formArrayName="egresosSiembra" class="alternate">
                                                                     <div fxLayout="row wrap"
                                                                         *ngFor="let egreso of egresadosSiembra(ac,lot).controls; let eg=index"
                                                                         class="content" [formGroupName]="eg">
@@ -691,22 +698,188 @@
                                                                                 </mat-select>
                                                                             </mat-form-field>
                                                                         </div>
+                                                                        <div class="gr" fxFlex="10%" fxFlex.xs="10%"
+                                                                            fxFlex.sm="10%">
+                                                                            <button mat-fab type="button" color="warn"
+                                                                                mat-mini-fab [disabled]="eg ==0"
+                                                                                (click)="removeEgresosSiembra(ac,lot,eg)">
+                                                                                <mat-icon>delete</mat-icon>
+                                                                            </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <button mat-fab aria-label="add" (click)="addEgresosSiembra(ac,lot)" mat-mini-fab class="btnadd" type="button" color="accent">
+                                                                <button mat-fab aria-label="add"
+                                                                    (click)="addEgresosSiembra(ac,lot)" mat-mini-fab
+                                                                    class="btnadd" type="button" color="accent">
                                                                     <mat-icon>add</mat-icon>
                                                                 </button>
                                                             </mat-card-content>
                                                         </mat-card>
-
                                                     </ng-template>
+                                                    <!-- fase mantenimiento -->
+                                                    <mat-card class="mat-card-fases">
+                                                        <mat-card-header>
+                                                            <mat-card-title>Fase Mantenimiento</mat-card-title>
+                                                            <mat-chip-list class="pull-right">
+                                                                <mat-chip color="accent" selected></mat-chip>
+                                                            </mat-chip-list>
+                                                        </mat-card-header>
+                                                        <mat-card-content>
+                                                            <div formArrayName="egresosMante" class="alternate">
+                                                                <div fxLayout="row wrap"
+                                                                    *ngFor="let egreso of egresadosMante(ac,lot).controls; let eg=index"
+                                                                    class="content" [formGroupName]="eg">
 
-                                                    <ng-template #egresopermanente>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="descripcion"
+                                                                                id="descripcion{{lot}}-{{eg}}"
+                                                                                formControlName="descripcion">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="detalle"
+                                                                                id="detalle{{lot}}-{{eg}}"
+                                                                                formControlName="detalle">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="20%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="cantidad"
+                                                                                id="cantidad{{lot}}-{{eg}}"
+                                                                                formControlName="cantidad">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="30%" fxFlex.xs="30%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="number" matInput
+                                                                                placeholder="valorunitario"
+                                                                                id="valorunitario{{lot}}-{{eg}}"
+                                                                                formControlName="valorunitario">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="30%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="number" matInput
+                                                                                placeholder="total"
+                                                                                id="total{{lot}}-{{eg}}"
+                                                                                formControlName="total">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="35%">
+                                                                        <mat-form-field>
+                                                                            <mat-label>Mes</mat-label>
+                                                                            <mat-select formControlName="mes" multiple
+                                                                                id="mes{{lot}}-{{eg}}" required>
+                                                                                <mat-option *ngFor="let mes of meses"
+                                                                                    [value]="mes.id">
+                                                                                    {{mes.name}}
+                                                                                </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button mat-fab aria-label="add"
+                                                                (click)="addEgresosMantenimiento(ac,lot)" mat-mini-fab
+                                                                class="btnadd" type="button" 
+                                                                [disabled]="acti.value.nombre.tipoproducto=='Permanente'"
+                                                                color="accent">
+                                                                <mat-icon>add</mat-icon>
+                                                            </button>
+                                                        </mat-card-content>
+                                                    </mat-card>
+                                                    <!-- fase Cocecha -->
+                                                    <mat-card class="mat-card-fases">
+                                                        <mat-card-header>
+                                                            <mat-card-title>Fase Cocecha</mat-card-title>
+                                                            <mat-chip-list class="pull-right">
+                                                                <mat-chip color="accent" selected></mat-chip>
+                                                            </mat-chip-list>
+                                                        </mat-card-header>
+                                                        <mat-card-content>
+                                                            <div formArrayName="egresosCocecha" class="alternate">
+                                                                <div fxLayout="row wrap"
+                                                                    *ngFor="let egreso of egresadosCocecha(ac,lot).controls; let eg=index"
+                                                                    class="content" [formGroupName]="eg">
 
-                                                    </ng-template>
-
-
-
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="descripcion"
+                                                                                id="descripcion{{lot}}-{{eg}}"
+                                                                                formControlName="descripcion">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="detalle"
+                                                                                id="detalle{{lot}}-{{eg}}"
+                                                                                formControlName="detalle">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="20%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="text" matInput
+                                                                                placeholder="cantidad"
+                                                                                id="cantidad{{lot}}-{{eg}}"
+                                                                                formControlName="cantidad">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="30%" fxFlex.xs="30%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="number" matInput
+                                                                                placeholder="valorunitario"
+                                                                                id="valorunitario{{lot}}-{{eg}}"
+                                                                                formControlName="valorunitario">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="30%"
+                                                                        fxFlex.sm="25%">
+                                                                        <mat-form-field>
+                                                                            <input type="number" matInput
+                                                                                placeholder="total"
+                                                                                id="total{{lot}}-{{eg}}"
+                                                                                formControlName="total">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        fxFlex.sm="35%">
+                                                                        <mat-form-field>
+                                                                            <mat-label>Mes</mat-label>
+                                                                            <mat-select formControlName="mes" multiple
+                                                                                id="mes{{lot}}-{{eg}}" required>
+                                                                                <mat-option *ngFor="let mes of meses"
+                                                                                    [value]="mes.id">
+                                                                                    {{mes.name}}
+                                                                                </mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button mat-fab aria-label="add"
+                                                                (click)="addEgresosCocecho(ac,lot)" mat-mini-fab
+                                                                class="btnadd"  [disabled]="acti.value.nombre.tipoproducto=='Permanente'" type="button" color="accent">
+                                                                <mat-icon>add</mat-icon>
+                                                            </button>
+                                                        </mat-card-content>
+                                                    </mat-card>
 
                                                 </fieldset>
                                             </div>

@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../model/user';
 
-//const AUTH_API = 'https://fidelapi.fundaciondelamujer.com:54000/api/';
-const AUTH_API = 'http://172.22.10.202:8099/api/'
+const AUTH_API = 'https://fidelapi.fundaciondelamujer.com:54000/api/';
+//const AUTH_API = 'http://172.22.10.202:8099/api/'
 
 const httpOptions = {
   headers: new HttpHeaders({

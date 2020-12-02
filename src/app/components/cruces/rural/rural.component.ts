@@ -234,6 +234,7 @@ export class RuralComponent implements OnInit {
       egresosAdecuacion: this.fb.array([this.itemEgresosAdecuacion()]),
       egresosSiembra: this.fb.array([this.itemEgresosSiembra()]),
       egresosMante: this.fb.array([this.itemEgresosMante()]),
+      egresosCocecha: this.fb.array([this.itemEgresosMante()]),
 
     })
   }
@@ -247,9 +248,12 @@ export class RuralComponent implements OnInit {
   egresadosAdecuacion(lot, egre): FormArray {
     return this.lotes(lot).at(egre).get("egresosAdecuacion") as FormArray
   }
-  addEgresosAdecuacion(act:number,lot:number) {
-    console.log(act,lot)
-    this.egresadosAdecuacion(act,lot).push(this.itemEgresosAdecuacion());
+  addEgresosAdecuacion(act: number, lot: number) {
+    console.log(act, lot)
+    this.egresadosAdecuacion(act, lot).push(this.itemEgresosAdecuacion());
+  }
+  removeEgresosAdecuacion(ac: number, lot: number, eg: number) {
+    this.egresadosAdecuacion(ac, lot).removeAt(eg);
   }
 
   itemEgresosAdecuacion() {
@@ -268,8 +272,11 @@ export class RuralComponent implements OnInit {
   egresadosSiembra(lot, egre): FormArray {
     return this.lotes(lot).at(egre).get("egresosSiembra") as FormArray
   }
-  addEgresosSiembra(act:number,lot:number) {    
-    this.egresadosSiembra(act,lot).push(this.itemEgresosAdecuacion());
+  addEgresosSiembra(act: number, lot: number) {
+    this.egresadosSiembra(act, lot).push(this.itemEgresosAdecuacion());
+  }
+  removeEgresosSiembra(ac: number, lot: number, eg: number) {
+    this.egresadosSiembra(ac, lot).removeAt(eg);
   }
   itemEgresosSiembra() {
     return this.fb.group({
@@ -287,10 +294,31 @@ export class RuralComponent implements OnInit {
   egresadosMante(lot, egre): FormArray {
     return this.lotes(lot).at(egre).get("egresosMante") as FormArray
   }
-  addEgresosMantenimiento(act:number,lot:number) {    
-    this.egresadosMante(act,lot).push(this.itemEgresosMante());
+  addEgresosMantenimiento(act: number, lot: number) {
+    this.egresadosMante(act, lot).push(this.itemEgresosMante());
+  }
+  removeEgresosmantenimiento(ac: number, lot: number, eg: number) {
+    this.egresadosMante(ac, lot).removeAt(eg);
   }
   itemEgresosMante() {
+    return this.fb.group({
+      descripcion: '',
+      detalle: '',
+      cantidad: '',
+      valorunitario: '',
+      total: '',
+      mes: ''
+    })
+  }
+  //-------------------------------------------------------------------
+  //-------------------------------Egresos Cocecha------------------------------
+  egresadosCocecha(lot, egre): FormArray {
+    return this.lotes(lot).at(egre).get("egresosCocecha") as FormArray
+  }
+  addEgresosCocecho(act: number, lot: number) {
+    this.egresadosCocecha(act, lot).push(this.itemEgresosCocecha());
+  }
+  itemEgresosCocecha() {
     return this.fb.group({
       descripcion: '',
       detalle: '',
