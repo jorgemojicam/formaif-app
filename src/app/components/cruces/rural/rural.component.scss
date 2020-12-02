@@ -20,6 +20,8 @@ mat-form-field {
 
 div.alternate>div:nth-of-type(odd) {
   background: rgba(239, 239, 239, 0.58);
+  display: block;
+  width: 100%;
 }
 
 .contentingresos{
@@ -42,16 +44,20 @@ div.alternate>div:nth-of-type(odd) {
   margin-bottom: 23px;
 }
 
-fieldset {
-  width: 100%;
-  border-radius: 5px;
-  border-color: #94949454;
-}
-
 .btnadd {
   position: absolute;
-  right: 24px;
+  left: 24px;
   bottom: -20px;
+}
+
+.deletelote{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+.btndelete{
+  position: absolute;
+  right: 10px;
 }
 
 .addact {

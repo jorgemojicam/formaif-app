@@ -78,8 +78,20 @@ export class RuralComponent implements OnInit {
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
+
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x, index) => {
+
+          const lotesArr = <FormArray>x.get('lotesAgro')
+      
+          lotesArr.controls.forEach((prod, idxprod) => {
+            let unidadestotales = this.formatNumber(prod.get("unidadestotales").value)
+            let rendiemientolote = this.formatNumber(prod.get("rendiemientolote").value)
+         
+            let perdida = 1 -(unidadestotales / rendiemientolote)
+            prod.get("perdida").setValue(perdida, { emitEvent: false });
+          })
+
           let cantperiodo = 0
           let valorpromedio = 0
           let periodoventas = x.get('periodoventas').value
@@ -137,6 +149,7 @@ export class RuralComponent implements OnInit {
       totalDias: '',
       totalPromedio: '',
       lotesAgro: this.fb.array([this.itemLotes()]),
+      lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
 
     })
   }
@@ -164,13 +177,13 @@ export class RuralComponent implements OnInit {
           totalDias: '',
           totalPromedio: '',
           lotesAgro: this.fb.array([this.itemLotes()]),
+          lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
         })
       )
     }
     return this.actividadesForm = this.fb.group({
       act: crucesArray
     })
-
   }
 
   actividadActual(ac) {
@@ -183,6 +196,37 @@ export class RuralComponent implements OnInit {
     this.actividades().push(this.itemactividad());
     this.selected.setValue(this.actividades().length - 1);
   }
+
+  //---------------------Lotes Pecuario ---------------------------
+  lotesPecuario(ti): FormArray {
+    return this.actividades().at(ti).get("lotesPecuario") as FormArray
+  }
+  addLotesPecuario(ti) {
+    this.lotesPecuario(ti).push(this.itemLotesPecuario());
+  }
+  itemLotesPecuario() {
+    return this.fb.group({
+      numanimales: '',
+      prodderivado: '',
+      unidadventa: '',
+      cantidadxanimal: '',
+      frecuencia: '',
+      cantproducida: '',
+      unitotalesventa: '',
+      perdida: '',
+      preciomin: '',
+      precioactual: '',
+      preciopromedio: '',
+      ingresomes: '',
+      mesingreso: '',
+      egresos: this.fb.array([this.itemEgresos()])
+
+    })
+  }
+  removeLotesPecuario(act: number, lote: number) {
+    this.lotesPecuario(act).removeAt(lote);
+  }
+  //--------------------------------------------------------------------
 
   //---------------------Lotes ---------------------------
   lotes(ti): FormArray {
@@ -243,8 +287,32 @@ export class RuralComponent implements OnInit {
   }
   //--------------------------------------------------------------------
 
-  //-------------------------------Egresos Adecuacion------------------------------
+  //-------------------------------Egresos------------------------------
 
+  egresosPecuario(lot, egre): FormArray {
+    return this.lotesPecuario(lot).at(egre).get("egresos") as FormArray
+  }
+  addEgresos(act: number, lot: number) {
+    console.log(act, lot)
+    this.egresosPecuario(act, lot).push(this.itemEgresos());
+  }
+  removeEgresos(ac: number, lot: number, eg: number) {
+    this.egresosPecuario(ac, lot).removeAt(eg);
+  }
+
+  itemEgresos() {
+    return this.fb.group({
+      descripcion: '',
+      detalle: '',
+      cantidad: '',
+      valorunitario: '',
+      total: '',
+      mes: ''
+    })
+  }
+  //--------------------------------------------------------------------------------  
+
+  //-------------------------------Egresos Adecuacion------------------------------
   egresadosAdecuacion(lot, egre): FormArray {
     return this.lotes(lot).at(egre).get("egresosAdecuacion") as FormArray
   }
