@@ -1,9 +1,15 @@
-
 mat-form-field {
     width: 100%;
 }
-mat-card{
+
+mat-card {
     margin-top: 22px;
+}
+
+.pull-right {
+    position: absolute;
+    right: 20px;
+    top: 10px;
 }
 
 .gr {
@@ -19,7 +25,7 @@ div.alternate>div:nth-of-type(odd) {
     padding: 8px 8px 8px 8px;
 }
 
-fieldset{
+fieldset {
     width: 100%;
     border-radius: 5px;
     border-color: #94949454;
@@ -27,6 +33,10 @@ fieldset{
 
 .btnadd {
     position: absolute;
-    right: 24px;
+    left: 24px;
     bottom: -20px;
-}
+  }
+.btndelete{
+    position: absolute;
+    right: 10px;
+  }

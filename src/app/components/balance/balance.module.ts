@@ -4,7 +4,6 @@ import { CurrencyPipe } from "@angular/common";
 
 import { BalanceRoutingModule } from './balance-routing.module';
 import { BalanceComponent } from './balance.component';
-import { InventarioComponent } from './inventario/inventario.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
@@ -14,7 +13,6 @@ import { PasivosComponent } from './pasivos/pasivos.component';
 @NgModule({
   declarations: [
     BalanceComponent,
-    InventarioComponent,
     PasivosComponent
   ],
   imports: [

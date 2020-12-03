@@ -26,8 +26,6 @@ export class BalanceComponent implements OnInit {
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
 
-  totalInventario: number;
-  totalActNeg: number;
   totalActFam: number;
   totalProv: number;
   sol: string;
@@ -80,32 +78,37 @@ export class BalanceComponent implements OnInit {
       tnocorrientef: [null]
     })
 
-    this.balanceForm.get('inventarioRow').valueChanges.subscribe(values => {
-      this.totalInventario = 0;
-      const ctrl = <FormArray>this.balanceForm.controls['inventarioRow'];
-      this.dataBalance.Inventario = values
-      ctrl.controls.forEach(x => {
-        let parsed = this.formatNumber(x.get('valor').value)
-        this.totalInventario += parsed
-        this.ref.detectChanges()
+
+    this.balanceForm.valueChanges.subscribe(form => {
+
+      this.dataSolicitud.Balance = this.dataBalance
+
+      let valorefec = this.formatNumber(this.balanceForm.controls.efectivo.value)
+      let efecsin = this.curPipe.transform(valorefec, 'USD', 'symbol', '1.0-0')      
+      this.balanceForm.patchValue({efectivo:efecsin==null ? "":efecsin.replace("$","")},{ emitEvent: false });
+
+      let totalInv =0
+      const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
+      inven.controls.forEach(x => {       
+        totalInv += this.formatNumber(x.get('valor').value)
+        let sinCurr = this.curPipe.transform(this.formatNumber(x.get('valor').value), 'USD', 'symbol', '1.0-0')
+        x.get("valor").setValue(sinCurr==null?"":sinCurr.replace("$",""), { emitEvent: false });
+      });
+ 
+      let totalactneg =0
+      const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
+      actneg.controls.forEach(x => {       
+        totalactneg += this.formatNumber(x.get('valor').value)
+        let sinCurr = this.curPipe.transform(this.formatNumber(x.get('valor').value), 'USD', 'symbol', '1.0-0')
+        x.get("valor").setValue(sinCurr==null?"":sinCurr.replace("$",""), { emitEvent: false });
       });
 
-    })
+      this.balanceForm.patchValue({
+        inventarioTotal: this.curPipe.transform(totalInv, 'USD', 'symbol', '1.0-0'),
+        actnegTotal: this.curPipe.transform(totalactneg, 'USD', 'symbol', '1.0-0')
+      },{ emitEvent: false });
 
-    this.balanceForm.get('actividadNegRows').valueChanges.subscribe(values => {
-      this.totalActNeg = 0;
-      this.dataBalance.ActivosNegocio = values
-      const ctrl = <FormArray>this.balanceForm.controls['actividadNegRows'];
-
-      ctrl.controls.forEach(x => {
-        let parsed = this.formatNumber(x.get('valor').value)
-        this.totalActNeg += parsed
-        this.ref.detectChanges()
-      });
-    })
-    this.balanceForm.get('pasivosRows').valueChanges.subscribe(values => {
       const ctrl = <FormArray>this.balanceForm.controls['pasivosRows'];
-
       ctrl.controls.forEach((x, index) => {
         let tipo = x.get('tipo').value
         let clase = x.get('clase').value
@@ -149,22 +152,7 @@ export class BalanceComponent implements OnInit {
         }
         this.ref.detectChanges()
       });
-    });
 
-
-    this.balanceForm.valueChanges.subscribe(form => {
-
-      this.dataSolicitud.Balance = this.dataBalance
-      console.log(this.dataSolicitud)
-
-      let langArr = <FormArray>this.balanceForm.controls["inventarioRow"];
-      for (let i = 0; i < langArr.controls.length; i++) {
-        if (langArr.controls[i].get('valor').value) {
-          langArr.controls[i].patchValue({
-            valor: this.curPipe.transform(langArr.controls[i].get('valor').value.replace(/\D/g, '').replace(/^0+/, ''), 'USD', 'symbol', '1.0-0')
-          }, { emitEvent: false });
-        }
-      }
       this.srvSol.saveSol(this.sol, this.dataSolicitud)
     })
 
@@ -187,7 +175,6 @@ export class BalanceComponent implements OnInit {
   deleteInventarioRow(index: number) {
     this.inventario().removeAt(index);
   }
-
   initActinegRow() {
     return this.fb.group({
       tipo: ['', Validators.required],

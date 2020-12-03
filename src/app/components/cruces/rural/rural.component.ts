@@ -3,7 +3,8 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { Cruces } from 'src/app/model/cruces';
+import { CrucesAgro } from 'src/app/model/crucesagro';
+import { LoteAgro } from 'src/app/model/loteAgro';
 import { Solicitud } from 'src/app/model/solicitud';
 import DataSelect from '../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
@@ -37,7 +38,6 @@ export class RuralComponent implements OnInit {
   unidades: any = DataSelect.Unidades;
   meses: any = DataSelect.Meses;
 
-
   diasSema: any = [];
   sol: string;
 
@@ -64,15 +64,15 @@ export class RuralComponent implements OnInit {
       this.datasolicitud = datasol as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor
 
-      if (this.datasolicitud.Cruces) {
-        this.loadactividad(this.datasolicitud.Cruces)
+      if (this.datasolicitud.CrucesAgro) {
+        this.loadactividad(this.datasolicitud.CrucesAgro)
       } else {
 
       }
 
       this.actividadesForm.valueChanges.subscribe(values => {
         this.dataCruces = values.act
-        this.datasolicitud.Cruces = this.dataCruces
+        this.datasolicitud.CrucesAgro = this.dataCruces
         this.srvSol.saveSol(this.sol, this.datasolicitud)
       })
 
@@ -83,13 +83,21 @@ export class RuralComponent implements OnInit {
         ctrl.controls.forEach((x, index) => {
 
           const lotesArr = <FormArray>x.get('lotesAgro')
-      
+
           lotesArr.controls.forEach((prod, idxprod) => {
             let unidadestotales = this.formatNumber(prod.get("unidadestotales").value)
             let rendiemientolote = this.formatNumber(prod.get("rendiemientolote").value)
-         
-            let perdida = (1 -(unidadestotales / rendiemientolote)) + 100
+
+            let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
             prod.get("perdida").setValue(perdida, { emitEvent: false });
+
+            let preciomin = this.formatNumber(prod.get("preciomin").value)
+            let precioactual = this.formatNumber(prod.get("precioactual").value)
+            let preciopromedio = (preciomin + precioactual) / 2
+
+            let totalingreso = unidadestotales * preciopromedio
+            prod.get("preciopromedio").setValue(preciopromedio, { emitEvent: false });
+            prod.get("totalIngreso").setValue(totalingreso, { emitEvent: false });
           })
 
           let cantperiodo = 0
@@ -131,8 +139,9 @@ export class RuralComponent implements OnInit {
     })
   }
   itemactividad() {
+
     return this.fb.group({
-      nombre: [''],
+      nombre: [this.ActRural[0]],
       tipo: [''],
       periodoventas: [''],
       tipoproduccion: '',
@@ -154,16 +163,16 @@ export class RuralComponent implements OnInit {
     })
   }
 
-  loadactividad(cruces: Cruces[]): FormGroup {
+  loadactividad(cruces: CrucesAgro[]): FormGroup {
+
     let crucesArray = this.fb.array([])
     for (let cru = 0; cru < cruces.length; cru++) {
-
       crucesArray.push(
         this.fb.group({
           nombre: [cruces[cru].nombre],
           tipo: [cruces[cru].tipo],
           periodoventas: [cruces[cru].periodoventas],
-          tipoproduccion: '',
+          tipoproduccion: [cruces[cru].nombre.tipoproducto],
           diasB: [cruces[cru].diasB],
           diasR: [cruces[cru].diasR],
           diasM: [cruces[cru].diasM],
@@ -176,7 +185,7 @@ export class RuralComponent implements OnInit {
           promedio: '',
           totalDias: '',
           totalPromedio: '',
-          lotesAgro: this.fb.array([this.itemLotes()]),
+          lotesAgro: this.loaditemLotes(cruces[cru].lotesAgro),
           lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
         })
       )
@@ -185,6 +194,62 @@ export class RuralComponent implements OnInit {
       act: crucesArray
     })
   }
+
+  loaditemLotes(lotes: LoteAgro[]) {
+
+    let lotesArray = this.fb.array([])
+    for (let lo = 0; lo < lotes.length; lo++) {
+      lotesArray.push(
+        this.fb.group({
+          areacult: lotes[lo].areacult,
+          aplicadiastancia: lotes[lo].aplicadiastancia,
+          aplicaplantasinformacli: '',
+          diastancia: lotes[lo].diastancia,
+          planatasinformacli: '',
+          numplantas: '',
+          unidadventa: '',
+          edadcult: lotes[lo].edadcult,
+          periodoedad: lotes[lo].periodoedad,
+          rendiemientolote: '',
+          unidadestotales: '',
+          perdida: '',
+          preciomin: '',
+          precioactual: '',
+          preciopromedio: '',
+          totalIngreso: '',
+          cocecha: '',
+
+          mesCos: '',
+          rendimientoCos: '',
+          unidadesCos: '',
+          perdidaCos: '',
+          procentageCos: '',
+          totalCos: '',
+
+          mesTra: '',
+          rendimientoTra: '',
+          unidadesTra: '',
+          perdidaTra: '',
+          procentageTra: '',
+          totalTra: '',
+
+          mesPepeo: '',
+          rendimientoPepeo: '',
+          unidadesPepeo: '',
+          perdidaPepeo: '',
+          procentagePepeo: '',
+          totalPepeo: '',
+          egresosAdecuacion: this.fb.array([this.itemEgresosAdecuacion()]),
+          egresosSiembra: this.fb.array([this.itemEgresosSiembra()]),
+          egresosMante: this.fb.array([this.itemEgresosMante()]),
+          egresosCocecha: this.fb.array([this.itemEgresosMante()]),
+
+        })
+      )
+    }
+    return lotesArray
+  }
+
 
   actividadActual(ac) {
     return this.actividades().at(ac) as FormArray

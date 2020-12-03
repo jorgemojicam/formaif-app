@@ -1,5 +1,6 @@
 import { Balance } from './balance';
 import { Cruces } from './cruces';
+import { CrucesAgro } from './crucesagro';
 import { Gastos } from './gastos';
 
 export class Solicitud {
@@ -9,5 +10,6 @@ export class Solicitud {
     fechacreacion: Date;
     Balance: Balance;
     Cruces: Cruces[];
+    CrucesAgro: CrucesAgro[];
     Gastos: Gastos;
 }
