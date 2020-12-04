@@ -41,11 +41,11 @@
                                     </div>
                                 </mat-card-content>
                                 <button *ngIf="acti.value.tipo ==1" mat-fab aria-label="add" mat-mini-fab class="btnadd"
-                                    type="button" color="accent" (click)="addLotes(ac)">
+                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent" (click)="addLotes(ac)">
                                     <mat-icon>add</mat-icon>
                                 </button>
                                 <button *ngIf="acti.value.tipo ==2" mat-fab aria-label="add" mat-mini-fab class="btnadd"
-                                    type="button" color="accent" (click)="addLotesPecuario(ac)">
+                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent" (click)="addLotesPecuario(ac)">
                                     <mat-icon>add</mat-icon>
                                 </button>
                             </mat-card>
@@ -78,7 +78,6 @@
                                                 </mat-panel-description>
 
                                             </mat-expansion-panel-header>
-
 
                                             <div fxLayout="row wrap">
 
@@ -237,7 +236,7 @@
 
                                                 <!-- permanente -->
                                                 <ng-template #permanentes>
-                                                    <div fxLayout="row wrap">
+                                                    <div fxLayout="row wrap" class="content">
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="27%" fxFlex.sm="28%">
                                                             <mat-form-field>
                                                                 <input type="number" matInput placeholder="Precio Min"
@@ -268,7 +267,7 @@
                                                             <div fxLayout="row wrap">
                                                                 <ng-template matStepLabel>Cosecha
                                                                 </ng-template>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="40%"
+                                                                <div class="gr" fxFlex="20%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>Rendimiento</mat-label>
@@ -276,7 +275,7 @@
                                                                             formControlName="rendimientoCos">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                <div class="gr" fxFlex="20%" fxFlex.xs="40%"
                                                                     fxFlex.sm="35%">
                                                                     <mat-form-field>
                                                                         <mat-label>Cosecha</mat-label>
@@ -289,7 +288,7 @@
                                                                         </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="40%"
+                                                                <div class="gr" fxFlex="20%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>Unidades Venta
@@ -298,7 +297,7 @@
                                                                             formControlName="unidadesCos">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="40%"
+                                                                <div class="gr" fxFlex="15%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>%Perdida</mat-label>

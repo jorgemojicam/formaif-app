@@ -25,7 +25,10 @@ export class RuralComponent implements OnInit {
   ) { }
 
   tipoAsesor: number;
-  actividadesForm: FormGroup
+
+  actividadesForm: FormGroup = this.fb.group({
+    act: this.fb.array([this.itemactividad()])
+  })
   ventasHisForm: FormGroup
   comprasForm: FormGroup
   produccionForm: FormGroup
@@ -50,10 +53,6 @@ export class RuralComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.actividadesForm = this.fb.group({
-      act: this.fb.array([this.itemactividad()])
-    })
-
     this.activeRoute.queryParamMap
       .subscribe((params) => {
         this.sol = params.get('solicitud')
@@ -66,8 +65,6 @@ export class RuralComponent implements OnInit {
 
       if (this.datasolicitud.CrucesAgro) {
         this.loadactividad(this.datasolicitud.CrucesAgro)
-      } else {
-
       }
 
       this.actividadesForm.valueChanges.subscribe(values => {
@@ -78,12 +75,9 @@ export class RuralComponent implements OnInit {
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
-
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x, index) => {
-
           const lotesArr = <FormArray>x.get('lotesAgro')
-
           lotesArr.controls.forEach((prod, idxprod) => {
             let unidadestotales = this.formatNumber(prod.get("unidadestotales").value)
             let rendiemientolote = this.formatNumber(prod.get("rendiemientolote").value)
@@ -141,7 +135,7 @@ export class RuralComponent implements OnInit {
   itemactividad() {
 
     return this.fb.group({
-      nombre: [this.ActRural[0]],
+      nombre: [''],
       tipo: [''],
       periodoventas: [''],
       tipoproduccion: '',
