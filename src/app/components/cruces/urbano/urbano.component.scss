@@ -3,7 +3,11 @@ mat-form-field {
 }
 
 .gr {
-    margin-right: 20px;
+    padding-right: 10px;
+}
+.mat-card-cruce{
+  margin-bottom: 25px;
+  margin-top: 10px;
 }
 
 div.alternate>div:nth-of-type(odd) {
@@ -14,15 +18,18 @@ div.alternate>div:nth-of-type(odd) {
     margin-left: 5px;
   }
 
-.content {
+.card-content {
     border-radius: 8px;
-    padding: 8px 8px 8px 8px;
 }
 
 .btnadd {
     position: absolute;
     left: 24px;
     bottom: -20px;
+}
+.btndelete{
+  position: absolute;
+  right: 10px;
 }
 .addact {
     position: absolute;
@@ -33,6 +40,10 @@ div.alternate>div:nth-of-type(odd) {
   position: absolute;
   right: 20px;
   top: 10px;
+}
+
+.chip-full{
+  width: 40%;
 }
 
 ::ng-deep .tabs .mat-tab-header { 

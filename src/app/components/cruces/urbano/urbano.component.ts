@@ -22,15 +22,22 @@ export class UrbanoComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
   ) { }
-
+  loadData: boolean = false
   tipoAsesor: number;
-  actividadesForm: FormGroup
+  actividadesForm: FormGroup = this.fb.group({
+    act: this.fb.array([this.itemactividad()])
+  })
+
   ventasHisForm: FormGroup
   comprasForm: FormGroup
   produccionForm: FormGroup
   selected = new FormControl(0);
+
+  //Listas desplegables
   frecuencia: any = DataSelect.Frecuencia;
-  tipoAct: any = DataSelect.TipoActividadUrban;  
+  tipoAct: any = DataSelect.TipoActividadUrban;
+  unidades: any = DataSelect.Unidades;
+
   diasSema: any = [];
   sol: string;
   datasolicitud: Solicitud = new Solicitud()
@@ -42,10 +49,6 @@ export class UrbanoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.actividadesForm = this.fb.group({
-      act: this.fb.array([this.itemactividad()])
-    })
-
     this.activeRoute.queryParamMap
       .subscribe((params) => {
         this.sol = params.get('solicitud')
@@ -55,13 +58,10 @@ export class UrbanoComponent implements OnInit {
 
       this.datasolicitud = datasol as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor
-
       if (this.datasolicitud.Cruces) {
         this.loadactividad(this.datasolicitud.Cruces)
-      } else {
-
       }
-
+      this.loadData = true
       this.actividadesForm.valueChanges.subscribe(values => {
         this.dataCruces = values.act
         this.datasolicitud.Cruces = this.dataCruces
@@ -69,22 +69,56 @@ export class UrbanoComponent implements OnInit {
       })
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
-            
+
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x, index) => {
-
           const produccionArr = <FormArray>x.get('produccion')
           let totalprod = 0
-          produccionArr.controls.forEach((prod, idxprod) => {           
-            let valor =this.formatNumber(prod.get("valor").value)
+          produccionArr.controls.forEach((prod, idxprod) => {
+            let valor = this.formatNumber(prod.get("valor").value)
             let cantidad = this.formatNumber(prod.get("cantidad").value)
-            let frec = this.formatNumber(prod.get("frecuencia").value.dias)
+            let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
             let total = valor * cantidad * frec
-            prod.get("total").setValue(total, { emitEvent: false });            
+            prod.get("total").setValue(total, { emitEvent: false });
             totalprod += total
           })
           x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
-     
+
+          let margen = 0
+          const materiapri = <FormArray>x.get('materiaprima')
+          materiapri.controls.forEach((mat, idxmat) => {
+            let cantidad = this.formatNumber(mat.get("cantidad").value)
+            let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
+            let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
+            let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
+            let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
+            let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
+            let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
+            let valormao = this.formatNumber(mat.get("valorMao").value)
+            let valorcif = this.formatNumber(mat.get("valorCif").value)
+            let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
+            let precioventa = cantidad * preciovenorod
+            let porcentaje = ((1 - (preciocompra / precioventa)) * 100).toFixed()
+            margen = +porcentaje
+            mat.patchValue({
+              precioVenProd:preciovenorod.toLocaleString("es-CO"),
+              valorMatPri: valormatpri.toLocaleString("es-CO"),
+              valorMatPri2: valormatpri2.toLocaleString("es-CO"),
+              valorMatPri3: valormatpri3.toLocaleString("es-CO"),
+              valorMatPri4: valormatpri4.toLocaleString("es-CO"),
+              valorMatPri5: valormatpri5.toLocaleString("es-CO"),
+              valorMao: valormao.toLocaleString("es-CO"),
+              valorCif: valorcif.toLocaleString("es-CO"),
+              precioCompra: preciocompra.toLocaleString("es-CO"),
+              precioVenta: precioventa.toLocaleString("es-CO"),
+              porcentaje: porcentaje
+            }, { emitEvent: false })
+          })
+          let costo = 100- margen
+          x.patchValue({
+            costo:isNaN(costo)?0:costo,
+            margen:isNaN(margen)?0:margen
+          }, { emitEvent: false })
 
           let cantperiodo = 0
           let valorpromedio = 0
@@ -144,11 +178,14 @@ export class UrbanoComponent implements OnInit {
       totalDias: '',
       totalPromedio: '',
       ventasHis: this.fb.array([this.itemventas()]),
+      totalVentasHis: '',
       produccion: this.fb.array([this.itemProd()]),
-      totalProduccion:'',
+      totalProduccion: '',
       compras: this.fb.array([this.itemCompras()]),
       costoventa: this.fb.array([this.itemCostoventa()]),
-      materiaprima: this.fb.array([this.itemMateriaprima()])
+      materiaprima: this.fb.array([this.itemMateriaprima()]),
+      margen: '',
+      costo: ''
     })
   }
 
@@ -161,7 +198,6 @@ export class UrbanoComponent implements OnInit {
           nombre: [cruces[cru].nombre],
           tipo: [cruces[cru].tipo],
           periodoventas: [cruces[cru].periodoventas],
-
           diasB: [cruces[cru].diasB],
           diasR: [cruces[cru].diasR],
           diasM: [cruces[cru].diasM],
@@ -177,10 +213,12 @@ export class UrbanoComponent implements OnInit {
           periodohistoricas: '',
           ventasHis: this.fb.array([this.itemventas()]),
           produccion: this.loadProd(cruces[cru].produccion),
-          totalProduccion:'',
+          totalProduccion: '',
           compras: this.fb.array([this.itemCompras()]),
           costoventa: this.fb.array([this.itemCostoventa()]),
           materiaprima: this.fb.array([this.itemMateriaprima()]),
+          margen: '',
+          costo: ''
         })
       )
     }
@@ -226,17 +264,17 @@ export class UrbanoComponent implements OnInit {
   addProduccion(ti) {
     this.produccion(ti).push(this.itemProd());
   }
-  loadProd(produccion:any){
-    let produArr = this.fb.array([])        
+  loadProd(produccion: any) {
+    let produArr = this.fb.array([])
     produccion.forEach(pro => {
       produArr.push(
         this.fb.group({
           nombre: pro.nombre,
           cantidad: pro.cantidad,
           valor: pro.valor,
-          frecuencia: pro.frecuencia.id,
-          total:pro.total
-        }))      
+          frecuencia: pro.frecuencia,
+          total: pro.total
+        }))
     });
     return produArr
   }
@@ -246,7 +284,7 @@ export class UrbanoComponent implements OnInit {
       cantidad: '',
       valor: '',
       frecuencia: '',
-      total:''
+      total: ''
     })
   }
   removeProduccion(act: number, venta: number) {
@@ -258,7 +296,6 @@ export class UrbanoComponent implements OnInit {
   compras(ti): FormArray {
     return this.actividades().at(ti).get("compras") as FormArray
   }
-
   addCompras(ti) {
     this.compras(ti).push(this.itemCompras());
   }
@@ -295,17 +332,44 @@ export class UrbanoComponent implements OnInit {
   materiaprima(ti) {
     return this.actividades().at(ti).get("materiaprima") as FormArray
   }
+  addMateriaprima(ti) {
+    this.materiaprima(ti).push(this.itemMateriaprima());
+  }
   itemMateriaprima() {
     return this.fb.group({
-      nombre: '',
-
+      producto: '',
+      cantidad: '',
+      precioVenProd: '',
+      materiaprimapri: '',
+      cantMatPri: '',
+      unidad: '',
+      valorMatPri: '',
+      matPrima2: '',
+      valorMatPri2: '',
+      matPrima3: '',
+      valorMatPri3: '',
+      matPrima4: '',
+      valorMatPri4: '',
+      matPrima5: '',
+      valorMatPri5: '',
+      ManoObra: '',
+      valorMao: '',
+      cif: '',
+      valorCif: '',
+      precioCompra: '',
+      precioVenta: '',
+      participacion: '',
+      porcentaje: ''
     })
+  }
+  deleteMarteriaRow(actividad: number, index: number) {
+    this.materiaprima(actividad).removeAt(index);
   }
   formatNumber(num: string) {
     if (typeof (num) == "number") {
       return parseInt(num)
     } else {
-      return parseInt(num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
+      return parseInt(num == "" || num == null ? "0" : num.replace(/[\D\s\._\-]+/g, ""))
     }
   }
 

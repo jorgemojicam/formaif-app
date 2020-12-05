@@ -8,12 +8,10 @@ import { BalanceComponent } from './balance.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { PasivosComponent } from './pasivos/pasivos.component';
 
 @NgModule({
   declarations: [
-    BalanceComponent,
-    PasivosComponent
+    BalanceComponent
   ],
   imports: [
     CommonModule,
