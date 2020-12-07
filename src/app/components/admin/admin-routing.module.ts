@@ -26,7 +26,12 @@ const routes: Routes = [
         path: 'ventas',
         loadChildren: () =>
           import('../cruces/cruces.module').then(m => m.CrucesModule)
-      }      
+      },
+      {
+        path: 'analisis',
+        loadChildren: () =>
+          import('../analisis/analisis.module').then(m => m.AnalisisModule)
+      }    
     ]
   }
 ];

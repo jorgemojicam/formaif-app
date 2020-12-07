@@ -25,6 +25,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 const myCompm = [
   MatCardModule,
@@ -51,7 +53,8 @@ const myCompm = [
   MatDialogModule,
   MatButtonToggleModule,
   MatCheckboxModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatTooltipModule
 ];
 
 @NgModule({

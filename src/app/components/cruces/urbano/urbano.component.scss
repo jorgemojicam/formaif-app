@@ -1,58 +1,70 @@
 mat-form-field {
-    width: 100%;
+  width: 100%;
 }
-
 .gr {
-    padding-right: 10px;
+  padding-right: 10px;
 }
-.mat-card-cruce{
+.mat-card-cruce {
   margin-bottom: 25px;
   margin-top: 10px;
+  padding: 8px;
 }
-
 div.alternate>div:nth-of-type(odd) {
-    background: rgba(239, 239, 239, 0.58);
+  background: rgba(239, 239, 239, 0.58);
 }
-
-.mat-radio-button ~ .mat-radio-button {
-    margin-left: 5px;
-  }
-
-.card-content {
-    border-radius: 8px;
+.mat-radio-button~.mat-radio-button {
+  margin-left: 5px;
 }
-
+.encabezado{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.content {
+  border-radius: 8px;
+  margin: 5px;
+  padding: 5px;
+}
 .btnadd {
-    position: absolute;
-    left: 24px;
-    bottom: -20px;
+  position: absolute;
+  left: 24px;
+  bottom: -20px;
 }
-.btndelete{
+.btndelete {
   position: absolute;
   right: 10px;
+  margin-top: -12px;
+  margin-right: -4px;
 }
 .addact {
-    position: absolute;
-    right: 10px;
-    top: 2px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
-.pull-right{
+.deleteact{
+  position: absolute;
+  right: 1px;
+  top: 2px;
+}
+.pull-right {
   position: absolute;
   right: 20px;
   top: 10px;
 }
-
-.chip-full{
-  width: 40%;
+::ng-deep .tabs .mat-tab-header {
+  width: 60%;
 }
-
-::ng-deep .tabs .mat-tab-header { 
-    width: 60%;
-}
-
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
   flex-basis: 0;
+}
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 14px 16px;
+}
+::ng-deep .mat-radio-label-content {
+  margin-right: 32px;
+}
+::ng-deep .mat-tab-header {
+  width: 85%; 
 }
 
 .example-headers-align .mat-expansion-panel-header-description {
@@ -60,6 +72,6 @@ div.alternate>div:nth-of-type(odd) {
   align-items: center;
 }
 
-.example-headers-align .mat-form-field + .mat-form-field {
+.example-headers-align .mat-form-field+.mat-form-field {
   margin-left: 8px;
 }

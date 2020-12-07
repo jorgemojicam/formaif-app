@@ -18,6 +18,7 @@ export class CrucesComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) { }
   tipoAsesor: number;
+  loadData: boolean = false
   sol: string;
 
   datasolicitud: Solicitud = new Solicitud()
@@ -36,6 +37,9 @@ export class CrucesComponent implements OnInit {
       this.tipoAsesor = this.datasolicitud.asesor
     
     })
+  }
+  cahngeLoad(event){
+    this.loadData = event
   }
 
 }

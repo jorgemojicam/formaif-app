@@ -1,4 +1,5 @@
 import { Produccion } from './produccion';
+import { VentasHis } from './ventas-historicas';
 
 export class Cruces {
     nombre:string;
@@ -13,5 +14,6 @@ export class Cruces {
     valorB: number;
     valorM: number;
     valorR: number;
+    ventasHis:VentasHis[]
     produccion:Produccion[];
 }

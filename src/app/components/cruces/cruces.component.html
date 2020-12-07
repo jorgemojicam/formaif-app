@@ -1,7 +1,7 @@
 <ng-container *ngIf="tipoAsesor ==1;then urban ;else rural"></ng-container>
 
 <ng-template #urban>
-    <app-urbano></app-urbano>
+    <app-urbano (isLoad)="cahngeLoad($event)" [loadData]="loadData"></app-urbano>
 </ng-template>
 
 <ng-template #rural>

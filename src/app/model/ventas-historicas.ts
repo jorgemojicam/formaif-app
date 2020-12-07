@@ -1,6 +1,4 @@
 export class VentasHis {   
-    email:string;
+    dia:number;
     valor: number;
-    venta:number;
-    total:number;
   }

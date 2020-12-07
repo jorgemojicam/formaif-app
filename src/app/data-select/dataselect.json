@@ -175,27 +175,32 @@
     {
       "id": 1,
       "name": "Diaria",
-      "dias": 26
+      "dias": 26,
+      "cant":7
     },
     {
       "id": 2,
       "name": "Semanal",
-      "dias": 4
+      "dias": 4,
+      "cant":4
     },
     {
       "id": 3,
       "name": "Quincenal",
-      "dias": 2
+      "dias": 2,
+      "cant":3
     },
     {
       "id": 4,
       "name": "Mensual",
-      "dias": 1
+      "dias": 1,
+      "cant":4
     },
     {
       "id": 5,
       "name": "Anual",
-      "dias": 1
+      "dias": 1,
+      "cant":0
     }
   ],
   "DiasSemana": [

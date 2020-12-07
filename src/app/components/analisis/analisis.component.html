@@ -1,0 +1,777 @@
+<div class="content" id="contentPDF">
+    <div *ngFor="let act of datasolicitud.Cruces" id="actividades">
+        <h3>Ventas B R M</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:center">Ventas</th>
+                    <th style="text-align:center">Valor</th>
+                    <th style="text-align:center">Total</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>{{act.diasB}}</td>
+                <td>{{act.valorB}}</td>
+                <td>{{act.totalB}}</td>
+            </tr>
+            <tr>
+                <td>{{act.diasR}}</td>
+                <td>{{act.valorR}}</td>
+                <td>{{act.totalR}}</td>
+            </tr>
+            <tr>
+                <td>{{act.diasM}}</td>
+                <td>{{act.valorM}}</td>
+                <td>{{act.totalM}}</td>
+            </tr>
+        </table>
+
+        <h3>Ventas Historicas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:center">Dia</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let his of act.ventasHis">
+                <tr>
+                    <td>{{his.dia}}</td>
+                    <td>{{his.valor}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <table>
+        <tr>
+            <th colspan="2" style="text-align:center">Logo</th>
+            <th colspan="6" style="text-align:center">FLUJO DE CAJA AGROPECUARIO</th>
+        </tr>
+        <tr>
+            <td>Numero de Solicitud </td>
+            <td>1</td>
+            <td>Actividad Principal y Otras Agro</td>
+            <td>1</td>
+            <td>Producto Solicitado </td>
+            <td>1</td>
+            <td>Fecha del Estudio</td>
+            <td>Hoy</td>
+        </tr>
+    </table>
+    <br>
+    <table class="table table-bordered">
+        <tr>
+            <th colspan="14" style="text-align:center">FLUJO DE CAJA AGROPECUARIO PROYECTADO</th>
+        </tr>
+        <tr>
+            <td> Plazo Total del Crédito Actual (MESES) </td>
+            <td>1</td>
+            <td>Forma de Pago</td>
+            <td>1</td>
+            <td>Propuesta del crédito</td>
+            <td>1</td>
+            <td>Efectivo disponible</td>
+            <td>1</td>
+            <td> Ctas x Cobrar</td>
+            <td>1</td>
+            <td> Plan de Inversión (Activos Fijos)</td>
+            <td>1</td>
+            <td> Plan de Inversión (capital de trabajo)</td>
+            <td>1</td>
+        </tr>
+
+    </table>
+    <br>
+    <table class="table table-bordered">
+        <tr>
+            <th colspan="2">Fecha Hoy</th>
+            <th colspan="6" style="text-align:center">INGRESOS Act Agropecuaria</th>
+            <th colspan="6" style="text-align:center">EGRESOS Act Agropecuaria</th>
+            <th colspan="3" style="text-align:center">Actividades comerciales</th>
+        </tr>
+        <tr>
+            <th rowspan="2" colspan="2">DETALLE</th>
+            <td>Act1</td>
+            <td>Act2</td>
+            <td>Act3</td>
+            <td>Act4</td>
+            <td>Act5</td>
+            <th rowspan="2">TOTAL</th>
+            <td>Costo 1</td>
+            <td>Costo 2</td>
+            <td>Costo 3</td>
+            <td>Costo 4</td>
+            <td>Costo 5</td>
+            <th rowspan="2">TOTAL</th>
+            <td>Ingreso</td>
+            <td>Egreso</td>
+            <td>Otros Ingresos Independientes)</td>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>1</td>
+            <td>2</td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> Ing </td>
+            <td> Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> Ing </td>
+            <td> Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> Ing </td>
+            <td> Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>mes</td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td>Total </td>
+            <td>Ing </td>
+            <td>Egr </td>
+            <td>Otro</td>
+        </tr>
+        <tr>
+            <th colspan="2">TOTAL AÑO 1</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="2">TOTAL/PLAZO</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+    </table>
+    <br>
+    <table class="table table-bordered">
+        <tr>
+            <th colspan="18">GASTOS</th>
+        </tr>
+        <tr>
+            <th colspan="3">Fecha Hoy</th>
+            <th>0</th>
+            <th>enero</th>
+            <th>febrero</th>
+            <th>marzo</th>
+            <th>abril </th>
+            <th>mayo </th>
+            <th>junio </th>
+            <th>julio </th>
+            <th>agosto </th>
+            <th>septiembre </th>
+            <th>octubre </th>
+            <th>noviembre </th>
+            <th>TOTAL</th>
+            <th>TOTAL/PLAZO</th>
+        </tr>
+        <tr>
+            <th colspan="3">Plan de inversión (Capital de trabajo)</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Imprevistos</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">CtsxPagar/Proveedores</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Gastos Familiares otros</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Cuota Otros Créditos Incluidos FDLM</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">TOTAL GASTOS</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">TOTAL EGRESOS CRÉDITO</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+
+        <tr>
+            <th colspan="3">Flujo de caja sin acumular</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Flujo de caja acumulado</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Proyección Cuota Crédito</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Flujo de caja sin acumular(+cuota)</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">RELACION CUOTA/LIQUIDEZ</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">Flujo de caja acumulado (+cuota)</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <th colspan="3">RELACION CUOTA/LIQUIDEZ</th>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+        </tr>
+
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Item Name</th>
+                <th>Item Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Alvin</td>
+                <td>Eclair</td>
+                <td>$0.87</td>
+            </tr>
+            <tr>
+                <td>Alan</td>
+                <td>Jellybean</td>
+                <td>$3.76</td>
+            </tr>
+            <tr>
+                <td>Jonathan</td>
+                <td>Lollipop</td>
+                <td>$7.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Item Name</th>
+                <th>Item Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Alvin</td>
+                <td>Eclair</td>
+                <td>$0.87</td>
+            </tr>
+            <tr>
+                <td>Alan</td>
+                <td>Jellybean</td>
+                <td>$3.76</td>
+            </tr>
+            <tr>
+                <td>Jonathan</td>
+                <td>Lollipop</td>
+                <td>$7.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Item Name</th>
+                <th>Item Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Alvin</td>
+                <td>Eclair</td>
+                <td>$0.87</td>
+            </tr>
+            <tr>
+                <td>Alan</td>
+                <td>Jellybean</td>
+                <td>$3.76</td>
+            </tr>
+            <tr>
+                <td>Jonathan</td>
+                <td>Lollipop</td>
+                <td>$7.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table>
+        <tr>
+            <th>Month</th>
+            <th>Savings</th>
+            <th>Savings for holiday!</th>
+        </tr>
+        <tr>
+            <td>January</td>
+            <td>$100</td>
+            <td rowspan="2">$50</td>
+        </tr>
+        <tr>
+            <td>February</td>
+            <td>$80</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>Month</th>
+            <th>Savings</th>
+        </tr>
+        <tr>
+            <td>January</td>
+            <td>$100</td>
+        </tr>
+        <tr>
+            <td>February</td>
+            <td>$80</td>
+        </tr>
+        <tr>
+            <td colspan="2">Sum: $180</td>
+        </tr>
+    </table>
+
+</div>
+<button (click)="download()">down</button>
