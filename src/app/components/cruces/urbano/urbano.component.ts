@@ -1,4 +1,3 @@
-
 import { ChangeDetectorRef, Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +8,9 @@ import { Solicitud } from 'src/app/model/solicitud';
 import DataSelect from '../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
 import Swal from 'sweetalert2'
+import { MateriaPrima } from 'src/app/model/materiaprima';
+import { Compras } from 'src/app/model/compras';
+import { CostoVenta } from 'src/app/model/costoventa';
 
 @Component({
   selector: 'app-urbano',
@@ -219,23 +221,28 @@ export class UrbanoComponent implements OnInit {
             valorpromedio = 2
           }
           let cantB = x.get('diasB').value.length
-          let valorB = x.get('valorB').value
+          let valorB = this.formatNumber(x.get('valorB').value)
           let totalB = cantB * valorB * cantperiodo
-
           let cantR = x.get('diasR').value.length
-          let valorR = x.get('valorR').value
+          let valorR = this.formatNumber(x.get('valorR').value)
           let totalR = cantR * valorR * cantperiodo
-
           let cantM = x.get('diasM').value.length
-          let valorM = x.get('valorM').value
+          let valorM = this.formatNumber(x.get('valorM').value)
+          let totaldias = this.formatNumber(x.get('totalDias').value)
           let totalM = cantM * valorM * cantperiodo
+          let promedio = (valorB + valorR + valorM) / valorpromedio
+          let totalpromedio = promedio * totaldias
 
-          let promedio = (totalB + totalR + totalM) * valorpromedio
-
-          x.get("totalB").setValue(totalB, { emitEvent: false });
-          x.get("totalR").setValue(totalR, { emitEvent: false });
-          x.get("totalM").setValue(totalM, { emitEvent: false });
-          x.get("promedio").setValue(promedio, { emitEvent: false });
+          x.patchValue({
+            valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
+            valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
+            valorM: isFinite(valorM) ? valorM.toLocaleString() : 0,
+            totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
+            totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
+            totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
+            promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
+            totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
+          }, { emitEvent: false })
 
           this.ref.detectChanges()
 
@@ -284,8 +291,10 @@ export class UrbanoComponent implements OnInit {
 
   loadactividad(cruces: Cruces[]): FormGroup {
     let crucesArray = this.fb.array([])
+
     for (let cru = 0; cru < cruces.length; cru++) {
 
+      let periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
       crucesArray.push(
         this.fb.group({
           nombre: [cruces[cru].nombre],
@@ -300,21 +309,21 @@ export class UrbanoComponent implements OnInit {
           totalB: [cruces[cru].totalB],
           totalR: [cruces[cru].totalR],
           totalM: [cruces[cru].totalM],
-          promedio: '',
-          totalDias: '',
-          totalPromedio: '',
-          periodohistoricas: '',
-          ventasHis: this.fb.array([this.itemventas()]),
-          promtotalvenHis: '',
-          totalVentasHis: '',
+          promedio: [cruces[cru].promedio],
+          totalDias: [cruces[cru].totalDias],
+          periodohistoricas: [periodhis],
+          ventasHis: this.loadDataVentas(cruces[cru].ventasHis),
+          promtotalvenHis: [cruces[cru].promtotalvenHis],
+          totalPromedio: [cruces[cru].totalPromedio],
+          totalVentasHis: [cruces[cru].totalVentasHis],
           produccion: this.loadProd(cruces[cru].produccion),
-          totalProduccion: '',
-          compras: this.fb.array([this.itemCompras()]),
-          totalCompras: '',
-          costoventa: this.fb.array([this.itemCostoventa()]),
-          materiaprima: this.fb.array([this.itemMateriaprima()]),
-          margen: '',
-          costo: '',
+          totalProduccion: cruces[cru].totalProduccion,
+          compras: this.loadCompras(cruces[cru].compras),
+          totalCompras: cruces[cru].totalCompras,
+          costoventa: this.loadCostoVenta(cruces[cru].costoventa),
+          materiaprima: this.loadMateriaPrima(cruces[cru].materiaprima),
+          margen: cruces[cru].margen,
+          costo: cruces[cru].costo,
           rendUnidad: '',
           rendCantidad: '',
           rendMateriaprima: '',
@@ -342,7 +351,7 @@ export class UrbanoComponent implements OnInit {
 
     Swal.fire({
       title: 'Se eliminara permanentemente la informacion de la actividad ¿Esta seguro de eliminarla?',
-      showDenyButton: true,     
+      showDenyButton: true,
       confirmButtonText: `Eliminar`,
       denyButtonText: `Cancelar`,
     }).then((result) => {
@@ -376,6 +385,17 @@ export class UrbanoComponent implements OnInit {
       this.addVentashis(ac);
     }
   }
+  loadDataVentas(ventas: any) {
+    let ventasArr = this.fb.array([])
+    ventas.forEach(ven => {
+      ventasArr.push(
+        this.fb.group({
+          valor: ven.valor,
+          dia: ven.dia
+        }))
+    });
+    return ventasArr
+  }
   //--------------------------------------------------------------------
 
   //---------------------Produccion-------- -----------------
@@ -388,17 +408,21 @@ export class UrbanoComponent implements OnInit {
   loadProd(produccion: any) {
     let produArr = this.fb.array([])
     produccion.forEach(pro => {
+      let fre = []
+      if (pro.frecuencia)
+        fre = this.frecuencia.find(el => el.id == pro.frecuencia.id)
       produArr.push(
         this.fb.group({
           nombre: pro.nombre,
           cantidad: pro.cantidad,
           valor: pro.valor,
-          frecuencia: pro.frecuencia,
+          frecuencia: fre,
           total: pro.total
         }))
     });
     return produArr
   }
+
   itemProd() {
     return this.fb.group({
       nombre: '',
@@ -429,6 +453,23 @@ export class UrbanoComponent implements OnInit {
       total: ''
     })
   }
+  loadCompras(compras: Compras[]) {
+    let comprasArr = this.fb.array([])
+    compras.forEach(com => {
+      let fre = []
+      if (com.frecuencia)
+        fre = this.frecuencia.find(el => el.id == com.frecuencia.id)
+      comprasArr.push(
+        this.fb.group({
+          descripcion: com.descripcion,
+          cantidad: com.cantidad,
+          valor: com.valor,
+          frecuencia: fre,
+          total: com.total
+        }))
+    });
+    return comprasArr
+  }
   removeCompras(act: number, compra: number) {
     this.compras(act).removeAt(compra);
   }
@@ -452,6 +493,20 @@ export class UrbanoComponent implements OnInit {
       precioVenta: '',
       porcentaje: ''
     })
+  }
+  loadCostoVenta(csotoventa: CostoVenta[]) {
+    let costoventaArr = this.fb.array([])
+    csotoventa.forEach(cos => {
+      costoventaArr.push(
+        this.fb.group({
+          nombre: cos.nombre,
+          participacion: cos.participacion,
+          precioCompra: cos.precioCompra,
+          precioVenta: cos.precioVenta,
+          porcentaje: cos.porcentaje
+        }))
+    });
+    return costoventaArr
   }
   //------------------------------------------------------------------
 
@@ -489,6 +544,40 @@ export class UrbanoComponent implements OnInit {
       participacion: '',
       porcentaje: ''
     })
+  }
+
+  loadMateriaPrima(materiaprima: MateriaPrima[]) {
+    let materiaprimaArr = this.fb.array([])
+    materiaprima.forEach(mat => {
+      let fre = this.frecuencia.find(el => el.id == mat.unidad)
+      materiaprimaArr.push(
+        this.fb.group({
+          producto: mat.producto,
+          cantidad: mat.cantidad,
+          precioVenProd: mat.precioVenProd,
+          materiaprimapri: mat.materiaprimapri,
+          cantMatPri: mat.cantMatPri,
+          unidad: mat.unidad,
+          valorMatPri: mat.valorMatPri,
+          matPrima2: mat.matPrima2,
+          valorMatPri2: mat.valorMatPri2,
+          matPrima3: mat.matPrima3,
+          valorMatPri3: mat.valorMatPri3,
+          matPrima4: mat.matPrima4,
+          valorMatPri4: mat.valorMatPri4,
+          matPrima5: mat.matPrima5,
+          valorMatPri5: mat.valorMatPri5,
+          ManoObra: mat.ManoObra,
+          valorMao: mat.valorMao,
+          cif: mat.cif,
+          valorCif: mat.valorCif,
+          precioCompra: mat.precioCompra,
+          precioVenta: mat.precioVenta,
+          participacion: mat.participacion,
+          porcentaje: mat.porcentaje,
+        }))
+    });
+    return materiaprimaArr
   }
   deleteMarteriaRow(actividad: number, index: number) {
     this.materiaprima(actividad).removeAt(index);

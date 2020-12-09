@@ -26,25 +26,53 @@
             </tr>
         </table>
 
-        <h3>Ventas Historicas</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th style="text-align:center">Dia</th>
-                    <th style="text-align:center">Valor</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let his of act.ventasHis">
-                <tr>
-                    <td>{{his.dia}}</td>
-                    <td>{{his.valor}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <h3>Cruce #2</h3>        
+        <div class="medio">
+            <table>
+                <thead>
+                    <tr><th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th></tr>
+                    <tr>
+                        <th style="text-align:center">Dia</th>
+                        <th style="text-align:center">Valor</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let his of act.ventasHis; let cont=index">
+                    <tr>
+                        <td>{{cont}}</td>
+                        <td>{{his.valor}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><td>Total</td><td>{{act.totalVentasHis}}</td></tr>
+                </tfoot>
+
+            </table>
+        </div>
+        <div class="medio">
+            <table>
+                <thead>
+                    <tr><th colspan="4">Producción</th></tr>
+                    <tr>
+                        <th style="text-align:center">Nombre</th>
+                        <th style="text-align:center">Cantidad</th>
+                        <th style="text-align:center">Frecuencia</th>
+                        <th style="text-align:center">Valor</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let prod of act.produccion">
+                    <tr>
+                        <td>{{prod.nombre}}</td>
+                        <td>{{prod.cantidad}}</td>
+                        <td>{{prod.frecuencia.name}}</td>
+                        <td>{{prod.valor}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr><td colspan="3">Total</td><td>{{act.totalProduccion}}</td></tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
-
-
-
     <table>
         <tr>
             <th colspan="2" style="text-align:center">Logo</th>
@@ -82,7 +110,6 @@
             <td> Plan de Inversión (capital de trabajo)</td>
             <td>1</td>
         </tr>
-
     </table>
     <br>
     <table class="table table-bordered">
@@ -681,97 +708,7 @@
         </tbody>
     </table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Item Name</th>
-                <th>Item Price</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            <tr>
-                <td>Alvin</td>
-                <td>Eclair</td>
-                <td>$0.87</td>
-            </tr>
-            <tr>
-                <td>Alan</td>
-                <td>Jellybean</td>
-                <td>$3.76</td>
-            </tr>
-            <tr>
-                <td>Jonathan</td>
-                <td>Lollipop</td>
-                <td>$7.00</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Item Name</th>
-                <th>Item Price</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td>Alvin</td>
-                <td>Eclair</td>
-                <td>$0.87</td>
-            </tr>
-            <tr>
-                <td>Alan</td>
-                <td>Jellybean</td>
-                <td>$3.76</td>
-            </tr>
-            <tr>
-                <td>Jonathan</td>
-                <td>Lollipop</td>
-                <td>$7.00</td>
-            </tr>
-        </tbody>
-    </table>
-
-
-    <table>
-        <tr>
-            <th>Month</th>
-            <th>Savings</th>
-            <th>Savings for holiday!</th>
-        </tr>
-        <tr>
-            <td>January</td>
-            <td>$100</td>
-            <td rowspan="2">$50</td>
-        </tr>
-        <tr>
-            <td>February</td>
-            <td>$80</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th>Month</th>
-            <th>Savings</th>
-        </tr>
-        <tr>
-            <td>January</td>
-            <td>$100</td>
-        </tr>
-        <tr>
-            <td>February</td>
-            <td>$80</td>
-        </tr>
-        <tr>
-            <td colspan="2">Sum: $180</td>
-        </tr>
-    </table>
 
 </div>
 <button (click)="download()">down</button>

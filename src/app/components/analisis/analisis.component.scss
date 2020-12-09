@@ -1,9 +1,15 @@
 table, td, th {
     border: 1px solid black;
-  }
-  
+  }  
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  .medio{
+    width: 47%;
+    margin-right: 5px;
+    float: left;
+    margin-bottom: 15px;
   }
