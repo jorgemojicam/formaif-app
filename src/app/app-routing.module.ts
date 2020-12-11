@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
   { path: '404', component: NotfoundComponent },
   { path: 'analisis', loadChildren: () => import('./components/analisis/analisis.module').then(m => m.AnalisisModule) },
+  { path: 'ubicacion', loadChildren: () => import('./components/ubicacion/ubicacion.module').then(m => m.UbicacionModule) },
   { path: '**', redirectTo: '/404' }
 ];
 

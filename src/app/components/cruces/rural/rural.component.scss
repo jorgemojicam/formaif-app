@@ -3,12 +3,17 @@ mat-form-field {
 }
 
 .gr {
-  margin-right: 10px;
+  padding-right: 10px;
+}
+.radioperiodo{
+  width: 100%;
+  margin-bottom: 8px;
 }
 
 .mat-card-fases{
-  width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 25px;
+  margin-top: 10px;
+  padding: 8px;
 }
 
 .mat-stepper-vertical {
@@ -17,11 +22,8 @@ mat-form-field {
 .cardlote{
   padding: 5px;
 }
-
 div.alternate>div:nth-of-type(odd) {
   background: rgba(239, 239, 239, 0.58);
-  display: block;
-  width: 100%;
 }
 
 .contentingresos{
@@ -30,47 +32,52 @@ div.alternate>div:nth-of-type(odd) {
   width: 100%;
 }
 
-.mat-radio-button~.mat-radio-button {
-  margin-left: 5px;
-}
-
 .content {
-  width: 100%;
   border-radius: 8px;
+  margin: 5px;
+  padding: 5px;
 }
-
 .encabezado {
   width: 100%;
   margin-top: 20px;
   margin-bottom: 23px;
 }
-
 .btnadd {
   position: absolute;
   left: 24px;
   bottom: -20px;
 }
-
-.deletelote{
-  position: absolute;
-  right: 5px;
-  top: 5px;
-}
-.btndelete{
+.btndelete {
   position: absolute;
   right: 10px;
+  margin-top: -12px;
+  margin-right: -4px;
 }
-
 .addact {
   position: absolute;
   right: 10px;
+  top: 10px;
+}
+.deleteact{
+  position: absolute;
+  right: 1px;
   top: 2px;
+}
+.pull-right {
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
 ::ng-deep .tabs .mat-tab-header {
   width: 60%;
 }
-
+::ng-deep .mat-radio-label-content {
+  margin-right: 10px;
+}
+::ng-deep .mat-tab-header {
+  width: 85%; 
+}
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
   flex-basis: 0;

@@ -26,7 +26,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatTooltipModule} from '@angular/material/tooltip';
-
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 const myCompm = [
   MatCardModule,
@@ -54,7 +54,8 @@ const myCompm = [
   MatButtonToggleModule,
   MatCheckboxModule,
   MatProgressSpinnerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

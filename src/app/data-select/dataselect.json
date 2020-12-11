@@ -176,31 +176,31 @@
       "id": 1,
       "name": "Diaria",
       "dias": 26,
-      "cant":7
+      "cant": 7
     },
     {
       "id": 2,
       "name": "Semanal",
       "dias": 4,
-      "cant":4
+      "cant": 4
     },
     {
       "id": 3,
       "name": "Quincenal",
       "dias": 2,
-      "cant":3
+      "cant": 3
     },
     {
       "id": 4,
       "name": "Mensual",
       "dias": 1,
-      "cant":4
+      "cant": 4
     },
     {
       "id": 5,
       "name": "Anual",
       "dias": 1,
-      "cant":0
+      "cant": 0
     }
   ],
   "DiasSemana": [
@@ -936,7 +936,145 @@
       "id": 108,
       "name": "Tomate Cherry",
       "tipo": 1,
-      "tipoproducto": "Transitorio"
+      "tipoproducto": ""
+    },
+    {
+      "id": 109,
+      "name": "Apicultura",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 110,
+      "name": "Cabras/chivos de Levante",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 111,
+      "name": "Cabras/chivos de Cría",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 112,
+      "name": "Cachama",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 113,
+      "name": "Camuros",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 114,
+      "name": "Cerda de Cría",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 115,
+      "name": "Cerdos de Ceba",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 116,
+      "name": "Codorniz (Huevo)",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 117,
+      "name": "Conejos",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 118,
+      "name": "Coneja de Cría",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 119,
+      "name": "Cuyes",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 120,
+      "name": "Gallina Ponedora",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 121,
+      "name": "Ganaderia de Levante",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 122,
+      "name": "Ganaderia de ceba",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 123,
+      "name": "Ganaderia de Leche",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 124,
+      "name": "Ganado doble proposito",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 125,
+      "name": "Mojarra / tilapia",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 126,
+      "name": "Ovejas",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 127,
+      "name": "Pollo Criollo",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 128,
+      "name": "Pollo de Engorde",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 129,
+      "name": "Trucha",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 130,
+      "name": "Bocachico",
+      "tipo": 2,
+      "tipoproducto": ""
+    },
+    {
+      "id": 131,
+      "name": "Peces Ornamentales",
+      "tipo": 2,
+      "tipoproducto": ""
     }
   ],
   "PeriodoEdad": [
@@ -951,6 +1089,20 @@
     {
       "id": 3,
       "name": "Años"
+    }
+  ],
+  "TipoProduccion": [
+    {
+      "id": 1,
+      "name": "Extensivo"
+    },
+    {
+      "id": 2,
+      "name": "Intensivo"
+    },
+    {
+      "id": 3,
+      "name": "N/A"
     }
   ],
   "Unidades": [
@@ -1059,6 +1211,44 @@
     {
       "id": 12,
       "name": "DICIEMBRE"
+    }
+  ],
+  "DetalleAgricola": [
+    {
+      "id": 1,
+      "name": "Mano de obra/Jornales"
+    },
+    {
+      "id": 2,
+      "name": "Material de siembra"
+    },
+    {
+      "id": 3,
+      "name": "Insumos"
+    },
+    {
+      "id": 4,
+      "name": "Fletes"
+    },
+    {
+      "id": 5,
+      "name": "Empaque para Venta"
+    },
+    {
+      "id": 6,
+      "name": "Imprevistos (otros)"
+    },
+    {
+      "id": 7,
+      "name": "Labores culturales"
+    },
+    {
+      "id": 8,
+      "name": "Arriendo"
+    },
+    {
+      "id": 9,
+      "name": "Análisis de suelos"
     }
   ]
 }

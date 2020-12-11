@@ -1,14 +1,31 @@
-<form [formGroup]="actividadesForm">
-    <mat-tab-group mat-align-tabs="start">
-        <div formArrayName="act" fxFlex="100%">
-            <div *ngFor="let acti of actividades().controls; let ac=index">
-                <mat-tab label="Act {{ac}}">
-                    <div [formGroupName]="ac" fxLayout="row wrap">
+<ng-template #loading>
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>
+<ng-container *ngIf="loadData; else loading">
+    <form [formGroup]="actividadesForm">
+
+        <button mat-mini-fab type="button" class="addact" [disabled]="actividades().controls.length>=6" color="primary"
+            (click)="addActividad()">
+            <mat-icon>add</mat-icon>
+        </button>
+
+        <mat-tab-group mat-align-tabs="start" [selectedIndex]="selected.value"
+            (selectedIndexChange)="selected.setValue($event)">
+            <div formArrayName="act" fxFlex="100%">
+
+                <mat-tab *ngFor="let acti of actividades().controls; let ac=index" label="Act {{ac}}">
+                    <div [formGroupName]="ac">
                         <!-- encabezado -->
                         <div class="encabezado">
                             <mat-card>
                                 <mat-card-content>
                                     <div fxLayout="row wrap">
+                                        <button class="deleteact" color="warn" mat-icon-button [disabled]="ac==0"
+                                            (click)="deleteAct(ac)">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
 
                                         <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
                                             <mat-form-field>
@@ -22,30 +39,54 @@
                                             </mat-form-field>
                                         </div>
                                         <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="30%">
-                                            <mat-form-field>
+                                            <mat-form-field class="example-full-width">
                                                 <mat-label>Actividad</mat-label>
-                                                <mat-select formControlName="nombre" id="nombre{{ac}}" required>
-                                                    <mat-option *ngFor="let actru of ActRural" [value]="actru">
-                                                        {{actru.name}}
+                                                <input type="text" matInput formControlName="nombre"
+                                                    [matAutocomplete]="auto">
+                                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                                    <mat-option
+                                                        *ngFor="let option of _filter(acti.value.nombre,acti.value.tipo,ac)"
+                                                        [value]="option">
+                                                        {{option.name}}
                                                     </mat-option>
-                                                </mat-select>
+                                                </mat-autocomplete>
                                             </mat-form-field>
                                         </div>
                                         <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="25%">
-                                            <mat-form-field>
-                                                <input type="text" matInput placeholder="Tipo Produccion"
-                                                    value="{{acti.value.nombre.tipoproducto}}" id="tipoproduccion{{ac}}"
-                                                    formControlName="tipoproduccion" readonly>
-                                            </mat-form-field>
+                                            <ng-container *ngIf="acti.value.tipo ==1;then tipoagro;else tipopecua">
+                                            </ng-container>
+                                            <ng-template #tipoagro>
+                                                <mat-form-field>
+                                                    <input type="text" matInput placeholder="Tipo Produccion"
+                                                        value="{{acti.value.nombre.tipoproducto}}"
+                                                        id="tipoproduccion{{ac}}" formControlName="tipoproduccion"
+                                                        readonly>
+                                                </mat-form-field>
+                                            </ng-template>
+                                            <ng-template #tipopecua>
+                                                <mat-form-field>
+                                                    <mat-label>Tipo de producción</mat-label>
+                                                    <mat-select formControlName="tipoproduccion"
+                                                        id="tipoproduccion{{ac}}" required>
+                                                        <mat-option>--</mat-option>
+                                                        <mat-option *ngFor="let tip of tipoprodPecu" [value]="tip">
+                                                            {{tip.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                            </ng-template>
                                         </div>
                                     </div>
                                 </mat-card-content>
                                 <button *ngIf="acti.value.tipo ==1" mat-fab aria-label="add" mat-mini-fab class="btnadd"
-                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent" (click)="addLotes(ac)">
+                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent"
+                                    (click)="addLotes(ac)">
                                     <mat-icon>add</mat-icon>
                                 </button>
                                 <button *ngIf="acti.value.tipo ==2" mat-fab aria-label="add" mat-mini-fab class="btnadd"
-                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent" (click)="addLotesPecuario(ac)">
+                                    type="button" [disabled]="lotes(ac).controls.length >= 6" color="accent"
+                                    (click)="addLotesPecuario(ac)">
                                     <mat-icon>add</mat-icon>
                                 </button>
                             </mat-card>
@@ -57,30 +98,25 @@
                                 <!-- Lotes agro -->
                                 <div formArrayName="lotesAgro">
                                     <mat-accordion class="example-headers-align" multi>
-                                        <mat-expansion-panel *ngFor="let lote of lotes(ac).controls; let lot=index" [formGroupName]="lot">
+                                        <mat-expansion-panel *ngFor="let lote of lotes(ac).controls; let lot=index"
+                                            [formGroupName]="lot">
 
                                             <mat-expansion-panel-header>
                                                 <mat-panel-title>
                                                     Lote
                                                 </mat-panel-title>
                                                 <mat-panel-description fxLayout="row">
-
                                                     <span *ngIf="lot>0"># {{lot}}</span> <span
                                                         *ngIf="lot==0">Principal</span>
 
                                                     <mat-icon>local_florist</mat-icon>
-
                                                     <button (click)="removeLotes(ac,lot)" [disabled]="lot==0"
                                                         color="warn" mat-icon-button type="button">
                                                         <mat-icon>cancel</mat-icon>
                                                     </button>
-
                                                 </mat-panel-description>
-
                                             </mat-expansion-panel-header>
-
                                             <div fxLayout="row wrap">
-
                                                 <div class="gr" fxFlex="30%" fxFlex.xs="35%" fxFlex.sm="35%">
                                                     <mat-form-field>
                                                         <input type="number" matInput placeholder="Edad Cultivo"
@@ -101,7 +137,7 @@
                                                     </mat-form-field>
                                                 </div>
 
-                                                <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="20%" fxFlex.sm="15%">
                                                     <mat-form-field>
                                                         <input type="number" matInput placeholder="Area"
                                                             id="areacult{{ac}}-{{lot}}" formControlName="areacult">
@@ -117,17 +153,42 @@
                                                     </mat-card>
                                                 </div>
                                                 <br>
-
                                                 <ng-container *ngIf="lote.value.aplicadiastancia">
-                                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                        <mat-form-field>
-                                                            <input type="number" matInput placeholder="Distancia"
-                                                                id="diastancia{{ac}}-{{lot}}"
-                                                                formControlName="diastancia">
-                                                        </mat-form-field>
+                                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="25%">
+                                                        <mat-card>
+                                                            <mat-card-content>
+                                                                <div class="gr" fxFlex="33%" fxFlex.xs="30%"
+                                                                    fxFlex.sm="100%">
+                                                                    <mat-form-field>
+                                                                        <input type="tel" matInput
+                                                                            placeholder="D. entre surcos"
+                                                                            id="dsurcos{{ac}}-{{lot}}"
+                                                                            formControlName="dsurcos">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div class="gr" fxFlex="33%" fxFlex.xs="30%"
+                                                                    fxFlex.sm="100%">
+                                                                    <mat-form-field>
+                                                                        <input type="tel" matInput
+                                                                            placeholder="D. entre plantas"
+                                                                            id="dplantas{{ac}}-{{lot}}"
+                                                                            formControlName="dplantas">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div class="gr" fxFlex="33%" fxFlex.xs="30%"
+                                                                    fxFlex.sm="100%">
+                                                                    <mat-form-field>
+                                                                        <input type="text" readonly matInput
+                                                                            placeholder="Distancia"
+                                                                            id="diastancia{{ac}}-{{lot}}"
+                                                                            formControlName="diastancia">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                            </mat-card-content>
+                                                        </mat-card>
                                                     </div>
                                                 </ng-container>
-
+                                                <br>
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="25%">
                                                     <mat-card>
                                                         <mat-card-content>
@@ -137,7 +198,6 @@
                                                         </mat-card-content>
                                                     </mat-card>
                                                 </div>
-
                                                 <ng-container *ngIf="lote.value.aplicaplantasinformacli">
                                                     <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                         <mat-form-field>
@@ -147,16 +207,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </ng-container>
-
-                                                <div class="gr" fxFlex="48%" fxFlex.xs="40%" fxFlex.sm="25%">
-                                                    <mat-form-field>
-                                                        <input type="number" matInput
-                                                            placeholder="# plantas/semillas del lote"
-                                                            id="numplantas{{ac}}-{{lot}}" formControlName="numplantas">
-                                                    </mat-form-field>
-                                                </div>
-
-                                                <div class="gr" fxFlex="50%" fxFlex.xs="40%" fxFlex.sm="25%">
+                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                     <mat-form-field>
                                                         <mat-label>Unidad Venta</mat-label>
                                                         <mat-select formControlName="unidadventa"
@@ -179,7 +230,7 @@
                                                     <div fxLayout="row wrap" class="contentingresos">
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput
+                                                                <input type="tel" matInput
                                                                     placeholder="Rendimiento por lote"
                                                                     id="rendiemientolote{{ac}}-{{lot}}"
                                                                     formControlName="rendiemientolote">
@@ -187,7 +238,7 @@
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput
+                                                                <input type="tel" matInput
                                                                     placeholder="Unidades totales"
                                                                     id="unidadestotales{{ac}}-{{lot}}"
                                                                     formControlName="unidadestotales">
@@ -195,22 +246,21 @@
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput placeholder="% Perdida"
+                                                                <input type="tel" matInput placeholder="% Perdida"
                                                                     id="perdida{{ac}}-{{lot}}"
                                                                     formControlName="perdida">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="27%" fxFlex.sm="28%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput placeholder="Precio Min"
+                                                                <input type="tel" matInput placeholder="Precio Min"
                                                                     id="preciomin{{ac}}-{{lot}}"
                                                                     formControlName="preciomin">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="27%" fxFlex.sm="28%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput
-                                                                    placeholder="Precio Actual"
+                                                                <input type="tel" matInput placeholder="Precio Actual"
                                                                     id="precioactual{{ac}}-{{lot}}"
                                                                     formControlName="precioactual">
                                                             </mat-form-field>
@@ -231,6 +281,18 @@
                                                                     formControlName="totalIngreso">
                                                             </mat-form-field>
                                                         </div>
+                                                        <div class="gr" fxFlex="20%" fxFlex.xs="40%" fxFlex.sm="35%">
+                                                            <mat-form-field>
+                                                                <mat-label>Cosecha</mat-label>
+                                                                <mat-select formControlName="cocecha" multiple
+                                                                    id="cocecha{{ac}}-{{lot}}" required>
+                                                                    <mat-option *ngFor="let mes of meses"
+                                                                        [value]="mes.id">
+                                                                        {{mes.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
                                                     </div>
                                                 </ng-template>
 
@@ -239,24 +301,22 @@
                                                     <div fxLayout="row wrap" class="content">
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="27%" fxFlex.sm="28%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput placeholder="Precio Min"
+                                                                <input type="tel" matInput placeholder="Precio Min"
                                                                     id="preciomin{{ac}}-{{lot}}"
                                                                     formControlName="preciomin">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="27%" fxFlex.sm="28%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput
-                                                                    placeholder="Precio Actual"
+                                                                <input type="tel" matInput placeholder="Precio Actual"
                                                                     id="precioactual{{ac}}-{{lot}}"
                                                                     formControlName="precioactual">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                             <mat-form-field>
-                                                                <input type="number" matInput
-                                                                    placeholder="Precio Promedio" readonly
-                                                                    id="preciopromedio{{ac}}-{{lot}}"
+                                                                <input type="tel" matInput placeholder="Precio Promedio"
+                                                                    readonly id="preciopromedio{{ac}}-{{lot}}"
                                                                     formControlName="preciopromedio">
                                                             </mat-form-field>
                                                         </div>
@@ -271,7 +331,8 @@
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>Rendimiento</mat-label>
-                                                                        <input matInput placeholder="Rendimiento"
+                                                                        <input matInput type="tel"
+                                                                            placeholder="Rendimiento"
                                                                             formControlName="rendimientoCos">
                                                                     </mat-form-field>
                                                                 </div>
@@ -282,6 +343,7 @@
                                                                         <mat-select formControlName="mesCos" multiple
                                                                             id="mesCos{{ac}}-{{lot}}" required>
                                                                             <mat-option *ngFor="let mes of meses"
+                                                                                [disabled]="lote.value.mesTra.indexOf(mes.id) >= 0 || lote.value.mesPepeo.indexOf(mes.id) >= 0"
                                                                                 [value]="mes.id">
                                                                                 {{mes.name}}
                                                                             </mat-option>
@@ -293,7 +355,8 @@
                                                                     <mat-form-field>
                                                                         <mat-label>Unidades Venta
                                                                         </mat-label>
-                                                                        <input matInput placeholder="Unidades"
+                                                                        <input matInput type="tel"
+                                                                            placeholder="Unidades"
                                                                             formControlName="unidadesCos">
                                                                     </mat-form-field>
                                                                 </div>
@@ -301,18 +364,32 @@
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>%Perdida</mat-label>
-                                                                        <input matInput placeholder="Perdida"
+                                                                        <input matInput type="tel" readonly
+                                                                            placeholder="Perdida"
                                                                             formControlName="perdidaCos">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="100%"
-                                                                    fxFlex.sm="25%">
-                                                                    <mat-form-field>
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
                                                                         <mat-label>%Cosecha</mat-label>
-                                                                        <input matInput placeholder="Porcentage"
-                                                                            formControlName="procentageCos">
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="procentageCos" readonly
+                                                                            id="procentageCos-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>%</mat-icon>
                                                                     </mat-form-field>
                                                                 </div>
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Total Cosecha</mat-label>
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="totalCos" readonly
+                                                                            id="totalCos-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>attach_money</mat-icon>
+                                                                    </mat-form-field>
+                                                                </div>
+
                                                                 <div>
                                                                     <button mat-button color="primary"
                                                                         matStepperNext>Siguiente</button>
@@ -327,7 +404,8 @@
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>Rendimiento</mat-label>
-                                                                        <input matInput placeholder="Rendimiento"
+                                                                        <input type="tel" matInput
+                                                                            placeholder="Rendimiento"
                                                                             formControlName="rendimientoTra">
                                                                     </mat-form-field>
                                                                 </div>
@@ -338,6 +416,7 @@
                                                                         <mat-select formControlName="mesTra" multiple
                                                                             id="mesTra{{ac}}-{{lot}}" required>
                                                                             <mat-option *ngFor="let mes of meses"
+                                                                                [disabled]="lote.value.mesCos.indexOf(mes.id) >= 0 || lote.value.mesPepeo.indexOf(mes.id) >= 0"
                                                                                 [value]="mes.id">
                                                                                 {{mes.name}}
                                                                             </mat-option>
@@ -349,7 +428,8 @@
                                                                     <mat-form-field>
                                                                         <mat-label>Unidades Venta
                                                                         </mat-label>
-                                                                        <input matInput placeholder="Unidades"
+                                                                        <input type="tel" matInput
+                                                                            placeholder="Unidades"
                                                                             formControlName="unidadesTra">
                                                                     </mat-form-field>
                                                                 </div>
@@ -357,16 +437,28 @@
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>%Perdida</mat-label>
-                                                                        <input matInput placeholder="Perdida"
+                                                                        <input type="tel" matInput placeholder="Perdida"
                                                                             formControlName="perdidaTra">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="100%"
-                                                                    fxFlex.sm="25%">
-                                                                    <mat-form-field>
-                                                                        <mat-label>%Traviesa</mat-label>
-                                                                        <input matInput placeholder="Porcentage"
-                                                                            formControlName="procentageTra">
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Traviesa</mat-label>
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="procentageTra" readonly
+                                                                            id="procentageTra-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>%</mat-icon>
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Total Traviesa</mat-label>
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="totalTra" readonly
+                                                                            id="totalTra-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>attach_money</mat-icon>
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div>
@@ -385,7 +477,8 @@
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>Rendimiento</mat-label>
-                                                                        <input matInput placeholder="Rendimiento"
+                                                                        <input matInput type="tel"
+                                                                            placeholder="Rendimiento"
                                                                             formControlName="rendimientoPepeo">
                                                                     </mat-form-field>
                                                                 </div>
@@ -396,6 +489,7 @@
                                                                         <mat-select formControlName="mesPepeo" multiple
                                                                             id="mesPepeo{{ac}}-{{lot}}" required>
                                                                             <mat-option *ngFor="let mes of meses"
+                                                                                [disabled]="lote.value.mesCos.indexOf(mes.id) >= 0 || lote.value.mesTra.indexOf(mes.id) >= 0"
                                                                                 [value]="mes.id">
                                                                                 {{mes.name}}
                                                                             </mat-option>
@@ -408,97 +502,136 @@
                                                                         <mat-label>Unidades Venta
                                                                         </mat-label>
                                                                         <input matInput placeholder="Unidades"
-                                                                            formControlName="unidadesPepeo">
+                                                                            type="tel" formControlName="unidadesPepeo">
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div class="gr" fxFlex="30%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <mat-label>%Perdida</mat-label>
-                                                                        <input matInput placeholder="Perdida"
+                                                                        <input matInput placeholder="Perdida" type="tel"
                                                                             formControlName="perdidaPepeo">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="100%"
-                                                                    fxFlex.sm="25%">
-                                                                    <mat-form-field>
-                                                                        <mat-label>%Traviesa</mat-label>
-                                                                        <input matInput placeholder="Porcentage"
-                                                                            formControlName="procentagePepeo">
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Pepeo</mat-label>
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="procentagePepeo" readonly
+                                                                            id="procentagePepeo-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>%</mat-icon>
                                                                     </mat-form-field>
                                                                 </div>
+                                                                <div class="gr" fxFlex="45%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="40%">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label>Total Pepeo</mat-label>
+                                                                        <input matInput type="text" placeholder="Total"
+                                                                            formControlName="totalPepeo" readonly
+                                                                            id="totalPepeo-{{ac}}-{{lot}}">
+                                                                        <mat-icon matSuffix>attach_money</mat-icon>
+                                                                    </mat-form-field>
+                                                                </div>
+
                                                                 <p>Informacion completada.</p>
                                                             </div>
                                                         </mat-step>
-
                                                     </mat-vertical-stepper>
+
+                                                    <div class="gr" fxFlex="45%" fxFlex.xs="45%" fxFlex.sm="40%">
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Unidades Totales</mat-label>
+                                                            <input matInput type="text" placeholder="Porcentaje"
+                                                                formControlName="totalUnidades" readonly
+                                                                id="totalUnidades-{{ac}}-{{lot}}">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="gr" fxFlex="45%" fxFlex.xs="45%" fxFlex.sm="40%">
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Total Lote Anual</mat-label>
+                                                            <input matInput type="text" placeholder="Total"
+                                                                formControlName="totalLoteAunual" readonly
+                                                                id="totalLoteAunual-{{ac}}-{{lot}}">
+                                                            <mat-icon matSuffix>attach_money</mat-icon>
+                                                        </mat-form-field>
+                                                    </div>
                                                 </ng-template>
+
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%">
                                                     <h3><b>Egresos</b></h3>
                                                 </div>
-                                                <ng-container *ngIf="acti.value.nombre.tipoproducto=='Transitorio';then egresotransitorio">
+                                                <ng-container
+                                                    *ngIf="acti.value.nombre.tipoproducto=='Transitorio';then egresotransitorio">
                                                 </ng-container>
                                                 <ng-template #egresotransitorio>
                                                     <!-- fase adecuacion -->
                                                     <mat-card class="mat-card-fases">
-                                                        <mat-card-header>
-                                                            <mat-card-title>Fase Adecuacion</mat-card-title>
-                                                            <mat-chip-list class="pull-right">
-                                                                <mat-chip color="accent" selected>
-                                                                </mat-chip>
-                                                            </mat-chip-list>
-                                                        </mat-card-header>
+                                                        <h3>Fase Adecuacion</h3>
+                                                        <mat-chip-list class="pull-right">
+                                                            <mat-chip color="accent" selected>
+                                                                $ {{lote.value.totalEgresosAdecuacion}}
+                                                            </mat-chip>
+                                                        </mat-chip-list>
                                                         <mat-card-content>
                                                             <div formArrayName="egresosAdecuacion" class="alternate">
                                                                 <div *ngFor="let egreso of egresadosAdecuacion(ac,lot).controls; let eg=index"
-                                                                    [formGroupName]="eg">
-                                                                    <div class="container" fxLayout="row wrap">
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                            fxFlex.sm="25%">
+                                                                    [formGroupName]="eg" class="content">
+                                                                    <div fxLayout="row wrap">
+                                                                        <div class="gr" fxFlex="20%" fxFlex.xs="45%"
+                                                                            fxFlex.sm="35%">
                                                                             <mat-form-field>
-                                                                                <input type="text" matInput
-                                                                                    placeholder="descripcion"
-                                                                                    id="descripcion{{lot}}-{{eg}}"
-                                                                                    formControlName="descripcion">
+                                                                                <mat-label>Descripcion</mat-label>
+                                                                                <mat-select
+                                                                                    formControlName="descripcion"
+                                                                                    id="descripcion{{ac}}-{{lot}}"
+                                                                                    required>
+                                                                                    <mat-option
+                                                                                        *ngFor="let det of detalleagri"
+                                                                                        [value]="det.id">
+                                                                                        {{det.name}}
+                                                                                    </mat-option>
+                                                                                </mat-select>
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="48%"
                                                                             fxFlex.sm="25%">
                                                                             <mat-form-field>
                                                                                 <input type="text" matInput
-                                                                                    placeholder="detalle"
+                                                                                    placeholder="Detalle"
                                                                                     id="detalle{{lot}}-{{eg}}"
                                                                                     formControlName="detalle">
                                                                             </mat-form-field>
                                                                         </div>
+
                                                                         <div class="gr" fxFlex="40%" fxFlex.xs="20%"
                                                                             fxFlex.sm="25%">
                                                                             <mat-form-field>
-                                                                                <input type="text" matInput
-                                                                                    placeholder="cantidad"
+                                                                                <input type="number" matInput
+                                                                                    placeholder="Cantidad"
                                                                                     id="cantidad{{lot}}-{{eg}}"
                                                                                     formControlName="cantidad">
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="gr" fxFlex="30%" fxFlex.xs="30%"
+                                                                        <div class="gr" fxFlex="30%" fxFlex.xs="34%"
                                                                             fxFlex.sm="25%">
                                                                             <mat-form-field>
-                                                                                <input type="number" matInput
-                                                                                    placeholder="valorunitario"
+                                                                                <input type="tel" matInput
+                                                                                    placeholder="Valor Unitario"
                                                                                     id="valorunitario{{lot}}-{{eg}}"
                                                                                     formControlName="valorunitario">
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="30%"
+                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="34%"
                                                                             fxFlex.sm="25%">
                                                                             <mat-form-field>
-                                                                                <input type="number" matInput
+                                                                                <input type="tel" matInput readonly
                                                                                     placeholder="total"
                                                                                     id="total{{lot}}-{{eg}}"
                                                                                     formControlName="total">
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        <div class="gr" fxFlex="100%" fxFlex.xs="100%"
                                                                             fxFlex.sm="35%">
                                                                             <mat-form-field>
                                                                                 <mat-label>Mes</mat-label>
@@ -532,32 +665,38 @@
                                                     </mat-card>
                                                     <!-- Fase Siembra -->
                                                     <mat-card class="mat-card-fases">
-                                                        <mat-card-header>
-                                                            <mat-card-title>Fase Siembra</mat-card-title>
-                                                            <mat-chip-list class="pull-right">
-                                                                <mat-chip color="accent" selected>
-                                                                </mat-chip>
-                                                            </mat-chip-list>
-                                                        </mat-card-header>
+                                                        <h3>Fase Siembra</h3>
+                                                        <mat-chip-list class="pull-right">
+                                                            <mat-chip color="accent" selected>
+                                                                $ {{lote.value.totalEgresosSiembre}}
+                                                            </mat-chip>
+                                                        </mat-chip-list>
                                                         <mat-card-content>
                                                             <div formArrayName="egresosSiembra" class="alternate">
                                                                 <div *ngFor="let egreso of egresadosSiembra(ac,lot).controls; let eg=index"
-                                                                    [formGroupName]="eg">
-                                                                    <div class="container" fxLayout="row wrap">
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                            fxFlex.sm="25%">
+                                                                    [formGroupName]="eg" class="content">
+                                                                    <div fxLayout="row wrap">
+                                                                        <div class="gr" fxFlex="20%" fxFlex.xs="45%"
+                                                                            fxFlex.sm="35%">
                                                                             <mat-form-field>
-                                                                                <input type="text" matInput
-                                                                                    placeholder="descripcion"
-                                                                                    id="descripcion{{lot}}-{{eg}}"
-                                                                                    formControlName="descripcion">
+                                                                                <mat-label>Descripcion</mat-label>
+                                                                                <mat-select
+                                                                                    formControlName="descripcion"
+                                                                                    id="descripcion{{ac}}-{{lot}}"
+                                                                                    required>
+                                                                                    <mat-option
+                                                                                        *ngFor="let det of detalleagri"
+                                                                                        [value]="det.id">
+                                                                                        {{det.name}}
+                                                                                    </mat-option>
+                                                                                </mat-select>
                                                                             </mat-form-field>
                                                                         </div>
                                                                         <div class="gr" fxFlex="40%" fxFlex.xs="40%"
                                                                             fxFlex.sm="25%">
                                                                             <mat-form-field>
                                                                                 <input type="text" matInput
-                                                                                    placeholder="detalle"
+                                                                                    placeholder="Detalle"
                                                                                     id="detalle{{lot}}-{{eg}}"
                                                                                     formControlName="detalle">
                                                                             </mat-form-field>
@@ -589,7 +728,7 @@
                                                                                     formControlName="total">
                                                                             </mat-form-field>
                                                                         </div>
-                                                                        <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                        <div class="gr" fxFlex="100%" fxFlex.xs="100%"
                                                                             fxFlex.sm="35%">
                                                                             <mat-form-field>
                                                                                 <mat-label>Mes</mat-label>
@@ -623,25 +762,28 @@
                                                 </ng-template>
                                                 <!-- fase mantenimiento -->
                                                 <mat-card class="mat-card-fases">
-                                                    <mat-card-header>
-                                                        <mat-card-title>Fase Mantenimiento</mat-card-title>
-                                                        <mat-chip-list class="pull-right">
-                                                            <mat-chip color="accent" selected></mat-chip>
-                                                        </mat-chip-list>
-                                                    </mat-card-header>
+                                                    <h3>Fase Mantenimiento</h3>
+                                                    <mat-chip-list class="pull-right">
+                                                        <mat-chip color="accent" selected>
+                                                            $ {{lote.value.totalEgresosMante}}
+                                                        </mat-chip>
+                                                    </mat-chip-list>
                                                     <mat-card-content>
                                                         <div formArrayName="egresosMante" class="alternate">
                                                             <div fxLayout="row wrap"
                                                                 *ngFor="let egreso of egresadosMante(ac,lot).controls; let eg=index"
                                                                 class="content" [formGroupName]="eg">
-
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                    fxFlex.sm="25%">
+                                                                <div class="gr" fxFlex="20%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="35%">
                                                                     <mat-form-field>
-                                                                        <input type="text" matInput
-                                                                            placeholder="descripcion"
-                                                                            id="descripcion{{lot}}-{{eg}}"
-                                                                            formControlName="descripcion">
+                                                                        <mat-label>Descripcion</mat-label>
+                                                                        <mat-select formControlName="descripcion"
+                                                                            id="descripcion{{ac}}-{{lot}}" required>
+                                                                            <mat-option *ngFor="let det of detalleagri"
+                                                                                [value]="det.id">
+                                                                                {{det.name}}
+                                                                            </mat-option>
+                                                                        </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="40%"
@@ -679,8 +821,8 @@
                                                                             formControlName="total">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                    fxFlex.sm="35%">
+                                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%"
+                                                                    fxFlex.sm="100%">
                                                                     <mat-form-field>
                                                                         <mat-label>Mes</mat-label>
                                                                         <mat-select formControlName="mes" multiple
@@ -692,6 +834,11 @@
                                                                         </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
+                                                                <button type="button" class="btndelete" color="warn"
+                                                                    mat-icon-button [disabled]="eg ==0"
+                                                                    (click)="removeEgresosmantenimiento(ac,lot,eg)">
+                                                                    <mat-icon>cancel</mat-icon>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                         <button mat-fab aria-label="add"
@@ -703,32 +850,36 @@
                                                 </mat-card>
                                                 <!-- fase Cocecha -->
                                                 <mat-card class="mat-card-fases">
-                                                    <mat-card-header>
-                                                        <mat-card-title>Fase Cosecha</mat-card-title>
-                                                        <mat-chip-list class="pull-right">
-                                                            <mat-chip color="accent" selected></mat-chip>
-                                                        </mat-chip-list>
-                                                    </mat-card-header>
+                                                    <h3>Fase Cosecha</h3>
+                                                    <mat-chip-list class="pull-right">
+                                                        <mat-chip color="accent" selected>
+                                                            $ {{lote.value.totalEgresosCosecha}}
+                                                        </mat-chip>
+                                                    </mat-chip-list>
                                                     <mat-card-content>
                                                         <div formArrayName="egresosCocecha" class="alternate">
                                                             <div fxLayout="row wrap"
                                                                 *ngFor="let egreso of egresadosCocecha(ac,lot).controls; let eg=index"
                                                                 class="content" [formGroupName]="eg">
 
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                    fxFlex.sm="25%">
+                                                                <div class="gr" fxFlex="20%" fxFlex.xs="45%"
+                                                                    fxFlex.sm="35%">
                                                                     <mat-form-field>
-                                                                        <input type="text" matInput
-                                                                            placeholder="descripcion"
-                                                                            id="descripcion{{lot}}-{{eg}}"
-                                                                            formControlName="descripcion">
+                                                                        <mat-label>Descripcion</mat-label>
+                                                                        <mat-select formControlName="descripcion"
+                                                                            id="descripcion{{ac}}-{{lot}}" required>
+                                                                            <mat-option *ngFor="let det of detalleagri"
+                                                                                [value]="det.id">
+                                                                                {{det.name}}
+                                                                            </mat-option>
+                                                                        </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <input type="text" matInput
-                                                                            placeholder="detalle"
+                                                                            placeholder="Detalle"
                                                                             id="detalle{{lot}}-{{eg}}"
                                                                             formControlName="detalle">
                                                                     </mat-form-field>
@@ -736,7 +887,7 @@
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="20%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="text" matInput
+                                                                        <input type="number" matInput
                                                                             placeholder="cantidad"
                                                                             id="cantidad{{lot}}-{{eg}}"
                                                                             formControlName="cantidad">
@@ -745,7 +896,7 @@
                                                                 <div class="gr" fxFlex="30%" fxFlex.xs="30%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="number" matInput
+                                                                        <input type="tel" matInput
                                                                             placeholder="valorunitario"
                                                                             id="valorunitario{{lot}}-{{eg}}"
                                                                             formControlName="valorunitario">
@@ -754,13 +905,13 @@
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="30%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="number" matInput
-                                                                            placeholder="total" id="total{{lot}}-{{eg}}"
+                                                                        <input type="tel" matInput placeholder="total"
+                                                                            id="total{{lot}}-{{eg}}"
                                                                             formControlName="total">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                    fxFlex.sm="35%">
+                                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%"
+                                                                    fxFlex.sm="100%">
                                                                     <mat-form-field>
                                                                         <mat-label>Mes</mat-label>
                                                                         <mat-select formControlName="mes" multiple
@@ -772,6 +923,11 @@
                                                                         </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
+                                                                <button type="button" class="btndelete" color="warn"
+                                                                    mat-icon-button [disabled]="eg ==0"
+                                                                    (click)="removeEgresosCosecha(ac,lot,eg)">
+                                                                    <mat-icon>cancel</mat-icon>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                         <button mat-fab aria-label="add"
@@ -782,30 +938,39 @@
                                                     </mat-card-content>
                                                 </mat-card>
                                             </div>
-
                                         </mat-expansion-panel>
                                     </mat-accordion>
-
-
                                 </div>
                             </ng-container>
                             <!-- pecuario -->
                             <ng-container *ngSwitchCase="2">
                                 <div formArrayName="lotesPecuario">
-                                    <div *ngFor="let lote of lotesPecuario(ac).controls; let lot=index" class="content"
-                                        [formGroupName]="lot">
-                                        <div fxLayout="row wrap">
-                                            <fieldset fxLayout="row wrap">
-                                                <legend>
-                                                    <h3><b>Lote <span *ngIf="lot>0">{{lot}}</span> <span
-                                                                *ngIf="lot==0">Principal</span> </b></h3>
-                                                </legend>
+                                    <mat-accordion class="example-headers-align" multi>
+                                        <mat-expansion-panel
+                                            *ngFor="let lote of lotesPecuario(ac).controls; let lot=index"
+                                            [formGroupName]="lot">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Lote
+                                                </mat-panel-title>
+                                                <mat-panel-description fxLayout="row">
+                                                    <span *ngIf="lot>0"># {{lot}}</span> <span
+                                                        *ngIf="lot==0">Principal</span>
+                                                    <mat-icon>pets</mat-icon>
+                                                    <button (click)="removeLotes(ac,lot)" [disabled]="lot==0"
+                                                        color="warn" mat-icon-button type="button">
+                                                        <mat-icon>cancel</mat-icon>
+                                                    </button>
+                                                </mat-panel-description>
+                                            </mat-expansion-panel-header>
+
+                                            <div fxLayout="row wrap">
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%">
                                                     <h3><b>Ingresos</b></h3>
                                                 </div>
                                                 <div class="gr" fxFlex="30%" fxFlex.xs="60%" fxFlex.sm="15%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="Producto derivado"
+                                                        <input type="text" matInput placeholder="Producto derivado"
                                                             id="prodderivado{{ac}}-{{lot}}"
                                                             formControlName="prodderivado">
                                                     </mat-form-field>
@@ -836,14 +1001,13 @@
                                                             formControlName="cantidadxanimal">
                                                     </mat-form-field>
                                                 </div>
-
                                                 <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
                                                     <mat-form-field>
                                                         <mat-label>Frecuencia</mat-label>
                                                         <mat-select formControlName="frecuencia"
                                                             id="frecuencia{{ac}}-{{lot}}" required>
                                                             <mat-option>--</mat-option>
-                                                            <mat-option *ngFor="let fre of frecuencia" [value]="fre.id">
+                                                            <mat-option *ngFor="let fre of frecuencia" [value]="fre">
                                                                 {{fre.name}}
                                                             </mat-option>
                                                         </mat-select>
@@ -851,51 +1015,51 @@
                                                 </div>
                                                 <div class="gr" fxFlex="48%" fxFlex.xs="30%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="Cant Producida"
-                                                            id="cantproducida{{ac}}-{{lot}}"
+                                                        <input type="tel" matInput placeholder="Cant Producida"
+                                                            id="cantproducida{{ac}}-{{lot}}" readonly
                                                             formControlName="cantproducida">
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="gr" fxFlex="48%" fxFlex.xs="30%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="Uni Total ventas"
+                                                        <input type="tel" matInput placeholder="Uni Total ventas"
                                                             id="unitotalesventa{{ac}}-{{lot}}"
                                                             formControlName="unitotalesventa">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="48%" fxFlex.xs="26%" fxFlex.sm="25%">
+                                                <div class="gr" fxFlex="48%" fxFlex.xs="29%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="%mortalidad"
+                                                        <input type="text" matInput placeholder="% Mortalidad" readonly
                                                             id="perdida{{ac}}-{{lot}}" formControlName="perdida">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="48%" fxFlex.xs="26%" fxFlex.sm="25%">
+                                                <div class="gr" fxFlex="48%" fxFlex.xs="28%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="preciomin"
+                                                        <input type="number" matInput placeholder="Precio mínimo"
                                                             id="preciomin{{ac}}-{{lot}}" formControlName="preciomin">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="48%" fxFlex.xs="26%" fxFlex.sm="25%">
+                                                <div class="gr" fxFlex="48%" fxFlex.xs="28%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="precioactual"
+                                                        <input type="number" matInput placeholder="Precio actual"
                                                             id="precioactual{{ac}}-{{lot}}"
                                                             formControlName="precioactual">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="48%" fxFlex.xs="26%" fxFlex.sm="25%">
+                                                <div class="gr" fxFlex="48%" fxFlex.xs="28%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="preciopromedio"
-                                                            id="preciopromedio{{ac}}-{{lot}}"
+                                                        <input type="number" matInput placeholder="Precio promedio"
+                                                            id="preciopromedio{{ac}}-{{lot}}" readonly
                                                             formControlName="preciopromedio">
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="gr" fxFlex="48%" fxFlex.xs="26%" fxFlex.sm="25%">
                                                     <mat-form-field>
-                                                        <input type="number" matInput placeholder="ingresomes"
+                                                        <input type="text" matInput placeholder="ingresomes" readonly
                                                             id="ingresomes{{ac}}-{{lot}}" formControlName="ingresomes">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="40%" fxFlex.xs="27%" fxFlex.sm="35%">
+                                                <div class="gr" fxFlex="65%" fxFlex.xs="65%" fxFlex.sm="65%">
                                                     <mat-form-field>
                                                         <mat-label>Mes Ingreso</mat-label>
                                                         <mat-select formControlName="mesingreso" multiple
@@ -906,32 +1070,44 @@
                                                         </mat-select>
                                                     </mat-form-field>
                                                 </div>
-
-                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%">
-                                                    <h3><b>Egresos</b></h3>
-                                                </div>
                                                 <!-- Egresos  -->
                                                 <mat-card class="mat-card-fases">
+                                                    <mat-card-header>
+                                                        <mat-card-title>Egresos</mat-card-title>
+                                                        <mat-chip-list class="pull-right">
+                                                            <mat-chip color="accent" selected>
+                                                                $ {{lote.value.totalEgresos}}
+                                                            </mat-chip>
+                                                        </mat-chip-list>
+                                                    </mat-card-header>
                                                     <mat-card-content>
                                                         <div formArrayName="egresos" class="alternate">
                                                             <div fxLayout="row wrap"
                                                                 *ngFor="let egreso of egresosPecuario(ac,lot).controls; let eg=index"
                                                                 class="content" [formGroupName]="eg">
-
+                                                                <button type="button" class="btndelete" color="warn"
+                                                                    mat-icon-button [disabled]="eg ==0"
+                                                                    (click)="removeEgresos(ac,lot,eg)">
+                                                                    <mat-icon>cancel</mat-icon>
+                                                                </button>
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="40%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="text" matInput
-                                                                            placeholder="descripcion"
-                                                                            id="descripcion{{lot}}-{{eg}}"
-                                                                            formControlName="descripcion">
+                                                                        <mat-label>Descripcion</mat-label>
+                                                                        <mat-select formControlName="descripcion"
+                                                                            id="descripcion{{ac}}-{{lot}}" required>
+                                                                            <mat-option *ngFor="let det of detalleagri"
+                                                                                [value]="det.id">
+                                                                                {{det.name}}
+                                                                            </mat-option>
+                                                                        </mat-select>
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                <div class="gr" fxFlex="40%" fxFlex.xs="50%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
                                                                         <input type="text" matInput
-                                                                            placeholder="detalle"
+                                                                            placeholder="Detalle"
                                                                             id="detalle{{lot}}-{{eg}}"
                                                                             formControlName="detalle">
                                                                     </mat-form-field>
@@ -939,31 +1115,31 @@
                                                                 <div class="gr" fxFlex="40%" fxFlex.xs="20%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="text" matInput
-                                                                            placeholder="cantidad"
+                                                                        <input type="number" matInput
+                                                                            placeholder="Cantidad"
                                                                             id="cantidad{{lot}}-{{eg}}"
                                                                             formControlName="cantidad">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="30%" fxFlex.xs="30%"
+                                                                <div class="gr" fxFlex="35%" fxFlex.xs="35%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="number" matInput
-                                                                            placeholder="valorunitario"
+                                                                        <input type="tel" matInput
+                                                                            placeholder="Valor Unitario"
                                                                             id="valorunitario{{lot}}-{{eg}}"
                                                                             formControlName="valorunitario">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="30%"
+                                                                <div class="gr" fxFlex="35%" fxFlex.xs="35%"
                                                                     fxFlex.sm="25%">
                                                                     <mat-form-field>
-                                                                        <input type="number" matInput
-                                                                            placeholder="total" id="total{{lot}}-{{eg}}"
+                                                                        <input type="tel" matInput placeholder="Total"
+                                                                            id="total{{lot}}-{{eg}}"
                                                                             formControlName="total">
                                                                     </mat-form-field>
                                                                 </div>
-                                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%"
-                                                                    fxFlex.sm="35%">
+                                                                <div class="gr" fxFlex="40%" fxFlex.xs="100%"
+                                                                    fxFlex.sm="100%">
                                                                     <mat-form-field>
                                                                         <mat-label>Mes</mat-label>
                                                                         <mat-select formControlName="mes" multiple
@@ -977,18 +1153,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <button mat-fab aria-label="add"
-                                                            (click)="addEgresosMantenimiento(ac,lot)" mat-mini-fab
-                                                            class="btnadd" type="button" color="accent">
+                                                        <button mat-fab aria-label="add" (click)="addEgresos(ac,lot)"
+                                                            mat-mini-fab class="btnadd" type="button" color="accent">
                                                             <mat-icon>add</mat-icon>
                                                         </button>
                                                     </mat-card-content>
                                                 </mat-card>
-
-
-                                            </fieldset>
-                                        </div>
-                                    </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
                                 </div>
                             </ng-container>
                             <!-- otras actividades -->
@@ -1005,127 +1178,121 @@
                                             </mat-panel-description>
                                         </mat-expansion-panel-header>
                                         <!-- ventas b r m  -->
-                                        <mat-card>
-                                            <mat-card-header>
-                                                <mat-card-title>Ventas B R M</mat-card-title>
-                                            </mat-card-header>
-                                            <mat-card-content>
 
-                                                <div fxLayout="row wrap">
-                                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                        <mat-radio-group formControlName="periodoventas"
-                                                            aria-label="Select an option">
-                                                            <mat-radio-button value="1">Dia</mat-radio-button>
-                                                            <mat-radio-button value="2">Semana</mat-radio-button>
-                                                            <mat-radio-button value="3">Quincena</mat-radio-button>
-                                                        </mat-radio-group>
-                                                    </div>
+                                        <div fxLayout="row wrap">                                         
+                                            <mat-card class="radioperiodo">
+                                                <mat-card-content>
+                                                    <mat-radio-group formControlName="periodoventas">
+                                                        <mat-radio-button value="1">Dia</mat-radio-button>
+                                                        <mat-radio-button value="2">Semana</mat-radio-button>
+                                                        <mat-radio-button value="3">Quincena</mat-radio-button>
+                                                    </mat-radio-group>
+                                                </mat-card-content>
+                                            </mat-card>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasB" multiple>
+                                                        <mat-option *ngFor="let d of diasSemana" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
 
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <mat-label>Buenas</mat-label>
-                                                            <mat-select formControlName="diasB" multiple>
-                                                                <mat-option *ngFor="let d of diasSemana" [value]="d.id"
-                                                                    [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
-                                                                    {{d.name}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="tel" matInput placeholder="Valor Buenas"
+                                                        id="valorB{{ac}}" formControlName="valorB">
+                                                </mat-form-field>
+                                            </div>
 
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" matInput placeholder="Valor Buenas"
-                                                                id="valorB{{ac}}" formControlName="valorB">
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" readonly matInput placeholder="Total"
-                                                                id="totalB{{ac}}" formControlName="totalB">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <ng-content *ngIf="acti.value.periodoventas !=2; then regulares">
-                                                    </ng-content>
-                                                    <ng-template #regulares>
-                                                        <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                            <mat-form-field>
-                                                                <mat-label>Regulares</mat-label>
-                                                                <mat-select formControlName="diasR" multiple>
-                                                                    <mat-option *ngFor="let d of diasSemana"
-                                                                        [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0"
-                                                                        [value]="d.id">
-                                                                        {{d.name}}
-                                                                    </mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                            <mat-form-field>
-                                                                <input type="number" matInput
-                                                                    placeholder="Valor Regulares" id="valorR{{ac}}"
-                                                                    formControlName="valorR">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                            <mat-form-field>
-                                                                <input type="number" readonly matInput
-                                                                    placeholder="Total" id="totalR{{ac}}"
-                                                                    formControlName="totalR">
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </ng-template>
-
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <mat-label>Malos</mat-label>
-                                                            <mat-select formControlName="diasM" multiple>
-                                                                <mat-option *ngFor="let d of diasSemana"
-                                                                    [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasR.indexOf(d.id) >= 0"
-                                                                    [value]="d.id">
-                                                                    {{d.name}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" matInput placeholder="Valor Malas"
-                                                                id="valorM{{ac}}" formControlName="valorM">
-                                                        </mat-form-field>
-                                                    </div>
-
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" readonly matInput placeholder="Total"
-                                                                id="totalM{{ac}}" formControlName="totalM">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" readonly matInput
-                                                                placeholder="Promedio" id="promedio{{ac}}"
-                                                                formControlName="promedio">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
-                                                        <mat-form-field>
-                                                            <input type="number" matInput placeholder="Dias"
-                                                                id="totalDias{{ac}}" formControlName="totalDias">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="gr" fxFlex="30%" fxFlex.xs="32%" fxFlex.sm="25%">
-                                                        <mat-form-field>
-                                                            <input type="number" readonly matInput
-                                                                placeholder="Total Promedio" id="totalPromedio{{ac}}"
-                                                                formControlName="totalPromedio">
-                                                        </mat-form-field>
-                                                    </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="text" readonly matInput placeholder="Total"
+                                                        id="totalB{{ac}}" formControlName="totalB">
+                                                </mat-form-field>
+                                            </div>
+                                            <ng-content *ngIf="acti.value.periodoventas !=2; then regulares">
+                                            </ng-content>
+                                            <ng-template #regulares>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <mat-label>Regulares</mat-label>
+                                                        <mat-select formControlName="diasR" multiple>
+                                                            <mat-option *ngFor="let d of diasSemana"
+                                                                [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0"
+                                                                [value]="d.id">
+                                                                {{d.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
                                                 </div>
-                                            </mat-card-content>
-                                        </mat-card>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <input type="tel" matInput placeholder="Valor Regulares"
+                                                            id="valorR{{ac}}" formControlName="valorR">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                    <mat-form-field>
+                                                        <input type="text" readonly matInput placeholder="Total"
+                                                            id="totalR{{ac}}" formControlName="totalR">
+                                                    </mat-form-field>
+                                                </div>
+                                            </ng-template>
+
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <mat-label>Malos</mat-label>
+                                                    <mat-select formControlName="diasM" multiple>
+                                                        <mat-option *ngFor="let d of diasSemana"
+                                                            [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasR.indexOf(d.id) >= 0"
+                                                            [value]="d.id">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="tel" matInput placeholder="Valor Malas"
+                                                        id="valorM{{ac}}" formControlName="valorM">
+                                                </mat-form-field>
+                                            </div>
+
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                                <mat-form-field>
+                                                    <input type="text" readonly matInput placeholder="Total"
+                                                        id="totalM{{ac}}" formControlName="totalM">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="43%" fxFlex.sm="25%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Promedio</mat-label>
+                                                    <input matInput type="text" readonly id="promedio{{ac}}"
+                                                        formControlName="promedio">
+                                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Dias</mat-label>
+                                                    <input matInput type="number" matInput placeholder="Dias"
+                                                        id="totalDias{{ac}}" formControlName="totalDias">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="25%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Total Promedio</mat-label>
+                                                    <input type="text" readonly matInput placeholder="Total Promedio"
+                                                        id="totalPromedio{{ac}}" formControlName="totalPromedio">
+                                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
 
                                     </mat-expansion-panel>
                                 </mat-accordion>
@@ -1135,12 +1302,6 @@
                     </div>
                 </mat-tab>
             </div>
-        </div>
-
-    </mat-tab-group>
-    <button mat-fab type="button" class="addact" color="primary" mat-mini-fab (click)="addActividad()">
-        <mat-icon>add</mat-icon>
-    </button>
-
-
-</form>
+        </mat-tab-group>
+    </form>
+</ng-container>

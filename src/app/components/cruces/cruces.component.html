@@ -5,5 +5,5 @@
 </ng-template>
 
 <ng-template #rural>
-    <app-rural></app-rural>
+    <app-rural (isLoad)="cahngeLoad($event)" [loadData]="loadData"></app-rural>
 </ng-template>

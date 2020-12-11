@@ -13,6 +13,11 @@ const routes: Routes = [
           import('../balance/balance.module').then(m => m.BalanceModule)
       },
       {
+        path: 'ubicacion',
+        loadChildren: () =>
+          import('../ubicacion/ubicacion.module').then(m => m.UbicacionModule)
+      },
+      {
         path: 'balance',
         loadChildren: () =>
           import('../balance/balance.module').then(m => m.BalanceModule)

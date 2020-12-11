@@ -4,6 +4,8 @@ export class LoteAgro {
     areacult: string;
     aplicadiastancia: string;
     aplicaplantasinformacli: string;
+    dplantas:number;
+    dsurcos:number;
     diastancia: string;
     planatasinformacli: string;
     numplantas: string;
