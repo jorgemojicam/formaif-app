@@ -19,6 +19,9 @@ div.alternate>div:nth-of-type(odd) {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.radioperiodo{
+  margin-bottom: 8px;
+}
 .content {
   border-radius: 8px;
   margin: 5px;
@@ -61,7 +64,7 @@ div.alternate>div:nth-of-type(odd) {
   padding: 0 14px 16px;
 }
 ::ng-deep .mat-radio-label-content {
-  margin-right: 32px;
+  margin-right: 2px;
 }
 ::ng-deep .mat-tab-header {
   width: 85%; 

@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CrucesAgro } from 'src/app/model/crucesagro';
+import { Egresos } from 'src/app/model/egresos';
 import { LoteAgro } from 'src/app/model/loteAgro';
 import { Solicitud } from 'src/app/model/solicitud';
 import Swal from 'sweetalert2';
@@ -84,7 +85,7 @@ export class RuralComponent implements OnInit {
       })
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
-        
+
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x, index) => {
 
@@ -114,7 +115,7 @@ export class RuralComponent implements OnInit {
           let totalM = cantM * valorM * cantperiodo
           let promedio = (valorB + valorR + valorM) / valorpromedio
           let totalpromedio = promedio * totaldias
- 
+
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
             valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
@@ -311,7 +312,7 @@ export class RuralComponent implements OnInit {
               totalEgresosCosecha: isFinite(totalEgCosecha) ? totalEgCosecha.toLocaleString('es-CO') : 0,
               totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0
             }, { emitEvent: false })
-          })        
+          })
 
         });
       })
@@ -325,6 +326,7 @@ export class RuralComponent implements OnInit {
     const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.name.toLowerCase())
     return this.datosAuto[index].filter(option => option.name.toLowerCase().indexOf(filterValue) >= 0 && option.tipo === tipo);
   }
+
   itemactividad() {
     return this.fb.group({
       nombre: [''],
@@ -381,7 +383,6 @@ export class RuralComponent implements OnInit {
     })
   }
   loaditemLotes(lotes: LoteAgro[]) {
-
     let lotesArray = this.fb.array([])
     for (let lo = 0; lo < lotes.length; lo++) {
       lotesArray.push(
@@ -392,51 +393,46 @@ export class RuralComponent implements OnInit {
           dsurcos: lotes[lo].dsurcos,
           dplantas: lotes[lo].dplantas,
           diastancia: lotes[lo].diastancia,
-          planatasinformacli: '',
-          unidadventa: '',
+          planatasinformacli: lotes[lo].planatasinformacli,
+          unidadventa: lotes[lo].unidadventa,
           edadcult: lotes[lo].edadcult,
           periodoedad: lotes[lo].periodoedad,
-          rendiemientolote: '',
-          unidadestotales: '',
-          perdida: '',
-          preciomin: '',
-          precioactual: '',
-          preciopromedio: '',
-          totalIngreso: '',
-          cocecha: '',
-
-          mesCos: '',
-          rendimientoCos: '',
-          unidadesCos: '',
-          perdidaCos: '',
-          procentageCos: '',
-          totalCos: '',
-
-          mesTra: '',
-          rendimientoTra: '',
-          unidadesTra: '',
-          perdidaTra: '',
-          procentageTra: '',
-          totalTra: '',
-
-          mesPepeo: '',
-          rendimientoPepeo: '',
-          unidadesPepeo: '',
-          perdidaPepeo: '',
-          procentagePepeo: '',
-          totalPepeo: '',
-
-          totalUnidades: '',
-          totalLoteAunual: '',
-
-          egresosAdecuacion: this.fb.array([this.itemEgresosAdecuacion()]),
-          totalEgresosAdecuacion: '',
-          egresosSiembra: this.fb.array([this.itemEgresosSiembra()]),
-          totalEgresosSiembre: '',
-          egresosMante: this.fb.array([this.itemEgresosMante()]),
-          totalEgresosMante: '',
-          egresosCocecha: this.fb.array([this.itemEgresosMante()]),
-          totalEgresosCosecha: '',
+          rendiemientolote: lotes[lo].rendiemientolote,
+          unidadestotales: lotes[lo].unidadestotales,
+          perdida: lotes[lo].perdida,
+          preciomin: lotes[lo].preciomin,
+          precioactual: lotes[lo].precioactual,
+          preciopromedio: lotes[lo].preciopromedio,
+          totalIngreso: lotes[lo].totalIngreso,
+          cocecha: lotes[lo].cocecha,
+          mesCos: lotes[lo].mesCos,
+          rendimientoCos: lotes[lo].rendimientoCos,
+          unidadesCos: lotes[lo].unidadesCos,
+          perdidaCos: lotes[lo].perdidaCos,
+          procentageCos: lotes[lo].procentageCos,
+          totalCos: lotes[lo].totalCos,
+          mesTra: lotes[lo].mesTra,
+          rendimientoTra: lotes[lo].rendimientoTra,
+          unidadesTra: lotes[lo].unidadesTra,
+          perdidaTra: lotes[lo].perdidaTra,
+          procentageTra: lotes[lo].procentageTra,
+          totalTra: lotes[lo].totalTra,
+          mesPepeo: lotes[lo].mesPepeo,
+          rendimientoPepeo: lotes[lo].rendimientoPepeo,
+          unidadesPepeo: lotes[lo].unidadesPepeo,
+          perdidaPepeo: lotes[lo].perdidaPepeo,
+          procentagePepeo: lotes[lo].procentagePepeo,
+          totalPepeo: lotes[lo].totalPepeo,
+          totalUnidades: lotes[lo].totalUnidades,
+          totalLoteAunual: lotes[lo].totalLoteAunual,
+          egresosAdecuacion: this.loadEgresos(lotes[lo].egresosAdecuacion),
+          totalEgresosAdecuacion: lotes[lo].totalEgresosAdecuacion,
+          egresosSiembra: this.loadEgresos(lotes[lo].egresosSiembra),
+          totalEgresosSiembre: lotes[lo].totalEgresosSiembre,
+          egresosMante: this.loadEgresos(lotes[lo].egresosMante),
+          totalEgresosMante: lotes[lo].totalEgresosMante,
+          egresosCocecha: this.loadEgresos(lotes[lo].egresosCocecha),
+          totalEgresosCosecha:lotes[lo].totalEgresosCosecha,
 
         })
       )
@@ -553,13 +549,13 @@ export class RuralComponent implements OnInit {
       totalUnidades: '',
       totalLoteAunual: '',
 
-      egresosAdecuacion: this.fb.array([this.itemEgresosAdecuacion()]),
+      egresosAdecuacion: this.fb.array([this.itemEgresos()]),
       totalEgresosAdecuacion: '',
-      egresosSiembra: this.fb.array([this.itemEgresosSiembra()]),
+      egresosSiembra: this.fb.array([this.itemEgresos()]),
       totalEgresosSiembre: '',
-      egresosMante: this.fb.array([this.itemEgresosMante()]),
+      egresosMante: this.fb.array([this.itemEgresos()]),
       totalEgresosMante: '',
-      egresosCocecha: this.fb.array([this.itemEgresosMante()]),
+      egresosCocecha: this.fb.array([this.itemEgresos()]),
       totalEgresosCosecha: '',
     })
   }
@@ -579,7 +575,22 @@ export class RuralComponent implements OnInit {
   removeEgresos(ac: number, lot: number, eg: number) {
     this.egresosPecuario(ac, lot).removeAt(eg);
   }
-
+  loadEgresos(egresos: Egresos[]) {
+    let egresosArray = this.fb.array([])
+    for (let eg = 0; eg < egresos.length; eg++) {
+      egresosArray.push(
+        this.fb.group({
+          descripcion: egresos[eg].descripcion,
+          detalle: egresos[eg].detalle,
+          cantidad: egresos[eg].cantidad,
+          valorunitario: egresos[eg].valorunitario,
+          total: egresos[eg].total,
+          mes: egresos[eg].mes
+        })
+      )
+    }
+    return egresosArray
+  }
   itemEgresos() {
     return this.fb.group({
       descripcion: '',
@@ -597,22 +608,12 @@ export class RuralComponent implements OnInit {
     return this.lotes(lot).at(egre).get("egresosAdecuacion") as FormArray
   }
   addEgresosAdecuacion(act: number, lot: number) {
-    this.egresadosAdecuacion(act, lot).push(this.itemEgresosAdecuacion());
+    this.egresadosAdecuacion(act, lot).push(this.itemEgresos());
   }
   removeEgresosAdecuacion(ac: number, lot: number, eg: number) {
     this.egresadosAdecuacion(ac, lot).removeAt(eg);
   }
 
-  itemEgresosAdecuacion() {
-    return this.fb.group({
-      descripcion: '',
-      detalle: '',
-      cantidad: '',
-      valorunitario: '',
-      total: '',
-      mes: ''
-    })
-  }
   //--------------------------------------------------------------------------------
 
   //-------------------------------Egresos Siembra------------------------------
@@ -620,21 +621,12 @@ export class RuralComponent implements OnInit {
     return this.lotes(lot).at(egre).get("egresosSiembra") as FormArray
   }
   addEgresosSiembra(act: number, lot: number) {
-    this.egresadosSiembra(act, lot).push(this.itemEgresosAdecuacion());
+    this.egresadosSiembra(act, lot).push(this.itemEgresos());
   }
   removeEgresosSiembra(ac: number, lot: number, eg: number) {
     this.egresadosSiembra(ac, lot).removeAt(eg);
   }
-  itemEgresosSiembra() {
-    return this.fb.group({
-      descripcion: '',
-      detalle: '',
-      cantidad: '',
-      valorunitario: '',
-      total: '',
-      mes: ''
-    })
-  }
+  
   //-------------------------------------------------------------------
 
   //-------------------------------Egresos Mantinimiento------------------------------
@@ -642,44 +634,24 @@ export class RuralComponent implements OnInit {
     return this.lotes(lot).at(egre).get("egresosMante") as FormArray
   }
   addEgresosMantenimiento(act: number, lot: number) {
-    this.egresadosMante(act, lot).push(this.itemEgresosMante());
+    this.egresadosMante(act, lot).push(this.itemEgresos());
   }
   removeEgresosmantenimiento(ac: number, lot: number, eg: number) {
     this.egresadosMante(ac, lot).removeAt(eg);
   }
-  itemEgresosMante() {
-    return this.fb.group({
-      descripcion: '',
-      detalle: '',
-      cantidad: '',
-      valorunitario: '',
-      total: '',
-      mes: ''
-    })
-  }
+
   //-------------------------------------------------------------------
   //-------------------------------Egresos Cocecha------------------------------
   egresadosCocecha(lot, egre): FormArray {
     return this.lotes(lot).at(egre).get("egresosCocecha") as FormArray
   }
   addEgresosCocecho(act: number, lot: number) {
-    this.egresadosCocecha(act, lot).push(this.itemEgresosCocecha());
-  }
-  itemEgresosCocecha() {
-    return this.fb.group({
-      descripcion: '',
-      detalle: '',
-      cantidad: '',
-      valorunitario: '',
-      total: '',
-      mes: ''
-    })
+    this.egresadosCocecha(act, lot).push(this.itemEgresos());
   }
   removeEgresosCosecha(ac: number, lot: number, eg: number) {
     this.egresadosCocecha(ac, lot).removeAt(eg);
   }
   //-------------------------------------------------------------------
-
 
   formatNumber(num: string) {
     if (typeof (num) == "number") {

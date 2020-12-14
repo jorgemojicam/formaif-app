@@ -14,7 +14,8 @@
 <mat-drawer-container class="menu-container" hasBackdrop="true">
     <mat-drawer #drawer mode="over">
         <mat-list>
-            <mat-list-item routerLink="ubicacion" [queryParams]= "{solicitud:sol}">
+       
+            <mat-list-item *ngIf="tipo==2" routerLink="ubicacion" [queryParams]= "{solicitud:sol}">
                 <mat-icon mat-list-icon>location_on</mat-icon>
                 <div mat-line>Ubicacion</div>
             </mat-list-item>

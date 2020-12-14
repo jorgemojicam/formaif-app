@@ -14,6 +14,7 @@ export class AdminComponent implements OnInit {
   public opened: boolean = false
   sol: string;
   titulo: string;
+  tipo:number;
 
   constructor(
     private router: Router,
@@ -28,6 +29,7 @@ export class AdminComponent implements OnInit {
         this.sol = params.get('solicitud')
 
         this.srvSol.getSol(this.sol).subscribe((datasol) => {
+          this.tipo = datasol.asesor
           if (datasol.asesor == 2)
             this.titulo = "Agro";
           else

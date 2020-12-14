@@ -58,8 +58,7 @@
                                 </mat-expansion-panel-header>
                                 <!-- ventas b r m  -->
                                 <div fxLayout="row wrap">
-                                    <h2>Ventas Buenas/Regulares/Malas</h2>
-                                    <mat-card class="encabezado" style="width: 100%;">
+                                    <mat-card class="radioperiodo">
                                         <mat-card-content>
                                             <mat-radio-group formControlName="periodoventas">
                                                 <mat-radio-button value="1">Dia</mat-radio-button>
@@ -68,19 +67,46 @@
                                             </mat-radio-group>
                                         </mat-card-content>
                                     </mat-card>
-                                    <div class="gr" fxFlex="30%" fxFlex.xs="43%" fxFlex.sm="25%">
-                                        <mat-form-field>
-                                            <mat-label>Buenas</mat-label>
-                                            <mat-select formControlName="diasB" multiple>
-                                                <mat-option *ngFor="let d of diasSemana" [value]="d.id"
-                                                    [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
-                                                    {{d.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                        <ng-container [ngSwitch]="acti.value.periodoventas">
+                                            <ng-container *ngSwitchCase="1">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasB" multiple>
+                                                        <mat-option *ngFor="let d of diasSemana" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="2">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasB" multiple>
+                                                        <mat-option *ngFor="let d of semanas" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="3">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasB" multiple>
+                                                        <mat-option *ngFor="let d of quincena" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+
+                                        </ng-container>
                                     </div>
 
-                                    <div class="gr" fxFlex="30%" fxFlex.xs="23%" fxFlex.sm="25%">
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
                                         <mat-form-field>
                                             <input type="tel" matInput placeholder="Valor Buenas" id="valorB{{ac}}"
                                                 formControlName="valorB">
@@ -96,19 +122,45 @@
                                     <ng-content *ngIf="acti.value.periodoventas !=2; then regulares">
                                     </ng-content>
                                     <ng-template #regulares>
-                                        <div class="gr" fxFlex="30%" fxFlex.xs="43%" fxFlex.sm="25%">
-                                            <mat-form-field>
-                                                <mat-label>Regulares</mat-label>
-                                                <mat-select formControlName="diasR" multiple>
-                                                    <mat-option *ngFor="let d of diasSemana"
-                                                        [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0"
-                                                        [value]="d.id">
-                                                        {{d.name}}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
+                                        <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                            <ng-container [ngSwitch]="acti.value.periodoventas">
+                                                <ng-container *ngSwitchCase="1">
+                                                    <mat-form-field>
+                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-select formControlName="diasR" multiple>
+                                                            <mat-option *ngFor="let d of diasSemana" [value]="d.id"
+                                                                [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                                {{d.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="2">
+                                                    <mat-form-field>
+                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-select formControlName="diasR" multiple>
+                                                            <mat-option *ngFor="let d of semanas" [value]="d.id"
+                                                                [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                                {{d.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="3">
+                                                    <mat-form-field>
+                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-select formControlName="diasR" multiple>
+                                                            <mat-option *ngFor="let d of quincena" [value]="d.id"
+                                                                [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
+                                                                {{d.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </ng-container>
+
+                                            </ng-container>
                                         </div>
-                                        <div class="gr" fxFlex="30%" fxFlex.xs="23%" fxFlex.sm="25%">
+                                        <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
                                             <mat-form-field>
                                                 <input type="tel" matInput placeholder="Valor Regulares"
                                                     id="valorR{{ac}}" formControlName="valorR">
@@ -122,20 +174,46 @@
                                         </div>
                                     </ng-template>
 
-                                    <div class="gr" fxFlex="30%" fxFlex.xs="43%" fxFlex.sm="25%">
-                                        <mat-form-field>
-                                            <mat-label>Malos</mat-label>
-                                            <mat-select formControlName="diasM" multiple>
-                                                <mat-option *ngFor="let d of diasSemana"
-                                                    [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasR.indexOf(d.id) >= 0"
-                                                    [value]="d.id">
-                                                    {{d.name}}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                        <ng-container [ngSwitch]="acti.value.periodoventas">
+                                            <ng-container *ngSwitchCase="1">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasM" multiple>
+                                                        <mat-option *ngFor="let d of diasSemana" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="2">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasM" multiple>
+                                                        <mat-option *ngFor="let d of semanas" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+                                            <ng-container *ngSwitchCase="3">
+                                                <mat-form-field>
+                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-select formControlName="diasM" multiple>
+                                                        <mat-option *ngFor="let d of quincena" [value]="d.id"
+                                                            [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">
+                                                            {{d.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </ng-container>
+
+                                        </ng-container>
                                     </div>
 
-                                    <div class="gr" fxFlex="30%" fxFlex.xs="23%" fxFlex.sm="25%">
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="25%">
                                         <mat-form-field>
                                             <input type="tel" matInput placeholder="Valor Malas" id="valorM{{ac}}"
                                                 formControlName="valorM">

@@ -18,26 +18,29 @@
             <mat-card-title>Cuentas por Cobrar</mat-card-title>
             <mat-card-subtitle>cobrar</mat-card-subtitle>
             <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected></mat-chip>
+                <mat-chip color="accent" selected>
+                   $ {{balanceForm.controls.cobrarTotal.value}}
+                </mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content fxLayout="row wrap">
             <div class="gr" fxFlex="10%" fxFlex.xs="20%" fxFlex.sm="20%">
                 <mat-form-field>
-                    <input type="number" matInput placeholder="Cliente" id="clienteCobrar"
+                    <input type="number" matInput placeholder="#Clientes" id="clienteCobrar"
                         formControlName="clienteCobrar">
                 </mat-form-field>
             </div>
 
             <div class="gr" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
-                <mat-form-field>
-                    <input type="text" matInput placeholder="Observacion" id="observacionesCobrar"
-                        formControlName="observacionesCobrar">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Observaciones</mat-label>
+                    <textarea matInput formControlName="observacionesCobrar"
+                        placeholder="Observaciones">Observaciones...</textarea>
                 </mat-form-field>
             </div>
             <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
                 <mat-form-field>
-                    <input pattern="[0-9]" matInput placeholder="Valor" id="valorCobrar" formControlName="valorCobrar">
+                    <input type="tel" matInput placeholder="Valor" id="valorCobrar" formControlName="valorCobrar">
                 </mat-form-field>
             </div>
             <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
@@ -53,6 +56,49 @@
             </div>
         </mat-card-content>
     </mat-card>
+        <!-- Recuperacion de cartera -->
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Recuperacion de cartera</mat-card-title>
+                <mat-card-subtitle>recuperacion</mat-card-subtitle>
+                <mat-chip-list class="pull-right">
+                    <mat-chip color="accent" selected>{{balanceForm.controls.totalRecuperacion.value}}</mat-chip>
+                </mat-chip-list>
+            </mat-card-header>
+            <mat-card-content>
+                <div formArrayName="recuperacion" class="alternate">
+                    <div fxLayout="row wrap"
+                        *ngFor="let itemrow of balanceForm.controls.recuperacion['controls']; let rec=index"
+                        [formGroupName]="rec">    
+                        <div class="gr" fxFlex="20%" fxFlex.xs="55%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <mat-label>Mes</mat-label>
+                                <mat-select formControlName="mes" id="mes{{rec}}" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let mes of meses" [value]="mes.id">
+                                        {{mes.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <input type="number" matInput placeholder="Valor" id="valor{{rec}}"
+                                    formControlName="valor">
+                            </mat-form-field>
+                        </div>                     
+                        <button class="btndelete" color="warn" mat-icon-button [disabled]="rec==0"
+                            (click)="deleteRecuperacion(rec)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                    (click)="addNewRecuperacion()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-card-content>
+        </mat-card>
     <!-- Inventario -->
     <mat-card>
         <mat-card-header>
@@ -699,8 +745,8 @@
 
                             <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
                                 <mat-form-field>
-                                    <input type="text" readonly matInput placeholder="Cuota Calcu" id="cuotacalcu{{pas}}"
-                                        formControlName="cuotacalcu">
+                                    <input type="text" readonly matInput placeholder="Cuota Calcu"
+                                        id="cuotacalcu{{pas}}" formControlName="cuotacalcu">
                                 </mat-form-field>
                             </div>
                             <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
@@ -752,7 +798,6 @@
 
                         </ng-container>
 
-                        
                     </ng-container>
 
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="pas==0"

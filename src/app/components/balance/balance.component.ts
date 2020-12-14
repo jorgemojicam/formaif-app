@@ -26,6 +26,7 @@ export class BalanceComponent implements OnInit {
   tipoPasivo: any = DataSelect.TipoPasivo;
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
+  meses: any = DataSelect.Meses;
 
   totalActFam: number;
   totalProv: number;
@@ -48,6 +49,9 @@ export class BalanceComponent implements OnInit {
     incobrableCobrar: '',
     recuperacionCobrar: '',
     cobrarTotal: '',
+    porcentajeCobrar: '',
+    recuperacion: this.fb.array([this.initRecuperacion()]),
+    totalRecuperacion: '',
     inventarioRow: this.fb.array([this.initInventarioRows()]),
     inventarioTotal: '',
     actividadNegRows: this.fb.array([this.initActinegRow()]),
@@ -65,8 +69,8 @@ export class BalanceComponent implements OnInit {
   ngOnInit() {
 
     this.route.queryParamMap.subscribe((params) => {
-        this.sol = params.get('solicitud')
-      });
+      this.sol = params.get('solicitud')
+    });
 
     this.srvSol.getSol(this.sol).subscribe((datasol) => {
       if (this.sol) {
@@ -75,24 +79,49 @@ export class BalanceComponent implements OnInit {
       }
       this.balanceForm.valueChanges.subscribe(form => {
 
-        let valorefec = this.formatNumber(this.balanceForm.controls.efectivo.value)
-        let efecsin = this.curPipe.transform(valorefec, 'USD', 'symbol', '1.0-0')
-        this.balanceForm.patchValue({ efectivo: efecsin == null ? "" : efecsin.replace("$", "") }, { emitEvent: false });
+        let efectivo = this.formatNumber(this.balanceForm.controls.efectivo.value)
+        let incobrable = this.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
+        let valorCobrar = this.formatNumber(this.balanceForm.controls.valorCobrar.value)
+        let porcentajeCobrar = (incobrable / valorCobrar) * 100
+        let total = valorCobrar - incobrable
+
+        let totalrec = 0
+        const recupera = <FormArray>this.balanceForm.controls['recuperacion'];
+        recupera.controls.forEach(x => {
+          let valor = x.get('valor').value
+          totalrec += this.formatNumber(x.get('valor').value)          
+          x.patchValue({
+            valor: isFinite(valor)?valor.toLocaleString:0
+          }, { emitEvent: false }) 
+        });
 
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
           totalInv += this.formatNumber(x.get('valor').value)
-          let sinCurr = this.curPipe.transform(this.formatNumber(x.get('valor').value), 'USD', 'symbol', '1.0-0')
-          x.get("valor").setValue(sinCurr == null ? "" : sinCurr.replace("$", ""), { emitEvent: false });
+          let valor = this.formatNumber(x.get('valor').value)
+          x.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false })
         });
+        
+        this.balanceForm.patchValue({
+          efectivo: isFinite(efectivo) ? efectivo.toLocaleString() : 0,
+          incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
+          valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
+          cobrarTotal: isFinite(total) ? total.toLocaleString() : 0,
+          porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed(2) : 0,
+          totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
+        }, { emitEvent: false });
 
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          totalactneg += this.formatNumber(x.get('valor').value)
-          let sinCurr = this.curPipe.transform(this.formatNumber(x.get('valor').value), 'USD', 'symbol', '1.0-0')
-          x.get("valor").setValue(sinCurr == null ? "" : sinCurr.replace("$", ""), { emitEvent: false });
+          let valor =this.formatNumber(x.get('valor').value)
+          totalactneg+=valor
+          x.patchValue({
+            valor: isFinite(valor)?valor.toLocaleString():0
+          }, { emitEvent: false });
         });
 
         let totalactfam = 0
@@ -121,7 +150,7 @@ export class BalanceComponent implements OnInit {
           let valor = this.formatNumber(x.get('valor').value)
           let meses = 12
           let netocuota = plazo - numcuota
-          
+
           if (tipo.id == "1") {
 
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
@@ -134,10 +163,10 @@ export class BalanceComponent implements OnInit {
                 duration: 3000,
               });
             }
-  
+
             if (netocuota > 0 && numcuota > 0) {
               x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
-            } 
+            }
 
             x.get("proyeccion").setValue(proyeccion, { emitEvent: false });
 
@@ -148,23 +177,23 @@ export class BalanceComponent implements OnInit {
               x.get("corrienteN").setValue(corriente, { emitEvent: false });
               x.get("nocorrienteN").setValue(nocorriente, { emitEvent: false });
             }
-          }else if (tipo.id == "6") {
+          } else if (tipo.id == "6") {
 
-            let corriente=0
+            let corriente = 0
             let nocorriente = 0
             let valor = parseFloat("0.071078")
             let cuotacalcu = monto * valor
 
-            if(saldo>0){
+            if (saldo > 0) {
               nocorriente = saldo - corriente
-              if(periodo ==1){
-                corriente = saldo / 2                
-              }else if(periodo ==2){
+              if (periodo == 1) {
+                corriente = saldo / 2
+              } else if (periodo == 2) {
                 corriente = saldo
-              }              
-            }else{
-              nocorriente =0
-              corriente =0
+              }
+            } else {
+              nocorriente = 0
+              corriente = 0
             }
 
             x.get("cuotacalcu").setValue(cuotacalcu, { emitEvent: false });
@@ -196,6 +225,9 @@ export class BalanceComponent implements OnInit {
       incobrableCobrar: bal.incobrableCobrar,
       recuperacionCobrar: bal.recuperacionCobrar,
       cobrarTotal: bal.cobrarTotal,
+      porcentajeCobrar: '',
+      recuperacion: this.fb.array([this.initRecuperacion()]),
+      totalRecuperacion: '',
       inventarioRow: this.loadInventarioRows(bal.inventarioRow),
       inventarioTotal: bal.inventarioTotal,
       actividadNegRows: this.fb.array([this.initActinegRow()]),
@@ -219,7 +251,7 @@ export class BalanceComponent implements OnInit {
       valor: ['']
     });
   }
-  loadInventarioRows(inventarios:Inventario[]) {
+  loadInventarioRows(inventarios: Inventario[]) {
     let arrayInventario = this.fb.array([])
     inventarios.forEach(inv => {
       arrayInventario.push(this.fb.group({
@@ -229,7 +261,7 @@ export class BalanceComponent implements OnInit {
         valor: [inv.valor]
       }))
     });
-    return arrayInventario     
+    return arrayInventario
   }
 
   inventario() {
@@ -273,6 +305,7 @@ export class BalanceComponent implements OnInit {
   deleteActFamRow(index: number) {
     this.activosFamilia().removeAt(index);
   }
+  //---------------Proveedoresd-------------------------
   proveedores() {
     return this.balanceForm.get('proveedoresRow') as FormArray;
   }
@@ -288,6 +321,25 @@ export class BalanceComponent implements OnInit {
   deleteProvRow(index: number) {
     this.proveedores().removeAt(index);
   }
+  //----------------------------------------
+
+  //--------------Recuperacion cartera-------------------------
+  recuperacion() {
+    return this.balanceForm.get('recuperacion') as FormArray;
+  }
+  initRecuperacion() {
+    return this.fb.group({
+      mes: ['', Validators.required],
+      valor: ['']
+    });
+  }
+  addNewRecuperacion() {
+    this.recuperacion().push(this.initRecuperacion());
+  }
+  deleteRecuperacion(index: number) {
+    this.recuperacion().removeAt(index);
+  }
+  //----------------------------------------
   initPasivoRows() {
     return this.fb.group({
       tipo: ['', Validators.required],
@@ -301,7 +353,7 @@ export class BalanceComponent implements OnInit {
       cuota: [''],
       valor: [''],
       periodo: [''],
-      cuotacalcu:'',
+      cuotacalcu: '',
       tasa: [''],
       pago: [''],//Periodico =1, Irregular=2
       calculoint: [''],

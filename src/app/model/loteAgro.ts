@@ -1,11 +1,12 @@
+import { Egresos } from './egresos';
+
 export class LoteAgro {
-    
     nombre: string;
     areacult: string;
     aplicadiastancia: string;
     aplicaplantasinformacli: string;
-    dplantas:number;
-    dsurcos:number;
+    dplantas: number;
+    dsurcos: number;
     diastancia: string;
     planatasinformacli: string;
     numplantas: string;
@@ -20,25 +21,32 @@ export class LoteAgro {
     preciopromedio: string;
     totalIngreso: string;
     cocecha: string;
-
     mesCos: string;
     rendimientoCos: string;
     unidadesCos: string;
     perdidaCos: string;
     procentageCos: string;
     totalCos: string;
-
     mesTra: number;
     rendimientoTra: string;
     unidadesTra: number;
     perdidaTra: number;
     procentageTra: number;
     totalTra: number;
-
     mesPepeo: number;
     rendimientoPepeo: number;
     unidadesPepeo: number;
     perdidaPepeo: number;
     procentagePepeo: number;
     totalPepeo: number;
+    totalUnidades: number;
+    totalLoteAunual: number;
+    egresosAdecuacion: Egresos[];
+    totalEgresosAdecuacion: number;
+    egresosSiembra: Egresos[];
+    totalEgresosSiembre: number;
+    egresosMante: Egresos[];
+    totalEgresosMante: number;
+    egresosCocecha: Egresos[];
+    totalEgresosCosecha: number;
 }
