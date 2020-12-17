@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AnalisisComponent } from '../analisis/analisis.component';
+import { PropuestaComponent } from '../propuesta/propuesta.component';
+import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
 
 const routes: Routes = [
@@ -14,8 +17,7 @@ const routes: Routes = [
       },
       {
         path: 'ubicacion',
-        loadChildren: () =>
-          import('../ubicacion/ubicacion.module').then(m => m.UbicacionModule)
+        component: UbicacionComponent,
       },
       {
         path: 'balance',
@@ -34,9 +36,12 @@ const routes: Routes = [
       },
       {
         path: 'analisis',
-        loadChildren: () =>
-          import('../analisis/analisis.module').then(m => m.AnalisisModule)
-      }    
+       component:AnalisisComponent
+      },
+      {
+        path: 'propuesta',
+        component: PropuestaComponent,
+      }
     ]
   }
 ];

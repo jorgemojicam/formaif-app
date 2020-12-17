@@ -17,6 +17,52 @@
       "name": "Inventario Comercial"
     }
   ],
+  "TipoInventarioAgro": [
+    {
+      "id": 1,
+      "name": "Animales"
+    },
+    {
+      "id": 2,
+      "name": "Cultivos transitorios"
+    },
+    {
+      "id": 3,
+      "name": "Cultivos semipermanente"
+    },
+    {
+      "id": 4,
+      "name": "Materia prima"
+    },
+    {
+      "id": 5,
+      "name": "Producto proceso"
+    },
+    {
+      "id": 6,
+      "name": "Producto terminado"
+    },
+    {
+      "id": 7,
+      "name": "Inventario comercial"
+    },
+    {
+      "id": 8,
+      "name": "Insumos"
+    },
+    {
+      "id": 9,
+      "name": "Productos agrícolas"
+    },
+    {
+      "id": 10,
+      "name": "Productos pecuarios"
+    },
+    {
+      "id": 11,
+      "name": "Productos derivados"
+    }
+  ],
   "TipoActivoNeg": [
     {
       "id": 1,
@@ -1249,6 +1295,52 @@
     {
       "id": 9,
       "name": "Análisis de suelos"
+    }
+  ],
+  "DetallePecuario": [
+    {
+      "id": 1,
+      "name": "Mano de obra/Jornales"
+    },
+    {
+      "id": 2,
+      "name": "Compra de animales"
+    },
+    {
+      "id": 3,
+      "name": "Insumos"
+    },
+    {
+      "id": 4,
+      "name": "Empaque para Venta"
+    },
+    {
+      "id": 5,
+      "name": "Fletes"
+    },
+    {
+      "id": 6,
+      "name": "Imprevistos (otros)"
+    },
+    {
+      "id": 7,
+      "name": "Labores culturales"
+    },
+    {
+      "id": 8,
+      "name": "Arriendo"
+    },
+    {
+      "id": 9,
+      "name": "Análisis de suelos"
+    },
+    {
+      "id": 10,
+      "name": "Vacunas-vitaminas"
+    },
+    {
+      "id": 11,
+      "name": "Inseminación"
     }
   ]
 }

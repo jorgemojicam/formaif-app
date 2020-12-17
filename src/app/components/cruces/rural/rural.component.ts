@@ -1,6 +1,6 @@
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -21,7 +21,6 @@ export class RuralComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private ref: ChangeDetectorRef,
     public srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
@@ -47,6 +46,7 @@ export class RuralComponent implements OnInit {
   tipoprodPecu: any = DataSelect.TipoProduccion;
   meses: any = DataSelect.Meses;
   detalleagri: any = DataSelect.DetalleAgricola;
+  detallepecu: any = DataSelect.DetallePecuario;
 
   diasSema: any = [];
   sol: string;
@@ -103,18 +103,62 @@ export class RuralComponent implements OnInit {
             cantperiodo = 1
             valorpromedio = 2
           }
-          let cantB = x.get('diasB').value.length
           let valorB = this.formatNumber(x.get('valorB').value)
-          let totalB = cantB * valorB * cantperiodo
-          let cantR = x.get('diasR').value.length
           let valorR = this.formatNumber(x.get('valorR').value)
-          let totalR = cantR * valorR * cantperiodo
-          let cantM = x.get('diasM').value.length
           let valorM = this.formatNumber(x.get('valorM').value)
-          let totaldias = this.formatNumber(x.get('totalDias').value)
+
+          if (valorR > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (valorM > valorR) {
+            valorM = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+              duration: 3000,
+            });
+          }
+
+          let cantB = x.get('diasB').value.length
+          let cantR = x.get('diasR').value.length
+          let cantM = x.get('diasM').value.length
+          let totalB = cantB * valorB * cantperiodo
+          let totalR = cantR * valorR * cantperiodo
           let totalM = cantM * valorM * cantperiodo
+          let totaldias = this.formatNumber(x.get('totalDias').value)
+          let totaldiassel = (cantB + cantR + cantM) * cantperiodo
+
+          if (totaldias > totaldiassel) {
+            totaldias = 0
+            this._snackBar.open("Los dias no pueden superar los seleccionados", "Ok!", {
+              duration: 3000,
+            });
+          }
+
           let promedio = (valorB + valorR + valorM) / valorpromedio
           let totalpromedio = promedio * totaldias
+          let totalventas = totalB + totalR + totalM
+          let tipoproducto = (x.get('nombre').value !== null ? x.get('nombre').value.tipoproducto : 0)
+
+          let totalCompras = this.formatNumber(x.get('totalCompras').value)
+          let margenBruto = this.formatNumber(x.get('margenBruto').value)
+          let otrosGastos = this.formatNumber(x.get('otrosGastos').value)
+
+          if (margenBruto > 100) {
+            margenBruto = 0
+            this._snackBar.open("Margen no puede superar el 100%", "Ok!", {
+              duration: 3000,
+            });
+          }
+
+          let ventasestimadas = 0
+          if (totalpromedio > totalventas) {
+            ventasestimadas = totalventas
+          } else {
+            ventasestimadas = totalventas
+          }
+          let totalliquido = (ventasestimadas * margenBruto) - otrosGastos
 
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
@@ -123,8 +167,15 @@ export class RuralComponent implements OnInit {
             totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
             totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
             totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
+            totalDias: totaldias,
             promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
             totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
+            totalVentas: isFinite(totalventas) ? totalventas.toLocaleString() : 0,
+            totalCompras: isFinite(totalCompras) ? totalCompras.toLocaleString() : 0,
+            ventasEstimadas: isFinite(ventasestimadas) ? ventasestimadas.toLocaleString() : 0,
+            otrosGastos: isFinite(otrosGastos) ? otrosGastos.toLocaleString() : 0,
+            ingresoLiquido: isFinite(totalliquido) ? totalliquido.toLocaleString() : 0,
+            margenBruto: margenBruto
           }, { emitEvent: false })
           //---------------------------------------------------------
 
@@ -133,7 +184,7 @@ export class RuralComponent implements OnInit {
           lotesPecuArr.controls.forEach((lot, idxlot) => {
             let totalEg = 0
             const egresoAdecua = <FormArray>lot.get('egresos')
-            egresoAdecua.controls.forEach((egr, idxegr) => {
+            egresoAdecua.controls.forEach((egr) => {
 
               let valor = this.formatNumber(egr.get("valorunitario").value)
               let cantidad = this.formatNumber(egr.get("cantidad").value)
@@ -151,6 +202,13 @@ export class RuralComponent implements OnInit {
             let cantidadtotal = numanimales * cantidadxanimal * frecuencia
 
             let unitotalesventa = this.formatNumber(lot.get("unitotalesventa").value)
+            if (unitotalesventa > cantidadtotal) {
+              unitotalesventa = 0
+              this._snackBar.open("Unidades de venta totales no puede ser mayor a la cantidad producida", "Ok!", {
+                duration: 3000,
+              });
+
+            }
             let perdida = (1 - (unitotalesventa / cantidadtotal)) * 100
 
             let preciomin = this.formatNumber(lot.get("preciomin").value)
@@ -161,6 +219,9 @@ export class RuralComponent implements OnInit {
 
             lot.patchValue({
               cantproducida: isFinite(cantidadtotal) ? cantidadtotal.toLocaleString() : 0,
+              unitotalesventa: unitotalesventa,
+              preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
+              precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
               perdida: isFinite(perdida) ? perdida.toFixed(2) : 0,
               preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0,
               ingresomes: isFinite(totalmes) ? totalmes.toLocaleString() : 0,
@@ -210,6 +271,12 @@ export class RuralComponent implements OnInit {
             let unidadesTra = this.formatNumber(lot.get("unidadesTra").value)
             let perdidaTra = (1 - (unidadesTra / rendimientoTra)) * 100
             let totalTra = unidadesTra * preciopromedio
+            if (rendimientoTra > rendimientoCos) {
+              rendimientoTra = 0
+              this._snackBar.open("Rendimiento de traviesa no puede ser mayor al de la cosecha", "Ok!", {
+                duration: 3000,
+              });
+            }
             if (unidadesTra > rendimientoTra) {
               unidadesTra = 0
               this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
@@ -221,6 +288,12 @@ export class RuralComponent implements OnInit {
             let unidadesPepeo = this.formatNumber(lot.get("unidadesPepeo").value)
             let perdidaPepeo = (1 - (unidadesPepeo / rendimientoPepeo)) * 100
             let totalPepeo = unidadesPepeo * preciopromedio
+            if (rendimientoPepeo > rendimientoTra) {
+              rendimientoPepeo = 0
+              this._snackBar.open("Rendimiento de pepeo no puede ser mayor al de la traviesa", "Ok!", {
+                duration: 3000,
+              });
+            }
             if (unidadesPepeo > rendimientoPepeo) {
               unidadesPepeo = 0
               this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
@@ -229,10 +302,9 @@ export class RuralComponent implements OnInit {
             }
 
             let unidadtotal = unidadesCos + unidadesTra + unidadesPepeo
-
-            let procentageCos = unidadesCos / unidadtotal
-            let procentageTra = unidadesTra / unidadtotal
-            let procentagePepeo = unidadesPepeo / unidadtotal
+            let procentageCos = (unidadesCos / unidadtotal) * 100
+            let procentageTra = (unidadesTra / unidadtotal) * 100
+            let procentagePepeo = (unidadesPepeo / unidadtotal) * 100
             let totalanual = totalCos + totalTra + totalPepeo
 
             //----------------------------------------------------------------------------
@@ -285,11 +357,21 @@ export class RuralComponent implements OnInit {
               }, { emitEvent: false })
             })
 
+            let totalEgresos = 0
+            if (tipoproducto == 'Transitorio') {
+              totalEgresos = totalEgAdecuacion + totalEgCosecha + totalEgMante + totalEgSiembra
+            } else {
+              totalEgresos = totalEgMante + totalEgCosecha
+            }
+
+
             lot.patchValue({
-              unidadestotales: unidadestotales,
-              unidadesCos: unidadesCos,
-              unidadesTra: unidadesTra,
-              unidadesPepeo: unidadesPepeo,
+              unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
+              rendimientoTra: rendimientoTra,
+              rendimientoPepeo: rendimientoPepeo,
+              unidadesCos: isFinite(unidadesCos) ? unidadesCos.toLocaleString('es-CO') : 0,
+              unidadesTra: isFinite(unidadesTra) ? unidadesTra.toLocaleString('es-CO') : 0,
+              unidadesPepeo: isFinite(unidadesPepeo) ? unidadesPepeo.toLocaleString('es-CO') : 0,
               perdida: isFinite(perdida) ? perdida.toLocaleString('es-CO') : 0,
               preciomin: isFinite(preciomin) ? preciomin.toLocaleString('es-CO') : 0,
               precioactual: isFinite(precioactual) ? precioactual.toLocaleString('es-CO') : 0,
@@ -310,7 +392,8 @@ export class RuralComponent implements OnInit {
               totalEgresosAdecuacion: isFinite(totalEgAdecuacion) ? totalEgAdecuacion.toLocaleString('es-CO') : 0,
               totalEgresosSiembre: isFinite(totalEgSiembra) ? totalEgSiembra.toLocaleString('es-CO') : 0,
               totalEgresosCosecha: isFinite(totalEgCosecha) ? totalEgCosecha.toLocaleString('es-CO') : 0,
-              totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0
+              totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0,
+              totalEgresos: isFinite(totalEgresos) ? totalEgresos.toLocaleString('es-CO') : 0,
             }, { emitEvent: false })
           })
 
@@ -344,17 +427,21 @@ export class RuralComponent implements OnInit {
       totalM: '',
       promedio: '',
       totalDias: '',
+      totalVentas: '',
       totalPromedio: '',
+      totalCompras: '',
+      ventasEstimadas: '',
+      margenBruto: '',
+      otrosGastos: '',
+      ingresoLiquido: '',
       lotesAgro: this.fb.array([this.itemLotes()]),
       lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
 
     })
   }
   loadactividad(cruces: CrucesAgro[]): FormGroup {
-
     let crucesArray = this.fb.array([])
     for (let cru = 0; cru < cruces.length; cru++) {
-
       crucesArray.push(
         this.fb.group({
           nombre: [cruces[cru].nombre],
@@ -370,9 +457,17 @@ export class RuralComponent implements OnInit {
           totalB: [cruces[cru].totalB],
           totalR: [cruces[cru].totalR],
           totalM: [cruces[cru].totalM],
+          totalVentas: '',
           promedio: '',
           totalDias: '',
           totalPromedio: '',
+
+          totalCompras: '',
+          ventasEstimadas: '',
+          margenBruto: '',
+          otrosGastos: '',
+          ingresoLiquido: '',
+
           lotesAgro: this.loaditemLotes(cruces[cru].lotesAgro),
           lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
         })
@@ -387,44 +482,44 @@ export class RuralComponent implements OnInit {
     for (let lo = 0; lo < lotes.length; lo++) {
       lotesArray.push(
         this.fb.group({
-          areacult: lotes[lo].areacult,
-          aplicadiastancia: lotes[lo].aplicadiastancia,
-          aplicaplantasinformacli: '',
-          dsurcos: lotes[lo].dsurcos,
-          dplantas: lotes[lo].dplantas,
-          diastancia: lotes[lo].diastancia,
-          planatasinformacli: lotes[lo].planatasinformacli,
-          unidadventa: lotes[lo].unidadventa,
-          edadcult: lotes[lo].edadcult,
-          periodoedad: lotes[lo].periodoedad,
-          rendiemientolote: lotes[lo].rendiemientolote,
-          unidadestotales: lotes[lo].unidadestotales,
-          perdida: lotes[lo].perdida,
-          preciomin: lotes[lo].preciomin,
-          precioactual: lotes[lo].precioactual,
-          preciopromedio: lotes[lo].preciopromedio,
-          totalIngreso: lotes[lo].totalIngreso,
-          cocecha: lotes[lo].cocecha,
-          mesCos: lotes[lo].mesCos,
-          rendimientoCos: lotes[lo].rendimientoCos,
-          unidadesCos: lotes[lo].unidadesCos,
-          perdidaCos: lotes[lo].perdidaCos,
-          procentageCos: lotes[lo].procentageCos,
-          totalCos: lotes[lo].totalCos,
-          mesTra: lotes[lo].mesTra,
-          rendimientoTra: lotes[lo].rendimientoTra,
-          unidadesTra: lotes[lo].unidadesTra,
-          perdidaTra: lotes[lo].perdidaTra,
-          procentageTra: lotes[lo].procentageTra,
-          totalTra: lotes[lo].totalTra,
-          mesPepeo: lotes[lo].mesPepeo,
-          rendimientoPepeo: lotes[lo].rendimientoPepeo,
-          unidadesPepeo: lotes[lo].unidadesPepeo,
-          perdidaPepeo: lotes[lo].perdidaPepeo,
-          procentagePepeo: lotes[lo].procentagePepeo,
-          totalPepeo: lotes[lo].totalPepeo,
-          totalUnidades: lotes[lo].totalUnidades,
-          totalLoteAunual: lotes[lo].totalLoteAunual,
+          areacult: [lotes[lo].areacult],
+          aplicadiastancia: [lotes[lo].aplicadiastancia],
+          aplicaplantasinformacli: [''],
+          dsurcos: [lotes[lo].dsurcos],
+          dplantas: [lotes[lo].dplantas],
+          diastancia: [lotes[lo].diastancia],
+          planatasinformacli: [lotes[lo].planatasinformacli],
+          unidadventa: [lotes[lo].unidadventa],
+          edadcult: [lotes[lo].edadcult],
+          periodoedad: [lotes[lo].periodoedad],
+          rendiemientolote: [lotes[lo].rendiemientolote],
+          unidadestotales: [lotes[lo].unidadestotales],
+          perdida: [lotes[lo].perdida],
+          preciomin: [lotes[lo].preciomin],
+          precioactual: [lotes[lo].precioactual],
+          preciopromedio: [lotes[lo].preciopromedio],
+          totalIngreso: [lotes[lo].totalIngreso],
+          cocecha: [lotes[lo].cocecha],
+          mesCos: [lotes[lo].mesCos],
+          rendimientoCos: [lotes[lo].rendimientoCos],
+          unidadesCos: [lotes[lo].unidadesCos],
+          perdidaCos: [lotes[lo].perdidaCos],
+          procentageCos: [lotes[lo].procentageCos],
+          totalCos: [lotes[lo].totalCos],
+          mesTra: [lotes[lo].mesTra],
+          rendimientoTra: [lotes[lo].rendimientoTra],
+          unidadesTra: [lotes[lo].unidadesTra],
+          perdidaTra: [lotes[lo].perdidaTra],
+          procentageTra: [lotes[lo].procentageTra],
+          totalTra: [lotes[lo].totalTra],
+          mesPepeo: [lotes[lo].mesPepeo],
+          rendimientoPepeo: [lotes[lo].rendimientoPepeo],
+          unidadesPepeo: [lotes[lo].unidadesPepeo],
+          perdidaPepeo: [lotes[lo].perdidaPepeo],
+          procentagePepeo: [lotes[lo].procentagePepeo],
+          totalPepeo: [lotes[lo].totalPepeo],
+          totalUnidades: [lotes[lo].totalUnidades],
+          totalLoteAunual: [lotes[lo].totalLoteAunual],
           egresosAdecuacion: this.loadEgresos(lotes[lo].egresosAdecuacion),
           totalEgresosAdecuacion: lotes[lo].totalEgresosAdecuacion,
           egresosSiembra: this.loadEgresos(lotes[lo].egresosSiembra),
@@ -432,7 +527,8 @@ export class RuralComponent implements OnInit {
           egresosMante: this.loadEgresos(lotes[lo].egresosMante),
           totalEgresosMante: lotes[lo].totalEgresosMante,
           egresosCocecha: this.loadEgresos(lotes[lo].egresosCocecha),
-          totalEgresosCosecha:lotes[lo].totalEgresosCosecha,
+          totalEgresosCosecha: lotes[lo].totalEgresosCosecha,
+          totalEgresos: ''
 
         })
       )
@@ -578,14 +674,15 @@ export class RuralComponent implements OnInit {
   loadEgresos(egresos: Egresos[]) {
     let egresosArray = this.fb.array([])
     for (let eg = 0; eg < egresos.length; eg++) {
+
       egresosArray.push(
         this.fb.group({
-          descripcion: egresos[eg].descripcion,
-          detalle: egresos[eg].detalle,
-          cantidad: egresos[eg].cantidad,
-          valorunitario: egresos[eg].valorunitario,
-          total: egresos[eg].total,
-          mes: egresos[eg].mes
+          descripcion: [egresos[eg].descripcion],
+          detalle: [egresos[eg].detalle],
+          cantidad: [egresos[eg].cantidad],
+          valorunitario: [egresos[eg].valorunitario],
+          total: [egresos[eg].total],
+          mes: [egresos[eg].mes]
         })
       )
     }
@@ -626,7 +723,7 @@ export class RuralComponent implements OnInit {
   removeEgresosSiembra(ac: number, lot: number, eg: number) {
     this.egresadosSiembra(ac, lot).removeAt(eg);
   }
-  
+
   //-------------------------------------------------------------------
 
   //-------------------------------Egresos Mantinimiento------------------------------

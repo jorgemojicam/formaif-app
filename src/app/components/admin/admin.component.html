@@ -35,6 +35,10 @@
                 <mat-icon mat-list-icon>web</mat-icon>
                 <div mat-line>Analisis</div>
             </mat-list-item>
+            <mat-list-item [routerLink]="['propuesta']" [queryParams]= "{solicitud:sol}">
+                <mat-icon mat-list-icon>thumb_up</mat-icon>
+                <div mat-line>Propuesta</div>
+            </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
                 <mat-icon mat-list-icon>exit_to_app</mat-icon>

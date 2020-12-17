@@ -5,28 +5,24 @@ mat-form-field {
 mat-card{
     margin-top: 22px;
 }
-
 .gr {
-    margin-right: 10px;
+    padding-right: 10px;
 }
-
 div.alternate>div:nth-of-type(odd) {
     background: rgba(239, 239, 239, 0.58);
 }
-
 .content {
     border-radius: 8px;
     padding: 8px 8px 8px 8px;
 }
-
-fieldset{
-    width: 100%;
-    border-radius: 5px;
-    border-color: #94949454;
-}
-
 .btnadd {
     position: absolute;
-    right: 24px;
+    left: 24px;
     bottom: -20px;
-}
+  }
+
+.btndelete {
+    position: absolute;
+    right: 10px;
+  }
+  

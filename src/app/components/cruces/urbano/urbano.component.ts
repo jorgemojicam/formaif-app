@@ -221,17 +221,34 @@ export class UrbanoComponent implements OnInit {
             valorpromedio = 2
           }
           let cantB = x.get('diasB').value.length
-          let valorB = this.formatNumber(x.get('valorB').value)
-          let totalB = cantB * valorB * cantperiodo
           let cantR = x.get('diasR').value.length
-          let valorR = this.formatNumber(x.get('valorR').value)
-          let totalR = cantR * valorR * cantperiodo
           let cantM = x.get('diasM').value.length
+          let valorB = this.formatNumber(x.get('valorB').value)
+          let valorR = this.formatNumber(x.get('valorR').value)
           let valorM = this.formatNumber(x.get('valorM').value)
-          let totaldias = this.formatNumber(x.get('totalDias').value)
+          
+          let totalB = cantB * valorB * cantperiodo
+          let totalR = cantR * valorR * cantperiodo          
           let totalM = cantM * valorM * cantperiodo
+
+          let totaldias = this.formatNumber(x.get('totalDias').value)
+          
           let promedio = (valorB + valorR + valorM) / valorpromedio
           let totalpromedio = promedio * totaldias
+
+          
+          if (valorR > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (valorM > valorR) {
+            valorM = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+              duration: 3000,
+            });
+          }
 
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
@@ -267,6 +284,7 @@ export class UrbanoComponent implements OnInit {
       totalM: '',
       periodohistoricas: '',
       promedio: '',
+      totalVentas: '',
       totalDias: '',
       totalPromedio: '',
       ventasHis: this.fb.array([this.itemventas()]),
@@ -310,6 +328,7 @@ export class UrbanoComponent implements OnInit {
           totalR: [cruces[cru].totalR],
           totalM: [cruces[cru].totalM],
           promedio: [cruces[cru].promedio],
+          totalVentas: '',
           totalDias: [cruces[cru].totalDias],
           periodohistoricas: [periodhis],
           ventasHis: this.loadDataVentas(cruces[cru].ventasHis),

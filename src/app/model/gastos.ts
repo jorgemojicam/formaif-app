@@ -1,8 +1,9 @@
+import { Estacionales } from './estacionales';
 import { OtrosIngresos } from './otrosingresosfamilia';
 import { Remuneracion } from './remuneracion';
 
 export class Gastos {
-    Remuneracion: Remuneracion[];   
+    remuneracionRow: Remuneracion[];   
     totalRemuneracion: number;
     arriendoF: number;
     alimentacionF: number;
@@ -23,6 +24,10 @@ export class Gastos {
     imprevistosN: number;
     otrosN: number;
     totalN: number;
-    otrosIngresosRow: OtrosIngresos[]
-    totalOtros: number
+    otrosIngresosRow: OtrosIngresos[];
+    totalOtros: number;
+    estacionalesN: Estacionales[];
+    totalEstacionalesN: number;
+    estacionalesF: Estacionales[];
+    totalEstacionalesF: number;
 }

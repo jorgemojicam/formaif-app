@@ -16,7 +16,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class HomeComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['solicitud','cliente','gestion','delete','upload'];
+  displayedColumns: string[] = ['tipo','solicitud','gestion','delete','upload'];
   dataSource: MatTableDataSource<Solicitud>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

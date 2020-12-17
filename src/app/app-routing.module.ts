@@ -14,9 +14,7 @@ const routes: Routes = [
   },
   { path: 'admin', loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule), canActivate: [AuthGuard] },
   { path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule) },
-  { path: '404', component: NotfoundComponent },
-  { path: 'analisis', loadChildren: () => import('./components/analisis/analisis.module').then(m => m.AnalisisModule) },
-  { path: 'ubicacion', loadChildren: () => import('./components/ubicacion/ubicacion.module').then(m => m.UbicacionModule) },
+  { path: '404', component: NotfoundComponent },  
   { path: '**', redirectTo: '/404' }
 ];
 

@@ -1,1 +1,47 @@
-<p>ubicacion works!</p>
+<form [formGroup]="ubicacionForm">
+    <mat-card class="mat-card-fases">
+        <mat-card-content>
+            <div fxLayout="row wrap">
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Tiempo de recorrido" id="tiempo"
+                            formControlName="tiempo">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Punto de partida" id="puntopartida"
+                            formControlName="puntopartida">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Descripcion punto partida" id="descripcionppartida-"
+                            formControlName="descripcionppartida">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <input type="file" capture="camera" accept="image/x-png,image/jpeg,image/gif" placeholder="Foto" id="fotoppartida"
+                        formControlName="fotoppartida">
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Punto de Llegada" id="puntollegada"
+                            formControlName="puntollegada">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Descripcion punto llegada" id="descripcionpllegada-"
+                            formControlName="descripcionpllegada">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <input type="file" capture="camera" accept="image/x-png,image/jpeg,image/gif" placeholder="Foto" id="fotopllegada"
+                        formControlName="fotopllegada">
+                </div>         
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</form>

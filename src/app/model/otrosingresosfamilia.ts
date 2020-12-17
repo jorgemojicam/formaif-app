@@ -1,5 +1,5 @@
 export class OtrosIngresos {   
-    tipo:number;
+    ingreso:number;
     valor:number;
     observacion:string;
   }

@@ -1,0 +1,57 @@
+<form [formGroup]="propuestaForm">
+    <mat-card class="mat-card-fases">
+        <mat-card-header>
+            <mat-card-title>Monto y destino de crédito</mat-card-title>
+            <mat-card-subtitle>monto</mat-card-subtitle>         
+        </mat-card-header>
+        <mat-card-content>
+            <div fxLayout="row wrap">
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Monro Recomendado" id="monto"
+                            formControlName="monto">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Destino Credito" id="destino"
+                            formControlName="destino">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Detalle" id="detalle-"
+                            formControlName="detalle">
+                    </mat-form-field>
+                </div>         
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Valor" id="valor" formControlName="valor">
+                    </mat-form-field>
+                </div> 
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Mes" id="mes" formControlName="mes">
+                    </mat-form-field>
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Destino Credito" id="destinocre" formControlName="destinocre">
+                    </mat-form-field>
+                </div>    
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Detalle" id="detallecre" formControlName="detallecre">
+                    </mat-form-field>
+                </div>    
+                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                    <mat-form-field>
+                        <input type="text" matInput placeholder="Valor" id="valorcre" formControlName="valorcre">
+                    </mat-form-field>
+                </div>   
+                 
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+</form>

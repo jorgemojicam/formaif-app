@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Balance } from 'src/app/model/balance';
 import DataSelect from '../../data-select/dataselect.json';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CurrencyPipe } from '@angular/common';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Inventario } from 'src/app/model/inventario';
@@ -17,17 +16,18 @@ import { Inventario } from 'src/app/model/inventario';
 export class BalanceComponent implements OnInit {
   dataSolicitud: Solicitud = new Solicitud();
   dataBalance: Balance = new Balance();
-  //balanceForm: FormGroup;
 
   //Listas desplegables
   tipoActivoFam: any = DataSelect.TipoActivoFam;
   tipoInventario: any = DataSelect.TipoInventario;
+  tipoInventarioAgro: any = DataSelect.TipoInventarioAgro;
   tipoActivo: any = DataSelect.TipoActivoNeg;
   tipoPasivo: any = DataSelect.TipoPasivo;
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
   meses: any = DataSelect.Meses;
 
+  tipoSol: number;
   totalActFam: number;
   totalProv: number;
   sol: string;
@@ -37,8 +37,7 @@ export class BalanceComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
-    private _snackBar: MatSnackBar,
-    private curPipe: CurrencyPipe,
+    private _snackBar: MatSnackBar
   ) { }
 
   balanceForm: FormGroup = this.fb.group({
@@ -60,6 +59,9 @@ export class BalanceComponent implements OnInit {
     actfamTotal: '',
     proveedoresRow: this.fb.array([this.initProvRows()]),
     proveedoresTotal: '',
+    creditoactual: '',
+    creditos: this.fb.array([this.initCreditos()]),
+    totalCreditos: '',
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [null],
     tcorrientef: [null],
@@ -74,6 +76,7 @@ export class BalanceComponent implements OnInit {
 
     this.srvSol.getSol(this.sol).subscribe((datasol) => {
       if (this.sol) {
+        this.tipoSol = datasol.asesor
         this.dataSolicitud = datasol as Solicitud
         this.loadBalance(this.dataSolicitud.Balance)
       }
@@ -88,55 +91,66 @@ export class BalanceComponent implements OnInit {
         let totalrec = 0
         const recupera = <FormArray>this.balanceForm.controls['recuperacion'];
         recupera.controls.forEach(x => {
-          let valor = x.get('valor').value
-          totalrec += this.formatNumber(x.get('valor').value)          
+          let valor = this.formatNumber(x.get('valor').value)
+          totalrec += valor
           x.patchValue({
-            valor: isFinite(valor)?valor.toLocaleString:0
-          }, { emitEvent: false }) 
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false })
         });
 
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          totalInv += this.formatNumber(x.get('valor').value)
           let valor = this.formatNumber(x.get('valor').value)
+          totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false })
         });
-        
-        this.balanceForm.patchValue({
-          efectivo: isFinite(efectivo) ? efectivo.toLocaleString() : 0,
-          incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
-          valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
-          cobrarTotal: isFinite(total) ? total.toLocaleString() : 0,
-          porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed(2) : 0,
-          totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
-        }, { emitEvent: false });
+
+        let totalCredito = 0
+        const credito = <FormArray>this.balanceForm.controls['creditos'];
+        credito.controls.forEach(x => {
+          let valor = this.formatNumber(x.get('valor').value)
+          totalCredito += valor
+          x.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false });
+        });
 
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          let valor =this.formatNumber(x.get('valor').value)
-          totalactneg+=valor
+          let valor = this.formatNumber(x.get('valor').value)
+          totalactneg += valor
           x.patchValue({
-            valor: isFinite(valor)?valor.toLocaleString():0
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false });
         });
 
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
         actfam.controls.forEach(x => {
-          totalactfam += this.formatNumber(x.get('valor').value)
-          let sinCurr = this.curPipe.transform(this.formatNumber(x.get('valor').value), 'USD', 'symbol', '1.0-0')
-          x.get("valor").setValue(sinCurr == null ? "" : sinCurr.replace("$", ""), { emitEvent: false });
+          let valor = this.formatNumber(x.get('valor').value)
+          totalactfam += valor
+          x.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false });
         });
 
         this.balanceForm.patchValue({
-          inventarioTotal: this.curPipe.transform(totalInv, 'USD', 'symbol', '1.0-0'),
-          actnegTotal: this.curPipe.transform(totalactneg, 'USD', 'symbol', '1.0-0'),
-          actfamTotal: this.curPipe.transform(totalactfam, 'USD', 'symbol', '1.0-0'),
+          efectivo: isFinite(efectivo) ? efectivo.toLocaleString() : 0,
+          totalCreditos: isFinite(totalCredito) ? totalCredito.toLocaleString() : 0,
+          incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
+          valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
+          cobrarTotal: isFinite(total) ? total.toLocaleString() : 0,
+          porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed(2) : 0,
+          totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
+          inventarioTotal: totalInv.toLocaleString(),
+          actnegTotal: totalactneg.toLocaleString(),
+          actfamTotal: totalactfam.toLocaleString(),
         }, { emitEvent: false });
+
 
         const ctrl = <FormArray>this.balanceForm.controls['pasivosRows'];
         ctrl.controls.forEach((x, index) => {
@@ -152,7 +166,6 @@ export class BalanceComponent implements OnInit {
           let netocuota = plazo - numcuota
 
           if (tipo.id == "1") {
-
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
             let nocorriente = saldo - corriente
             let proyeccion = valor / periodo.period
@@ -212,7 +225,10 @@ export class BalanceComponent implements OnInit {
         this.dataBalance = form
         this.dataSolicitud.Balance = this.dataBalance
         this.srvSol.saveSol(this.sol, this.dataSolicitud)
+
+        this.ref.detectChanges()
       })
+
     });
   }
 
@@ -235,6 +251,9 @@ export class BalanceComponent implements OnInit {
       activosFamRows: this.fb.array([this.initActifamRow()]),
       actfamTotal: '',
       proveedoresRow: this.fb.array([this.initProvRows()]),
+      creditoactual: '',
+      creditos: this.fb.array([this.initCreditos()]),
+      totalCreditos: '',
       proveedoresTotal: '',
       pasivosRows: this.fb.array([this.initPasivoRows()]),
       tcuotaf: [null],
@@ -320,6 +339,23 @@ export class BalanceComponent implements OnInit {
   }
   deleteProvRow(index: number) {
     this.proveedores().removeAt(index);
+  }
+  //----------------------------------------
+
+  //---------------Creditos-------------------------
+  creditos() {
+    return this.balanceForm.get('creditos') as FormArray;
+  }
+  initCreditos() {
+    return this.fb.group({
+      valor: ['']
+    });
+  }
+  addNewCredito() {
+    this.creditos().push(this.initCreditos());
+  }
+  deleteCredito(index: number) {
+    this.creditos().removeAt(index);
   }
   //----------------------------------------
 
