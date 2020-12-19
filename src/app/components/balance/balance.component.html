@@ -30,24 +30,32 @@
                         formControlName="clienteCobrar">
                 </mat-form-field>
             </div>
+            <div class="gr" fxFlex="15%" fxFlex.xs="30%" fxFlex.sm="40%">
+                <mat-form-field>
+                    <input type="tel" matInput placeholder="Valor" id="valorCobrar" formControlName="valorCobrar">
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="15%" fxFlex.xs="30%" fxFlex.sm="40%">
+                <mat-form-field>
+                    <input matInput placeholder="Incobrable" id="incobrableCobrar" formControlName="incobrableCobrar">
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="15%" fxFlex.xs="20%" fxFlex.sm="40%">
+                <mat-chip-list>
+                    <mat-chip>
+                        {{balanceForm.controls.porcentajeCobrar.value}}%
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
 
-            <div class="gr" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
+            <div class="gr" fxFlex="60%" fxFlex.xs="100%" fxFlex.sm="60%">
                 <mat-form-field class="example-full-width">
                     <mat-label>Observaciones</mat-label>
                     <textarea matInput formControlName="observacionesCobrar"
                         placeholder="Observaciones">Observaciones...</textarea>
                 </mat-form-field>
             </div>
-            <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
-                <mat-form-field>
-                    <input type="tel" matInput placeholder="Valor" id="valorCobrar" formControlName="valorCobrar">
-                </mat-form-field>
-            </div>
-            <div class="gr" fxFlex="15%" fxFlex.xs="40%" fxFlex.sm="40%">
-                <mat-form-field>
-                    <input matInput placeholder="Incobrable" id="incobrableCobrar" formControlName="incobrableCobrar">
-                </mat-form-field>
-            </div>
+
             <ng-container *ngIf="tipoSol==1">
                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                     <mat-form-field>
@@ -216,8 +224,8 @@
                     </button>
                 </div>
             </div>
-            <button mat-fab aria-label="add" [disabled]="balanceForm.controls.actividadNegRows['controls'].length >=20" mat-mini-fab class="btnadd" type="button" color="accent"
-                (click)="addActNegNewRow()">
+            <button mat-fab aria-label="add" [disabled]="balanceForm.controls.actividadNegRows['controls'].length >=20"
+                mat-mini-fab class="btnadd" type="button" color="accent" (click)="addActNegNewRow()">
                 <mat-icon>add</mat-icon>
             </button>
         </mat-card-content>
@@ -239,7 +247,7 @@
                     <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <mat-label>Detalle</mat-label>
-                            <textarea matInput formControlName="detalle"></textarea>                    
+                            <textarea matInput formControlName="detalle"></textarea>
                         </mat-form-field>
                     </div>
                     <div class="gr" fxFlex="20%" fxFlex.xs="50%" fxFlex.sm="50%">
@@ -276,33 +284,30 @@
             <mat-card-title>Proveedores</mat-card-title>
             <mat-card-subtitle>Creditos con proveedores</mat-card-subtitle>
             <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected>{{totalProv}}</mat-chip>
+                <mat-chip color="accent" selected>${{balanceForm.controls.proveedoresTotal.value}}</mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
-            <input readonly style="display: none;" formControlName="proveedoresTotal" />
             <div formArrayName="proveedoresRow" class="alternate">
                 <div fxLayout="row wrap" class="content"
                     *ngFor="let itemrow of balanceForm.controls.proveedoresRow['controls']; let prov=index"
                     [formGroupName]="prov">
 
-                    <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
                         <mat-form-field>
-                            <input type="text" matInput placeholder="Proveedor" id="proveedor{{prov}}"
-                                formControlName="descripcion">
+                            <mat-label>Proveedor</mat-label>
+                            <textarea matInput formControlName="descripcion"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
                         <mat-form-field>
-                            <input pattern="[0-9]" matInput placeholder="Valor" id="valor{{prov}}"
-                                formControlName="valor">
+                            <input type="tel" matInput placeholder="Valor" id="valor{{prov}}" formControlName="valor">
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                        <button mat-fab type="button" color="warn" mat-mini-fab (click)="deleteProvRow(prov)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
+                    <button class="btndelete" color="warn" mat-icon-button [disabled]="prov==0"
+                        (click)="deleteProvRow(prov)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
                 </div>
             </div>
             <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
@@ -316,15 +321,16 @@
         <mat-card-header>
             <mat-card-subtitle>¿Si se va a otorgar otra linea de crédito, diligenciar valor de la cuota del crédito
                 actual?</mat-card-subtitle>
-            <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected>{{balanceForm.controls.totalCreditos.value}}</mat-chip>
+            <mat-chip-list>
+                <mat-chip color="accent" selected>${{balanceForm.controls.totalCreditos.value}}</mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
             <mat-card-content>
+                No
                 <mat-slide-toggle formControlName="creditoactual">
-                    Si
                 </mat-slide-toggle>
+                Si
             </mat-card-content>
             <ng-container *ngIf="balanceForm.controls.creditoactual.value">
                 <div formArrayName="creditos" class="alternate">
@@ -332,9 +338,9 @@
                         *ngFor="let itemrow of balanceForm.controls.creditos['controls']; let cre=index"
                         [formGroupName]="cre">
 
-                        <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-form-field>
-                                <input pattern="[0-9]" matInput placeholder="Valor" id="valor{{cre}}"
+                                <input type="tel" matInput placeholder="Valor" id="valor{{cre}}"
                                     formControlName="valor">
                             </mat-form-field>
                         </div>
@@ -344,8 +350,73 @@
                         </button>
                     </div>
                 </div>
-                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
+                    [disabled]="balanceForm.controls.creditos['controls'].length >=4" color="accent"
                     (click)="addNewCredito()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
+    <!-- inversiones ultimo año -->
+    <mat-card>
+        <mat-card-header>
+            <mat-card-subtitle>¿Ha realizado alguna inversión el ultimo año ?</mat-card-subtitle>
+            <mat-chip-list>
+                <mat-chip color="accent" selected>${{balanceForm.controls.totalInversiones.value}}</mat-chip>
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card-content>
+                No
+                <mat-slide-toggle formControlName="aplicaInversiones">
+                </mat-slide-toggle>
+                Si
+            </mat-card-content>
+            <ng-container *ngIf="balanceForm.controls.aplicaInversiones.value">
+                <div formArrayName="inversiones" class="alternate">
+                    <div fxLayout="row wrap" class="content"
+                        *ngFor="let itemrow of balanceForm.controls.inversiones['controls']; let inver=index"
+                        [formGroupName]="inver">
+
+                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <input type="tel" matInput placeholder="Detalle" id="detalle{{inver}}"
+                                    formControlName="detalle">
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="20%" fxFlex.xs="50%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <mat-label>Mes</mat-label>
+                                <mat-select formControlName="mes" id="mes{{inver}}" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let mes of meses" [value]="mes.id">
+                                        {{mes.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <input type="text" matInput placeholder="origen" id="origen{{inver}}"
+                                    formControlName="origen">
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                            <mat-form-field>
+                                <input type="tel" matInput placeholder="Valor" id="valor{{inver}}"
+                                    formControlName="valor">
+                            </mat-form-field>
+                        </div>
+                        <button class="btndelete" color="warn" mat-icon-button [disabled]="inver==0"
+                            (click)="deleteInversion(inver)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
+                    [disabled]="balanceForm.controls.inversiones['controls'].length >=4" color="accent"
+                    (click)="addInversion()">
                     <mat-icon>add</mat-icon>
                 </button>
             </ng-container>
@@ -363,7 +434,7 @@
                     *ngFor="let itemrow of balanceForm.controls.pasivosRows['controls']; let pas=index"
                     [formGroupName]="pas">
 
-                    <div class="gr" fxFlex="20%" fxFlex.xs="90%" fxFlex.sm="90%">
+                    <div class="gr" fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="90%">
                         <mat-form-field>
                             <mat-label>Tipo</mat-label>
                             <mat-select formControlName="tipo" id="tipo{{pas}}" required>
@@ -379,7 +450,7 @@
 
                         <ng-container *ngSwitchCase="'entfinan'">
 
-                            <div class="gr" fxFlex="10%" fxFlex.xs="25%" fxFlex.sm="25%">
+                            <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="25%">
                                 <mat-form-field>
                                     <mat-label>Clase</mat-label>
                                     <mat-select formControlName="clase" id="clase{{pas}}" required>
@@ -391,50 +462,50 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
                                 <mat-form-field>
                                     <input type="text" matInput placeholder="Acreedor" id="acreedor{{pas}}"
                                         formControlName="acreedor">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Monto" id="monto{{pas}}"
+                                    <input type="tel" matInput placeholder="Monto" id="monto{{pas}}"
                                         formControlName="monto">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="5%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="5%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Plazo" id="plazo{{pas}}"
+                                    <input type="tel" matInput placeholder="Plazo" id="plazo{{pas}}"
                                         formControlName="plazo">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Saldo" id="saldo{{pas}}"
+                                    <input type="tel" matInput placeholder="Saldo" id="saldo{{pas}}"
                                         formControlName="saldo">
                                 </mat-form-field>
                             </div>
 
-                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="# Cuota" id="cuota{{pas}}"
+                                    <input type="number" matInput placeholder="#Cuota Actual" id="cuota{{pas}}"
                                         formControlName="cuota">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
                                     <input type="text" matInput placeholder="Destino" id="destino{{pas}}"
                                         formControlName="destino">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Valor" id="valor{{pas}}"
+                                    <input type="tel" matInput placeholder="Valor Cuota Datacredito" id="valor{{pas}}"
                                         formControlName="valor">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="10%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
                                     <mat-label>Periodo</mat-label>
                                     <mat-select formControlName="periodo" id="periodo{{pas}}" required>
@@ -445,9 +516,9 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Proyeccion" id="proyeccion{{pas}}"
+                                    <input type="tel" matInput placeholder="Proyeccion" id="proyeccion{{pas}}"
                                         formControlName="proyeccion" readonly>
                                 </mat-form-field>
                             </div>
@@ -456,13 +527,13 @@
 
                             <ng-template #nego>
 
-                                <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="number" matInput placeholder="Corriente" id="corriente{{pas}}"
                                             formControlName="corrienteN" readonly>
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="number" matInput placeholder="No corriente" id="nocorriente{{pas}}"
                                             formControlName="nocorrienteN" readonly>
@@ -473,13 +544,13 @@
 
                             <ng-template #fam>
 
-                                <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="number" matInput placeholder="Corriente" id="corrienteF{{pas}}"
                                             formControlName="corrienteF" readonly>
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="15%" fxFlex.xs="26%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="number" matInput placeholder="No corriente"
                                             id="nocorrienteF{{pas}}" formControlName="nocorrienteF" readonly>
@@ -495,61 +566,71 @@
                                     vivienda
                                     hipotecada?</mat-slide-toggle>
                             </div>
-                            <div class="gr" fxFlex="30%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <ng-container *ngIf="itemrow.value.negociovivienda">
+                                <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="26%">
+                                    <mat-form-field>
+                                        <input type="number" matInput placeholder="¿Porcentaje que ocupa negocio?"
+                                            formControlName="porcentajeneg">
+                                    </mat-form-field>
+                                </div>
+                            </ng-container>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
                                     <input type="number" matInput placeholder="Sando Actual" id="saldo{{pas}}"
                                         formControlName="saldo">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="30%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
                                     <input type="number" matInput placeholder="Cuota" id="cuotaN{{pas}}"
                                         formControlName="cuotaN">
                                 </mat-form-field>
                             </div>
-                            <div class="gr" fxFlex="30%" fxFlex.xs="26%" fxFlex.sm="26%">
+                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
                                     <input type="text" matInput placeholder="Acreedor" id="acreedorhipo{{pas}}"
                                         formControlName="acreedor">
                                 </mat-form-field>
                             </div>
 
-                            <fieldset fxLayout="row wrap">
-                                <legend>Negocio</legend>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                    <mat-form-field>
-                                        <input type="text" matInput placeholder="Monto" id="cuotaN{{pas}}"
-                                            formControlName="cuotaN">
-                                    </mat-form-field>
-                                </div>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                    <mat-form-field>
-                                        <input type="text" matInput placeholder="Corriente" id="corrienteN{{pas}}"
-                                            formControlName="corrienteN" readonly>
-                                    </mat-form-field>
-                                </div>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
-                                    <mat-form-field>
-                                        <input type="number" matInput placeholder="No Corriente"
-                                            id="nocorrienteN{{pas}}" formControlName="nocorrienteN" readonly>
-                                    </mat-form-field>
-                                </div>
-                            </fieldset>
+                            <ng-container *ngIf="itemrow.value.negociovivienda">
+                                <fieldset fxLayout="row wrap">
+                                    <legend>Negocio</legend>
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field>
+                                            <input type="text" matInput placeholder="Monto" id="cuotaN{{pas}}"
+                                                formControlName="cuotaN">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field>
+                                            <input type="text" matInput placeholder="Corriente" id="corrienteN{{pas}}"
+                                                formControlName="corrienteN" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field>
+                                            <input type="number" matInput placeholder="No Corriente"
+                                                id="nocorrienteN{{pas}}" formControlName="nocorrienteN" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                </fieldset>
+                            </ng-container>
                             <fieldset fxLayout="row wrap">
                                 <legend>Familia</legend>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="text" matInput placeholder="Monto" id="cuotaF{{pas}}"
                                             formControlName="cuotaF">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="text" matInput placeholder="Corriente" id="corrienteF{{pas}}"
                                             formControlName="corrienteF" readonly>
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="30%" fxFlex.xs="25%" fxFlex.sm="25%">
+                                <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="number" matInput placeholder="No Corriente"
                                             id="nocorrienteF{{pas}}" formControlName="nocorrienteF" readonly>

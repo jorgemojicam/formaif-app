@@ -19,6 +19,7 @@ export class AnalisisComponent implements OnInit{
 
   datasolicitud: Solicitud = new Solicitud()
   tipoAsesor: number;
+  fechahoy:string;
 
   ngOnInit(): void {
 
@@ -26,14 +27,14 @@ export class AnalisisComponent implements OnInit{
       .subscribe((params) => {
         let sol = params.get('solicitud')
         this.srvSol.getSol(sol).subscribe((datasol) => {
+          let hoy = new Date()
+          let mes:number = hoy.getMonth()+1
+          this.fechahoy = hoy.getDate()+"/"+mes+"/"+hoy.getFullYear()
           this.datasolicitud = datasol as Solicitud
-          console.log(this.datasolicitud)
           this.tipoAsesor = this.datasolicitud.asesor        
         })
       });
-
     }
-
 
   download() {
     const op = {
@@ -46,12 +47,14 @@ export class AnalisisComponent implements OnInit{
     }
     const element = document.querySelector("#contentPDF")
 
-    html2pdf()
-      .from(element)
-      .set(op)
-      .outputPdf().then(function(pdf) {
-        console.log(btoa(pdf));
-      });
+    // html2pdf()
+    //   .from(element)
+    //   .set(op)
+    //   .outputPdf().then(function(pdf) {
+    //     console.log(btoa(pdf));
+    //   });
+      
+      html2pdf().from(element).set(op).save();
   }
 
 }

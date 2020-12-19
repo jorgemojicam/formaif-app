@@ -1196,7 +1196,7 @@
                                         <div fxLayout="row wrap">
                                             <mat-card class="radioperiodo">
                                                 <mat-card-content>
-                                                    <mat-radio-group formControlName="periodoventas">
+                                                    <mat-radio-group formControlName="periodoventas" (change)="changeperiodo(acti)">
                                                         <mat-radio-button value="1">Dia</mat-radio-button>
                                                         <mat-radio-button value="2">Semana</mat-radio-button>
                                                         <mat-radio-button value="3">Quincena</mat-radio-button>
@@ -1397,25 +1397,25 @@
                                                 <mat-card-content>
                                                     <div fxLayout="row wrap">
 
-                                                        <div class="gr" fxFlex="15%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
                                                             <mat-form-field>
                                                                 <input type="tel" autocomplete="off" matInput
                                                                     placeholder="Total Compras" required formControlName="totalCompras">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="15%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
                                                             <mat-form-field>
                                                                 <input type="tel" autocomplete="off" matInput readonly
                                                                     placeholder="Ventas Estimadas" required formControlName="ventasEstimadas">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="15%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
                                                             <mat-form-field>
                                                                 <input type="tel" autocomplete="off" matInput
                                                                     placeholder="Margen Bruto" required formControlName="margenBruto">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="15%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
                                                             <mat-form-field>
                                                                 <input type="tel" autocomplete="off" matInput
                                                                     placeholder="Otros Gastos" required formControlName="otrosGastos">

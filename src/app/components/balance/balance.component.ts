@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Inventario } from 'src/app/model/inventario';
+import { ActivosFamilia } from 'src/app/model/activosfamilia';
+import { ActivosNegocio } from 'src/app/model/activosnegocio';
 
 @Component({
   selector: 'app-balance',
@@ -62,6 +64,9 @@ export class BalanceComponent implements OnInit {
     creditoactual: '',
     creditos: this.fb.array([this.initCreditos()]),
     totalCreditos: '',
+    aplicaInversiones: '',
+    inversiones: this.fb.array([this.initInversiones()]),
+    totalInversiones: '',
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [null],
     tcorrientef: [null],
@@ -78,13 +83,21 @@ export class BalanceComponent implements OnInit {
       if (this.sol) {
         this.tipoSol = datasol.asesor
         this.dataSolicitud = datasol as Solicitud
-        this.loadBalance(this.dataSolicitud.Balance)
+        if (this.dataSolicitud.Balance) {
+          this.loadBalance(this.dataSolicitud.Balance)
+        }
       }
       this.balanceForm.valueChanges.subscribe(form => {
 
         let efectivo = this.formatNumber(this.balanceForm.controls.efectivo.value)
         let incobrable = this.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
         let valorCobrar = this.formatNumber(this.balanceForm.controls.valorCobrar.value)
+        if (incobrable > valorCobrar) {
+          incobrable = 0
+          this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {
+            duration: 3000,
+          });
+        }
         let porcentajeCobrar = (incobrable / valorCobrar) * 100
         let total = valorCobrar - incobrable
 
@@ -138,22 +151,43 @@ export class BalanceComponent implements OnInit {
           }, { emitEvent: false });
         });
 
+        let totalProv = 0
+        const proveedores = <FormArray>this.balanceForm.controls['proveedoresRow'];
+        proveedores.controls.forEach(x => {
+          let valor = this.formatNumber(x.get('valor').value)
+          totalProv += valor
+          x.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false });
+        });
+
+        let totalInversiones = 0
+        const inversiones = <FormArray>this.balanceForm.controls['inversiones'];
+        inversiones.controls.forEach(x => {
+          let valor = this.formatNumber(x.get('valor').value)
+          totalInversiones += valor
+          x.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
+          }, { emitEvent: false });
+        });
+
         this.balanceForm.patchValue({
           efectivo: isFinite(efectivo) ? efectivo.toLocaleString() : 0,
           totalCreditos: isFinite(totalCredito) ? totalCredito.toLocaleString() : 0,
           incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
           valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
           cobrarTotal: isFinite(total) ? total.toLocaleString() : 0,
-          porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed(2) : 0,
+          porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
           totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
-          inventarioTotal: totalInv.toLocaleString(),
-          actnegTotal: totalactneg.toLocaleString(),
-          actfamTotal: totalactfam.toLocaleString(),
+          inventarioTotal: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
+          actnegTotal: isFinite(totalactneg) ? totalactneg.toLocaleString() : 0,
+          actfamTotal: isFinite(totalactfam) ? totalactfam.toLocaleString() : 0,
+          proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
+          totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
         }, { emitEvent: false });
 
-
         const ctrl = <FormArray>this.balanceForm.controls['pasivosRows'];
-        ctrl.controls.forEach((x, index) => {
+        ctrl.controls.forEach((x) => {
           let tipo = x.get('tipo').value
           let clase = x.get('clase').value
           let periodo = x.get('periodo').value
@@ -164,7 +198,8 @@ export class BalanceComponent implements OnInit {
           let valor = this.formatNumber(x.get('valor').value)
           let meses = 12
           let netocuota = plazo - numcuota
-
+          
+          // Entidades Financieras
           if (tipo.id == "1") {
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
             let nocorriente = saldo - corriente
@@ -180,16 +215,32 @@ export class BalanceComponent implements OnInit {
             if (netocuota > 0 && numcuota > 0) {
               x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
             }
-
-            x.get("proyeccion").setValue(proyeccion, { emitEvent: false });
-
             if (clase == 1) {
-              x.get("corrienteF").setValue(corriente, { emitEvent: false });
-              x.get("nocorrienteF").setValue(nocorriente, { emitEvent: false });
+              x.patchValue({
+                corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+              }, { emitEvent: false })
             } else {
-              x.get("corrienteN").setValue(corriente, { emitEvent: false });
-              x.get("nocorrienteN").setValue(nocorriente, { emitEvent: false });
+              x.patchValue({
+                corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+              }, { emitEvent: false })
             }
+            x.patchValue({
+              proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+            }, { emitEvent: false })
+
+          // Hipotecario
+          } else if (tipo.id == "2") {
+            let porcentajeneg = x.get('porcentajeneg').value
+
+            if(porcentajeneg > 100){
+              x.get("porcentajeneg").setValue("", { emitEvent: false });
+              this._snackBar.open("No puede superar el 100%", "Ok!", {
+                duration: 3000,
+              });
+            }
+            
           } else if (tipo.id == "6") {
 
             let corriente = 0
@@ -209,8 +260,6 @@ export class BalanceComponent implements OnInit {
               corriente = 0
             }
 
-            x.get("cuotacalcu").setValue(cuotacalcu, { emitEvent: false });
-
             if (clase == 1) {
               x.get("corrienteF").setValue(corriente, { emitEvent: false });
               x.get("nocorrienteF").setValue(nocorriente, { emitEvent: false });
@@ -218,15 +267,23 @@ export class BalanceComponent implements OnInit {
               x.get("corrienteN").setValue(corriente, { emitEvent: false });
               x.get("nocorrienteN").setValue(nocorriente, { emitEvent: false });
             }
+
+            x.patchValue({
+              cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
+            }, { emitEvent: false })
           }
-          this.ref.detectChanges()
+
+          x.patchValue({
+            saldo: isFinite(saldo) ? saldo.toLocaleString() : 0,
+            plazo: isFinite(plazo) ? plazo.toLocaleString() : 0,
+            monto: isFinite(monto) ? monto.toLocaleString() : 0,
+            valor: isFinite(valor) ? valor.toLocaleString() : 0,
+          }, { emitEvent: false })
         });
 
-        this.dataBalance = form
+        this.dataBalance = this.balanceForm.value
         this.dataSolicitud.Balance = this.dataBalance
         this.srvSol.saveSol(this.sol, this.dataSolicitud)
-
-        this.ref.detectChanges()
       })
 
     });
@@ -241,27 +298,34 @@ export class BalanceComponent implements OnInit {
       incobrableCobrar: bal.incobrableCobrar,
       recuperacionCobrar: bal.recuperacionCobrar,
       cobrarTotal: bal.cobrarTotal,
-      porcentajeCobrar: '',
+      porcentajeCobrar: bal.porcentajeCobrar,
       recuperacion: this.fb.array([this.initRecuperacion()]),
       totalRecuperacion: '',
       inventarioRow: this.loadInventarioRows(bal.inventarioRow),
       inventarioTotal: bal.inventarioTotal,
-      actividadNegRows: this.fb.array([this.initActinegRow()]),
-      actnegTotal: '',
+      actividadNegRows: this.loadActividad(bal.actividadNegRows),
+      actnegTotal: bal.actnegTotal,
       activosFamRows: this.fb.array([this.initActifamRow()]),
       actfamTotal: '',
       proveedoresRow: this.fb.array([this.initProvRows()]),
       creditoactual: '',
       creditos: this.fb.array([this.initCreditos()]),
       totalCreditos: '',
+      aplicaInversiones: '',
+      inversiones: this.fb.array([this.initInversiones()]),
+      totalInversiones: '',
       proveedoresTotal: '',
       pasivosRows: this.fb.array([this.initPasivoRows()]),
       tcuotaf: [null],
       tcorrientef: [null],
-      tnocorrientef: [null]
+      tnocorrientef: [null],
+      tcuotan: [null],
+      tcorrienten: [null],
+      tnocorrienten: [null]
     })
   }
 
+  //----------------Inventario--------------------------------
   initInventarioRows() {
     return this.fb.group({
       tipo: ['', Validators.required],
@@ -292,12 +356,28 @@ export class BalanceComponent implements OnInit {
   deleteInventarioRow(index: number) {
     this.inventario().removeAt(index);
   }
+  //------------------------------------------------------------------
+
+  //------------------------Activos negocio--------------------------
   initActinegRow() {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
       valor: [null, Validators.required]
     });
+  }
+  loadActividad(act: ActivosNegocio[]) {
+    let activosArr = this.fb.array([]);
+    act.forEach(a => {
+      activosArr.push(
+        this.fb.group({
+          tipo: [a.tipo, Validators.required],
+          detalle: [a.detalle, Validators.required],
+          valor: a.valor,
+        })
+      )
+    });
+    return activosArr;
   }
   activosNegocio() {
     return this.balanceForm.get('actividadNegRows') as FormArray;
@@ -308,12 +388,28 @@ export class BalanceComponent implements OnInit {
   deleteActNegRow(index: number) {
     this.activosNegocio().removeAt(index);
   }
+  //-------------------------------------------------------------------
+
+  //-------------------------------------activos familia---------------
   initActifamRow() {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
       valor: ['', Validators.required]
     });
+  }
+  loadActividadFam(act: ActivosFamilia[]) {
+    let activosArr = this.fb.array([]);
+    act.forEach(a => {
+      activosArr.push(
+        this.fb.group({
+          tipo: [a.tipo, Validators.required],
+          detalle: [a.detalle, Validators.required],
+          valor: a.valor,
+        })
+      )
+    });
+    return activosArr;
   }
   activosFamilia() {
     return this.balanceForm.get('activosFamRows') as FormArray;
@@ -324,6 +420,8 @@ export class BalanceComponent implements OnInit {
   deleteActFamRow(index: number) {
     this.activosFamilia().removeAt(index);
   }
+  //----------------------------------------------------------------
+
   //---------------Proveedoresd-------------------------
   proveedores() {
     return this.balanceForm.get('proveedoresRow') as FormArray;
@@ -357,7 +455,27 @@ export class BalanceComponent implements OnInit {
   deleteCredito(index: number) {
     this.creditos().removeAt(index);
   }
-  //----------------------------------------
+  //--------------------------------------------------
+
+  //---------------Inversiones-------------------------
+  inversiones() {
+    return this.balanceForm.get('inversiones') as FormArray;
+  }
+  initInversiones() {
+    return this.fb.group({
+      detalle: [''],
+      mes: [''],
+      origen: [''],
+      valor: [''],
+    });
+  }
+  addInversion() {
+    this.inversiones().push(this.initInversiones());
+  }
+  deleteInversion(index: number) {
+    this.creditos().removeAt(index);
+  }
+  //--------------------------------------------------
 
   //--------------Recuperacion cartera-------------------------
   recuperacion() {
@@ -381,6 +499,7 @@ export class BalanceComponent implements OnInit {
       tipo: ['', Validators.required],
       clase: [''],
       negociovivienda: [false],
+      porcentajeneg:'',
       acreedor: [''],
       monto: [''],
       plazo: [''],
@@ -435,11 +554,11 @@ export class BalanceComponent implements OnInit {
       this.cuotas(ti).push(this.itemsCuotas());
     }
   }
-  formatNumber(num: string) {
+  formatNumber(num) {
     if (typeof (num) == "number") {
-      return parseInt(num)
+      return num
     } else {
-      return parseInt(num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
+      return parseInt(num == "0" || num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
     }
   }
 }

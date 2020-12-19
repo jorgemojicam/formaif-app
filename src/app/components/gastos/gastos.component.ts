@@ -57,7 +57,7 @@ export class GastosComponent implements OnInit {
   dataGastos: Gastos = new Gastos();
   otroIngreso: any = DataSelect.OtrosIngresosFamiliar;
   meses: any = DataSelect.Meses;
-  tipoSol:number;
+  tipoSol: number;
   sol: string;
 
   ngOnInit(): void {
@@ -310,11 +310,11 @@ export class GastosComponent implements OnInit {
     this.otrosingresos().removeAt(index);
   }
 
-  formatNumber(num: string) {
+  formatNumber(num) {
     if (typeof (num) == "number") {
-      return parseInt(num)
+      return num
     } else {
-      return parseInt(num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
+      return parseInt(num == "0" || num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
     }
   }
 

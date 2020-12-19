@@ -1,6 +1,8 @@
 import { ActivosFamilia } from './activosfamilia';
 import { ActivosNegocio } from './activosnegocio';
+import { Creditos } from './creditos';
 import { Inventario } from './inventario';
+import { Inversiones } from './inversiones';
 import { Pasivos } from './pasivos';
 
 export class Balance {
@@ -11,11 +13,21 @@ export class Balance {
     incobrableCobrar: string;
     recuperacionCobrar: string;
     cobrarTotal: string;
+    porcentajeCobrar: number;
     inventarioRow: Inventario[];
     inventarioTotal: number;
-    ActivosFamilia: ActivosFamilia[];
-    totalActivosFamilia: number;
-    ActivosNegocio: ActivosNegocio[];
-    totalActivosNegocio: number;
-    Pasivos: Pasivos[];
+    activosFamRows: ActivosFamilia[];
+    actfamTotal: number;
+    actividadNegRows: ActivosNegocio[];
+    actnegTotal: number;
+    inversiones: Inversiones[];
+    creditos: Creditos[];
+    totalCreditos: string;
+    pasivosRows: Pasivos[];
+    tcuotaf: string;
+    tcorrientef: string;
+    tnocorrientef: string;
+    tcuotan: string;
+    tcorrienten: string;
+    tnocorrienten: string;
 }

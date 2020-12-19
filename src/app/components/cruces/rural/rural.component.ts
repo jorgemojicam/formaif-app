@@ -78,12 +78,6 @@ export class RuralComponent implements OnInit {
       this.loadData = true
       this.isLoad.emit(true)
 
-      this.actividadesForm.valueChanges.subscribe(values => {
-        this.dataCruces = values.act
-        this.datasolicitud.CrucesAgro = this.dataCruces
-        this.srvSol.saveSol(this.sol, this.datasolicitud)
-      })
-
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
@@ -123,6 +117,7 @@ export class RuralComponent implements OnInit {
           let cantB = x.get('diasB').value.length
           let cantR = x.get('diasR').value.length
           let cantM = x.get('diasM').value.length
+
           let totalB = cantB * valorB * cantperiodo
           let totalR = cantR * valorR * cantperiodo
           let totalM = cantM * valorM * cantperiodo
@@ -156,7 +151,7 @@ export class RuralComponent implements OnInit {
           if (totalpromedio > totalventas) {
             ventasestimadas = totalventas
           } else {
-            ventasestimadas = totalventas
+            ventasestimadas = totalpromedio
           }
           let totalliquido = (ventasestimadas * margenBruto) - otrosGastos
 
@@ -175,7 +170,7 @@ export class RuralComponent implements OnInit {
             ventasEstimadas: isFinite(ventasestimadas) ? ventasestimadas.toLocaleString() : 0,
             otrosGastos: isFinite(otrosGastos) ? otrosGastos.toLocaleString() : 0,
             ingresoLiquido: isFinite(totalliquido) ? totalliquido.toLocaleString() : 0,
-            margenBruto: margenBruto
+            margenBruto: isFinite(margenBruto) ? margenBruto : 0,
           }, { emitEvent: false })
           //---------------------------------------------------------
 
@@ -266,7 +261,6 @@ export class RuralComponent implements OnInit {
                 duration: 3000,
               });
             }
-
             let rendimientoTra = this.formatNumber(lot.get("rendimientoTra").value)
             let unidadesTra = this.formatNumber(lot.get("unidadesTra").value)
             let perdidaTra = (1 - (unidadesTra / rendimientoTra)) * 100
@@ -395,11 +389,32 @@ export class RuralComponent implements OnInit {
               totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0,
               totalEgresos: isFinite(totalEgresos) ? totalEgresos.toLocaleString('es-CO') : 0,
             }, { emitEvent: false })
-          })
+          });
 
         });
+        this.dataCruces = values.act
+        this.datasolicitud.CrucesAgro = this.dataCruces
+        this.srvSol.saveSol(this.sol, this.datasolicitud)
       })
+
     })
+  }
+
+  changeperiodo(e: FormGroup) {
+    e.patchValue({
+      diasB: '',
+      diasR: '',
+      diasM: '',
+      valorB: '',
+      valorR: '',
+      valorM: '',
+      totalB: '',
+      totalR: '',
+      totalM: '',
+      totalDias: '',
+      promedio: '',
+      totalPromedio: '',
+    }, { emitEvent: false })
   }
 
   displayFn(user: any): string {
