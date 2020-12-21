@@ -200,10 +200,18 @@ export class BalanceComponent implements OnInit {
           let netocuota = plazo - numcuota
           
           // Entidades Financieras
-          if (tipo.id == "1") {
+          if (tipo.id == "1" || tipo.id == "3") {
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
             let nocorriente = saldo - corriente
             let proyeccion = valor / periodo.period
+            let descuentolibranza = false
+
+            if(tipo.id == "3"){
+              descuentolibranza = x.get('descuentolibranza').value
+              if(descuentolibranza){
+                x.get("valor").setValue(0, { emitEvent: false });
+              }
+            }
 
             if (numcuota > plazo) {
               x.get("cuota").setValue("", { emitEvent: false });
@@ -232,15 +240,45 @@ export class BalanceComponent implements OnInit {
 
           // Hipotecario
           } else if (tipo.id == "2") {
-            let porcentajeneg = x.get('porcentajeneg').value
-
+            let porcentajeneg = x.get('porcentajeneg').value           
             if(porcentajeneg > 100){
               x.get("porcentajeneg").setValue("", { emitEvent: false });
               this._snackBar.open("No puede superar el 100%", "Ok!", {
                 duration: 3000,
               });
             }
-            
+            if (numcuota > plazo) {
+              x.get("cuota").setValue("", { emitEvent: false });
+              this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
+                duration: 4000,
+              });
+            }
+            let montoneg = (saldo * porcentajeneg) /100
+            let montofam = saldo - montoneg
+
+            let corrienteN =0
+            let corrienteF = 0
+            let neto = plazo - numcuota
+            if(neto<12){
+              corrienteN= montoneg
+              corrienteF = montofam
+            }else{
+              corrienteN = (montoneg /neto) *12
+              corrienteF = (montofam /neto) *12
+            }
+            let nocorrienteN = montoneg - corrienteN
+            let nocorrienteF = montofam - corrienteF
+
+            x.patchValue({
+              montoF: isFinite(montofam)? montofam.toLocaleString():0,
+              montoN: isFinite(montoneg)? montoneg.toLocaleString():0,
+              corrienteN: isFinite(corrienteN)? corrienteN.toLocaleString():0,
+              nocorrienteN: isFinite(nocorrienteN)? nocorrienteN.toLocaleString():0,
+              corrienteF: isFinite(corrienteF)? corrienteF.toLocaleString():0,
+              nocorrienteF: isFinite(nocorrienteF)? nocorrienteF.toLocaleString():0,
+
+            },{emitEvent:false})
+          //Tarjetas de credito
           } else if (tipo.id == "6") {
 
             let corriente = 0
@@ -501,6 +539,7 @@ export class BalanceComponent implements OnInit {
       negociovivienda: [false],
       porcentajeneg:'',
       acreedor: [''],
+      descuentolibranza:'',
       monto: [''],
       plazo: [''],
       saldo: [''],
@@ -517,6 +556,8 @@ export class BalanceComponent implements OnInit {
       calculocap: [''],
       periodocap: [''],
       fechaproxcap: [''],
+      montoF:'',
+      montoN:'',
       cuotaN: [''],
       cuotaF: [''],
       proyeccion: [''],

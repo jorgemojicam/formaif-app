@@ -450,6 +450,15 @@
 
                         <ng-container *ngSwitchCase="'entfinan'">
 
+                            <!-- Si es de libranza -->
+                            <ng-container *ngIf="itemrow.value.tipo.id ==3">
+                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    ¿Se verifica descuento de la cuota en los ingresos?
+                                    <mat-slide-toggle formControlName="descuentolibranza">
+                                    </mat-slide-toggle>
+                                </div>
+                            </ng-container>
+
                             <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="25%">
                                 <mat-form-field>
                                     <mat-label>Clase</mat-label>
@@ -501,8 +510,8 @@
                             </div>
                             <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="tel" matInput placeholder="Valor Cuota Datacredito" id="valor{{pas}}"
-                                        formControlName="valor">
+                                    <input type="tel" [readonly]="itemrow.value.descuentolibranza" matInput
+                                        placeholder="Valor Cuota Datacredito" formControlName="valor">
                                 </mat-form-field>
                             </div>
                             <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="33%">
@@ -576,19 +585,30 @@
                             </ng-container>
                             <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Sando Actual" id="saldo{{pas}}"
+                                    <input type="tel" matInput placeholder="Monto Inicial" formControlName="monto">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="tel" matInput placeholder="Saldo Actual" id="saldo{{pas}}"
                                         formControlName="saldo">
                                 </mat-form-field>
                             </div>
                             <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Cuota" id="cuotaN{{pas}}"
-                                        formControlName="cuotaN">
+                                    <input type="num" matInput placeholder="Plazo" id="plazo{{pas}}"
+                                        formControlName="plazo">
                                 </mat-form-field>
                             </div>
                             <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                 <mat-form-field>
-                                    <input type="text" matInput placeholder="Acreedor" id="acreedorhipo{{pas}}"
+                                    <input type="tel" matInput placeholder="#Cuota Actual" id="cuota{{pas}}"
+                                        formControlName="cuota">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="67%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="Acreedor" id="acreedor{{pas}}"
                                         formControlName="acreedor">
                                 </mat-form-field>
                             </div>
@@ -598,8 +618,8 @@
                                     <legend>Negocio</legend>
                                     <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field>
-                                            <input type="text" matInput placeholder="Monto" id="cuotaN{{pas}}"
-                                                formControlName="cuotaN">
+                                            <input type="tel" matInput placeholder="Monto" id="montoN{{pas}}"
+                                                formControlName="montoN">
                                         </mat-form-field>
                                     </div>
                                     <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
@@ -610,7 +630,7 @@
                                     </div>
                                     <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field>
-                                            <input type="number" matInput placeholder="No Corriente"
+                                            <input type="text" matInput placeholder="No Corriente"
                                                 id="nocorrienteN{{pas}}" formControlName="nocorrienteN" readonly>
                                         </mat-form-field>
                                     </div>
@@ -620,8 +640,8 @@
                                 <legend>Familia</legend>
                                 <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
-                                        <input type="text" matInput placeholder="Monto" id="cuotaF{{pas}}"
-                                            formControlName="cuotaF">
+                                        <input type="tel" matInput placeholder="Monto" id="montoF{{pas}}"
+                                            formControlName="montoF">
                                     </mat-form-field>
                                 </div>
                                 <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
@@ -632,8 +652,8 @@
                                 </div>
                                 <div class="gr" fxFlex="30%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
-                                        <input type="number" matInput placeholder="No Corriente"
-                                            id="nocorrienteF{{pas}}" formControlName="nocorrienteF" readonly>
+                                        <input type="text" matInput placeholder="No Corriente" id="nocorrienteF{{pas}}"
+                                            formControlName="nocorrienteF" readonly>
                                     </mat-form-field>
                                 </div>
                             </fieldset>
@@ -937,7 +957,8 @@
                     </ng-container>
 
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="pas==0"
-                        (click)="deletePasivosRow(pas)">
+                        (click)="deletePasivosRow(pas)"
+                        [disabled]="balanceForm.controls.pasivosRows['controls'].length >=20">
                         <mat-icon>cancel</mat-icon>
                     </button>
 

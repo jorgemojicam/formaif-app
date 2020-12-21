@@ -121,7 +121,7 @@
     {
       "id": 3,
       "name": "Libranza",
-      "template": "libran"
+      "template": "entfinan"
     },
     {
       "id": 4,
@@ -131,7 +131,7 @@
     {
       "id": 5,
       "name": "Educativos",
-      "template": "pagad"
+      "template": "entfinan"
     },
     {
       "id": 6,
