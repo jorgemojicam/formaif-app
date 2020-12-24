@@ -4,6 +4,8 @@ import { Creditos } from './creditos';
 import { Inventario } from './inventario';
 import { Inversiones } from './inversiones';
 import { Pasivos } from './pasivos';
+import { Proveedores } from './proveedores';
+import { Recuperacion } from './recuperacion';
 
 export class Balance {
     efectivo: string;
@@ -14,15 +16,22 @@ export class Balance {
     recuperacionCobrar: string;
     cobrarTotal: string;
     porcentajeCobrar: number;
+    recuperacion:Recuperacion[];
+    totalRecuperacion:number;
     inventarioRow: Inventario[];
     inventarioTotal: number;
     activosFamRows: ActivosFamilia[];
     actfamTotal: number;
     actividadNegRows: ActivosNegocio[];
     actnegTotal: number;
-    inversiones: Inversiones[];
+    proveedoresRow:Proveedores[];
+    proveedoresTotal:number;
+    creditoactual:boolean;
     creditos: Creditos[];
     totalCreditos: string;
+    aplicaInversiones:boolean;
+    inversiones:Inversiones[];
+    totalInversiones:number;
     pasivosRows: Pasivos[];
     tcuotaf: string;
     tcorrientef: string;

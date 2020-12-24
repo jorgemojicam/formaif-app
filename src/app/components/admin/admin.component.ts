@@ -43,8 +43,10 @@ export class AdminComponent implements OnInit {
   goHome() {
     this.router.navigate(['home'])
   }
-  onLogout() {
+
+  onLogout(){    
     this.tokenStorage.signOut()
+    this.router.navigate(['auth'])
   }
 
 

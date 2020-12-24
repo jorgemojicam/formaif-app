@@ -27,7 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-
+import {MatSliderModule} from '@angular/material/slider';
 const myCompm = [
   MatCardModule,
   MatToolbarModule,
@@ -55,7 +55,8 @@ const myCompm = [
   MatCheckboxModule,
   MatProgressSpinnerModule,
   MatTooltipModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatSliderModule
 ];
 
 @NgModule({

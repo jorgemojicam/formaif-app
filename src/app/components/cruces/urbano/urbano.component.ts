@@ -311,8 +311,9 @@ export class UrbanoComponent implements OnInit {
     let crucesArray = this.fb.array([])
 
     for (let cru = 0; cru < cruces.length; cru++) {
-
-      let periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
+      let periodhis = []
+      if(cruces[cru].periodohistoricas)
+        periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
       crucesArray.push(
         this.fb.group({
           nombre: [cruces[cru].nombre],

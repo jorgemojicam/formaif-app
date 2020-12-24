@@ -111,7 +111,7 @@
     {
       "id": 1,
       "name": "Entidades Financieras",
-      "template": "entfinan"
+      "template": "entfinan"      
     },
     {
       "id": 2,
@@ -144,7 +144,7 @@
       "template": "periodicidad"
     },
     {
-      "id": 5,
+      "id": 8,
       "name": "Sector Real",
       "template": "entfinan"
     }

@@ -4,11 +4,10 @@ export class Pasivos {
         name: string;
         template: string;
     };
-    clase: {
-        id: number,
-        name: string;
-    };
-    negociovivienda: string;
+    clase: number;
+    negociovivienda: boolean;
+    porcentajeneg: number;
+    descuentolibranza: boolean;
     acreedor: string;
     monto: string;
     plazo: string;
@@ -16,7 +15,11 @@ export class Pasivos {
     destino: string;
     cuota: string;
     valor: string;
-    periodo: string;
+    periodo: {
+        id: number;
+        name: string;
+        period: number;
+    };
     cuotacalcu: string;
     tasa: string;
     pago: string;
@@ -26,6 +29,8 @@ export class Pasivos {
     calculocap: string;
     periodocap: string;
     fechaproxcap: string;
+    montoF: string;
+    montoN: string;
     cuotaN: string;
     cuotaF: string;
     proyeccion: string;
