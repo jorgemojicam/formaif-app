@@ -1,0 +1,104 @@
+<div class="content" id="contentFlujo">
+
+    <table>
+        <tr>
+            <td>Analisis de credito</td>
+            <td>Solicitud</td>
+            <td>{{datasolicitud.solicitud}}</td>
+            <td>Fecha del Estudio</td>
+            <td>{{fechahoy}}</td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>Plazo Total del Crédito Actual(MESES)</td>
+            <td>0</td>
+            <td>Forma de Pago</td>
+            <td>0</td>
+            <td>Monto recomendado</td>
+            <td>0</td>
+            <td>Efectivo Disponible</td>
+            <td>0</td>
+            <td>Plan de Inversión (Activos Fijos)</td>
+            <td>0</td>
+            <td>Plan de Inversión (capital de trabajo)</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>{{fechahoy}}</th>
+                <th colspan="6">INGRESOS Act Agropecuaria</th>
+                <th rowspan="3">TOTAL INGRESO MENSUAL (ventas de contado)</th>
+                <th rowspan="3">Recuperación de cartera</th>
+                <th colspan="6">EGRESOS Act Agropecuaria</th>
+            </tr>
+            <tr>
+                <th rowspan="2" colspan="2">Detalle</th>
+                <th>Actividad 1</th>
+                <th>Actividad 2</th>
+                <th>Actividad 3</th>
+                <th>Actividad 4</th>
+                <th>Actividad 5</th>         
+                <th>Costo 1</th>
+                <th>Costo 2</th>
+                <th>Costo 3</th>
+                <th>Costo 4</th>
+                <th>Costo 5</th>
+            </tr>
+            <tr>
+                <th *ngFor="let act of datasolicitud.CrucesAgro">{{act.nombre.name}}</th>
+                <th *ngFor="let act of datasolicitud.CrucesAgro">{{act.nombre.name}}</th>
+            </tr>
+        </thead>
+        <tr *ngFor="let item of dataFlujo">
+            <td>
+                {{item[0]}}
+            </td>
+            <td>
+                {{item[2]}}
+            </td>
+            <td>
+                {{item[3]}}
+            </td>
+            <td>
+                {{item[4]}}
+            </td>
+            <td>
+                {{item[5]}}
+            </td>
+            <td>
+                {{item[6]}}
+            </td>
+            <td>
+                {{item[8]}}
+            </td>
+            <td>
+                {{item[9]}}
+            </td>
+            <td>
+                {{item[10]}}
+            </td>
+            <td>
+                {{item[11]}}
+            </td>
+            <td>
+                {{item[12]}}
+            </td>
+            <td>
+                {{item[13]}}
+            </td>
+            <td>
+                {{item[14]}}
+            </td>
+            <td>
+                {{item[15]}}
+            </td>
+
+        </tr>
+    </table>
+
+</div>

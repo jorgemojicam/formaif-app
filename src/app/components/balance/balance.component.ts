@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Balance } from 'src/app/model/balance';
@@ -63,6 +63,7 @@ export class BalanceComponent implements OnInit {
     actnegTotal: '',
     activosFamRows: this.fb.array([this.initActifamRow()]),
     actfamTotal: '',
+    aplicaproveedores: false,
     proveedoresRow: this.fb.array([this.initProvRows()]),
     proveedoresTotal: '',
     creditoactual: '',
@@ -109,8 +110,14 @@ export class BalanceComponent implements OnInit {
             duration: 3000,
           });
         }
+
         let porcentajeCobrar = (incobrable / valorCobrar) * 100
-        let total = valorCobrar - incobrable
+        let totalCobrar = 0
+        if (incobrable == 0) {
+          totalCobrar = valorCobrar - (valorCobrar * 0.1)
+        } else {
+          totalCobrar = valorCobrar - incobrable
+        }
 
         //Calcular recuperacion de cartera        
         let totalrec = 0
@@ -118,6 +125,10 @@ export class BalanceComponent implements OnInit {
         recupera.controls.forEach(x => {
           let valor = this.formatNumber(x.get('valor').value)
           totalrec += valor
+          if (totalrec > totalCobrar) {
+            totalrec -= valor
+            valor = 0
+          }
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false })
@@ -190,7 +201,12 @@ export class BalanceComponent implements OnInit {
 
         //Calculo pasivos
         const ctrl = <FormArray>this.balanceForm.controls['pasivosRows'];
-        let tcorrientef, tnocorrientef, tcorrienten, tnocorrienten, tcuotaf, tcuotan = 0
+        let tcorrientef = 0
+        let tnocorrientef = 0
+        let tcorrienten = 0
+        let tnocorrienten = 0
+        let tcuotaf = 0
+        let tcuotan = 0
 
         ctrl.controls.forEach((x) => {
           let tipo = x.get('tipo').value
@@ -221,7 +237,7 @@ export class BalanceComponent implements OnInit {
             }
 
             if (saldo > monto) {
-              monto =0
+              saldo = 0
               this._snackBar.open("Saldo no puede superar el valor del monto", "Ok!", {
                 duration: 4000,
               });
@@ -238,26 +254,15 @@ export class BalanceComponent implements OnInit {
               x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
             }
             if (clase == 1) {
-
-              if (this.tipoSol == 1) {
-                tcuotaf += proyeccion
-              }else{
-                tcuotaf += valor
-              }
+              tcuotaf += proyeccion
               tcorrientef += corriente
               tnocorrientef += nocorriente
-
               x.patchValue({
                 corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
               }, { emitEvent: false })
             } else {
-
-              if (this.tipoSol == 1) {
-                tcuotan += proyeccion
-              }else{
-                tcuotan += valor
-              } 
+              tcuotan += proyeccion
               tcorrienten += corriente
               tnocorrienten += nocorriente
               x.patchValue({
@@ -306,7 +311,7 @@ export class BalanceComponent implements OnInit {
             tnocorrientef += nocorrienteF
             tcorrienten += corrienteN
             tnocorrienten += nocorrienteN
-
+            console.log(tcorrientef)
             x.patchValue({
               montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
               montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
@@ -392,7 +397,7 @@ export class BalanceComponent implements OnInit {
           totalCreditos: isFinite(totalCredito) ? totalCredito.toLocaleString() : 0,
           incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
           valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
-          cobrarTotal: isFinite(total) ? total.toLocaleString() : 0,
+          cobrarTotal: isFinite(totalCobrar) ? totalCobrar.toLocaleString() : 0,
           porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
           totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
           inventarioTotal: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
@@ -400,7 +405,7 @@ export class BalanceComponent implements OnInit {
           actfamTotal: isFinite(totalactfam) ? totalactfam.toLocaleString() : 0,
           proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
           totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
-
+          tcuotaf: isFinite(tcuotaf) ? tcuotaf.toLocaleString() : 0,
           tcorrientef: isFinite(tcorrientef) ? tcorrientef.toLocaleString() : 0,
           tnocorrientef: isFinite(tnocorrientef) ? tnocorrientef.toLocaleString() : 0,
           tcorrienten: isFinite(tcorrienten) ? tcorrienten.toLocaleString() : 0,
@@ -433,6 +438,7 @@ export class BalanceComponent implements OnInit {
       actnegTotal: bal.actnegTotal,
       activosFamRows: this.loadActividadFam(bal.activosFamRows),
       actfamTotal: bal.actfamTotal,
+      aplicaproveedores: bal.aplicaproveedores,
       proveedoresRow: this.laodProveedores(bal.proveedoresRow),
       proveedoresTotal: bal.proveedoresTotal,
       creditoactual: bal.creditoactual,
@@ -442,12 +448,12 @@ export class BalanceComponent implements OnInit {
       inversiones: this.loadInversiones(bal.inversiones),
       totalInversiones: bal.totalInversiones,
       pasivosRows: this.loadPasivos(bal.pasivosRows),
-      tcuotaf: [0],
-      tcorrientef: [0],
-      tnocorrientef: [0],
-      tcuotan: [0],
-      tcorrienten: [0],
-      tnocorrienten: [0]
+      tcuotaf: [bal.tcuotaf],
+      tcorrientef: [bal.tcorrientef],
+      tnocorrientef: [bal.tnocorrientef],
+      tcuotan: [bal.tcuotan],
+      tcorrienten: [bal.tcorrienten],
+      tnocorrienten: [bal.tnocorrienten]
     })
   }
 
@@ -636,7 +642,7 @@ export class BalanceComponent implements OnInit {
     this.inversiones().push(this.initInversiones());
   }
   deleteInversion(index: number) {
-    this.creditos().removeAt(index);
+    this.inversiones().removeAt(index);
   }
   //--------------------------------------------------
 
@@ -745,12 +751,12 @@ export class BalanceComponent implements OnInit {
           montoN: [pas.montoN],
           cuotaN: [pas.cuotaN],
           cuotaF: [pas.cuotaF],
-          proyeccion: [''],
-          corrienteF: [],
-          nocorrienteF: [],
-          corrienteN: [],
-          nocorrienteN: [],
-          numcoutaneto: [],
+          proyeccion: [pas.proyeccion],
+          corrienteF: [pas.corrienteF],
+          nocorrienteF: [pas.nocorrienteF],
+          corrienteN: [pas.corrienteN],
+          nocorrienteN: [pas.nocorrienteN],
+          numcoutaneto: [pas.numcoutaneto],
           cuotasRow: this.fb.array([])
         })
       )

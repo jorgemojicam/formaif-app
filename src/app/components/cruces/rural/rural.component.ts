@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {  Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { CrucesAgro } from 'src/app/model/crucesagro';
 import { Egresos } from 'src/app/model/egresos';
 import { LoteAgro } from 'src/app/model/loteAgro';
+import { LotePecuario } from 'src/app/model/lotePecuario';
 import { Solicitud } from 'src/app/model/solicitud';
 import Swal from 'sweetalert2';
 import DataSelect from '../../../data-select/dataselect.json';
@@ -358,7 +359,6 @@ export class RuralComponent implements OnInit {
               totalEgresos = totalEgMante + totalEgCosecha
             }
 
-
             lot.patchValue({
               unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
               rendimientoTra: rendimientoTra,
@@ -392,7 +392,7 @@ export class RuralComponent implements OnInit {
           });
 
         });
-        this.dataCruces = values.act
+        this.dataCruces = this.actividadesForm.get('act').value
         this.datasolicitud.CrucesAgro = this.dataCruces
         this.srvSol.saveSol(this.sol, this.datasolicitud)
       })
@@ -457,12 +457,18 @@ export class RuralComponent implements OnInit {
   loadactividad(cruces: CrucesAgro[]): FormGroup {
     let crucesArray = this.fb.array([])
     for (let cru = 0; cru < cruces.length; cru++) {
+      let tipoprod
+      if(cruces[cru].tipo ==2){
+        tipoprod = cruces[cru].tipoproduccion
+      }else if(cruces[cru].tipo ==1){
+        tipoprod = cruces[cru].nombre.tipoproducto
+      }
       crucesArray.push(
         this.fb.group({
           nombre: [cruces[cru].nombre],
           tipo: [cruces[cru].tipo],
           periodoventas: [cruces[cru].periodoventas],
-          tipoproduccion: [cruces[cru].nombre.tipoproducto],
+          tipoproduccion: tipoprod,
           diasB: [cruces[cru].diasB],
           diasR: [cruces[cru].diasR],
           diasM: [cruces[cru].diasM],
@@ -484,7 +490,7 @@ export class RuralComponent implements OnInit {
           ingresoLiquido: '',
 
           lotesAgro: this.loaditemLotes(cruces[cru].lotesAgro),
-          lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
+          lotesPecuario: this.loaditemLotesP(cruces[cru].lotesPecuario)
         })
       )
     }
@@ -545,6 +551,31 @@ export class RuralComponent implements OnInit {
           totalEgresosCosecha: lotes[lo].totalEgresosCosecha,
           totalEgresos: ''
 
+        })
+      )
+    }
+    return lotesArray
+  }
+  loaditemLotesP(lotes: LotePecuario[]) {
+    let lotesArray = this.fb.array([])
+    for (let lo = 0; lo < lotes.length; lo++) {
+      lotesArray.push(
+        this.fb.group({
+          numanimales: lotes[lo].numanimales,
+          prodderivado: lotes[lo].prodderivado,
+          unidadventa: lotes[lo].unidadventa,
+          cantidadxanimal: lotes[lo].cantidadxanimal,
+          frecuencia: lotes[lo].frecuencia,
+          cantproducida: lotes[lo].cantproducida,
+          unitotalesventa: lotes[lo].unitotalesventa,
+          perdida: lotes[lo].perdida,
+          preciomin: lotes[lo].preciomin,
+          precioactual: lotes[lo].precioactual,
+          preciopromedio: lotes[lo].preciopromedio,
+          ingresomes: lotes[lo].ingresomes,
+          mesingreso: lotes[lo].mesingreso,
+          egresos: this.loadEgresos(lotes[lo].egresos),
+          totalEgresos: lotes[lo].totalEgresos
         })
       )
     }
@@ -765,11 +796,11 @@ export class RuralComponent implements OnInit {
   }
   //-------------------------------------------------------------------
 
-  formatNumber(num: string) {
+  formatNumber(num) {
     if (typeof (num) == "number") {
-      return parseInt(num)
+      return num
     } else {
-      return parseInt(num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
+      return parseInt(num == "0" || num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
     }
   }
 

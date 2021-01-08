@@ -1,53 +1,61 @@
 <mat-toolbar color="primary" class="navbar">
-    <span color="primary" (click)="drawer.toggle()">
+    <span color="primary" (click)="action()">
         <mat-icon class="mat-18">menu</mat-icon>
     </span>
     <span class="fill-remaining-space"></span>
     <span>{{titulo}} Ágil</span>
     <span class="fill-remaining-space"></span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" (click)="goHome()" >
+    <button mat-icon-button class="example-icon favorite-icon" (click)="goHome()">
         <mat-icon>home</mat-icon>
     </button>
 </mat-toolbar>
 
-<mat-drawer-container class="menu-container" hasBackdrop="true">
-    <mat-drawer #drawer mode="over">
-        <mat-list>
-       
-            <mat-list-item *ngIf="tipo==2" routerLink="ubicacion" [queryParams]= "{solicitud:sol}">
+<mat-sidenav-container class="menu-container" (backdropClick)="action()">
+
+    <mat-sidenav fxFlex="30%" fxFlex.xs="60%" mode="push" #sidenav (keydown.escape)="action()">
+        <mat-nav-list (click)="action()" >
+            <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>location_on</mat-icon>
                 <div mat-line>Ubicacion</div>
             </mat-list-item>
-            <mat-list-item routerLink="balance" [queryParams]= "{solicitud:sol}">
+            <mat-list-item routerLink="balance" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>assessment</mat-icon>
                 <div mat-line>Balance</div>
             </mat-list-item>
-            <mat-list-item [routerLink]="['ventas']" [queryParams]= "{solicitud:sol}">
+            <mat-list-item [routerLink]="['ventas']" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>work</mat-icon>
                 <div mat-line>Cruces</div>
             </mat-list-item>
-            <mat-list-item [routerLink]="['gastos']" [queryParams]= "{solicitud:sol}">
+            <mat-list-item [routerLink]="['gastos']" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>payment</mat-icon>
                 <div mat-line>Gastos</div>
             </mat-list-item>
-            <mat-list-item [routerLink]="['analisis']" [queryParams]= "{solicitud:sol}">
+            <mat-list-item [routerLink]="['analisis']" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>web</mat-icon>
                 <div mat-line>Analisis</div>
             </mat-list-item>
-            <mat-list-item [routerLink]="['propuesta']" [queryParams]= "{solicitud:sol}">
+            <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2" [queryParams]="{solicitud:sol}">
+                <mat-icon mat-list-icon>receipt</mat-icon>
+                <div mat-line>Flujo de Caja</div>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>thumb_up</mat-icon>
                 <div mat-line>Propuesta</div>
             </mat-list-item>
             <mat-divider></mat-divider>
-            <mat-list-item>
-                <mat-icon (click)="onLogout()" mat-list-icon>exit_to_app</mat-icon>
+            <mat-list-item (click)="onLogout()">
+                <mat-icon mat-list-icon>exit_to_app</mat-icon>
                 <div mat-line>Cerrar Session</div>
             </mat-list-item>
-        </mat-list>
-    </mat-drawer>
+        
+        </mat-nav-list>        
+    </mat-sidenav>
 
-    <mat-drawer-content>
-        <router-outlet></router-outlet>
-    </mat-drawer-content>
-</mat-drawer-container>
+    <mat-sidenav-content fxLayout="row" fxLayoutAlign="center start">
+        <div fxFlex="60%" fxFlex.xs="100%">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

@@ -29,6 +29,12 @@ mat-sidenav{
   right: 0;
 }
 
-mat-drawer-content {
+.active-list-item {  
+  background-color: #c2c3cc;
+}
+mat-sidenav{
+  width: 100%;
+}
+mat-sidenav-content {
   padding: 15px 15px 0px 15px;  
 }

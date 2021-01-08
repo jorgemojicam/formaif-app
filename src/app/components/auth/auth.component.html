@@ -1,7 +1,7 @@
-<div fxLayout="row" class="content" fxLayoutAlign="center center">
-    <mat-card>
+<div fxLayout="row" fxLayoutAlign="center center" class="content" >
+    <mat-card fxFlex.xs="90%" fxFlex="40%">
         <img mat-card-image src="assets/pictures/fdlmlog.png" alt="Photo of a Shiba Inu">
-        <mat-card-content>            
+        <mat-card-content>
             <ng-container *ngIf="!isLogged; else loading">
                 <mat-card-title>Inicio Sesión</mat-card-title>
                 <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
@@ -26,7 +26,8 @@
                         </mat-form-field>
                     </p>
                     <p>
-                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid" color="primary">Login</button>
+                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid"
+                            color="primary">Login</button>
                     </p>
                 </form>
             </ng-container>

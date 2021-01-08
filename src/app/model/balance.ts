@@ -24,6 +24,7 @@ export class Balance {
     actfamTotal: number;
     actividadNegRows: ActivosNegocio[];
     actnegTotal: number;
+    aplicaproveedores:boolean;
     proveedoresRow:Proveedores[];
     proveedoresTotal:number;
     creditoactual:boolean;

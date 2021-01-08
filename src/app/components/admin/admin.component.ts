@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from './idb-solicitud.service';
@@ -11,7 +11,8 @@ import { IdbSolicitudService } from './idb-solicitud.service';
 })
 export class AdminComponent implements OnInit {
 
-  public opened: boolean = false
+  @ViewChild('sidenav') sidenav: MatSidenav;
+
   sol: string;
   titulo: string;
   tipo:number;
@@ -34,20 +35,25 @@ export class AdminComponent implements OnInit {
             this.titulo = "Agro";
           else
             this.titulo = "Asesor";
-
         })
-
       });
   }
 
   goHome() {
     this.router.navigate(['home'])
   }
-
-  onLogout(){    
+  onLogout(){
     this.tokenStorage.signOut()
     this.router.navigate(['auth'])
   }
+  action(){
+    if(this.sidenav.opened){
+      this.sidenav.close();
+    }else{
+      this.sidenav.open()
+    }
+  }
+  
 
 
 

@@ -25,6 +25,7 @@ import { NotfoundComponent } from './components/admin/notfound/notfound.componen
 import { PropuestaComponent } from './components/propuesta/propuesta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { AnalisisComponent } from './components/analisis/analisis.component';
+import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { AnalisisComponent } from './components/analisis/analisis.component';
     NotfoundComponent,
     PropuestaComponent,
     UbicacionComponent,
-    AnalisisComponent
+    AnalisisComponent,
+    FlujocajaComponent
   ],
   imports: [
     BrowserModule,

@@ -15,7 +15,7 @@ export class AuthComponent implements OnInit {
 
   isLogged:Boolean = false
   loginForm = new FormGroup({
-    Username: new FormControl('',  [Validators.pattern('^[A-Za-z0-9]+$')]),
+    Username: new FormControl('',  [Validators.pattern('^[A-Za-z0-9-.]+$')]),
     Passw: new FormControl('', Validators.required)
   });
 
@@ -39,15 +39,14 @@ export class AuthComponent implements OnInit {
     this.authServ.login(form)
       .subscribe(
         res => {
-          console.log(res)
+          
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(form.Username);
           this.route.navigate(['home']);
           this.isLogged = false
         },
         err => {          
-          let errMsg = ""
-          console.log(err.status)
+          let errMsg = ""          
           if(err.status ==401){
             errMsg="Usuario o contraseña incorrecta"
           }else if(err.status ==0){

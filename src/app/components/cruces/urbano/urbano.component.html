@@ -126,7 +126,7 @@
                                             <ng-container [ngSwitch]="acti.value.periodoventas">
                                                 <ng-container *ngSwitchCase="1">
                                                     <mat-form-field>
-                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-label>Regulares</mat-label>
                                                         <mat-select formControlName="diasR" multiple>
                                                             <mat-option *ngFor="let d of diasSemana" [value]="d.id"
                                                                 [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
@@ -137,7 +137,7 @@
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="2">
                                                     <mat-form-field>
-                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-label>Regulares</mat-label>
                                                         <mat-select formControlName="diasR" multiple>
                                                             <mat-option *ngFor="let d of semanas" [value]="d.id"
                                                                 [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
@@ -148,7 +148,7 @@
                                                 </ng-container>
                                                 <ng-container *ngSwitchCase="3">
                                                     <mat-form-field>
-                                                        <mat-label>Buenas</mat-label>
+                                                        <mat-label>Regulares</mat-label>
                                                         <mat-select formControlName="diasR" multiple>
                                                             <mat-option *ngFor="let d of quincena" [value]="d.id"
                                                                 [disabled]="acti.value.diasB.indexOf(d.id) >= 0 || acti.value.diasM.indexOf(d.id) >= 0">
@@ -178,7 +178,7 @@
                                         <ng-container [ngSwitch]="acti.value.periodoventas">
                                             <ng-container *ngSwitchCase="1">
                                                 <mat-form-field>
-                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-label>Malas</mat-label>
                                                     <mat-select formControlName="diasM" multiple>
                                                         <mat-option *ngFor="let d of diasSemana" [value]="d.id"
                                                             [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">
@@ -189,7 +189,7 @@
                                             </ng-container>
                                             <ng-container *ngSwitchCase="2">
                                                 <mat-form-field>
-                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-label>Malas</mat-label>
                                                     <mat-select formControlName="diasM" multiple>
                                                         <mat-option *ngFor="let d of semanas" [value]="d.id"
                                                             [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">
@@ -200,7 +200,7 @@
                                             </ng-container>
                                             <ng-container *ngSwitchCase="3">
                                                 <mat-form-field>
-                                                    <mat-label>Buenas</mat-label>
+                                                    <mat-label>Malas</mat-label>
                                                     <mat-select formControlName="diasM" multiple>
                                                         <mat-option *ngFor="let d of quincena" [value]="d.id"
                                                             [disabled]="acti.value.diasR.indexOf(d.id) >= 0 || acti.value.diasB.indexOf(d.id) >= 0">

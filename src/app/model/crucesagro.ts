@@ -1,11 +1,12 @@
 import { LoteAgro } from './loteAgro';
+import { LotePecuario } from './lotePecuario';
 import { NombreActividades } from './nombreactividad';
 import { TipoActividad } from './tipoactividad';
 
 export class CrucesAgro {
     nombre:NombreActividades;
     periodoventas:string;
-    tipo: TipoActividad;
+    tipo: number;
     tipoproduccion:string;
     diasB: [];
     diasM: [];
@@ -17,4 +18,5 @@ export class CrucesAgro {
     valorM: number;
     valorR: number;
     lotesAgro:LoteAgro[];
+    lotesPecuario:LotePecuario[];
 }
