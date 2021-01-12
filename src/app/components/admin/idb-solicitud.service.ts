@@ -16,8 +16,9 @@ export class IdbSolicitudService {
   getSol(name:string): any {
     return this.storage.get(name);
   }  
-  deleteSol(name:string) {
-    this.storage.delete(name).subscribe(() => { });
+  deleteSol(name:string) {    
+    console.log("este esta", name.toString())
+    return this.storage.delete(name.toString())
   } 
 
   delete() {

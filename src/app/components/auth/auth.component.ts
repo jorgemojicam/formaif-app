@@ -13,9 +13,9 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class AuthComponent implements OnInit {
 
-  isLogged:Boolean = false
+  isLogged: Boolean = false
   loginForm = new FormGroup({
-    Username: new FormControl('',  [Validators.pattern('^[A-Za-z0-9-.]+$')]),
+    Username: new FormControl('', [Validators.pattern('^[A-Za-z0-9-.]+$')]),
     Passw: new FormControl('', Validators.required)
   });
 
@@ -29,30 +29,32 @@ export class AuthComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
   }
 
   showPass(ev) {
-    this.hidenPass=ev.checked
+    this.hidenPass = ev.checked
   }
   onLogin(form: User) {
     this.isLogged = true
     this.authServ.login(form)
       .subscribe(
         res => {
-          
+
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(form.Username);
           this.route.navigate(['home']);
           this.isLogged = false
         },
-        err => {          
-          let errMsg = ""          
-          if(err.status ==401){
-            errMsg="Usuario o contraseña incorrecta"
-          }else if(err.status ==0){
-            errMsg ="¡Error al ingresar! verifique la conexión a intenet."
-          }else{
-            errMsg ="Se presento error con la conexion con el servidor."
+        err => {
+
+          let errMsg = ""
+          if (err.status == 401) {
+            errMsg = "Usuario o contraseña incorrecta "
+          } else if (err.status == 0) {
+            errMsg = "¡Error al ingresar! verifique la conexión a intenet."
+          } else {
+            errMsg = "Se presento error con la conexion con el servidor. " + err.message
           }
           this._snackBar.open(errMsg, "Ok!", {
             duration: 3000,

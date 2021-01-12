@@ -8,6 +8,7 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../idb-solicitud.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -16,16 +17,16 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class HomeComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['tipo','solicitud','gestion','delete','upload'];
+  displayedColumns: string[] = ['tipo', 'solicitud', 'gestion', 'delete', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
-
+  dataSolicitudes: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     public dialog: MatDialog,
     private srvSol: IdbSolicitudService,
-    private route:Router,
+    private route: Router,
     private tokenStorage: TokenStorageService
   ) {
   }
@@ -68,13 +69,46 @@ export class HomeComponent implements AfterViewInit {
       })
     })
   }
-  onLogout(){    
+  onLoad() {
+    this.srvSol.get().subscribe((sol) => {
+      this.dataSource = new MatTableDataSource(sol);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
+  }
+  onLogout() {
     this.tokenStorage.signOut()
     this.route.navigate(['auth'])
   }
 
-  onGestion(element){
-    this.route.navigate(['admin'],{queryParams:{solicitud:element.solicitud}})
+  onGestion(element) {
+    this.route.navigate(['admin'], { queryParams: { solicitud: element.solicitud } })
+  }
+  onDelete(element) {
+    let solicitud = element.solicitud
+    Swal.fire({
+      title: 'Se eliminara permanentemente la informacion de la solicitud ¿Esta seguro de eliminarla?',
+      showDenyButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(solicitud)
+        this.srvSol.deleteSol(solicitud).subscribe((res) => {
+          console.log(res)
+        })
+        this.srvSol.get().subscribe((sol) => {
+          let newSol = sol.filter(a =>  a.solicitud != solicitud )
+          console.log(newSol)
+          this.srvSol.save(newSol)
+          this.onLoad()
+        })
+
+        Swal.fire('Información eliminada!', '', 'success')
+      }
+    })
+
+
   }
 }
 

@@ -18,7 +18,7 @@
             </thead>
             <tr>
                 <td>Efectivo Disponible</td>
-                <td  align="center" colspan="6">${{datasolicitud.Balance.efectivo}}</td>
+                <td align="center" colspan="6">${{datasolicitud.Balance.efectivo}}</td>
             </tr>
             <tr>
                 <td rowspan="2">Cuentas por cobrar</td>
@@ -166,14 +166,14 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr>                     
+                    <tr>
                         <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-         <!--Créditos con proveedores -->
-         <div class="mediod">
+        <!--Créditos con proveedores -->
+        <div class="mediod">
             <table>
                 <thead>
                     <tr>
@@ -189,14 +189,14 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr>                     
+                    <tr>
                         <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-         <!-- pasivos del negocio -->
-         <table>
+        <!-- pasivos del negocio -->
+        <table>
             <thead>
                 <tr>
                     <th colspan="6">Pasivos del negocio</th>
@@ -211,14 +211,14 @@
                 </tr>
             </thead>
             <tbody *ngFor="let pas of datasolicitud.Balance.pasivosRows; let cont=index">
-                <tr *ngIf="pas.clase.id==1">
-                    
+                <tr *ngIf="pas.clase==1">
+
                     <td>{{pas.acreedor}}</td>
                     <td>{{pas.monto}}</td>
                     <td>{{pas.destino}}</td>
                     <td>{{pas.cuotaN}}</td>
                     <td>{{pas.corrienteN}}</td>
-                    <td>{{pas.nocorrienteN}}</td>                    
+                    <td>{{pas.nocorrienteN}}</td>
                 </tr>
             </tbody>
             <tfoot>
@@ -230,6 +230,132 @@
                 </tr>
             </tfoot>
         </table>
+        <!-- gatos del negocio -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="9">Gastos del Negocio</th>
+                </tr>
+                <tr>
+                    <th>Alquiler</th>
+                    <th>Servicios</th>
+                    <th>Transporte</th>
+                    <th>Flete</th>
+                    <th>Impuestos</th>
+                    <th>Mantenimiento</th>
+                    <th>Imprevistos</th>
+                    <th>Otros</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="datasolicitud.Gastos">
+                    <tr>
+                        <td style="text-align:right">${{datasolicitud.Gastos.alquilerN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.serviciosN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.transporteN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.fletesN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.impuestosN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.mantenimientoN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.imprevistosN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.otrosN}}</td>
+                        <td style="text-align:right">${{datasolicitud.Gastos.totalN}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- gatos de la familia -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="10">Gastos de la Familia</th>
+                </tr>
+                <tr>
+                    <th>Arriendo</th>
+                    <th>Alimentación</th>
+                    <th>Educación</th>
+                    <th>Vestuario</th>
+                    <th>Salud</th>
+                    <th>Transporte</th>
+                    <th>Servicios</th>
+                    <th>Entretanimiento</th>
+                    <th>Otros</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="datasolicitud.Gastos">
+                    <tr>
+                        <td>{{datasolicitud.Gastos.arriendoF}}</td>
+                        <td>{{datasolicitud.Gastos.alimentacionF}}</td>
+                        <td>{{datasolicitud.Gastos.educacionF}}</td>
+                        <td>{{datasolicitud.Gastos.vestuarioF}}</td>
+                        <td>{{datasolicitud.Gastos.saludF}}</td>
+                        <td>{{datasolicitud.Gastos.transporteF}}</td>
+                        <td>{{datasolicitud.Gastos.serviciosF}}</td>
+                        <td>{{datasolicitud.Gastos.entretenimientoF}}</td>
+                        <td>{{datasolicitud.Gastos.otrosF}}</td>
+                        <td>{{datasolicitud.Gastos.totalF}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <!-- Remuneración de personal -->
+        <div class="medioi">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Remuneración de personal</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center">Cargo</th>
+                        <th style="text-align:center">Valor</th>
+                    
+                    </tr>
+                </thead>
+                <tbody *ngFor="let rem of datasolicitud.Gastos.remuneracionRow; let cont=index">
+                    <tr>
+                        <td>{{rem.cargo}}</td>                    
+                        <td style="text-align:right">${{rem.valor}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td align="right" colspan=3>${{datasolicitud.Gastos.totalRemuneracion}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Otros Ingresos Familiares -->
+        <div class="mediod">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Otros Ingresos Familiares</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center">Concepto</th>
+                        <th style="text-align:center">Valor</th>
+                        <th style="text-align:center">Observacion</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let otr of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
+                    <tr>
+                        <td>{{otr.ingreso}}</td>
+                        <td style="text-align:right">${{otr.valor}}</td>
+                        <td>{{otr.observacion}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td style="text-align:right" colspan="2">${{datasolicitud.Gastos.totalOtros}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
     </ng-container>
 
     <div *ngFor="let act of datasolicitud.Cruces" id="actividades">
@@ -317,7 +443,7 @@
         </div>
     </div>
 
-<!--     
+    <!--     
     <table>
         <tr>
             <th colspan="2" style="text-align:center">Logo</th>

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../model/user';
 
 const AUTH_API = 'https://fidelapi.fundaciondelamujer.com:54000/api/';
-const AUTH_APIInt = 'http://172.22.10.202:8099/api/'
+const AUTH_APIInt = 'https://fidelapipruebas.fundaciondelamujer.com:8085/api/';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,10 +22,13 @@ export class AuthService {
   ) { }
 
   login(user: User): Observable<any> {
-     return this.http.post(AUTH_API+'login/authenticate', {
+    
+     return this.http.post(AUTH_APIInt+'login/authenticate', {
        Username: user.Username,
        Passw: user.Passw,
        Rol:"User"
      },httpOptions);
   }
+
+
 }

@@ -311,7 +311,7 @@ export class BalanceComponent implements OnInit {
             tnocorrientef += nocorrienteF
             tcorrienten += corrienteN
             tnocorrienten += nocorrienteN
-            console.log(tcorrientef)
+
             x.patchValue({
               montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
               montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
@@ -353,11 +353,21 @@ export class BalanceComponent implements OnInit {
             }
 
             if (clase == 1) {
-              x.get("corrienteF").setValue(corriente, { emitEvent: false });
-              x.get("nocorrienteF").setValue(nocorriente, { emitEvent: false });
+              tcuotaf += 0
+              tcorrientef += corriente
+              tnocorrientef += nocorriente
+              x.patchValue({
+                corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+              }, { emitEvent: false })
             } else {
-              x.get("corrienteN").setValue(corriente, { emitEvent: false });
-              x.get("nocorrienteN").setValue(nocorriente, { emitEvent: false });
+              tcuotan += 0
+              tcorrienten += corriente
+              tnocorrienten += nocorriente
+              x.patchValue({
+                corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+              }, { emitEvent: false })
             }
 
             x.patchValue({
@@ -716,7 +726,8 @@ export class BalanceComponent implements OnInit {
     let pasivosArray = this.fb.array([])
 
     pasivos.forEach(pas => {
-      let tipopas, periodopas = []
+      let tipopas = [];
+      let periodopas = [];
 
       if (pas.tipo)
         tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
@@ -788,6 +799,15 @@ export class BalanceComponent implements OnInit {
     for (let cuo = 0; cuo < neto; cuo++) {
       this.cuotas(ti).push(this.itemsCuotas());
     }
+  }
+  changeHipoteca(pasivo: FormGroup) {
+    pasivo.patchValue({
+      porcentajeneg: 0,
+      montoN: 0,
+      corrienteN: 0,
+      nocorrienteN: 0
+    }, { emitEvent: false })
+
   }
   formatNumber(num) {
     if (typeof (num) == "number") {
