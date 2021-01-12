@@ -1,0 +1,1033 @@
+<p>KAPA</p>
+<div class="content" id="contentPDF">
+    <!-- Encabezado -->
+    <table>
+        <tr>
+            <td rowspan="3" align="center">LOGO</td>
+            <td rowspan="3" align="center">Analisis de credito agropecuario</td>
+            <td align="center">COL-FO-006</td>
+        </tr>
+        <tr>
+            <td align="center">Versión 11</td>
+        </tr>
+        <tr>
+            <td align="center">Fecha</td>
+        </tr>
+    </table>
+    <!-- Documento y solicitud -->
+    <table>
+        <tr>
+            <td>Documento de identidad del cliente</td>
+            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+            <td>solicitud</td>
+            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+        </tr>
+    </table>
+    <!-- Mapa de ubicacion -->
+    <table>
+        <tr>
+            <th align="center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
+        </tr>
+        <tr>
+            <td colspan=1>tiempo recorrido</td>
+            <td colspan=3>
+                {{datasolicitud.Ubicacion.tiempohora}}+":"+{{datasolicitud.Ubicacion.tiempomin}}+":"+{{datasolicitud.Ubicacion.tiemposeg}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan=1>Punto de partida</td>
+            <td colspan=1>{{datasolicitud.Ubicacion.puntopartida}}</td>
+            <td colspan=1>Punto de llegada</td>
+            <td colspan=1>{{datasolicitud.Ubicacion.puntollegada}}</td>
+        </tr>
+        <tr>
+            <td colspan=1>Descripción punto de partida</td>
+            <td colspan=1>{{datasolicitud.Ubicacion.descripcionppartida}}</td>
+            <td colspan=1>Descripción punto de llegada</td>
+            <td colspan=1>{{datasolicitud.Ubicacion.descripcionpllegada}}</td>
+        </tr>
+        <tr>
+            <td rowspan="3" colspan=2>Foto punto partida</td>
+            <td rowspan="3" colspan=2>Foto punto llegada</td>
+        </tr>
+    </table>
+
+    <!-- Balance general -->
+    <table>
+        <tr>
+            <th align="center" colspan=10>Balance general</th>
+        </tr>
+        <tr>
+            <td>Efectivo disponible</td>
+            <td colspan=8>{{datasolicitud.Balance.efectivo}}</td>
+        </tr>
+        <tr>
+            <td>Cuentas por cobrar</td>
+            <td>N. de clientes</td>
+            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+            <td>Valor</td>
+            <td>{{datasolicitud.Balance.valorCobrar}}</td>
+            <td>Incobrable</td>
+            <td>{{datasolicitud.Balance.incobrableCobrar}}</td>
+            <td>Total</td>
+            <td>{{datasolicitud.Balance.cobrarTotal}}</td>
+        </tr>
+        <tr>
+            <td>Observaciones</td>
+            <td colspan=8>{{datasolicitud.Balance.observacionesCobrar}}</td>
+        </tr>
+        <tr>
+            <td>Recuperación de cartera</td>
+            <td>{{datasolicitud.Balance.recuperacionCobrar}}</td>
+            <td>Mes de recuperación</td>
+            <td colspan=6>{{datasolicitud.Balance.recuperacion}}</td>
+        </tr>
+    </table>
+
+    <!-- Inventarios -->
+    <table>
+        <tr>
+            <th align="center" colspan=10>Inventarios</th>
+        </tr>
+        <tr>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Descripción</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Animales</td>
+            <td>{{datasolicitud.Balance.inventarioRow}}</td>
+            <td>{{datasolicitud.Balance.inventarioRow}}</td>
+            <td>{{datasolicitud.Balance.inventarioRow}}</td>
+        </tr>
+    </table>
+    <!-- Activos del negocio -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Activos Negocio</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Tipo</th>
+                <th style="text-align:center">Descripcion</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
+            <tr>
+                <td>{{act.detalle}}</td>
+                <td>{{act.tipo}}</td>
+                <td align="right">${{act.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.actnegTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Activos de la familia -->
+
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Activos de la familia</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Tipo</th>
+                <th style="text-align:center">Detalle</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Principales inversiones de la familia y el negocio en el ultimo año -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Principales inversiones de la familia y el negocio en el ultimo año</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Descripción</th>
+                <th style="text-align:center">Mes de compra</th>
+                <th style="text-align:center">Origen de los recursos</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Creditos con fundacion dela mujer -->
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Créditos con Fundación delamujer</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Obligación</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Creditos con proveedor -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Créditos con proveedor</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Proveedor</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Pasivo del negocio -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=8>Pasivo del Negocio</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Acreedor</th>
+                <th style="text-align:center">Monto inicial</th>
+                <th style="text-align:center">Saldo actual</th>
+                <th style="text-align:center">Destino</th>
+                <th style="text-align:center">Periodicidad</th>
+                <th style="text-align:center">Valor cuota</th>
+                <th style="text-align:center">Pasivo Corriente</th>
+                <th style="text-align:center">Pasivo no Corriente</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=5>Total</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Pasivo de la familia -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=8>Pasivo de la familia</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Acreedor</th>
+                <th style="text-align:center">Monto inicial</th>
+                <th style="text-align:center">Saldo actual</th>
+                <th style="text-align:center">Destino</th>
+                <th style="text-align:center">Periodicidad</th>
+                <th style="text-align:center">Valor cuota</th>
+                <th style="text-align:center">Pasivo Corriente</th>
+                <th style="text-align:center">Pasivo no Corriente</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=5>Total</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+                <td align="right" colspan=1>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Remuneracion del personal -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Remuneración del personal</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Proveedor</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Gastos del Negocio Mensual -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=9>Gastos del Negocio Mensual</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Alquiler</th>
+                <th style="text-align:center">Servicios</th>
+                <th style="text-align:center">Transporte</th>
+                <th style="text-align:center">Flete</th>
+                <th style="text-align:center">Impuestos</th>
+                <th style="text-align:center">Mantenimiento</th>
+                <th style="text-align:center">Imprevistos</th>
+                <th style="text-align:center">Otros</th>
+                <th style="text-align:center">Total</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <!-- Gastos del Negocio Estacional -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Gastos del Negocio Estacional</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Concepto</th>
+                <th style="text-align:center">Descripción</th>
+                <th style="text-align:center">Mes</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=3>Total</td>
+                <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Gastos de la Familia -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=10>Gastos de la Familia</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Arriendo</th>
+                <th style="text-align:center">Alimentación</th>
+                <th style="text-align:center">Educación</th>
+                <th style="text-align:center">Vestuario</th>
+                <th style="text-align:center">Salud</th>
+                <th style="text-align:center">Transporte</th>
+                <th style="text-align:center">Servicios</th>
+                <th style="text-align:center">Entretimiento</th>
+                <th style="text-align:center">Otros</th>
+                <th style="text-align:center">Total</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.detalle}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <!-- Gastos de la familia Estacional -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Gastos de la familia Estacional</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Concepto</th>
+                <th style="text-align:center">Descripción</th>
+                <th style="text-align:center">Mes</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=3>Total</td>
+                <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!-- Gastos de la familia Estacional -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Gastos de la familia Estacional</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Concepto</th>
+                <th style="text-align:center">Descripción</th>
+                <th style="text-align:center">Mes</th>
+                <th style="text-align:center">Valor</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td>{{inv.tipo}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=3>Total</td>
+                <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- Otros Ingresos Familiares -->
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan=4>Otros Ingresos Familiares</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Concepto</th>
+                <th style="text-align:center">Valor</th>
+                <th style="text-align:center">Observación</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+            <tr>
+                <td>{{inv.detalle}}</td>
+                <td>{{inv.tipo}}</td>
+                <td align="right">${{inv.valor}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td >Total</td>
+                <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+       <!-- Actividades del cliente -->
+
+       <table>
+        <thead>
+            <tr>
+                <th colspan=11>Actividades del cliente</th>
+            </tr>
+            <tr>
+                <td style="text-align:center">Actividad</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Nombre de la actividad</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Tipo de producción</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Transitorio</td>
+                <td style="text-align:center">Ingreso</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Egreso</td>
+                <td style="text-align:center"></td>
+            </tr>
+        </thead>
+    </table>
+
+           <!-- Lote 1 -->
+
+           <table>
+            <thead>
+                <tr>
+                    <th colspan=12>Lote1</th>
+                </tr>
+                <tr>
+                    <td style="text-align:center">Edad del cultivo</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Área cultivada</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Distancia de siembra  O # plantas/semillas del lote que informa el cliente</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"># plantas/semillas del lote</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Unidad de venta</td>
+                    <td style="text-align:center"></td>
+                </tr>
+            </thead>
+        </table>
+
+                  <!-- INGRESO Ciclo de la producción Transitorias -->
+
+                  <table>
+                    <thead>
+                        <tr>
+                            <th colspan=12>INGRESO Ciclo de la producción Transitorias</th>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">Rendimiento por lote bulto</td>
+                            <td style="text-align:center">Unidades Totales para la Venta bulto</td>
+                            <td style="text-align:center">% de perdida/consumo familiar</td>
+                            <td style="text-align:center">Precio mínimo</td>
+                            <td style="text-align:center">Precio actual</td>
+                            <td style="text-align:center">Precio Promedio</td>
+                            <th style="text-align:center">Total</th>
+                            <td style="text-align:center">Meses de ingreso</td>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                 <!-- Egresos Transitorios -->
+
+                 <table>
+                    <thead>
+                        <tr>
+                            <th colspan=12>Egresos Transitorios</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Fase</th>
+                            <th style="text-align:center">Descripción</th>
+                            <th style="text-align:center">Detalle</th>
+                            <th style="text-align:center">Cantidad</th>
+                            <th style="text-align:center">Vlr unitario</th>
+                            <th style="text-align:center">Vlr total mes</th>
+                            <th style="text-align:center">Mes</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align:center">Adecuación- preparación terreno</th>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Siembra</th>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Mantenimiento</th>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Cosecha y recolección</th>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Total</th>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                      <!-- INGRESO Ciclo de la producción Permanentes unidades -->
+
+       <table>
+        <thead>
+        
+            <tr>
+                <td style="text-align:center">Actividad</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Nombre de la actividad</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Tipo de producción</td>
+                <td style="text-align:center">Permanente</td>
+                <td style="text-align:center">Ingreso</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Egreso</td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <th colspan=10>INGRESO Ciclo de la producción Permanentes unidades</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Precio mínimo</th>
+                <td style="text-align:center"></td>
+                <th style="text-align:center">Precio actual</th>
+                <td style="text-align:center"></td>
+                <th style="text-align:center">Precio promedio</th>
+                <td style="text-align:center"></td>
+                <th style="text-align:center">Unidades de venta totales anual</th>
+                <td style="text-align:center"></td>
+                <th style="text-align:center">TOTAL LOTE ANUAL</th>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <th style="text-align:center">Ciclo</th>
+                <th colspan="2" style="text-align:center">Meses de ingreso de venta</th>
+                <th colspan="2" style="text-align:center">Rendimiento por lote bulto</th>
+                <th colspan="2" style="text-align:center">Unidades totales para la venta</th>
+                <th style="text-align:center">% perdida/consumo familiar</th>
+                <th style="text-align:center">% Ciclo</th>
+                <th style="text-align:center">Total cosecha</th>
+            </tr>
+            <tr>
+                <td style="text-align:center">Cosecha</td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Traviesa</td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Pepeo</td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td colspan="2" style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td colspan="8" style="text-align:left">Total</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- Egresos permanentes -->
+    <table>
+        <tr>
+            <th colspan=7>Egresos Permanentes</th>
+        </tr>
+        <tr>
+            <th style="text-align:center">Fase</th>
+            <th style="text-align:center">Descripcion</th>
+            <th style="text-align:center">Detalle</th>
+            <th style="text-align:center">Cantidad</th>
+            <th style="text-align:center">Vlr unitario</th>
+            <th style="text-align:center">Vlr total mes</th>
+            <th style="text-align:center">Mes</th>
+        </tr>
+        <tr>
+            <td style="text-align:center">Mantenimiento</td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+
+        </tr>
+        <tr>
+            <td style="text-align:center">Cosecha y recoleccion</td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align:left">Total</td>
+            <td style="text-align:center"></td>
+            <td style="text-align:center"></td>
+
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+        
+            <tr>
+                <td style="text-align:center">Actividad</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Nombre de la actividad</td>
+                <td colspan="2" style="text-align:center"></td>
+                <td style="text-align:center">Tipo de producción</td>
+                <td colspan="2"style="text-align:center"></td>
+                <td style="text-align:center">Ingreso</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Egreso</td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <th colspan=12>Lote1</th>
+            </tr>
+            <tr>
+                <th colspan=12>Ingreso</th>
+            </tr>
+            <tr>
+                <td style="text-align:center">Número de animales por lote</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Producto derivado</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Unidad de venta</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Cantidad producida por animal (libra)</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Frecuencia</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Cantidad producida total (libra)</td>
+                <td style="text-align:center"></td>
+                
+            </tr>
+            <tr>
+                <td style="text-align:center">Unidades Totales para la Venta (libra)</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">% de mortalidad /perdida/consumo familiar</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Precio minimo (libras)</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Precio actual (libras)</td>
+                <td style="text-align:center">Precio promedio (libras)</td>
+                <td style="text-align:center"></td>
+                <th style="text-align:center">Ingreso total mes</th>
+                <td style="text-align:center"></td>
+                <td style="text-align:center">Meses de ingreso de venta </td>
+            </tr>
+        </thead>
+        </table>
+
+        <!-- Egreso -->
+        <table>
+            <tr>
+                <th colspan=6 style="text-align:center">Egreso</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Descripción</th>
+                <th style="text-align:center">Detalle</th>
+                <th style="text-align:center">Cantidad</th>
+                <th style="text-align:center">Vlr unitario</th>
+                <th style="text-align:center">Vlr TOTAL MES</th>
+                <th style="text-align:center">Mes</th>
+            </tr>
+            <tr>
+                <td style="text-align:center">Mano de obra/Jornales</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Compra de animales</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Insumos</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Empaque para venta</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Fletes</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Imprevistos (otros)</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Labores culturales</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Arriendo</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Analisis de suelos</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Vacunas-vitaminas</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <td style="text-align:center">Inseminación</td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+            <tr>
+                <th colspan=4 style="text-align:left">Total</th>
+                <td style="text-align:center"></td>
+                <td style="text-align:center"></td>
+            </tr>
+        </table>
+
+        <!--ventas buenas -->
+        <table>
+            <thead>
+            
+                <tr>
+                    <td style="text-align:center">Actividad</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Nombre de la actividad</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Tipo de producción</td>
+                    <td style="text-align:center">Permanente</td>
+                    <td style="text-align:center">Ingreso</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Egreso</td>
+                    <td style="text-align:center"></td>
+                </tr>
+                <tr>
+                    <th colspan=10>Ventas buenas/ regulares/ malas</th>
+                </tr>
+                <tr>
+                    <td style="text-align:center">Ventas</td>
+                    <td style="text-align:center">Dias</td>
+                    <td style="text-align:center">Numero</td>
+                    <td style="text-align:center">Dias</td>
+                    <td style="text-align:center">Valor</td>
+                    <td style="text-align:center">Total</td>
+                    <td style="text-align:center">Total compras</td>
+                    <td colspan=3 style="text-align:center"></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">Buenas</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Ventas estimadas</td>
+                    <td colspan=3 style="text-align:center"></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">Regulares</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Margen bruto</td>
+                    <td colspan=3 style="text-align:center"></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center">Malas</td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Otros gastos</td>
+                    <td colspan=3 style="text-align:center"></td>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Total</th>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center"></td>
+                    <td style="text-align:center">Ingreso liquido estimado</td>
+                    <td colspan=3 style="text-align:center"></td>
+                </tr>
+                </thead>
+                </table>
+
+
+    
+</div>
