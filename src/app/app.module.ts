@@ -26,6 +26,7 @@ import { PropuestaComponent } from './components/propuesta/propuesta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { AnalisisComponent } from './components/analisis/analisis.component';
 import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
+import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component'
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
     PropuestaComponent,
     UbicacionComponent,
     AnalisisComponent,
-    FlujocajaComponent
+    FlujocajaComponent,
+    AnalisisagroComponent
   ],
   imports: [
     BrowserModule,

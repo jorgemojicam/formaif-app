@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AnalisisComponent } from '../analisis/analisis.component';
+import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
 import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { PropuestaComponent } from '../propuesta/propuesta.component';
 import { UbicacionComponent } from '../ubicacion/ubicacion.component';
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'flujocaja',
         component: FlujocajaComponent,
+      },
+      {
+        path: 'analisisagro',
+        component: AnalisisagroComponent,
       }
     ]
   }
