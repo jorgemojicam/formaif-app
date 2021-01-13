@@ -10,8 +10,8 @@ import { IdbSolicitudService } from '../admin/idb-solicitud.service';
   templateUrl: './analisis.component.html',
   styleUrls: ['./analisis.component.scss']
 })
-export class AnalisisComponent implements OnInit{
-  
+export class AnalisisComponent implements OnInit {
+
   constructor(
     private activeRoute: ActivatedRoute,
     public srvSol: IdbSolicitudService,
@@ -19,7 +19,7 @@ export class AnalisisComponent implements OnInit{
 
   datasolicitud: Solicitud = new Solicitud()
   tipoAsesor: number;
-  fechahoy:string;
+  fechahoy: string;
 
   ngOnInit(): void {
 
@@ -28,13 +28,13 @@ export class AnalisisComponent implements OnInit{
         let sol = params.get('solicitud')
         this.srvSol.getSol(sol).subscribe((datasol) => {
           let hoy = new Date()
-          let mes:number = hoy.getMonth()+1
-          this.fechahoy = hoy.getDate()+"/"+mes+"/"+hoy.getFullYear()
+          let mes: number = hoy.getMonth() + 1
+          this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
           this.datasolicitud = datasol as Solicitud
-          this.tipoAsesor = this.datasolicitud.asesor        
+          this.tipoAsesor = this.datasolicitud.asesor
         })
       });
-    }
+  }
 
   download() {
     const op = {
@@ -43,18 +43,18 @@ export class AnalisisComponent implements OnInit{
       html2canvas: {
       },
       margin: 15,
-      jsPDF: {format:'a3', orientation: 'p' }
+      jsPDF: { format: 'a3', orientation: 'p' }
     }
     const element = document.querySelector("#contentPDF")
 
-    // html2pdf()
-    //   .from(element)
-    //   .set(op)
-    //   .outputPdf().then(function(pdf) {
-    //     console.log(btoa(pdf));
-    //   });
-      
-      html2pdf().from(element).set(op).save();
+    html2pdf()
+      .from(element)
+      .set(op)
+      .outputPdf().then(function (pdf) {
+        console.log(btoa(pdf));
+      });
+
+    html2pdf().from(element).set(op).save();
   }
 
 }
