@@ -1,4 +1,3 @@
-<p>KAPA</p>
 <div class="content" id="contentPDF">
     <!-- Encabezado -->
     <table>
@@ -14,503 +13,486 @@
             <td align="center">Fecha</td>
         </tr>
     </table>
-    <!-- Documento y solicitud -->
-    <table>
-        <tr>
-            <td>Documento de identidad del cliente</td>
-            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
-            <td>solicitud</td>
-            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
-        </tr>
-    </table>
+    <ng-container *ngIf="datasolicitud.Balance">
+        <!-- Documento y solicitud -->
+        <table>
+            <tr>
+                <td>Documento de identidad del cliente</td>
+                <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+                <td>solicitud</td>
+                <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+            </tr>
+        </table>
+    </ng-container>
     <!-- Mapa de ubicacion -->
-    <table>
-        <tr>
-            <th align="center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
-        </tr>
-        <tr>
-            <td colspan=1>tiempo recorrido</td>
-            <td colspan=3>
-                {{datasolicitud.Ubicacion.tiempohora}}:{{datasolicitud.Ubicacion.tiempomin}}:{{datasolicitud.Ubicacion.tiemposeg}}
-            </td>
-        </tr>
-        <tr>
-            <td colspan=1>Punto de partida</td>
-            <td colspan=1>{{datasolicitud.Ubicacion.puntopartida}}</td>
-            <td colspan=1>Punto de llegada</td>
-            <td colspan=1>{{datasolicitud.Ubicacion.puntollegada}}</td>
-        </tr>
-        <tr>
-            <td colspan=1>Descripción punto de partida</td>
-            <td colspan=1>{{datasolicitud.Ubicacion.descripcionppartida}}</td>
-            <td colspan=1>Descripción punto de llegada</td>
-            <td colspan=1>{{datasolicitud.Ubicacion.descripcionpllegada}}</td>
-        </tr>
-        <tr>
-            <td rowspan="3" colspan=2>
-                <img [src]='transform(datasolicitud.Ubicacion.fotoppartida)'>
-            </td>
-            <td rowspan="3" colspan=2>
-                <img [src]='transform(datasolicitud.Ubicacion.fotopllegada)'>
-        </tr>
-    </table>
-
+    <ng-container *ngIf="datasolicitud.Ubicacion">
+        <table>
+            <tr>
+                <th align="center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
+            </tr>
+            <tr>
+                <td colspan=1>tiempo recorrido</td>
+                <td colspan=3>
+                    {{datasolicitud.Ubicacion.tiempohora}}:{{datasolicitud.Ubicacion.tiempomin}}:{{datasolicitud.Ubicacion.tiemposeg}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan=1>Punto de partida</td>
+                <td colspan=1>{{datasolicitud.Ubicacion.puntopartida}}</td>
+                <td colspan=1>Punto de llegada</td>
+                <td colspan=1>{{datasolicitud.Ubicacion.puntollegada}}</td>
+            </tr>
+            <tr>
+                <td colspan=1>Descripción punto de partida</td>
+                <td colspan=1>{{datasolicitud.Ubicacion.descripcionppartida}}</td>
+                <td colspan=1>Descripción punto de llegada</td>
+                <td colspan=1>{{datasolicitud.Ubicacion.descripcionpllegada}}</td>
+            </tr>
+            <tr>
+                <td rowspan="3" colspan=2>
+                    <!-- <img [src]='transform(datasolicitud.Ubicacion.fotoppartida)'> -->
+                </td>
+                <td rowspan="3" colspan=2>
+                    <!-- <img [src]='transform(datasolicitud.Ubicacion.fotopllegada)'> -->
+            </tr>
+        </table>
+    </ng-container>
     <!-- Balance general -->
-    <table>
-        <tr>
-            <th align="center" colspan=10>Balance general</th>
-        </tr>
-        <tr>
-            <td>Efectivo disponible</td>
-            <td colspan=8>{{datasolicitud.Balance.efectivo}}</td>
-        </tr>
-        <tr>
-            <td>Cuentas por cobrar</td>
-            <td>N. de clientes</td>
-            <td>{{datasolicitud.Balance.clienteCobrar}}</td>
-            <td>Valor</td>
-            <td>{{datasolicitud.Balance.valorCobrar}}</td>
-            <td>Incobrable</td>
-            <td>{{datasolicitud.Balance.incobrableCobrar}}</td>
-            <td>Total</td>
-            <td>{{datasolicitud.Balance.cobrarTotal}}</td>
-        </tr>
-        <tr>
-            <td>Observaciones</td>
-            <td colspan=8>{{datasolicitud.Balance.observacionesCobrar}}</td>
-        </tr>
-        <tbody *ngFor="let recu of datasolicitud.Balance.recuperacion; let cont=index">
+    <ng-container *ngIf="datasolicitud.Balance">
+        <table>
             <tr>
-                <td>Recuperación de cartera</td>
-                <td>{{recu.mes}}</td>
-                <td>Mes de recuperación</td>
-                <td colspan=6>{{recu.valor}}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Inventarios -->
-    <table>
-        <tr>
-            <th align="center" colspan=10>Inventarios</th>
-        </tr>
-        <tr>
-            <th>Tipo</th>
-            <th>Cantidad</th>
-            <th>Descripción</th>
-            <th>Valor</th>
-        </tr>
-        <tbody *ngFor="let inven of datasolicitud.Balance.inventarioRow; let cont=index">
-            <tr>
-                <td>{{inven.tipo}}</td>
-                <td>{{inven.cantidad}}</td>
-                <td>{{inven.descripcion}}</td>
-                <td>{{inven.valor}}</td>
-            </tr>
-        </tbody>
-        <tr>
-    </table>
-    <!-- Activos del negocio -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Activos Negocio</th>
+                <th align="center" colspan=10>Balance general</th>
             </tr>
             <tr>
-                <th style="text-align:center">Tipo</th>
-                <th style="text-align:center">Descripcion</th>
-                <th style="text-align:center">Valor</th>
+                <td>Efectivo disponible</td>
+                <td colspan=8>{{datasolicitud.Balance.efectivo}}</td>
             </tr>
-        </thead>
-        <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
             <tr>
-                <td>{{act.tipo}}</td>
-                <td>{{act.detalle}}</td>
-                <td align="right">${{act.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
+                <td>Cuentas por cobrar</td>
+                <td>N. de clientes</td>
+                <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+                <td>Valor</td>
+                <td>{{datasolicitud.Balance.valorCobrar}}</td>
+                <td>Incobrable</td>
+                <td>{{datasolicitud.Balance.incobrableCobrar}}</td>
                 <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Balance.actnegTotal}}</td>
+                <td>{{datasolicitud.Balance.cobrarTotal}}</td>
             </tr>
-        </tfoot>
-    </table>
-    <!-- Activos de la familia -->
+            <tr>
+                <td>Observaciones</td>
+                <td colspan=8>{{datasolicitud.Balance.observacionesCobrar}}</td>
+            </tr>
+            <tbody *ngFor="let recu of datasolicitud.Balance.recuperacion; let cont=index">
+                <tr>
+                    <td>Recuperación de cartera</td>
+                    <td>{{recu.mes}}</td>
+                    <td>Mes de recuperación</td>
+                    <td colspan=6>{{recu.valor}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Inventarios -->
+        <table>
+            <tr>
+                <th align="center" colspan=10>Inventarios</th>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+                <th>Valor</th>
+            </tr>
+            <tbody *ngFor="let inven of datasolicitud.Balance.inventarioRow; let cont=index">
+                <tr>
+                    <td>{{inven.tipo}}</td>
+                    <td>{{inven.cantidad}}</td>
+                    <td>{{inven.descripcion}}</td>
+                    <td>{{inven.valor}}</td>
+                </tr>
+            </tbody>
+            <tr>
+        </table>
+        <!-- Activos del negocio -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Activos Negocio</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Tipo</th>
+                    <th style="text-align:center">Descripcion</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
+                <tr>
+                    <td>{{act.tipo}}</td>
+                    <td>{{act.detalle}}</td>
+                    <td align="right">${{act.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.actnegTotal}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Activos de la familia -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Activos de la familia</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Tipo</th>
+                    <th style="text-align:center">Detalle</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+                <tr>
+                    <td>{{inv.tipo}}</td>
+                    <td>{{inv.detalle}}</td>
+                    <td align="right">${{inv.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.actfamTotal}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Principales inversiones de la familia y el negocio en el ultimo año -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Principales inversiones de la familia y el negocio en el ultimo año</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Descripción</th>
+                    <th style="text-align:center">Mes de compra</th>
+                    <th style="text-align:center">Origen de los recursos</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let inv of datasolicitud.Balance.inversiones; let cont=index">
+                <tr>
+                    <td>{{inv.detalle}}</td>
+                    <td>{{inv.mes}}</td>
+                    <td>{{inv.origen}}</td>
+                    <td align="right">${{inv.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.totalInversiones}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Creditos con fundacion dela mujer -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Créditos con Fundación delamujer</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Obligación</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let cred of datasolicitud.Balance.creditos; let cont=index">
+                <tr>
+                    <td>FALTA POR MIRAR{{cred.valor}}</td>
+                    <td align="right">${{cred.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.totalCreditos}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Creditos con proveedor -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Créditos con proveedor</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Proveedor</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let credpro of datasolicitud.Balance.proveedoresRow; let cont=index">
+                <tr>
+                    <td>{{credpro.descripcion}}</td>
+                    <td align="right">${{credpro.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.proveedoresTotal}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Pasivo del negocio -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=8>Pasivo del Negocio</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Acreedor</th>
+                    <th style="text-align:center">Monto inicial</th>
+                    <th style="text-align:center">Saldo actual</th>
+                    <th style="text-align:center">Destino</th>
+                    <th style="text-align:center">Periodicidad</th>
+                    <th style="text-align:center">Valor cuota</th>
+                    <th style="text-align:center">Pasivo Corriente</th>
+                    <th style="text-align:center">Pasivo no Corriente</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let pasNeg of datasolicitud.Balance.pasivosRows; let cont=index">
+                <tr *ngIf="pasNeg.clase==2">
+                    <td>{{pasNeg.acreedor}}</td>
+                    <td>{{pasNeg.monto}}</td>
+                    <td>{{pasNeg.saldo}}</td>
+                    <td>{{pasNeg.destino}}</td>
+                    <td>{{pasNeg.periodo}}</td>
+                    <td>{{pasNeg.cuota}}</td>
+                    <td>{{pasNeg.corrienteN}}</td>
+                    <td align="right">${{pasNeg.nocorrienteN}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=5>Total</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tcuotan}}</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tcorrienten}}</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tnocorrienten}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Pasivo de la familia -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=8>Pasivo de la familia</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Acreedor</th>
+                    <th style="text-align:center">Monto inicial</th>
+                    <th style="text-align:center">Saldo actual</th>
+                    <th style="text-align:center">Destino</th>
+                    <th style="text-align:center">Periodicidad</th>
+                    <th style="text-align:center">Valor cuota</th>
+                    <th style="text-align:center">Pasivo Corriente</th>
+                    <th style="text-align:center">Pasivo no Corriente</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let pasfa of datasolicitud.Balance.pasivosRows; let cont=index">
+                <tr *ngIf="pasfa.clase==1">
+                    <td>{{pasfa.acreedor}}</td>
+                    <td>{{pasfa.monto}}</td>
+                    <td>{{pasfa.saldo}}</td>
+                    <td>{{pasfa.destino}}</td>
+                    <td>{{pasfa.periodo}}</td>
+                    <td>{{pasfa.cuota}}</td>
+                    <td>{{pasfa.corrienteF}}</td>
+                    <td align="right">${{pasfa.nocorrienteF}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=5>Total</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tcuotaf}}</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tcorrientef}}</td>
+                    <td align="right" colspan=1>${{datasolicitud.Balance.tnocorrientef}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </ng-container>
+    <ng-container *ngIf="datasolicitud.Gastos">
+        <!-- Remuneracion del personal -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Remuneración del personal</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Proveedor</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let remu of datasolicitud.Gastos.remuneracionRow; let cont=index">
+                <tr>
+                    <td>{{remu.cargo}}</td>
+                    <td align="right">${{remu.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Gastos.totalRemuneracion}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Gastos del Negocio Mensual -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=9>Gastos del Negocio Mensual</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Alquiler</th>
+                    <th style="text-align:center">Servicios</th>
+                    <th style="text-align:center">Transporte</th>
+                    <th style="text-align:center">Flete</th>
+                    <th style="text-align:center">Impuestos</th>
+                    <th style="text-align:center">Mantenimiento</th>
+                    <th style="text-align:center">Imprevistos</th>
+                    <th style="text-align:center">Otros</th>
+                    <th style="text-align:center">Total</th>
+                </tr>
+            </thead>
+
+            <tr>
+                <td>{{datasolicitud.Gastos.alquilerN}}</td>
+                <td>{{datasolicitud.Gastos.serviciosN}}</td>
+                <td>{{datasolicitud.Gastos.transporteN}}</td>
+                <td>{{datasolicitud.Gastos.fletesN}}</td>
+                <td>{{datasolicitud.Gastos.imprevistosN}}</td>
+                <td>{{datasolicitud.Gastos.mantenimientoN}}</td>
+                <td>{{datasolicitud.Gastos.imprevistosN}}</td>
+                <td>{{datasolicitud.Gastos.otrosN}}</td>
+                <td align="right">${{datasolicitud.Gastos.totalN}}</td>
+            </tr>
 
 
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Activos de la familia</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Tipo</th>
-                <th style="text-align:center">Detalle</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
-            <tr>
-                <td>{{inv.tipo}}</td>
-                <td>{{inv.detalle}}</td>
-                <td align="right">${{inv.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Balance.actfamTotal}}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <!-- Principales inversiones de la familia y el negocio en el ultimo año -->
+        </table>
+        <!-- Gastos del Negocio Estacional -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Gastos del Negocio Estacional</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Concepto</th>
+                    <th style="text-align:center">Descripción</th>
+                    <th style="text-align:center">Mes</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let GasEst of datasolicitud.Gastos.estacionalesN; let cont=index">
+                <tr>
+                    <td>{{GasEst.concepto}}</td>
+                    <td>{{GasEst.descripcion}}</td>
+                    <td>{{GasEst.mes}}</td>
+                    <td align="right">${{GasEst.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=3>Total</td>
+                    <td align="right">${{datasolicitud.Gastos.totalEstacionalesN}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Gastos de la Familia -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=10>Gastos de la Familia</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Arriendo</th>
+                    <th style="text-align:center">Alimentación</th>
+                    <th style="text-align:center">Educación</th>
+                    <th style="text-align:center">Vestuario</th>
+                    <th style="text-align:center">Salud</th>
+                    <th style="text-align:center">Transporte</th>
+                    <th style="text-align:center">Servicios</th>
+                    <th style="text-align:center">Entretimiento</th>
+                    <th style="text-align:center">Otros</th>
+                    <th style="text-align:center">Total</th>
+                </tr>
+            </thead>
 
-    <table>
-        <thead>
             <tr>
-                <th colspan=4>Principales inversiones de la familia y el negocio en el ultimo año</th>
+                <td>{{datasolicitud.Gastos.arriendoF}}</td>
+                <td>{{datasolicitud.Gastos.alimentacionF}}</td>
+                <td>{{datasolicitud.Gastos.educacionF}}</td>
+                <td>{{datasolicitud.Gastos.vestuarioF}}</td>
+                <td>{{datasolicitud.Gastos.saludF}}</td>
+                <td>{{datasolicitud.Gastos.transporteF}}</td>
+                <td>{{datasolicitud.Gastos.serviciosF}}</td>
+                <td>{{datasolicitud.Gastos.entretenimientoF}}</td>
+                <td>{{datasolicitud.Gastos.otrosF}}</td>
+                <td align="right">${{datasolicitud.Gastos.totalF}}</td>
             </tr>
-            <tr>
-                <th style="text-align:center">Descripción</th>
-                <th style="text-align:center">Mes de compra</th>
-                <th style="text-align:center">Origen de los recursos</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let inv of datasolicitud.Balance.inversiones; let cont=index">
-            <tr>
-                <td>{{inv.detalle}}</td>
-                <td>{{inv.mes}}</td>
-                <td>{{inv.origen}}</td>
-                <td align="right">${{inv.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Balance.totalInversiones}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <!-- Creditos con fundacion dela mujer -->
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Créditos con Fundación delamujer</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Obligación</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let cred of datasolicitud.Balance.creditos; let cont=index">
-            <tr>
-                <td>FALTA POR MIRAR{{cred.valor}}</td>
-                <td align="right">${{cred.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Balance.totalCreditos}}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <!-- Creditos con proveedor -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Créditos con proveedor</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Proveedor</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let credpro of datasolicitud.Balance.proveedoresRow; let cont=index">
-            <tr>
-                <td>{{credpro.descripcion}}</td>
-                <td align="right">${{credpro.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Balance.proveedoresTotal}}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <!-- Pasivo del negocio -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=8>Pasivo del Negocio</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Acreedor</th>
-                <th style="text-align:center">Monto inicial</th>
-                <th style="text-align:center">Saldo actual</th>
-                <th style="text-align:center">Destino</th>
-                <th style="text-align:center">Periodicidad</th>
-                <th style="text-align:center">Valor cuota</th>
-                <th style="text-align:center">Pasivo Corriente</th>
-                <th style="text-align:center">Pasivo no Corriente</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let pasNeg of datasolicitud.Balance.pasivosRows; let cont=index">
-            <tr *ngIf="pasNeg.clase==2">
-                <td>{{pasNeg.acreedor}}</td>
-                <td>{{pasNeg.monto}}</td>
-                <td>{{pasNeg.saldo}}</td>
-                <td>{{pasNeg.destino}}</td>
-                <td>{{pasNeg.periodo}}</td>
-                <td>{{pasNeg.cuota}}</td>
-                <td>{{pasNeg.corrienteN}}</td>
-                <td align="right">${{pasNeg.nocorrienteN}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan=5>Total</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tcuotan}}</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tcorrienten}}</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tnocorrienten}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <!-- Pasivo de la familia -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=8>Pasivo de la familia</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Acreedor</th>
-                <th style="text-align:center">Monto inicial</th>
-                <th style="text-align:center">Saldo actual</th>
-                <th style="text-align:center">Destino</th>
-                <th style="text-align:center">Periodicidad</th>
-                <th style="text-align:center">Valor cuota</th>
-                <th style="text-align:center">Pasivo Corriente</th>
-                <th style="text-align:center">Pasivo no Corriente</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let pasfa of datasolicitud.Balance.pasivosRows; let cont=index">
-            <tr *ngIf="pasfa.clase==1">
-                <td>{{pasfa.acreedor}}</td>
-                <td>{{pasfa.monto}}</td>
-                <td>{{pasfa.saldo}}</td>
-                <td>{{pasfa.destino}}</td>
-                <td>{{pasfa.periodo}}</td>
-                <td>{{pasfa.cuota}}</td>
-                <td>{{pasfa.corrienteF}}</td>
-                <td align="right">${{pasfa.nocorrienteF}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan=5>Total</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tcuotaf}}</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tcorrientef}}</td>
-                <td align="right" colspan=1>${{datasolicitud.Balance.tnocorrientef}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <!-- Remuneracion del personal -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Remuneración del personal</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Proveedor</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let remu of datasolicitud.Gastos.remuneracionRow; let cont=index">
-            <tr>
-                <td>{{remu.cargo}}</td>
-                <td align="right">${{remu.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td align="right" colspan=3>${{datasolicitud.Gastos.totalRemuneracion}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <!-- Gastos del Negocio Mensual -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=9>Gastos del Negocio Mensual</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Alquiler</th>
-                <th style="text-align:center">Servicios</th>
-                <th style="text-align:center">Transporte</th>
-                <th style="text-align:center">Flete</th>
-                <th style="text-align:center">Impuestos</th>
-                <th style="text-align:center">Mantenimiento</th>
-                <th style="text-align:center">Imprevistos</th>
-                <th style="text-align:center">Otros</th>
-                <th style="text-align:center">Total</th>
-            </tr>
-        </thead>
-
-        <tr>
-            <td>{{datasolicitud.Gastos.alquilerN}}</td>
-            <td>{{datasolicitud.Gastos.serviciosN}}</td>
-            <td>{{datasolicitud.Gastos.transporteN}}</td>
-            <td>{{datasolicitud.Gastos.fletesN}}</td>
-            <td>{{datasolicitud.Gastos.imprevistosN}}</td>
-            <td>{{datasolicitud.Gastos.mantenimientoN}}</td>
-            <td>{{datasolicitud.Gastos.imprevistosN}}</td>
-            <td>{{datasolicitud.Gastos.otrosN}}</td>
-            <td align="right">${{datasolicitud.Gastos.totalN}}</td>
-        </tr>
 
 
-    </table>
-
-    <!-- Gastos del Negocio Estacional -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Gastos del Negocio Estacional</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Concepto</th>
-                <th style="text-align:center">Descripción</th>
-                <th style="text-align:center">Mes</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let GasEst of datasolicitud.Gastos.estacionalesN; let cont=index">
-            <tr>
-                <td>{{GasEst.concepto}}</td>
-                <td>{{GasEst.descripcion}}</td>
-                <td>{{GasEst.mes}}</td>
-                <td align="right">${{GasEst.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan=3>Total</td>
-                <td align="right">${{datasolicitud.Gastos.totalEstacionalesN}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <!-- Gastos de la Familia -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=10>Gastos de la Familia</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Arriendo</th>
-                <th style="text-align:center">Alimentación</th>
-                <th style="text-align:center">Educación</th>
-                <th style="text-align:center">Vestuario</th>
-                <th style="text-align:center">Salud</th>
-                <th style="text-align:center">Transporte</th>
-                <th style="text-align:center">Servicios</th>
-                <th style="text-align:center">Entretimiento</th>
-                <th style="text-align:center">Otros</th>
-                <th style="text-align:center">Total</th>
-            </tr>
-        </thead>
-
-        <tr>
-            <td>{{datasolicitud.Gastos.arriendoF}}</td>
-            <td>{{datasolicitud.Gastos.alimentacionF}}</td>
-            <td>{{datasolicitud.Gastos.educacionF}}</td>
-            <td>{{datasolicitud.Gastos.vestuarioF}}</td>
-            <td>{{datasolicitud.Gastos.saludF}}</td>
-            <td>{{datasolicitud.Gastos.transporteF}}</td>
-            <td>{{datasolicitud.Gastos.serviciosF}}</td>
-            <td>{{datasolicitud.Gastos.entretenimientoF}}</td>
-            <td>{{datasolicitud.Gastos.otrosF}}</td>
-            <td align="right">${{datasolicitud.Gastos.totalF}}</td>
-        </tr>
-
-
-    </table>
-
-    <!-- Gastos de la familia Estacional -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Gastos de la familia Estacional</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Concepto</th>
-                <th style="text-align:center">Descripción</th>
-                <th style="text-align:center">Mes</th>
-                <th style="text-align:center">Valor</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let gastF of datasolicitud.Gastos.estacionalesF; let cont=index">
-            <tr>
-                <td>{{gastF.concepto}}</td>
-                <td>{{gastF.descripcion}}</td>
-                <td>{{gastF.mes}}</td>
-                <td align="right">${{gastF.valor}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan=3>Total</td>
-                <td align="right">Revisar esto${{datasolicitud.Gastos.totalEstacionalesF}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
-
-    <!-- Otros Ingresos Familiares -->
-
-    <table>
-        <thead>
-            <tr>
-                <th colspan=4>Otros Ingresos Familiares</th>
-            </tr>
-            <tr>
-                <th style="text-align:center">Concepto</th>
-                <th style="text-align:center">Valor</th>
-                <th style="text-align:center">Observación</th>
-            </tr>
-        </thead>
-        <tbody *ngFor="let OtrosIn of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
-            <tr>
-                <td>{{OtrosIn.ingreso}}</td>
-                <td>Mirar esto{{OtrosIn.valor}}</td>
-                <td align="right">{{OtrosIn.observacion}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>Total</td>
-                <td colspan=2 align="right">${{datasolicitud.Gastos.totalOtros}}</td>
-            </tr>
-        </tfoot>
-    </table>
-
+        </table>
+        <!-- Gastos de la familia Estacional -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Gastos de la familia Estacional</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Concepto</th>
+                    <th style="text-align:center">Descripción</th>
+                    <th style="text-align:center">Mes</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let gastF of datasolicitud.Gastos.estacionalesF; let cont=index">
+                <tr>
+                    <td>{{gastF.concepto}}</td>
+                    <td>{{gastF.descripcion}}</td>
+                    <td>{{gastF.mes}}</td>
+                    <td align="right">${{gastF.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan=3>Total</td>
+                    <td align="right">Revisar esto${{datasolicitud.Gastos.totalEstacionalesF}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- Otros Ingresos Familiares -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=4>Otros Ingresos Familiares</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Concepto</th>
+                    <th style="text-align:center">Valor</th>
+                    <th style="text-align:center">Observación</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let OtrosIn of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
+                <tr>
+                    <td>{{OtrosIn.ingreso}}</td>
+                    <td>Mirar esto{{OtrosIn.valor}}</td>
+                    <td align="right">{{OtrosIn.observacion}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td colspan=2 align="right">${{datasolicitud.Gastos.totalOtros}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </ng-container>
     <!-- Actividades del cliente -->
     <div *ngFor="let act of datasolicitud.CrucesAgro" id="actividades">
 
@@ -905,91 +887,89 @@
                 </table>
             </div>
         </div>
-    
 
 
-    <!--ventas buenas -->
-    <div *ngIf="act.tipoproduccion=='Otros Ingresos'">
-        <table>
-            <thead>
 
-                <tr>
-                    <td style="text-align:center">Actividad</td>
-                    <td style="text-align:center">{{act.tipo}}</td>
-                    <td style="text-align:center">Nombre de la actividad</td>
-                    <td style="text-align:center">{{act.nombre}}</td>
-                    <td style="text-align:center">Tipo de producción</td>
-                    <td style="text-align:center">{{act.tipoproduccion}}</td>
-                    <td style="text-align:center">Ingreso</td>
-                    <td style="text-align:center">Mirar este 0</td>
-                    <td style="text-align:center">Egreso</td>
-                    <td style="text-align:center">;Mirar este 0</td>
-                </tr>
-            </thead>
-        </table>
+        <!--ventas buenas -->
+        <div *ngIf="act.tipoproduccion=='Otros Ingresos'">
+            <table>
+                <thead>
 
-        <table>
-            <thead>
-                <tr>
-                    <th colspan=10>Ventas buenas/ regulares/ malas</th>
-                </tr>
-                <tr>
-                    <td style="text-align:center">Ventas</td>
-                    <td style="text-align:center">Dias</td>
-                    <td style="text-align:center">Numero</td>
-                    <td style="text-align:center">Dias</td>
-                    <td style="text-align:center">Valor</td>
-                    <td style="text-align:center">Total</td>
-                    <td style="text-align:center">Total compras</td>
-                    <td colspan=3 style="text-align:center"></td>
-                </tr>
-               
-                <tr>
-                    <td style="text-align:center">Buenas</td>
-                    <td style="text-align:center">{{act.diasB}}</td>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">{{act.diasB}}</td>
-                    <td style="text-align:center">{{act.valorB}}</td>
-                    <td style="text-align:center"{{act.totalB}}></td>
-                    <td style="text-align:center">Ventas estimadas</td>
-                    <td colspan=3 style="text-align:center">{{act.ventasEstimadas}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center">Regulares</td>
-                    <td style="text-align:center">{{act.diasR}}</td>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">{{act.diasR}}</td>
-                    <td style="text-align:center">{{act.valorR}}</td>
-                    <td style="text-align:center">{{act.totalR}}</td>
-                    <td style="text-align:center">Margen bruto</td>
-                    <td colspan=3 style="text-align:center">{{act.margenBruto}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center">Malas</td>
-                    <td style="text-align:center">{{act.diasM}}</td>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">{{act.diasM}}</td>
-                    <td style="text-align:center">{{act.valorM}}</td>
-                    <td style="text-align:center">{{act.totalM}}</td>
-                    <td style="text-align:center">Otros gastos</td>
-                    <td colspan=3 style="text-align:center">{{act.otrosGastos}}</td>
-                </tr>
-                <tr>
-                    <th style="text-align:center">Total</th>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">{{act.totalDias}}</td>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">{{act.totalVentas}}</td>
-                    <td style="text-align:center"></td>
-                    <td style="text-align:center">Ingreso liquido estimado</td>
-                    <td colspan=3 style="text-align:center">{{act.ingresoLiquido}}</td>
-                </tr>
-                
-            </thead>
-        </table>
+                    <tr>
+                        <td style="text-align:center">Actividad</td>
+                        <td style="text-align:center">{{act.tipo}}</td>
+                        <td style="text-align:center">Nombre de la actividad</td>
+                        <td style="text-align:center">{{act.nombre}}</td>
+                        <td style="text-align:center">Tipo de producción</td>
+                        <td style="text-align:center">{{act.tipoproduccion}}</td>
+                        <td style="text-align:center">Ingreso</td>
+                        <td style="text-align:center">Mirar este 0</td>
+                        <td style="text-align:center">Egreso</td>
+                        <td style="text-align:center">;Mirar este 0</td>
+                    </tr>
+                </thead>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan=10>Ventas buenas/ regulares/ malas</th>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Ventas</td>
+                        <td style="text-align:center">Dias</td>
+                        <td style="text-align:center">Numero</td>
+                        <td style="text-align:center">Dias</td>
+                        <td style="text-align:center">Valor</td>
+                        <td style="text-align:center">Total</td>
+                        <td style="text-align:center">Total compras</td>
+                        <td colspan=3 style="text-align:center"></td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align:center">Buenas</td>
+                        <td style="text-align:center">{{act.diasB}}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{act.diasB}}</td>
+                        <td style="text-align:center">{{act.valorB}}</td>
+                        <td style="text-align:center" {{act.totalB}}></td>
+                        <td style="text-align:center">Ventas estimadas</td>
+                        <td colspan=3 style="text-align:center">{{act.ventasEstimadas}}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Regulares</td>
+                        <td style="text-align:center">{{act.diasR}}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{act.diasR}}</td>
+                        <td style="text-align:center">{{act.valorR}}</td>
+                        <td style="text-align:center">{{act.totalR}}</td>
+                        <td style="text-align:center">Margen bruto</td>
+                        <td colspan=3 style="text-align:center">{{act.margenBruto}}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Malas</td>
+                        <td style="text-align:center">{{act.diasM}}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{act.diasM}}</td>
+                        <td style="text-align:center">{{act.valorM}}</td>
+                        <td style="text-align:center">{{act.totalM}}</td>
+                        <td style="text-align:center">Otros gastos</td>
+                        <td colspan=3 style="text-align:center">{{act.otrosGastos}}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center">Total</th>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{act.totalDias}}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{act.totalVentas}}</td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center">Ingreso liquido estimado</td>
+                        <td colspan=3 style="text-align:center">{{act.ingresoLiquido}}</td>
+                    </tr>
+
+                </thead>
+            </table>
+        </div>
+
     </div>
-    
 </div>
-</div>
-
-
