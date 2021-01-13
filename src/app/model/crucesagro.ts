@@ -17,6 +17,13 @@ export class CrucesAgro {
     valorB: number;
     valorM: number;
     valorR: number;
+    ventasEstimadas: number;
+    totalVentas: number;
+    totalCompras:number;
+    margenBruto: number;
+    otrosGastos: number;
+    totalDias: number;
+    ingresoLiquido: number;
     lotesAgro:LoteAgro[];
     lotesPecuario:LotePecuario[];
 }
