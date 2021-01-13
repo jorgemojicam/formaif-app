@@ -49,4 +49,5 @@ export class LoteAgro {
     totalEgresosMante: number;
     egresosCocecha: Egresos[];
     totalEgresosCosecha: number;
+    totalEgresos:number;
 }

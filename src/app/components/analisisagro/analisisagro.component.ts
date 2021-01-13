@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import DataSelect from '../../data-select/dataselect.json';
+
+
 
 @Component({
   selector: 'app-analisisagro',
@@ -16,6 +20,7 @@ export class AnalisisagroComponent implements OnInit {
   
   constructor(
     private activeRoute: ActivatedRoute,
+    private sanitizer: DomSanitizer,
     public srvSol: IdbSolicitudService,) { }
 
   ngOnInit(): void {
@@ -30,6 +35,10 @@ export class AnalisisagroComponent implements OnInit {
           this.tipoAsesor = this.datasolicitud.asesor
         })
       });
+  }
+
+  transform(base) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(base);
   }
 
 }
