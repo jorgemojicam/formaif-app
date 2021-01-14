@@ -39,8 +39,8 @@ export class AnalisisagroComponent implements OnInit {
 
   }
 
-  // transform(base) {
-  //   return this.sanitizer.bypassSecurityTrustResourceUrl(base);
-  // }
+   transform(base) {
+     return this.sanitizer.bypassSecurityTrustResourceUrl(base);
+   }
 
 }

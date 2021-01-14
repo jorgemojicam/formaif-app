@@ -2,7 +2,9 @@
     <!-- Encabezado -->
     <table>
         <tr>
-            <td rowspan="3" align="center">LOGO</td>
+            <td rowspan="3" align="center">
+                <img src= "assets/pictures/Logo.png"> 
+            </td>
             <td rowspan="3" align="center">Analisis de credito agropecuario</td>
             <td align="center">COL-FO-006</td>
         </tr>
@@ -13,14 +15,14 @@
             <td align="center">Fecha</td>
         </tr>
     </table>
-    <ng-container *ngIf="datasolicitud.Balance">
+    <ng-container *ngIf="datasolicitud.solicitud">
         <!-- Documento y solicitud -->
         <table>
             <tr>
                 <td>Documento de identidad del cliente</td>
-                <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+                <td>{{datasolicitud.cedula}}</td>
                 <td>solicitud</td>
-                <td>{{datasolicitud.Balance.clienteCobrar}}</td>
+                <td>{{datasolicitud.solicitud}}</td>
             </tr>
         </table>
     </ng-container>
@@ -28,7 +30,7 @@
     <ng-container *ngIf="datasolicitud.Ubicacion">
         <table>
             <tr>
-                <th align="center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
+                <th align="center" colspan=4 > Mapa de ubicación (como llegar al predio)</th>
             </tr>
             <tr>
                 <td colspan=1>tiempo recorrido</td>
@@ -50,10 +52,10 @@
             </tr>
             <tr>
                 <td rowspan="3" colspan=2>
-                    <!-- <img [src]='transform(datasolicitud.Ubicacion.fotoppartida)'> -->
+                   <img [src]='transform(datasolicitud.Ubicacion.fotoppartida)' width="500px" height="400px"> 
                 </td>
                 <td rowspan="3" colspan=2>
-                    <!-- <img [src]='transform(datasolicitud.Ubicacion.fotopllegada)'> -->
+                    <img [src]='transform(datasolicitud.Ubicacion.fotopllegada)' width="500px" height="400px"> 
             </tr>
         </table>
     </ng-container>
@@ -111,6 +113,9 @@
                 </tr>
             </tbody>
             <tr>
+                <td colspan=3>Total</td>
+                <td align="right" >${{datasolicitud.Balance.inventarioTotal}}</td>
+                </tr>
         </table>
         <!-- Activos del negocio -->
         <table>
@@ -205,7 +210,7 @@
             </thead>
             <tbody *ngFor="let cred of datasolicitud.Balance.creditos; let cont=index">
                 <tr>
-                    <td>FALTA POR MIRAR{{cred.valor}}</td>
+                    <td>{{cred.valor}}</td>
                     <td align="right">${{cred.valor}}</td>
                 </tr>
             </tbody>
@@ -481,7 +486,7 @@
             <tbody *ngFor="let OtrosIn of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
                 <tr>
                     <td>{{OtrosIn.ingreso}}</td>
-                    <td>Mirar esto{{OtrosIn.valor}}</td>
+                    <td>{{OtrosIn.valor}}</td>
                     <td align="right">{{OtrosIn.observacion}}</td>
                 </tr>
             </tbody>
@@ -493,6 +498,7 @@
             </tfoot>
         </table>
     </ng-container>
+
     <!-- Actividades del cliente -->
     <div *ngFor="let act of datasolicitud.CrucesAgro" id="actividades">
 
@@ -564,14 +570,14 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
-                            <td align="right">${{datasolicitud.Balance.inventarioTotal}}</td>
+                            <td align="right">${{lt.rendiemientolote}}</td>
+                            <td align="right">${{lt.unidadestotales}}</td>
+                            <td align="right">${{lt.perdida}}</td>
+                            <td align="right">${{lt.preciomin}}</td>
+                            <td align="right">${{lt.precioactual}}</td>
+                            <td align="right">${{lt.preciopromedio}}</td>
+                            <td align="right">$Se acuerda que ese falta por calcular</td>
+                            <td align="right">$Se acuerda que ese falta por calcular</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -618,7 +624,7 @@
                             <td align="right">{{egTransSiem.mes}}</td>
                         </tr>
                     </tbody>
-                    <tbody *ngFor="let egTransMan of lt.egresosSiembra; let cont=index">
+                    <tbody *ngFor="let egTransMan of lt.egresosMante; let cont=index">
                         <tr>
                             <th style="text-align:center">Mantenimiento</th>
                             <td align="right">{{egTransMan.descripcion}}</td>
@@ -629,7 +635,7 @@
                             <td align="right">{{egTransMan.mes}}</td>
                         </tr>
                     </tbody>
-                    <tbody *ngFor="let egTransCos of lt.egresosSiembra; let cont=index">
+                    <tbody *ngFor="let egTransCos of lt.egresosCocecha; let cont=index">
                         <tr>
                             <th style="text-align:center">Cosecha y recolección</th>
                             <td align="right">{{egTransCos.descripcion}}</td>
