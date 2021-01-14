@@ -138,7 +138,10 @@ export class BalanceComponent implements OnInit {
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=vlrUni*cantidad
+          //let valor = this.formatNumber(x.get('valor').value)
           totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -160,7 +163,10 @@ export class BalanceComponent implements OnInit {
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=cantidad*vlrUni
+         // let valor = this.formatNumber(x.get('valor').value)
           totalactneg += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -170,7 +176,10 @@ export class BalanceComponent implements OnInit {
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
         actfam.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=cantidad*vlrUni
+          //let valor = this.formatNumber(x.get('valor').value)
           totalactfam += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
