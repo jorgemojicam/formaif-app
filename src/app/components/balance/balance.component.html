@@ -105,7 +105,7 @@
                         </button>
                     </div>
                 </div>
-                <button mat-fab aria-label="add" [disabled]="balanceForm.controls.recuperacion['controls'].length >= 5"
+                <button mat-fab aria-label="add" [disabled]="balanceForm.controls.recuperacion['controls'].length >= 2"
                     mat-mini-fab class="btnadd" type="button" color="accent" (click)="addNewRecuperacion()">
                     <mat-icon>add</mat-icon>
                 </button>
@@ -133,7 +133,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="gr" fxFlex="50%" fxFlex.xs="70%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <ng-container [ngSwitch]="tipoSol">
                             <ng-container *ngSwitchCase="1">
                                 <mat-form-field>
@@ -159,15 +159,21 @@
                             </ng-container>
                         </ng-container>
                     </div>
-                    <div class="gr" fxFlex="10%" fxFlex.xs="30%" fxFlex.sm="33%">
+                    <div class="gr" fxFlex="10%" fxFlex.xs="20%" fxFlex.sm="20%">
                         <mat-form-field>
                             <input type="number" matInput placeholder="Cantidad" id="cantidad{{inv}}"
                                 formControlName="cantidad">
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{inv}}" formControlName="valor">
+                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{inv}}"
+                                formControlName="vlrUni">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{inv}}" formControlName="valor" readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="inv==0"
@@ -203,7 +209,7 @@
                             <textarea matInput formControlName="detalle"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <mat-label>Tipo</mat-label>
                             <mat-select formControlName="tipo" id="tipo{{actneg}}" required>
@@ -214,9 +220,21 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <div class="gr" fxFlex="10%" fxFlex.xs="20%" fxFlex.sm="20%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actneg}}" formControlName="valor">
+                            <input type="number" matInput placeholder="Cantidad" id="cantidad{{actneg}}"
+                                formControlName="cantidad">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{actneg}}"
+                                formControlName="vlrUni">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{actneg}}" formControlName="valor" readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="actneg==0"
@@ -251,7 +269,7 @@
                             <textarea matInput formControlName="detalle"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <mat-label>Tipo</mat-label>
                             <mat-select formControlName="tipo" id="tipo{{actfam}}" required>
@@ -262,9 +280,21 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <div class="gr" fxFlex="10%" fxFlex.xs="20%" fxFlex.sm="20%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actfam}}" formControlName="valor">
+                            <input type="number" matInput placeholder="Cantidad" id="cantidad{{actfam}}"
+                                formControlName="cantidad">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{actfam}}"
+                                formControlName="vlrUni">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{actfam}}" formControlName="valor" readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="actfam==0"
@@ -318,11 +348,12 @@
                         </button>
                     </div>
                 </div>
-            </ng-container>
-            <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
                 (click)="addNewProvRow()" [disabled]="balanceForm.controls.proveedoresRow['controls'].length >=4">
                 <mat-icon>add</mat-icon>
             </button>
+            </ng-container>
+            
         </mat-card-content>
     </mat-card>
     <!-- creditos -->
@@ -502,7 +533,7 @@
                                 </div>
                                 <div class="gr" fxFlex="5%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
-                                        <input type="tel" matInput placeholder="Plazo" id="plazo{{pas}}"
+                                        <input type="number" matInput placeholder="Plazo" id="plazo{{pas}}"
                                             formControlName="plazo">
                                     </mat-form-field>
                                 </div>

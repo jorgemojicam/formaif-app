@@ -472,6 +472,7 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       descripcion: ['', Validators.required],
       valor: ['']
     });
@@ -482,6 +483,7 @@ export class BalanceComponent implements OnInit {
       arrayInventario.push(this.fb.group({
         tipo: [inv.tipo],
         cantidad: [inv.cantidad],
+        vlrUni: [inv.vlrUni],
         descripcion: [inv.descripcion],
         valor: [inv.valor]
       }))
@@ -505,6 +507,8 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
+      cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       valor: [null, Validators.required]
     });
   }
@@ -515,6 +519,8 @@ export class BalanceComponent implements OnInit {
         this.fb.group({
           tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
+          cantidad: [a.cantidad],
+        vlrUni: [a.vlrUni],
           valor: a.valor,
         })
       )
@@ -537,6 +543,8 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
+      cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       valor: ['', Validators.required]
     });
   }
@@ -547,6 +555,8 @@ export class BalanceComponent implements OnInit {
         this.fb.group({
           tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
+          cantidad: [a.cantidad],
+          vlrUni: [a.vlrUni],
           valor: a.valor,
         })
       )
