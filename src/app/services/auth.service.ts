@@ -5,10 +5,11 @@ import { User } from '../model/user';
 
 const AUTH_API = 'https://fidelapi.fundaciondelamujer.com:54000/api/';
 const AUTH_APIInt = 'https://fidelapipruebas.fundaciondelamujer.com:8085/api/';
+const API_PROD = 'https://fidelapi.fundaciondelamujer.com:55000/api/';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-type':'application/json'
+    'Content-type': 'application/json'
   })
 };
 
@@ -22,13 +23,23 @@ export class AuthService {
   ) { }
 
   login(user: User): Observable<any> {
-    
-     return this.http.post(AUTH_APIInt+'login/authenticate', {
-       Username: user.Username,
-       Passw: user.Passw,
-       Rol:"User"
-     },httpOptions);
+
+    let userdom = user.Username.split('/')
+    let dom = userdom[0];
+    let use = userdom[1];
+
+    if (dom == "pruebas") {
+      return this.http.post(AUTH_APIInt + 'login/authenticate', {
+        Username: use,
+        Passw: user.Passw,
+        Rol: "User"
+      }, httpOptions);
+    } else {
+      return this.http.post(AUTH_API + 'login/authenticate', {
+        Username: user.Username,
+        Passw: user.Passw,
+        Rol: "User"
+      }, httpOptions);
+    }
   }
-
-
 }

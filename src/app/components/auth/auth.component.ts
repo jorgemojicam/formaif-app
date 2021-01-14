@@ -15,7 +15,7 @@ export class AuthComponent implements OnInit {
 
   isLogged: Boolean = false
   loginForm = new FormGroup({
-    Username: new FormControl('', [Validators.pattern('^[A-Za-z0-9-.]+$')]),
+    Username: new FormControl('', [Validators.pattern('^[A-Za-z0-9-.-/]+$')]),
     Passw: new FormControl('', Validators.required)
   });
 
