@@ -990,7 +990,7 @@
                                         <mat-label>Cuota difiere</mat-label>
                                         <mat-select formControlName="periodo" id="periodo{{pas}}" required>
                                             <mat-option disabled>--</mat-option>
-                                            <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                            <mat-option *ngFor="let pe of CuotasDifiere" [value]="pe">
                                                 {{pe.name}}
                                             </mat-option>
                                         </mat-select>

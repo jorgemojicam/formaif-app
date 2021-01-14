@@ -33,6 +33,7 @@ export class BalanceComponent implements OnInit {
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
   meses: any = DataSelect.Meses;
+  CuotasDifiere: any= DataSelect.CuotasDifiere;
 
   tipoSol: number;
   totalActFam: number;
@@ -354,9 +355,12 @@ export class BalanceComponent implements OnInit {
             if (saldo > 0) {
               nocorriente = saldo - corriente
               if (periodo == 1) {
-                corriente = saldo / 2
+                corriente = saldo/2
+                nocorriente = saldo/2
+                
               } else if (periodo == 2) {
                 corriente = saldo
+                nocorriente = 0
               }
             } else {
               nocorriente = 0
