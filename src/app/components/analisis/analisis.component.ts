@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as html2pdf from "html2pdf.js";
 import { Solicitud } from 'src/app/model/solicitud';
@@ -11,6 +11,8 @@ import { IdbSolicitudService } from '../admin/idb-solicitud.service';
   styleUrls: ['./analisis.component.scss']
 })
 export class AnalisisComponent implements OnInit {
+  @ViewChild('reporte') reporte:ElementRef 
+  @Input() datossol: Solicitud
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -23,8 +25,8 @@ export class AnalisisComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activeRoute.queryParamMap
-      .subscribe((params) => {
+    if (!this.datossol) {
+      this.activeRoute.queryParamMap.subscribe((params) => {
         let sol = params.get('solicitud')
         this.srvSol.getSol(sol).subscribe((datasol) => {
           let hoy = new Date()
@@ -34,6 +36,9 @@ export class AnalisisComponent implements OnInit {
           this.tipoAsesor = this.datasolicitud.asesor
         })
       });
+    }else{
+      this.datasolicitud = this.datossol
+    }
   }
 
   download() {

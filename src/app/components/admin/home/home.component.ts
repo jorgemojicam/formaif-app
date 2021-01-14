@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { IdbSolicitudService } from '../idb-solicitud.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import Swal from 'sweetalert2';
+import { AnalisisComponent } from '../../analisis/analisis.component';
 
 @Component({
   selector: 'app-home',
@@ -19,9 +20,12 @@ export class HomeComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['tipo', 'solicitud', 'gestion', 'delete', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
-  dataSolicitudes: any
+  dataSolicitudes: any;
+  datasol: Solicitud;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(AnalisisComponent, {static: false}) analisis: AnalisisComponent;
+
 
   constructor(
     public dialog: MatDialog,
@@ -32,6 +36,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
     this.srvSol.get().subscribe((sol) => {
       this.dataSource = new MatTableDataSource(sol);
       this.dataSource.paginator = this.paginator;
@@ -61,7 +66,7 @@ export class HomeComponent implements AfterViewInit {
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+
       this.srvSol.get().subscribe((sol) => {
         this.dataSource = new MatTableDataSource(sol);
         this.dataSource.paginator = this.paginator;
@@ -98,7 +103,7 @@ export class HomeComponent implements AfterViewInit {
           console.log(res)
         })
         this.srvSol.get().subscribe((sol) => {
-          let newSol = sol.filter(a =>  a.solicitud != solicitud )
+          let newSol = sol.filter(a => a.solicitud != solicitud)
           console.log(newSol)
           this.srvSol.save(newSol)
           this.onLoad()
@@ -107,8 +112,14 @@ export class HomeComponent implements AfterViewInit {
         Swal.fire('Información eliminada!', '', 'success')
       }
     })
+  }
 
-
+  onSend(element) {
+    
+    this.srvSol.getSol(element.solicitud.toString()).subscribe((datasol) => {
+      this.datasol = datasol as Solicitud;
+      console.log(this.analisis.reporte)
+    })
   }
 }
 
