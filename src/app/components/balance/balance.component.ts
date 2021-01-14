@@ -277,6 +277,7 @@ export class BalanceComponent implements OnInit {
               x.patchValue({
                 corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                proyeccion:isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
               }, { emitEvent: false })
             }
 
@@ -335,7 +336,8 @@ export class BalanceComponent implements OnInit {
           } else if (tipo.id == "4") {
 
             let corrienteN = numcuota * 30
-            tcorrienten += corrienteN
+            tcorrienten += saldo
+            tcuotan +=corrienteN
             x.patchValue({
               cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
@@ -382,7 +384,8 @@ export class BalanceComponent implements OnInit {
             x.patchValue({
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
-            //Otras periodicidades
+
+          //Otras periodicidades
           } else if (tipo.id == "7") {
 
             let tasa = x.get('tasa').value
@@ -425,6 +428,7 @@ export class BalanceComponent implements OnInit {
           proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
           totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
           tcuotaf: isFinite(tcuotaf) ? tcuotaf.toLocaleString() : 0,
+          tcuotan: isFinite(tcuotan) ? tcuotan.toLocaleString() : 0,
           tcorrientef: isFinite(tcorrientef) ? tcorrientef.toLocaleString() : 0,
           tnocorrientef: isFinite(tnocorrientef) ? tnocorrientef.toLocaleString() : 0,
           tcorrienten: isFinite(tcorrienten) ? tcorrienten.toLocaleString() : 0,

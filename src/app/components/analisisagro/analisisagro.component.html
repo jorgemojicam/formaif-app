@@ -100,20 +100,22 @@
             </tr>
             <tr>
                 <th>Tipo</th>
-                <th>Cantidad</th>
                 <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Valor unitario</th>
                 <th>Valor</th>
             </tr>
             <tbody *ngFor="let inven of datasolicitud.Balance.inventarioRow; let cont=index">
                 <tr>
                     <td>{{inven.tipo}}</td>
-                    <td>{{inven.cantidad}}</td>
                     <td>{{inven.descripcion}}</td>
+                    <td>{{inven.cantidad}}</td>
+                    <td>{{inven.vlrUni}}</td>
                     <td>{{inven.valor}}</td>
                 </tr>
             </tbody>
             <tr>
-                <td colspan=3>Total</td>
+                <td colspan=4>Total</td>
                 <td align="right" >${{datasolicitud.Balance.inventarioTotal}}</td>
                 </tr>
         </table>
@@ -121,11 +123,13 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan=4>Activos Negocio</th>
+                    <th colspan=5>Activos Negocio</th>
                 </tr>
                 <tr>
                     <th style="text-align:center">Tipo</th>
                     <th style="text-align:center">Descripcion</th>
+                    <th style="text-align:center">Cantidad</th>
+                    <th style="text-align:center">Valor unitario</th>
                     <th style="text-align:center">Valor</th>
                 </tr>
             </thead>
@@ -133,13 +137,15 @@
                 <tr>
                     <td>{{act.tipo}}</td>
                     <td>{{act.detalle}}</td>
+                    <td>{{act.cantidad}}</td>
+                    <td>{{act.vlrUni}}</td>
                     <td align="right">${{act.valor}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Total</td>
-                    <td align="right" colspan=3>${{datasolicitud.Balance.actnegTotal}}</td>
+                    <td colspan=4>Total</td>
+                    <td align="right" >${{datasolicitud.Balance.actnegTotal}}</td>
                 </tr>
             </tfoot>
         </table>
@@ -147,11 +153,13 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan=4>Activos de la familia</th>
+                    <th colspan=5>Activos de la familia</th>
                 </tr>
                 <tr>
                     <th style="text-align:center">Tipo</th>
-                    <th style="text-align:center">Detalle</th>
+                    <th style="text-align:center">Descripción</th>
+                    <th style="text-align:center">Cantidad</th>
+                    <th style="text-align:center">Valor unitario</th>
                     <th style="text-align:center">Valor</th>
                 </tr>
             </thead>
@@ -159,13 +167,15 @@
                 <tr>
                     <td>{{inv.tipo}}</td>
                     <td>{{inv.detalle}}</td>
+                    <td>{{inv.cantidad}}</td>
+                    <td>{{inv.vlrUni}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Total</td>
-                    <td align="right" colspan=3>${{datasolicitud.Balance.actfamTotal}}</td>
+                    <td colspan=4>Total</td>
+                    <td align="right" >${{datasolicitud.Balance.actfamTotal}}</td>
                 </tr>
             </tfoot>
         </table>

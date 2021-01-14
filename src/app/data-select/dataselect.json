@@ -191,6 +191,18 @@
       "period": 12
     }
   ],
+  "CuotasDifiere": [
+    {
+      "id": 1,
+      "name": "Mayor a 12 meses",
+      "period": 1
+    },
+    {
+      "id": 2,
+      "name": "Menor a 12 meses",
+      "period": 2
+    }
+  ],
   "OtrosIngresosFamiliar": [
     {
       "id": 1,
