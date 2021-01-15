@@ -1,7 +1,7 @@
 <!-- <button mat-raised-button color="accent" (click)="download()">Descarga provisional</button> -->
 <table>
     <tr>
-        <td rowspan="3" align="center">
+        <td rowspan="3" align="center" colspan=3>
             <img src= "assets/pictures/Logo.png"> 
         </td>
         <td rowspan="3" align="center" colspan=3>Analisis de credito</td>
@@ -386,18 +386,18 @@
             </thead>
             <tr>
                 <td>{{act.diasB}}</td>
-                <td>{{act.valorB}}</td>
-                <td>{{act.totalB}}</td>
+                <td>${{act.valorB}}</td>
+                <td>${{act.totalB}}</td>
             </tr>
             <tr>
                 <td>{{act.diasR}}</td>
-                <td>{{act.valorR}}</td>
-                <td>{{act.totalR}}</td>
+                <td>${{act.valorR}}</td>
+                <td>${{act.totalR}}</td>
             </tr>
             <tr>
                 <td>{{act.diasM}}</td>
-                <td>{{act.valorM}}</td>
-                <td>{{act.totalM}}</td>
+                <td>${{act.valorM}}</td>
+                <td>${{act.totalM}}</td>
             </tr>
         </table>
 
@@ -409,20 +409,20 @@
                         <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
                     </tr>
                     <tr>
-                        <th style="text-align:center">Dia</th>
+                        <th style="text-align:center">Semana</th>
                         <th style="text-align:center">Valor</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let his of act.ventasHis; let cont=index">
                     <tr>
                         <td>{{cont}}</td>
-                        <td>{{his.valor}}</td>
+                        <td>${{his.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td>{{act.totalVentasHis}}</td>
+                        <td>${{act.totalVentasHis}}</td>
                     </tr>
                 </tfoot>
 
@@ -445,14 +445,16 @@
                     <tr>
                         <td>{{prod.nombre}}</td>
                         <td>{{prod.cantidad}}</td>
-                        <td>{{prod.frecuencia.name}}</td>
-                        <td>{{prod.valor}}</td>
+                        <td>
+                            <ng-container *ngIf="prod.frecuencia"> {{prod.frecuencia.name}}</ng-container>
+                        </td>
+                        <td>${{prod.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3">Total</td>
-                        <td>{{act.totalProduccion}}</td>
+                        <td>${{act.totalProduccion}}</td>
                     </tr>
                 </tfoot>
             </table>
