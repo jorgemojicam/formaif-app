@@ -1,7 +1,7 @@
-export class ActivosFamilia {   
-    tipo:number;
-    detalle:string;
-    valor:number;
-    cantidad:number;
-    vlrUni:number;
-  }
+export class ActivosFamilia {
+  tipo: { id: number, name: string };
+  detalle: string;
+  valor: number;
+  cantidad: number;
+  vlrUni: number;
+}

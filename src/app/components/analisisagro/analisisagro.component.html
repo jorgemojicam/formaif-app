@@ -107,11 +107,11 @@
             </tr>
             <tbody *ngFor="let inven of datasolicitud.Balance.inventarioRow; let cont=index">
                 <tr>
-                    <td>{{inven.tipo}}</td>
+                    <td>{{equivalencia(inven.tipo,'tipoinventario')}}</td>
                     <td>{{inven.descripcion}}</td>
                     <td>{{inven.cantidad}}</td>
-                    <td>{{inven.vlrUni}}</td>
-                    <td>{{inven.valor}}</td>
+                    <td>${{inven.vlrUni}}</td>
+                    <td>${{inven.valor}}</td>
                 </tr>
             </tbody>
             <tr>
@@ -135,10 +135,10 @@
             </thead>
             <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
                 <tr>
-                    <td>{{act.tipo.id}}</td>
+                    <td>{{act.tipo.name}}</td>
                     <td>{{act.detalle}}</td>
                     <td>{{act.cantidad}}</td>
-                    <td>{{act.vlrUni}}</td>
+                    <td>${{act.vlrUni}}</td>
                     <td align="right">${{act.valor}}</td>
                 </tr>
             </tbody>
@@ -165,10 +165,10 @@
             </thead>
             <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
                 <tr>
-                    <td>{{inv.tipo.id}}</td>
+                    <td>{{inv.tipo.name}}</td>
                     <td>{{inv.detalle}}</td>
                     <td>{{inv.cantidad}}</td>
-                    <td>{{inv.vlrUni}}</td>
+                    <td>${{inv.vlrUni}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>
             </tbody>
@@ -195,7 +195,7 @@
             <tbody *ngFor="let inv of datasolicitud.Balance.inversiones; let cont=index">
                 <tr>
                     <td>{{inv.detalle}}</td>
-                    <td>{{inv.mes}}</td>
+                    <td>{{MesNombre(inv.mes,'MesNombre')}}</td>
                     <td>{{inv.origen}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>
@@ -220,7 +220,7 @@
             </thead>
             <tbody *ngFor="let cred of datasolicitud.Balance.creditos; let cont=index">
                 <tr>
-                    <td>{{cred.valor}}</td>
+                    <td>${{cred.valor}}</td>
                     <td align="right">${{cred.valor}}</td>
                 </tr>
             </tbody>
@@ -278,7 +278,7 @@
                     <td>{{pasNeg.monto}}</td>
                     <td>{{pasNeg.saldo}}</td>
                     <td>{{pasNeg.destino}}</td>
-                    <td>{{pasNeg.periodo}}</td>
+                    <td>{{pasNeg.periodo.name}}</td>
                     <td>{{pasNeg.cuota}}</td>
                     <td>{{pasNeg.corrienteN}}</td>
                     <td align="right">${{pasNeg.nocorrienteN}}</td>
@@ -316,7 +316,8 @@
                     <td>{{pasfa.monto}}</td>
                     <td>{{pasfa.saldo}}</td>
                     <td>{{pasfa.destino}}</td>
-                    <td>{{pasfa.periodo}}</td>
+                    <td><ng-container *ngIf="pasfa.periodo"> {{pasfa.periodo.name}}</ng-container>
+                   </td>
                     <td>{{pasfa.cuota}}</td>
                     <td>{{pasfa.corrienteF}}</td>
                     <td align="right">${{pasfa.nocorrienteF}}</td>
@@ -495,15 +496,16 @@
             </thead>
             <tbody *ngFor="let OtrosIn of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
                 <tr>
-                    <td>{{OtrosIn.ingreso}}</td>
-                    <td>{{OtrosIn.valor}}</td>
+                    <td>{{TipoIngreso(OtrosIn.ingreso,'tipoingreso')}}</td>
+                    <td>${{OtrosIn.valor}}</td>
                     <td align="right">{{OtrosIn.observacion}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td>Total</td>
-                    <td colspan=2 align="right">${{datasolicitud.Gastos.totalOtros}}</td>
+                    <td > Total</td>
+                    <td  align="right">${{datasolicitud.Gastos.totalOtros}}</td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>
@@ -582,7 +584,7 @@
                         <tr>
                             <td align="right">${{lt.rendiemientolote}}</td>
                             <td align="right">${{lt.unidadestotales}}</td>
-                            <td align="right">${{lt.perdida}}</td>
+                            <td align="right">{{lt.perdida}}%</td>
                             <td align="right">${{lt.preciomin}}</td>
                             <td align="right">${{lt.precioactual}}</td>
                             <td align="right">${{lt.preciopromedio}}</td>
@@ -615,44 +617,44 @@
 
                         <tr>
                             <th style="text-align:center">Adecuación- preparación terreno</th>
-                            <td align="right">{{egTrans.descripcion}}</td>
+                            <td align="right">{{DescripcionEgresos(egTrans.descripcion,'descripcionegreso')}}</td>
                             <td align="right">{{egTrans.detalle}}</td>
                             <td align="right">{{egTrans.cantidad}}</td>
-                            <td align="right">{{egTrans.valorunitario}}</td>
-                            <td align="right">{{egTrans.total}}</td>
+                            <td align="right">${{egTrans.valorunitario}}</td>
+                            <td align="right">${{egTrans.total}}</td>
                             <td align="right">{{egTrans.mes}}</td>
                         </tr>
                     </tbody>
                     <tbody *ngFor="let egTransSiem of lt.egresosSiembra; let cont=index">
                         <tr>
                             <th style="text-align:center">Siembra</th>
-                            <td align="right">{{egTransSiem.descripcion}}</td>
+                            <td align="right">{{DescripcionEgresos(egTransSiem.descripcion,'descripcionegreso')}}</td>
                             <td align="right">{{egTransSiem.detalle}}</td>
                             <td align="right">{{egTransSiem.cantidad}}</td>
-                            <td align="right">{{egTransSiem.valorunitario}}</td>
-                            <td align="right">{{egTransSiem.total}}</td>
+                            <td align="right">${{egTransSiem.valorunitario}}</td>
+                            <td align="right">${{egTransSiem.total}}</td>
                             <td align="right">{{egTransSiem.mes}}</td>
                         </tr>
                     </tbody>
                     <tbody *ngFor="let egTransMan of lt.egresosMante; let cont=index">
                         <tr>
                             <th style="text-align:center">Mantenimiento</th>
-                            <td align="right">{{egTransMan.descripcion}}</td>
+                            <td align="right">{{DescripcionEgresos(egTransMan.descripcion,'descripcionegreso')}}</td>
                             <td align="right">{{egTransMan.detalle}}</td>
                             <td align="right">{{egTransMan.cantidad}}</td>
-                            <td align="right">{{egTransMan.valorunitario}}</td>
-                            <td align="right">{{egTransMan.total}}</td>
+                            <td align="right">${{egTransMan.valorunitario}}</td>
+                            <td align="right">${{egTransMan.total}}</td>
                             <td align="right">{{egTransMan.mes}}</td>
                         </tr>
                     </tbody>
                     <tbody *ngFor="let egTransCos of lt.egresosCocecha; let cont=index">
                         <tr>
                             <th style="text-align:center">Cosecha y recolección</th>
-                            <td align="right">{{egTransCos.descripcion}}</td>
+                            <td align="right">{{DescripcionEgresos(egTransCos.descripcion,'descripcionegreso')}}</td>
                             <td align="right">{{egTransCos.detalle}}</td>
                             <td align="right">{{egTransCos.cantidad}}</td>
-                            <td align="right">{{egTransCos.valorunitario}}</td>
-                            <td align="right">{{egTransCos.total}}</td>
+                            <td align="right">${{egTransCos.valorunitario}}</td>
+                            <td align="right">${{egTransCos.total}}</td>
                             <td align="right">{{egTransCos.mes}}</td>
                         </tr>
                     </tbody>
@@ -723,27 +725,27 @@
                             <td colspan="2" style="text-align:center">{{lte.mesCos}}</td>
                             <td colspan="2" style="text-align:center">{{lte.rendimientoCos}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesCos}}</td>
-                            <td style="text-align:center">{{lte.perdidaCos}}</td>
-                            <td style="text-align:center">{{lte.procentageCos}}</td>
-                            <td style="text-align:center">{{lte.totalCos}}</td>
+                            <td style="text-align:center">{{lte.perdidaCos}}%</td>
+                            <td style="text-align:center">{{lte.procentageCos}}%</td>
+                            <td style="text-align:center">${{lte.totalCos}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Traviesa</td>
                             <td colspan="2" style="text-align:center">{{lte.mesTra}}</td>
                             <td colspan="2" style="text-align:center">{{lte.rendimientoTra}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesTra}}</td>
-                            <td style="text-align:center">{{lte.perdidaTra}}</td>
-                            <td style="text-align:center">{{lte.procentageTra}}</td>
-                            <td style="text-align:center">{{lte.totalTra}}</td>
+                            <td style="text-align:center">{{lte.perdidaTra}}%</td>
+                            <td style="text-align:center">{{lte.procentageTra}}%</td>
+                            <td style="text-align:center">${{lte.totalTra}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Pepeo</td>
                             <td colspan="2" style="text-align:center">{{lte.mesPepeo}}</td>
                             <td colspan="2" style="text-align:center">{{lte.rendimientoPepeo}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesPepeo}}</td>
-                            <td style="text-align:center">{{lte.perdidaPepeo}}</td>
-                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
-                            <td style="text-align:center">{{lte.totalPepeo}}</td>
+                            <td style="text-align:center">{{lte.perdidaPepeo}}%</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}%</td>
+                            <td style="text-align:center">${{lte.totalPepeo}}</td>
                         </tr>
 
                         <tr>
@@ -779,8 +781,8 @@
                             <td style="text-align:center">{{egre.descripcion}}</td>
                             <td style="text-align:center">{{egre.detalle}}</td>
                             <td style="text-align:center">{{egre.cantidad}}</td>
-                            <td style="text-align:center">{{egre.valorunitario}}</td>
-                            <td style="text-align:center">{{egre.total}}</td>
+                            <td style="text-align:center">${{egre.valorunitario}}</td>
+                            <td style="text-align:center">${{egre.total}}</td>
                             <td style="text-align:center">{{egre.mes}}</td>
 
                         </tr>
@@ -792,8 +794,8 @@
                             <td style="text-align:center">{{egreCos.descripcion}}</td>
                             <td style="text-align:center">{{egreCos.detalle}}</td>
                             <td style="text-align:center">{{egreCos.cantidad}}</td>
-                            <td style="text-align:center">{{egreCos.valorunitario}}</td>
-                            <td style="text-align:center">{{egreCos.total}}</td>
+                            <td style="text-align:center">${{egreCos.valorunitario}}</td>
+                            <td style="text-align:center">${{egreCos.total}}</td>
                             <td style="text-align:center">{{egreCos.mes}}</td>
 
                         </tr>
