@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as html2pdf from "html2pdf.js";
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import DataSelect from '../../data-select/dataselect.json';
 
 
 @Component({
@@ -60,6 +61,22 @@ export class AnalisisComponent implements OnInit {
       });
 
     html2pdf().from(element).set(op).save();
+  }
+
+  MesNombre(id: number, lista: string) {
+    if (lista == 'MesNombre') {
+      let Mes = DataSelect.Meses.filter(i => i.id == id);      
+      console.log(Mes)
+      return Mes[0].name
+    }
+  }
+
+  TipoIngreso(id: number, lista: string) {
+    if (lista == 'tipoingreso') {
+      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);      
+      console.log(tipo)
+      return tipo[0].name
+    }
   }
 
 }

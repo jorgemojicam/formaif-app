@@ -75,7 +75,14 @@ export class AnalisisagroComponent implements OnInit {
     }
   }
 
-
+  DescripcionEgresosPec(id: number, lista: string) {
+    if (lista == 'DescripcionEgresosPec') {
+      let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);      
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+  }
+  
 
 }
 
