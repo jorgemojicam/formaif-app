@@ -135,7 +135,7 @@
             </thead>
             <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
                 <tr>
-                    <td>{{act.tipo}}</td>
+                    <td>{{act.tipo.id}}</td>
                     <td>{{act.detalle}}</td>
                     <td>{{act.cantidad}}</td>
                     <td>{{act.vlrUni}}</td>
@@ -165,7 +165,7 @@
             </thead>
             <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
                 <tr>
-                    <td>{{inv.tipo}}</td>
+                    <td>{{inv.tipo.id}}</td>
                     <td>{{inv.detalle}}</td>
                     <td>{{inv.cantidad}}</td>
                     <td>{{inv.vlrUni}}</td>
@@ -477,7 +477,7 @@
             <tfoot>
                 <tr>
                     <td colspan=3>Total</td>
-                    <td align="right">Revisar esto${{datasolicitud.Gastos.totalEstacionalesF}}</td>
+                    <td align="right">${{datasolicitud.Gastos.totalEstacionalesF}}</td>
                 </tr>
             </tfoot>
         </table>
@@ -523,7 +523,7 @@
                         <td style="text-align:center">Actividad</td>
                         <td style="text-align:center">{{act.tipo}}</td>
                         <td style="text-align:center">Nombre de la actividad</td>
-                        <td style="text-align:center">{{act.nombre}}</td>
+                        <td style="text-align:center">{{act.nombre.name}}</td>
                         <td style="text-align:center">Tipo de producción</td>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
                         <td style="text-align:center">Ingreso</td>
@@ -549,14 +549,14 @@
                         <td style="text-align:center">Área cultivada</td>
                         <td style="text-align:center">{{lt.areacult}}</td>
                         <td style="text-align:center">{{lt.periodoedad}}</td>
-                        <td style="text-align:center">Distancia de siembra O # plantas/semillas del lote que informa el
+                        <td style="text-align:center">Distancia de siembra ó # plantas/semillas del lote que informa el
                             cliente
                         </td>
-                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{lt.diastancia}}</td>
                         <td style="text-align:center"># plantas/semillas del lote</td>
-                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{lt.dplantas}}</td>
                         <td style="text-align:center">Unidad de venta</td>
-                        <td style="text-align:center"></td>
+                        <td style="text-align:center">{{lt.unidadventa}}</td>
                     </tr>
                 </table>
 
@@ -657,8 +657,9 @@
                         </tr>
                     </tbody>
                     <tr>
-                        <th style="text-align:center">Total</th>
+                        <th style="text-align:center" colspan=5>Total</th>
                         <td align="right">${{lt.totalCos}}</td>
+                        <td></td>
 
                     </tr>
 
@@ -678,7 +679,7 @@
                         <td style="text-align:center">Actividad</td>
                         <td style="text-align:center">{{act.tipo}}</td>
                         <td style="text-align:center">Nombre de la actividad</td>
-                        <td style="text-align:center">{{act.nombre}}</td>
+                        <td style="text-align:center">{{act.nombre.name}}</td>
                         <td style="text-align:center">Tipo de producción</td>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
                         <td style="text-align:center">Ingreso</td>
@@ -816,7 +817,7 @@
                         <td style="text-align:center">Actividad</td>
                         <td style="text-align:center">{{act.tipo}}</td>
                         <td style="text-align:center">Nombre de la actividad</td>
-                        <td colspan="2" style="text-align:center">{{act.nombre}}</td>
+                        <td colspan="2" style="text-align:center">{{act.nombre.name}}</td>
                         <td style="text-align:center">Tipo de producción</td>
                         <td colspan="2" style="text-align:center">{{act.tipoproduccion}}</td>
                         <td style="text-align:center">Ingreso</td>
@@ -892,14 +893,15 @@
                             <td style="text-align:center">{{egrePec.total}}</td>
                             <td style="text-align:center">{{egrePec.mes}}</td>
                         </tr>
-
+                    </tbody>
 
                         <tr>
                             <th colspan=4 style="text-align:left">Total</th>
-                            <td colspan=2 style="text-align:center">{{ltePec.totalEgresos}}</td>
+                            <td style="text-align:center">{{ltePec.totalEgresos}}</td>
+                            <td></td>
 
                         </tr>
-                    </tbody>
+                   
                 </table>
             </div>
         </div>
