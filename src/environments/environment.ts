@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  AUTH_API: 'https://fidelapi.fundaciondelamujer.com:54000/api/',
+  AUTH_APIInt: 'https://fidelapipruebas.fundaciondelamujer.com:8085/api/'
 };
 
 /*

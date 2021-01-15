@@ -138,7 +138,7 @@ export class BalanceComponent implements OnInit {
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let valor = this.formatNumber(x.get('valor').value)     
           totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0

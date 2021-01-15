@@ -1,11 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
-
-const AUTH_API = 'https://fidelapi.fundaciondelamujer.com:54000/api/';
-const AUTH_APIInt = 'https://fidelapipruebas.fundaciondelamujer.com:8085/api/';
-const API_PROD = 'https://fidelapi.fundaciondelamujer.com:55000/api/';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -29,13 +26,13 @@ export class AuthService {
     let use = userdom[1];
 
     if (dom == "pruebas") {
-      return this.http.post(AUTH_APIInt + 'login/authenticate', {
+      return this.http.post(environment.AUTH_APIInt + 'login/authenticate', {
         Username: use,
         Passw: user.Passw,
         Rol: "User"
       }, httpOptions);
     } else {
-      return this.http.post(AUTH_API + 'login/authenticate', {
+      return this.http.post(environment.AUTH_API + 'login/authenticate', {
         Username: user.Username,
         Passw: user.Passw,
         Rol: "User"

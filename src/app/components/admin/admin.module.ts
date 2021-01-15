@@ -4,7 +4,6 @@ import { MaterialModule } from "../../material.module";
 import { AdminRoutingModule } from './admin-routing.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -12,6 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AdminRoutingModule,
     MaterialModule,
     FlexLayoutModule
+    
   ]
 })
 export class AdminModule { }
