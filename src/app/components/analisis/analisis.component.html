@@ -1,21 +1,23 @@
 <!-- <button mat-raised-button color="accent" (click)="download()">Descarga provisional</button> -->
+<div #reporte class="content" id="contentPDF">
 <table>
     <tr>
-        <td rowspan="3" align="center" colspan=3>
+        <td rowspan="3"  colspan="2" align="center">
             <img src= "assets/pictures/Logo.png"> 
         </td>
-        <td rowspan="3" align="center" colspan=3>Analisis de credito</td>
-        <td align="center">COL-FO-006</td>
+        <td rowspan="3" align="center" colspan="3">Analisis de credito</td>
+        <td align="center" colspan="2">COL-FO-006</td>
     </tr>
     <tr>
-        <td align="center">Versión 11</td>
+        <td align="center" colspan="2">Versión 11</td>
     </tr>
     <tr>
-        <td align="center" >{{fechahoy}}</td>
+        <td align="center" colspan="2">{{fechahoy}}</td>
     </tr>
 </table>
 
-<div #reporte class="content" id="contentPDF">
+
+
     <table>
         <tr>
             <td>Analisis de credito</td>
