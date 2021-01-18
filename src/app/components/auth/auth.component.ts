@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Asesor } from 'src/app/model/asesor';
+import { Sucursal } from 'src/app/model/sucursal';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { OficinaService } from 'src/app/services/oficina.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -25,7 +28,8 @@ export class AuthComponent implements OnInit {
     private authServ: AuthService,
     private route: Router,
     private tokenStorage: TokenStorageService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private ofiServ: OficinaService
   ) { }
 
   ngOnInit(): void {
@@ -40,9 +44,16 @@ export class AuthComponent implements OnInit {
     this.authServ.login(form)
       .subscribe(
         res => {
-
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(form.Username);
+
+          this.ofiServ.getOficina("DORA.PEREZ").subscribe((ofi)=>{
+            if(ofi){
+              let oficina = ofi as Asesor
+              this.tokenStorage.saveSuc(oficina.Sucursales.Codigo);
+            }
+          })
+
           this.route.navigate(['home']);
           this.isLogged = false
         },
