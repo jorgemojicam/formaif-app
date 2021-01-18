@@ -33,6 +33,7 @@ export class BalanceComponent implements OnInit {
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
   meses: any = DataSelect.Meses;
+  CuotasDifiere: any= DataSelect.CuotasDifiere;
 
   tipoSol: number;
   totalActFam: number;
@@ -138,7 +139,10 @@ export class BalanceComponent implements OnInit {
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)     
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=vlrUni*cantidad
+          //let valor = this.formatNumber(x.get('valor').value)
           totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -160,7 +164,10 @@ export class BalanceComponent implements OnInit {
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=cantidad*vlrUni
+         // let valor = this.formatNumber(x.get('valor').value)
           totalactneg += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -170,7 +177,10 @@ export class BalanceComponent implements OnInit {
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
         actfam.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let cantidad=this.formatNumber(x.get('cantidad').value)
+          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let valor=cantidad*vlrUni
+          //let valor = this.formatNumber(x.get('valor').value)
           totalactfam += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -268,6 +278,7 @@ export class BalanceComponent implements OnInit {
               x.patchValue({
                 corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                proyeccion:isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
               }, { emitEvent: false })
             }
 
@@ -326,7 +337,8 @@ export class BalanceComponent implements OnInit {
           } else if (tipo.id == "4") {
 
             let corrienteN = numcuota * 30
-            tcorrienten += corrienteN
+            tcorrienten += saldo
+            tcuotan +=corrienteN
             x.patchValue({
               cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
@@ -343,9 +355,12 @@ export class BalanceComponent implements OnInit {
             if (saldo > 0) {
               nocorriente = saldo - corriente
               if (periodo == 1) {
-                corriente = saldo / 2
+                corriente = saldo/2
+                nocorriente = saldo/2
+                
               } else if (periodo == 2) {
                 corriente = saldo
+                nocorriente = 0
               }
             } else {
               nocorriente = 0
@@ -373,7 +388,8 @@ export class BalanceComponent implements OnInit {
             x.patchValue({
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
-            //Otras periodicidades
+
+          //Otras periodicidades
           } else if (tipo.id == "7") {
 
             let tasa = x.get('tasa').value
@@ -416,6 +432,7 @@ export class BalanceComponent implements OnInit {
           proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
           totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
           tcuotaf: isFinite(tcuotaf) ? tcuotaf.toLocaleString() : 0,
+          tcuotan: isFinite(tcuotan) ? tcuotan.toLocaleString() : 0,
           tcorrientef: isFinite(tcorrientef) ? tcorrientef.toLocaleString() : 0,
           tnocorrientef: isFinite(tnocorrientef) ? tnocorrientef.toLocaleString() : 0,
           tcorrienten: isFinite(tcorrienten) ? tcorrienten.toLocaleString() : 0,
@@ -472,6 +489,7 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       descripcion: ['', Validators.required],
       valor: ['']
     });
@@ -482,6 +500,7 @@ export class BalanceComponent implements OnInit {
       arrayInventario.push(this.fb.group({
         tipo: [inv.tipo],
         cantidad: [inv.cantidad],
+        vlrUni: [inv.vlrUni],
         descripcion: [inv.descripcion],
         valor: [inv.valor]
       }))
@@ -505,6 +524,8 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
+      cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       valor: [null, Validators.required]
     });
   }
@@ -515,6 +536,8 @@ export class BalanceComponent implements OnInit {
         this.fb.group({
           tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
+          cantidad: [a.cantidad],
+        vlrUni: [a.vlrUni],
           valor: a.valor,
         })
       )
@@ -537,6 +560,8 @@ export class BalanceComponent implements OnInit {
     return this.fb.group({
       tipo: ['', Validators.required],
       detalle: ['', Validators.required],
+      cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
       valor: ['', Validators.required]
     });
   }
@@ -547,6 +572,8 @@ export class BalanceComponent implements OnInit {
         this.fb.group({
           tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
+          cantidad: [a.cantidad],
+          vlrUni: [a.vlrUni],
           valor: a.valor,
         })
       )

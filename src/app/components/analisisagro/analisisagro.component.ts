@@ -39,8 +39,51 @@ export class AnalisisagroComponent implements OnInit {
 
   }
 
-   transform(base) {
-     return this.sanitizer.bypassSecurityTrustResourceUrl(base);
-   }
+  transform(base) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(base);
+  }
+
+  equivalencia(id: number, lista: string) {
+    if (lista == 'tipoinventario') {
+      let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);      
+      console.log(inventario)
+      return inventario[0].name
+    }
+  }
+
+  MesNombre(id: number, lista: string) {
+    if (lista == 'MesNombre') {
+      let Mes = DataSelect.Meses.filter(i => i.id == id);      
+      console.log(Mes)
+      return Mes[0].name
+    }
+  }
+
+  TipoIngreso(id: number, lista: string) {
+    if (lista == 'tipoingreso') {
+      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);      
+      console.log(tipo)
+      return tipo[0].name
+    }
+  }
+
+  DescripcionEgresos(id: number, lista: string) {
+    if (lista == 'descripcionegreso') {
+      let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);      
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+  }
+
+  DescripcionEgresosPec(id: number, lista: string) {
+    if (lista == 'DescripcionEgresosPec') {
+      let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);      
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+  }
+  
 
 }
+
+

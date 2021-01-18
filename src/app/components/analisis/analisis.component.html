@@ -1,5 +1,23 @@
 <!-- <button mat-raised-button color="accent" (click)="download()">Descarga provisional</button> -->
 <div #reporte class="content" id="contentPDF">
+<table>
+    <tr>
+        <td rowspan="3"  colspan="1" align="center">
+            <img src= "assets/pictures/Logo.png"> 
+        </td>
+        <td rowspan="3" align="center" colspan="3">Analisis de credito</td>
+        <td align="center" colspan="2">COL-FO-006</td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2">Versión 11</td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2">{{fechahoy}}</td>
+    </tr>
+</table>
+
+
+
     <table>
         <tr>
             <td>Analisis de credito</td>
@@ -60,7 +78,7 @@
             <tfoot>
                 <tr>
                     <td>Total</td>
-                    <td colspan=3>{{datasolicitud.Balance.inventarioTotal}}</td>
+                    <td colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
                 </tr>
             </tfoot>
         </table>
@@ -80,7 +98,7 @@
                 <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
                     <tr>
                         <td>{{act.detalle}}</td>
-                        <td>{{act.tipo}}</td>
+                        <td>{{act.tipo.name}}</td>
                         <td align="right">${{act.valor}}</td>
                     </tr>
                 </tbody>
@@ -107,7 +125,7 @@
                 </thead>
                 <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
                     <tr>
-                        <td>{{inv.tipo}}</td>
+                        <td>{{inv.tipo.name}}</td>
                         <td>{{inv.detalle}}</td>
                         <td align="right">${{inv.valor}}</td>
                     </tr>
@@ -137,7 +155,7 @@
             <tbody *ngFor="let inv of datasolicitud.Balance.inversiones; let cont=index">
                 <tr>
                     <td>{{inv.detalle}}</td>
-                    <td>{{inv.mes}}</td>
+                    <td>{{MesNombre(inv.mes,'MesNombre')}}</td>
                     <td>{{inv.origen}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>
@@ -225,7 +243,7 @@
                 <tr>
                     <td colspan="3">Total</td>
                     <td>{{datasolicitud.Balance.tcuotan}}</td>
-                    <td>{{datasolicitud.Balance.tcorrienten}}</td>
+                    <td>${{datasolicitud.Balance.tcorrienten}}</td>
                     <td>{{datasolicitud.Balance.tnocorrienten}}</td>
                 </tr>
             </tfoot>
@@ -286,16 +304,16 @@
             <tbody>
                 <ng-container *ngIf="datasolicitud.Gastos">
                     <tr>
-                        <td>{{datasolicitud.Gastos.arriendoF}}</td>
-                        <td>{{datasolicitud.Gastos.alimentacionF}}</td>
-                        <td>{{datasolicitud.Gastos.educacionF}}</td>
-                        <td>{{datasolicitud.Gastos.vestuarioF}}</td>
-                        <td>{{datasolicitud.Gastos.saludF}}</td>
-                        <td>{{datasolicitud.Gastos.transporteF}}</td>
-                        <td>{{datasolicitud.Gastos.serviciosF}}</td>
-                        <td>{{datasolicitud.Gastos.entretenimientoF}}</td>
-                        <td>{{datasolicitud.Gastos.otrosF}}</td>
-                        <td>{{datasolicitud.Gastos.totalF}}</td>
+                        <td>${{datasolicitud.Gastos.arriendoF}}</td>
+                        <td>${{datasolicitud.Gastos.alimentacionF}}</td>
+                        <td>${{datasolicitud.Gastos.educacionF}}</td>
+                        <td>${{datasolicitud.Gastos.vestuarioF}}</td>
+                        <td>${{datasolicitud.Gastos.saludF}}</td>
+                        <td>${{datasolicitud.Gastos.transporteF}}</td>
+                        <td>${{datasolicitud.Gastos.serviciosF}}</td>
+                        <td>${{datasolicitud.Gastos.entretenimientoF}}</td>
+                        <td>${{datasolicitud.Gastos.otrosF}}</td>
+                        <td>${{datasolicitud.Gastos.totalF}}</td>
                     </tr>
                 </ng-container>
             </tbody>
@@ -342,7 +360,7 @@
                 </thead>
                 <tbody *ngFor="let otr of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
                     <tr>
-                        <td>{{otr.ingreso}}</td>
+                        <td>{{TipoIngreso(otr.ingreso,'tipoingreso')}}</td>
                         <td style="text-align:right">${{otr.valor}}</td>
                         <td>{{otr.observacion}}</td>
                     </tr>
@@ -370,18 +388,18 @@
             </thead>
             <tr>
                 <td>{{act.diasB}}</td>
-                <td>{{act.valorB}}</td>
-                <td>{{act.totalB}}</td>
+                <td>${{act.valorB}}</td>
+                <td>${{act.totalB}}</td>
             </tr>
             <tr>
                 <td>{{act.diasR}}</td>
-                <td>{{act.valorR}}</td>
-                <td>{{act.totalR}}</td>
+                <td>${{act.valorR}}</td>
+                <td>${{act.totalR}}</td>
             </tr>
             <tr>
                 <td>{{act.diasM}}</td>
-                <td>{{act.valorM}}</td>
-                <td>{{act.totalM}}</td>
+                <td>${{act.valorM}}</td>
+                <td>${{act.totalM}}</td>
             </tr>
         </table>
 
@@ -393,20 +411,20 @@
                         <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
                     </tr>
                     <tr>
-                        <th style="text-align:center">Dia</th>
+                        <th style="text-align:center">Semana</th>
                         <th style="text-align:center">Valor</th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let his of act.ventasHis; let cont=index">
                     <tr>
                         <td>{{cont}}</td>
-                        <td>{{his.valor}}</td>
+                        <td>${{his.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td>{{act.totalVentasHis}}</td>
+                        <td>${{act.totalVentasHis}}</td>
                     </tr>
                 </tfoot>
 
@@ -429,14 +447,16 @@
                     <tr>
                         <td>{{prod.nombre}}</td>
                         <td>{{prod.cantidad}}</td>
-                        <td>{{prod.frecuencia.name}}</td>
-                        <td>{{prod.valor}}</td>
+                        <td>
+                            <ng-container *ngIf="prod.frecuencia"> {{prod.frecuencia.name}}</ng-container>
+                        </td>
+                        <td>${{prod.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3">Total</td>
-                        <td>{{act.totalProduccion}}</td>
+                        <td>${{act.totalProduccion}}</td>
                     </tr>
                 </tfoot>
             </table>
