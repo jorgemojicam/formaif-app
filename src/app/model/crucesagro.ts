@@ -8,6 +8,9 @@ export class CrucesAgro {
     periodoventas:string;
     tipo: number;
     tipoproduccion:string;
+    preciomin: string;
+    precioactual: string;
+    preciopromedio: string;
     diasB: [];
     diasM: [];
     diasR: [];    
@@ -24,6 +27,9 @@ export class CrucesAgro {
     otrosGastos: number;
     totalDias: number;
     ingresoLiquido: number;
+    mesCos: [];
+    mesTra: [];
+    mesPepeo: [];
     lotesAgro:LoteAgro[];
     lotesPecuario:LotePecuario[];
 }

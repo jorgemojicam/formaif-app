@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  AUTH_API: 'https://fidelapipruebas.fundaciondelamujer.com:54000/api/'
 };

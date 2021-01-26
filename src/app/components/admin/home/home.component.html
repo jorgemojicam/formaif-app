@@ -3,8 +3,8 @@
   <span>Asesor Agil</span>
   <span class="fill-remaining-space"></span>
   <span class="example-spacer"></span>
-  <button mat-icon-button (click)="onLogout()" class="example-icon favorite-icon">
-    <mat-icon>exit_to_app</mat-icon>
+  <button mat-icon-button (click)="openProfile()" class="example-icon favorite-icon">
+    <mat-icon>assignment_ind</mat-icon>
   </button>
 </mat-toolbar>
 
@@ -21,7 +21,7 @@
       </mat-form-field>
     </div>
 
-    <!-- cometario -->
+    <!-- tabla -->
     <div class="mat-elevation-z8 table-sol">
       <table mat-table [dataSource]="dataSource" matSort>
 
@@ -72,9 +72,8 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-        <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          <td class="mat-cell" colspan="4">No se encontraron datos "{{input.value}}"</td>
         </tr>
       </table>
 

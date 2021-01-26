@@ -1,7 +1,7 @@
 import { Sucursal } from "./sucursal";
 
 export class Asesor {   
-    Nombre:number;
+    Nombre:string;
     Iniciales:string;
     Grupo:string;
     Clave:string;

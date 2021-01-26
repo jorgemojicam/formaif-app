@@ -27,6 +27,7 @@ import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { AnalisisComponent } from './components/analisis/analisis.component';
 import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
 import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component';
+import { ProfileComponent } from './components/admin/profile/profile.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AnalisisagroComponent} from './components/analisisagro/analisisagro.com
     UbicacionComponent,
     AnalisisComponent,
     FlujocajaComponent,
-    AnalisisagroComponent
+    AnalisisagroComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ import { AnalisisagroComponent} from './components/analisisagro/analisisagro.com
     HttpClientModule
   ],
   entryComponents: [
-    ModalComponent
+    ModalComponent,
+    ProfileComponent
   ],
    providers: [
      AuthGuard,

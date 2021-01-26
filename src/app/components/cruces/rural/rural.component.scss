@@ -45,6 +45,9 @@ div.alternate>div:nth-of-type(odd) {
   margin-top: 20px;
   margin-bottom: 23px;
 }
+.precio{
+  margin-bottom: 15px;
+}
 
 .btnadd {
   position: absolute;
@@ -89,6 +92,14 @@ div.alternate>div:nth-of-type(odd) {
 
 ::ng-deep .tabs .mat-tab-header {
   width: 60%;
+}
+
+::ng-deep .mat-vertical-stepper-header{
+  padding: 24px 24px 10px 4px;
+}
+
+::ng-deep .mat-vertical-content-container{
+  margin-left: 16px;
 }
 
 ::ng-deep .mat-radio-label-content {

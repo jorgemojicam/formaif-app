@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
-import { Sucursal } from 'src/app/model/sucursal';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { OficinaService } from 'src/app/services/oficina.service';
@@ -33,31 +32,36 @@ export class AuthComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    
+
   }
 
   showPass(ev) {
     this.hidenPass = ev.checked
   }
-  onLogin(form: User) {
+  onLogin(user: User) {
     this.isLogged = true
-    this.authServ.login(form)
-      .subscribe(
-        res => {
+    let userdom = user.Username.split('/')
+    let dom = userdom[0];
+    let use = userdom[1];
+
+    if (dom.toLocaleLowerCase() == "soporte") {
+      user.Username = use
+      this.authServ.login(user).subscribe(
+        (res) => {
+          let perfil: Asesor = {
+            Nombre: use,
+            Iniciales: "N/A",
+            Grupo: "SOPORTE",
+            Clave: "N/A",
+            Sucursales: { Codigo: "900", Direccion: "", Nombre: "SEDE ADMINISTRATIVA", Regionales: "0" },
+            Director: null
+          }
           this.tokenStorage.saveToken(res);
-          this.tokenStorage.saveUser(form.Username);
-
-          this.ofiServ.getOficina("DORA.PEREZ").subscribe((ofi)=>{
-            if(ofi){
-              let oficina = ofi as Asesor
-              this.tokenStorage.saveSuc(oficina.Sucursales.Codigo);
-            }
-          })
-
+          this.tokenStorage.saveUser(perfil);
           this.route.navigate(['home']);
           this.isLogged = false
         },
-        err => {
+        (err) => {
 
           let errMsg = ""
           if (err.status == 401) {
@@ -73,5 +77,40 @@ export class AuthComponent implements OnInit {
           this.isLogged = false
         }
       )
+    } else {
+      this.authServ.login(user).subscribe(
+        res => {
+          this.tokenStorage.saveToken(res);
+          this.ofiServ.getOficina(user.Username).subscribe(
+            (ofi) => {            
+              if (ofi) {
+                this.tokenStorage.saveUser(ofi);                
+              }
+            },
+            (err) => {
+              this._snackBar.open("No se encontro oficina asignada, comuniquese con el area de Riesgos [codigo "+err.status+"]", "Ok!", {
+                duration: 10000,
+              });
+            }
+          )
+          this.route.navigate(['home']);
+          this.isLogged = false
+        },
+        err => {
+          let errMsg = ""
+          if (err.status == 401) {
+            errMsg = "Usuario o contraseña incorrecta !"
+          } else if (err.status == 0) {
+            errMsg = "¡Error al ingresar! verifique la conexión a intenet."
+          } else {
+            errMsg = "Se presento error con la conexion con el servidor. " + err.message
+          }
+          this._snackBar.open(errMsg, "Ok!", {
+            duration: 3000,
+          });
+          this.isLogged = false
+        }
+      )
+    }
   }
 }

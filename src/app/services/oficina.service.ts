@@ -14,14 +14,14 @@ export class OficinaService {
 
   //Consulta la oficina del asesor
   getOficina(clave:string){
-    return this.http.post(environment.AUTH_APIInt + 'Usuarios/GetByClave', { 
+    return this.http.post(environment.AUTH_API + 'Usuarios/GetByClave', { 
       Clave: clave
     });
   }
 
   //Consulta los asesore se la oficina para saber el director
   getAsesores(sucursal){
-    return this.http.post(environment.AUTH_APIInt + 'Usuarios/GetByOfi', { 
+    return this.http.post(environment.AUTH_API + 'Usuarios/GetByOfi', { 
       Sucursales:{
         Codigo:sucursal
       }

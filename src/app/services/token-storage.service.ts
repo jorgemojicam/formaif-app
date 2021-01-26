@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import jwt_decode from 'jwt-decode';
+import { LocalStorageService } from './local-storage.service';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
-const SUC_KEY = 'auth-sucursal';
 
 @Injectable({
   providedIn: 'root'
@@ -10,34 +11,44 @@ const SUC_KEY = 'auth-sucursal';
 
 export class TokenStorageService {
 
-  constructor() { }
+  jwtToken: string;
+  decodedToken: { [key: string]: string };
+
+  constructor(
+    private srvLocalS: LocalStorageService,
+  ) { }
+
+  setToken(token: string) {
+    if (token) {
+      this.jwtToken = token;
+    }
+  }
+  decodeToken() {
+    if (this.jwtToken) {
+      this.decodedToken = jwt_decode(this.jwtToken);
+    }
+  }
+  getDecodeToken() {
+    return jwt_decode(this.jwtToken);
+  }
 
   signOut(): void {
-    window.sessionStorage.clear();
+    this.srvLocalS.removeall();
   }
-
   public saveToken(token: string): void {
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY, token);
+    this.srvLocalS.remove(TOKEN_KEY)
+    this.srvLocalS.set(TOKEN_KEY,token)
   }
-
   public getToken(): string {
-    return sessionStorage.getItem(TOKEN_KEY);
+    return this.srvLocalS.get(TOKEN_KEY);
   }
-
   public saveUser(user): void {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.srvLocalS.remove(USER_KEY);
+    this.srvLocalS.set(USER_KEY, JSON.stringify(user));
   }
-  public saveSuc(suc):void {
-    window.sessionStorage.removeItem(SUC_KEY);
-    window.sessionStorage.setItem(SUC_KEY, JSON.stringify(suc));
-  }
-  public getSuc(): any {
-    return JSON.parse(sessionStorage.getItem(SUC_KEY));
+  public getUser(): any {
+    return JSON.parse(this.srvLocalS.get(USER_KEY));
   }
 
-  public getUser(): any {
-    return JSON.parse(sessionStorage.getItem(USER_KEY));
-  }
+  
 }

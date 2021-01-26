@@ -1,22 +1,17 @@
 export class Propuesta {
-    monto: string;
+    montorecomendado: string;
+    plazo: string;
     destino: string;
     detalle: string;
     valor: string;
-    mes: string;
-    destinocre: string;
-    detallecre: string;
-    valorcre: string;
-    mescre: string;
-    aplicacfija: string;
-    montofija: string;
-    plazofija: number;
+    detallecapital: string;
+    valorcapital: string;
+    tipocuota: string;
     formapgo: string;
-    fechadesc: string;
-    calendariopago: string;
-    cuota: string;
-    fechapago1: string;
-    valorcuota1: string;
-    aplicacirregular: string;
-
+    valorcouta: string;
+    numerocuotas: string;
+    irregular: {
+        fechacuota: string;
+        valorcuota: string;
+    };
 }

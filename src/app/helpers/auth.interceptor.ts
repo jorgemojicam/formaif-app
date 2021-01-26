@@ -45,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor {
           reason: error && error.error && error.error.reason ? error.error.reason : '',
           status: error.status
         };
-        return throwError(error.error);
+        return throwError(data);
       }));
   }
 }

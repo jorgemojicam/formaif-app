@@ -28,6 +28,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSliderModule} from '@angular/material/slider';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+
 
 const myCompm = [
   MatCardModule,
@@ -57,7 +59,8 @@ const myCompm = [
   MatProgressSpinnerModule,
   MatTooltipModule,
   MatAutocompleteModule,
-  MatSliderModule
+  MatSliderModule,
+  MatBottomSheetModule
 ];
 
 @NgModule({

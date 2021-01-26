@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable({
@@ -10,14 +10,13 @@ export class AuthGuard implements CanActivate {
   constructor(
     private tknServ: TokenStorageService,
     private router: Router
-    ){}
-    
-  canActivate(){
+  ) { }
 
-    if(this.tknServ.getUser()){
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if (this.tknServ.getUser()) {
       return true;
     }
-    this.router.navigate(['/auth']);    
+    this.router.navigate(['/auth']);
   }
-  
+
 }

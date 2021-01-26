@@ -14,7 +14,7 @@ export class EmailService {
   ) { }
 
   Send(email: Email): Observable<any> {  
-      return this.http.post(environment.AUTH_APIInt + 'Envios/Send', {
+      return this.http.post(environment.AUTH_API + 'Envios/Send', {
           To: email.To,
           Base64Pdf: email.Base64Pdf,
           Subject: email.Subject,

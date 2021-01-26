@@ -20,23 +20,11 @@ export class AuthService {
   ) { }
 
   login(user: User): Observable<any> {
-
-    let userdom = user.Username.split('/')
-    let dom = userdom[0];
-    let use = userdom[1];
-
-    if (dom == "pruebas") {
-      return this.http.post(environment.AUTH_APIInt + 'login/authenticate', {
-        Username: use,
-        Passw: user.Passw,
-        Rol: "User"
-      }, httpOptions);
-    } else {
-      return this.http.post(environment.AUTH_API + 'login/authenticate', {
-        Username: user.Username,
-        Passw: user.Passw,
-        Rol: "User"
-      }, httpOptions);
-    }
+    return this.http.post(environment.AUTH_API + 'login/authenticate', {
+      Username: user.Username,
+      Passw: user.Passw,
+      Rol: "User"
+    }, httpOptions);
   }
 }
+

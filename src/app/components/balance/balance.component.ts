@@ -14,6 +14,7 @@ import { Proveedores } from 'src/app/model/proveedores';
 import { Creditos } from 'src/app/model/creditos';
 import { Inversiones } from 'src/app/model/inversiones';
 import { Pasivos } from 'src/app/model/pasivos';
+import Utils from '../../utils'
 
 @Component({
   selector: 'app-balance',
@@ -102,9 +103,9 @@ export class BalanceComponent implements OnInit {
       }
       this.balanceForm.valueChanges.subscribe(form => {
 
-        let efectivo = this.formatNumber(this.balanceForm.controls.efectivo.value)
-        let incobrable = this.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
-        let valorCobrar = this.formatNumber(this.balanceForm.controls.valorCobrar.value)
+        let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
+        let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
+        let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
         if (incobrable > valorCobrar) {
           incobrable = 0
           this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {
@@ -124,7 +125,7 @@ export class BalanceComponent implements OnInit {
         let totalrec = 0
         const recupera = <FormArray>this.balanceForm.controls['recuperacion'];
         recupera.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let valor = Utils.formatNumber(x.get('valor').value)
           totalrec += valor
           if (totalrec > totalCobrar) {
             totalrec -= valor
@@ -139,10 +140,9 @@ export class BalanceComponent implements OnInit {
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          let cantidad=this.formatNumber(x.get('cantidad').value)
-          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let cantidad=Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
           let valor=vlrUni*cantidad
-          //let valor = this.formatNumber(x.get('valor').value)
           totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -153,7 +153,7 @@ export class BalanceComponent implements OnInit {
         let totalCredito = 0
         const credito = <FormArray>this.balanceForm.controls['creditos'];
         credito.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let valor = Utils.formatNumber(x.get('valor').value)
           totalCredito += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -164,10 +164,9 @@ export class BalanceComponent implements OnInit {
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          let cantidad=this.formatNumber(x.get('cantidad').value)
-          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let cantidad=Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
           let valor=cantidad*vlrUni
-         // let valor = this.formatNumber(x.get('valor').value)
           totalactneg += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -177,10 +176,9 @@ export class BalanceComponent implements OnInit {
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
         actfam.controls.forEach(x => {
-          let cantidad=this.formatNumber(x.get('cantidad').value)
-          let vlrUni=this.formatNumber(x.get('vlrUni').value)
+          let cantidad=Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
           let valor=cantidad*vlrUni
-          //let valor = this.formatNumber(x.get('valor').value)
           totalactfam += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -191,7 +189,7 @@ export class BalanceComponent implements OnInit {
         let totalProv = 0
         const proveedores = <FormArray>this.balanceForm.controls['proveedoresRow'];
         proveedores.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let valor = Utils.formatNumber(x.get('valor').value)
           totalProv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -202,7 +200,7 @@ export class BalanceComponent implements OnInit {
         let totalInversiones = 0
         const inversiones = <FormArray>this.balanceForm.controls['inversiones'];
         inversiones.controls.forEach(x => {
-          let valor = this.formatNumber(x.get('valor').value)
+          let valor = Utils.formatNumber(x.get('valor').value)
           totalInversiones += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -222,11 +220,11 @@ export class BalanceComponent implements OnInit {
           let tipo = x.get('tipo').value
           let clase = x.get('clase').value
           let periodo = (x.get('periodo').value ? x.get('periodo').value.period : 0)
-          let saldo = this.formatNumber(x.get('saldo').value)
-          let plazo = this.formatNumber(x.get('plazo').value)
-          let monto = this.formatNumber(x.get('monto').value)
-          let numcuota = this.formatNumber(x.get('cuota').value)
-          let valor = this.formatNumber(x.get('valor').value)
+          let saldo = Utils.formatNumber(x.get('saldo').value)
+          let plazo = Utils.formatNumber(x.get('plazo').value)
+          let monto = Utils.formatNumber(x.get('monto').value)
+          let numcuota = Utils.formatNumber(x.get('cuota').value)
+          let valor = Utils.formatNumber(x.get('valor').value)
           let meses = 12
           let netocuota = plazo - numcuota
 
@@ -399,7 +397,7 @@ export class BalanceComponent implements OnInit {
                 duration: 4000,
               });
             }
-            let periodo = this.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
+            let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
             let calcinteres = saldo * tasa * periodo
             let calculocap = saldo / (plazo - numcuota)
             x.patchValue({
@@ -836,11 +834,5 @@ export class BalanceComponent implements OnInit {
     }, { emitEvent: false })
 
   }
-  formatNumber(num) {
-    if (typeof (num) == "number") {
-      return num
-    } else {
-      return parseInt(num == "0" || num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
-    }
-  }
+
 }

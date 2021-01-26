@@ -1,62 +1,141 @@
 <form [formGroup]="propuestaForm">
-    <mat-card class="mat-card-fases">
+    <mat-card class="mat-card-content">
         <mat-card-header>
             <mat-card-title>Monto y destino de crédito</mat-card-title>
-            <mat-card-subtitle>monto</mat-card-subtitle>         
         </mat-card-header>
         <mat-card-content>
             <div fxLayout="row wrap">
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Monro Recomendado" id="monto"
-                            formControlName="monto">
+                        <input type="text" matInput placeholder="Monto Recomendado" id="monto"
+                            formControlName="montorecomendado" autocomplete="off">
                     </mat-form-field>
                 </div>
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="26%">
+                    Plazo: <span>{{propuestaForm.value.plazo}}</span> meses
+                    <mat-slider thumbLabel formControlName="plazo" min="6" max="60" step="1">
+                    </mat-slider>
+                </div>
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <b>Activo Fijo</b>
+                </div>
+                <div class="gr" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Destino Credito" id="destino"
-                            formControlName="destino">
+                        <input type="tel" matInput placeholder="Detalle" autocomplete="off" formControlName="detalle">
                     </mat-form-field>
                 </div>
-                <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Detalle" id="detalle-"
-                            formControlName="detalle">
-                    </mat-form-field>
-                </div>         
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
-                    <mat-form-field>
-                        <input type="text" matInput placeholder="Valor" id="valor" formControlName="valor">
-                    </mat-form-field>
-                </div> 
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
-                    <mat-form-field>
-                        <input type="text" matInput placeholder="Mes" id="mes" formControlName="mes">
+                        <input type="tel" matInput placeholder="Valor" autocomplete="off" formControlName="valor">
                     </mat-form-field>
                 </div>
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <b>Capital de trabajo</b>
+                </div>
+                <div class="gr" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Destino Credito" id="destinocre" formControlName="destinocre">
+                        <input type="text" matInput placeholder="Detalle" formControlName="detallecapital">
                     </mat-form-field>
-                </div>    
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
+                </div>
+                <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                     <mat-form-field>
-                        <input type="text" matInput placeholder="Detalle" id="detallecre" formControlName="detallecre">
+                        <input type="tel" matInput placeholder="Valor capital" formControlName="valorcapital">
                     </mat-form-field>
-                </div>    
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
-                    <mat-form-field>
-                        <input type="text" matInput placeholder="Valor" id="valorcre" formControlName="valorcre">
-                    </mat-form-field>
-                </div>   
-                <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="25%">
-                    <mat-form-field>
-                        <input type="text" matInput placeholder="Plazo" id="plazo" formControlName="plazofija">
-                    </mat-form-field>
-                </div>  
-                 
+                </div>
             </div>
         </mat-card-content>
     </mat-card>
+
+    <mat-card class="mat-card-content">
+        <mat-card-content>
+            <div fxLayout="row wrap">
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <b>Propuesta de crédito</b>
+                </div>
+                <mat-radio-group fxLayout="row wrap" class="radio-group" formControlName="tipocuota">
+                    <mat-radio-button fxFlex="33%" fxFlex.xs="50%" class="radio-button" value="1">
+                        Cuota fija
+                    </mat-radio-button>
+                    <mat-radio-button fxFlex="33%" fxFlex.xs="50%" class="radio-button" value="2">
+                        Cuota Irregular
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <ng-container *ngIf="propuestaForm.value.tipocuota==1">
+        <mat-card class="mat-card-content">
+            <mat-card-header>
+                <mat-card-title>Cuota Fija</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                        <mat-form-field>
+                            <mat-label>Forma Pago</mat-label>
+                            <mat-select formControlName="formapgo" required>
+                                <mat-option>-Seleccione-</mat-option>
+                                <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                    {{pe.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor Cuota" formControlName="valorcouta"
+                                autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
+
+    <ng-container *ngIf="propuestaForm.value.tipocuota==2">
+
+        <mat-card class="mat-card-content">
+            <mat-card-header>
+                <mat-card-title>Cuota Irregular</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+                <div fxLayout="row wrap">
+                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-form-field>
+                            <input type="number" (keyup)="initCuotas($event)" matInput placeholder="Numero Cuotas" formControlName="numerocuotas"
+                                autocomplete="off">
+                        </mat-form-field>
+                    </div>
+
+                    <div formArrayName="irregular" class="alternate">
+                        <div fxLayout="row wrap" class="content"
+                            *ngFor="let itemrow of cuotas().controls; let inv=index" [formGroupName]="inv">
+
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field>
+                                    <mat-label>Fecha Desembolso</mat-label>
+                                    <input matInput [matDatepicker]="fechacuota" autocomplete="off"
+                                        formControlName="fechacuota">
+                                    <mat-datepicker-toggle matSuffix [for]="fechacuota"></mat-datepicker-toggle>
+                                    <mat-datepicker #fechacuota disabled="false"></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field>
+                                    <input type="tel" matInput placeholder="Valor Cuota" formControlName="valorcuota"
+                                        autocomplete="off">
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </ng-container>
 
 </form>

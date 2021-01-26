@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Propuesta } from 'src/app/model/propuesta';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import DataSelect from '../../data-select/dataselect.json';
+import Utils from '../../utils'
 
 @Component({
   selector: 'app-propuesta',
@@ -16,7 +18,9 @@ export class PropuestaComponent implements OnInit {
   sol: string;
   tipoSol: number;
   dataSolicitud: Solicitud;
-  dataPropuesta:Propuesta;
+  dataPropuesta: Propuesta;
+  meses: any = DataSelect.Meses;
+  periodo: any = DataSelect.Periodo;
 
   constructor(
     public srvSol: IdbSolicitudService,
@@ -26,26 +30,23 @@ export class PropuestaComponent implements OnInit {
   ) { }
 
   propuestaForm: FormGroup = this.fb.group({
-    monto: '',
+    montorecomendado: '',
+    plazo: '',
     destino: '',
     detalle: '',
     valor: '',
-    mes: '',
-    destinocre: '',
-    detallecre: '',
-    valorcre: '',
-    mescre: '',
-    aplicacfija: '',
-    montofija: '',
-    plazofija: '',
+    detallecapital: '',
+    valorcapital: '',
+    tipocuota: '',
     formapgo: '',
-    fechadesc: '',
-    calendariopago: '',
-    cuota: '',
-    fechapago1: '',
-    valorcuota1: '',
-    aplicacirregular: '',
+    valorcouta: '',
+    numerocuotas: '',
+    irregular: this.fb.array([])
   })
+
+  cuotas(): FormArray {
+    return this.propuestaForm.get('irregular') as FormArray;
+  }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
@@ -57,12 +58,48 @@ export class PropuestaComponent implements OnInit {
       if (this.sol) {
         this.tipoSol = datasol.asesor
         this.dataSolicitud = datasol as Solicitud
-        if (this.dataSolicitud.Balance) {
-
+        if (this.dataSolicitud.Propuesta) {
+          this.loadPropuesta(this.dataSolicitud.Propuesta)
         }
       }
-
       this.propuestaForm.valueChanges.subscribe(form => {
+
+        let montorecomentado = Utils.formatNumber(form.montorecomendado)
+        let valor = Utils.formatNumber(form.valor)
+        let valorcapital = Utils.formatNumber(form.valorcapital)
+
+        if(valor> montorecomentado){
+          valor =0
+          this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
+            duration: 6000,
+          });
+        }
+        if(valorcapital> montorecomentado){
+          valorcapital =0
+          this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
+            duration: 6000,
+          });
+        }
+        let totalmonto = valor + valorcapital        
+        if(totalmonto> montorecomentado){
+          valorcapital =0
+          this._snackBar.open("La suma de los valores no puede superar el monto recomentado", "Ok!", {
+            duration: 9000,
+          });
+        }
+        const irregular = <FormArray>this.propuestaForm.controls['irregular'];
+        irregular.controls.forEach(x => {
+          let valorcuota=Utils.formatNumber(x.get('valorcuota').value)
+          x.patchValue({
+            valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0
+          }, { emitEvent: false })
+        });
+       
+        this.propuestaForm.patchValue({
+          montorecomendado: isFinite(montorecomentado)?montorecomentado.toLocaleString():0,
+          valor: isFinite(valor)?valor.toLocaleString():0,
+          valorcapital: isFinite(valorcapital)?valorcapital.toLocaleString():0
+        },{emitEvent:false})
 
         this.dataPropuesta = this.propuestaForm.value
         this.dataSolicitud.Propuesta = this.dataPropuesta
@@ -70,5 +107,45 @@ export class PropuestaComponent implements OnInit {
       })
     })
   }
+  itemsCuotas() {
+    return this.fb.group({
+      fechacuota: [''],
+      valorcuota: [''],
+    });
+  }
+  initCuotas(event) {
+    let num = event.key
+    this.cuotas().clear();
+    for (let i = 0; i < num; i++) {
+      this.cuotas().push(this.itemsCuotas());
+    }
+  }
+  loadCuotas(irregular){
+    let array = this.fb.array([])
+    irregular.forEach(ir => {
+      array.push(this.fb.group({
+        fechacuota: ir.fechacuota,
+        valorcuota: ir.valorcuota,
+      }))
+    });
+    return array
+  }
 
+
+  loadPropuesta(propuestas:Propuesta){
+    return this.propuestaForm = this.fb.group({
+      montorecomendado: propuestas.montorecomendado,
+      plazo: propuestas.plazo,
+      destino: propuestas.destino,
+      detalle: propuestas.detalle,
+      valor: propuestas.valor,
+      detallecapital: propuestas.detalle,
+      valorcapital: propuestas.valorcapital,
+      tipocuota: propuestas.tipocuota,
+      formapgo: propuestas.formapgo,
+      valorcouta: propuestas.valorcouta,
+      numerocuotas: propuestas.numerocuotas,
+      irregular: this.loadCuotas(propuestas.irregular)
+    })
+  }
 }

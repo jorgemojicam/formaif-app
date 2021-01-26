@@ -37,13 +37,13 @@ export class FlujocajaComponent implements OnInit {
           this.datasolicitud = datasol as Solicitud
           let mesingreso = this.meses.slice();
 
-          for (let i = 1; i <= this.datasolicitud.Propuesta.plazofija; i++) {
-            let mes: any = mesingreso.shift();
-            this.dataFlujo.push([i, mes.id, mes.name, 0, 0, 0, 0, 0])
-            if (i % 12 == 0) {
-              mesingreso = this.meses.slice();
-            }
-          }
+          // for (let i = 1; i <= this.datasolicitud.Propuesta.plazo; i++) {
+          //   let mes: any = mesingreso.shift();
+          //   this.dataFlujo.push([i, mes.id, mes.name, 0, 0, 0, 0, 0])
+          //   if (i % 12 == 0) {
+          //     mesingreso = this.meses.slice();
+          //   }
+          // }
 
           for (let cr = 0; cr < this.datasolicitud.CrucesAgro.length; cr++) {
             let cruce: CrucesAgro = this.datasolicitud.CrucesAgro[cr];
@@ -82,38 +82,38 @@ export class FlujocajaComponent implements OnInit {
               for (let lote = 0; lote < cruce.lotesAgro.length; lote++) {
                 let lotesA: LoteAgro = cruce.lotesAgro[lote];
                
-                if(lotesA.mesCos){
-                  lotesA.mesCos.forEach(me => {
-                    if (flujo[1] == me) {
-                      totalingresos += this.formatNumber(lotesA.totalCos)
-                      this.dataFlujo[flujocaja][3+cr] = totalingresos
-                    }
-                  });
-                }
-                if(lotesA.mesTra){
-                  lotesA.mesTra.forEach(me => {
-                    if (flujo[1] == me) {
-                      totalingresos += this.formatNumber(lotesA.totalTra)
-                      this.dataFlujo[flujocaja][3+cr] = totalingresos
-                    }
-                  });
-                }
-                if(lotesA.mesPepeo){
-                  lotesA.mesPepeo.forEach(me => {
-                    if (flujo[1] == me) {
-                      totalingresos += this.formatNumber(lotesA.totalPepeo)
-                      this.dataFlujo[flujocaja][3+cr] = totalingresos
-                    }
-                  });
-                }
-                if (lotesA.cocecha) {
-                  lotesA.cocecha.forEach(me => {
-                    if (flujo[1] == me) {
-                      totalingresos += this.formatNumber(lotesA.totalIngreso)
-                      this.dataFlujo[flujocaja][3+cr] = totalingresos
-                    }
-                  });
-                }
+                // if(lotesA.mesCos){
+                //   lotesA.mesCos.forEach(me => {
+                //     if (flujo[1] == me) {
+                //       totalingresos += this.formatNumber(lotesA.totalCos)
+                //       this.dataFlujo[flujocaja][3+cr] = totalingresos
+                //     }
+                //   });
+                // }
+                // if(lotesA.mesTra){
+                //   lotesA.mesTra.forEach(me => {
+                //     if (flujo[1] == me) {
+                //       totalingresos += this.formatNumber(lotesA.totalTra)
+                //       this.dataFlujo[flujocaja][3+cr] = totalingresos
+                //     }
+                //   });
+                // }
+                // if(lotesA.mesPepeo){
+                //   lotesA.mesPepeo.forEach(me => {
+                //     if (flujo[1] == me) {
+                //       totalingresos += this.formatNumber(lotesA.totalPepeo)
+                //       this.dataFlujo[flujocaja][3+cr] = totalingresos
+                //     }
+                //   });
+                // }
+                // if (lotesA.cocecha) {
+                //   lotesA.cocecha.forEach(me => {
+                //     if (flujo[1] == me) {
+                //       totalingresos += this.formatNumber(lotesA.totalIngreso)
+                //       this.dataFlujo[flujocaja][3+cr] = totalingresos
+                //     }
+                //   });
+                // }
                 if(lotesA.egresosAdecuacion){
                   for (let eg = 0; eg < lotesA.egresosAdecuacion.length; eg++) {
                     const egreso = lotesA.egresosAdecuacion[eg];

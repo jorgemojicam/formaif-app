@@ -2,7 +2,7 @@
     <!-- Encabezado -->
     <table>
         <tr>
-            <td rowspan="3" align="center">
+            <td style="width: 200px;" rowspan="3" align="center">
                 <img src="assets/pictures/Logo.png">
             </td>
             <td rowspan="3" align="center">Analisis de credito agropecuario</td>
@@ -585,9 +585,9 @@
                             <td align="right">${{lt.rendiemientolote}}</td>
                             <td align="right">${{lt.unidadestotales}}</td>
                             <td align="right">{{lt.perdida}}%</td>
-                            <td align="right">${{lt.preciomin}}</td>
+                            <!-- <td align="right">${{lt.preciomin}}</td>
                             <td align="right">${{lt.precioactual}}</td>
-                            <td align="right">${{lt.preciopromedio}}</td>
+                            <td align="right">${{lt.preciopromedio}}</td> -->
                             <td align="right">$Se acuerda que ese falta por calcular</td>
                             <td align="right">$Se acuerda que ese falta por calcular</td>
                         </tr>
@@ -699,11 +699,11 @@
 
                         <tr>
                             <th style="text-align:center">Precio mínimo</th>
-                            <td style="text-align:center">{{lte.preciomin}}</td>
+                            <!-- <td style="text-align:center">{{lte.preciomin}}</td> -->
                             <th style="text-align:center">Precio actual</th>
-                            <td style="text-align:center">{{lte.precioactual}}</td>
+                            <!-- <td style="text-align:center">{{lte.precioactual}}</td> -->
                             <th style="text-align:center">Precio promedio</th>
-                            <td style="text-align:center">{{lte.preciopromedio}}</td>
+                            <!-- <td style="text-align:center">{{lte.preciopromedio}}</td> -->
                             <th style="text-align:center">Unidades de venta totales anual</th>
                             <td style="text-align:center">{{lte.unidadestotales}}</td>
                             <th style="text-align:center">TOTAL LOTE ANUAL</th>
@@ -720,7 +720,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center">Cosecha</td>
-                            <td colspan="2" style="text-align:center">{{lte.mesCos}}</td>
+                            <!-- <td colspan="2" style="text-align:center">{{lte.mesCos}}</td> -->
                             <td colspan="2" style="text-align:center">{{lte.rendimientoCos}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesCos}}</td>
                             <td style="text-align:center">{{lte.perdidaCos}}%</td>
@@ -729,7 +729,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center">Traviesa</td>
-                            <td colspan="2" style="text-align:center">{{lte.mesTra}}</td>
+                            <!-- <td colspan="2" style="text-align:center">{{lte.mesTra}}</td> -->
                             <td colspan="2" style="text-align:center">{{lte.rendimientoTra}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesTra}}</td>
                             <td style="text-align:center">{{lte.perdidaTra}}%</td>
@@ -738,7 +738,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center">Pepeo</td>
-                            <td colspan="2" style="text-align:center">{{lte.mesPepeo}}</td>
+                            <!-- <td colspan="2" style="text-align:center">{{lte.mesPepeo}}</td> -->
                             <td colspan="2" style="text-align:center">{{lte.rendimientoPepeo}}</td>
                             <td colspan="2" style="text-align:center">{{lte.unidadesPepeo}}</td>
                             <td style="text-align:center">{{lte.perdidaPepeo}}%</td>
@@ -782,7 +782,6 @@
                             <td style="text-align:center">${{egre.valorunitario}}</td>
                             <td style="text-align:center">${{egre.total}}</td>
                             <td style="text-align:center">{{egre.mes}}</td>
-
                         </tr>
                     </tbody>
 
@@ -795,14 +794,11 @@
                             <td style="text-align:center">${{egreCos.valorunitario}}</td>
                             <td style="text-align:center">${{egreCos.total}}</td>
                             <td style="text-align:center">{{egreCos.mes}}</td>
-
                         </tr>
                     </tbody>
                     <tr>
                         <td colspan="5" style="text-align:left">Total</td>
                         <td colspan="2" style="text-align:center">${{lte.totalEgresos}}</td>
-
-
                     </tr>
                 </table>
             </div>
@@ -870,7 +866,6 @@
 
 
                 <!-- Egreso -->
-
                 <table>
                     <tr>
                         <th colspan=6 style="text-align:center">Egreso</th>
@@ -894,25 +889,19 @@
                             <td style="text-align:center">{{egrePec.mes}}</td>
                         </tr>
                     </tbody>
-
                     <tr>
                         <th colspan=4 style="text-align:left">Total</th>
                         <td style="text-align:center">${{ltePec.totalEgresos}}</td>
                         <td></td>
-
                     </tr>
-
                 </table>
             </div>
         </div>
-
-
 
         <!--ventas buenas -->
         <ng-container *ngIf="act.tipo==3">
             <table>
                 <thead>
-
                     <tr>
                         <td style="text-align:center">Actividad</td>
                         <td style="text-align:center">{{act.tipo}}</td>

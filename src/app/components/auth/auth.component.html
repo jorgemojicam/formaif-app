@@ -19,15 +19,13 @@
                                 formControlName="Passw">
                             <mat-icon matSuffix>lock</mat-icon>
                             <mat-hint>
-
                                 <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
                                 </mat-checkbox>
                             </mat-hint>
                         </mat-form-field>
                     </p>
                     <p>
-                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid"
-                            color="primary">Login</button>
+                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid" color="primary">Login</button>
                     </p>
                 </form>
             </ng-container>

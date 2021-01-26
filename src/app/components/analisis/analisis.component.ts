@@ -12,7 +12,7 @@ import DataSelect from '../../data-select/dataselect.json';
   styleUrls: ['./analisis.component.scss']
 })
 export class AnalisisComponent implements OnInit {
-  @ViewChild('reporte') reporte:ElementRef 
+  @ViewChild('reporte') reporte: ElementRef
   @Input() datossol: Solicitud
 
   constructor(
@@ -37,7 +37,7 @@ export class AnalisisComponent implements OnInit {
           this.tipoAsesor = this.datasolicitud.asesor
         })
       });
-    }else{
+    } else {
       this.datasolicitud = this.datossol
     }
   }
@@ -63,18 +63,21 @@ export class AnalisisComponent implements OnInit {
     html2pdf().from(element).set(op).save();
   }
 
-  MesNombre(id: number, lista: string) {
+  MesNombre(id: string, lista: string) {
     if (lista == 'MesNombre') {
-      let Mes = DataSelect.Meses.filter(i => i.id == id);      
-      console.log(Mes)
-      return Mes[0].name
+      if (id != "") {
+        let Mes = DataSelect.Meses.filter(i => i.id == id);
+        return Mes[0].name
+      } else {
+        return ''
+      }
     }
   }
 
+
   TipoIngreso(id: number, lista: string) {
     if (lista == 'tipoingreso') {
-      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);      
-      console.log(tipo)
+      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
       return tipo[0].name
     }
   }

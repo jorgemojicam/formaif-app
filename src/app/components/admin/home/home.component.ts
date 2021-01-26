@@ -15,6 +15,8 @@ import { OficinaService } from 'src/app/services/oficina.service';
 import { Asesor } from 'src/app/model/asesor';
 import { EmailService } from 'src/app/services/email.service';
 import { Email } from 'src/app/model/email';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { ProfileComponent } from '../profile/profile.component';
 
 @Component({
   selector: 'app-home',
@@ -37,8 +39,8 @@ export class HomeComponent implements AfterViewInit {
     private route: Router,
     private tokenStorage: TokenStorageService,
     private ofiServ: OficinaService,
-    private emailServ: EmailService
-
+    private emailServ: EmailService,
+    private _bottomSheet: MatBottomSheet
   ) {
   }
 
@@ -124,84 +126,113 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onSend(element) {
-    const numeroSolicitud: string = element.solicitud.toString();
-    this.srvSol.getSol(numeroSolicitud).subscribe((datasol) => {
-      this.datasol = datasol as Solicitud;
-    })
 
-    let suc = this.tokenStorage.getSuc()
-    this.ofiServ.getAsesores(suc).subscribe((ase) => {
-      if (ase) {
-        let asesores = ase as Asesor[]
-        asesores.forEach(aseso => {
-          if (aseso.Grupo == 'DTRAGMGE') {
+    if (navigator.onLine) {
 
-            Swal.fire({
-              title: '¿Desea Enviar Analisis de credito?',
-              html: `Se enviara el analisis de credito al Director:
+      const numeroSolicitud: string = element.solicitud.toString();
+      this.srvSol.getSol(numeroSolicitud).subscribe((datasol) => {
+        this.datasol = datasol as Solicitud;
+      })
+
+      let asesores: Asesor = this.tokenStorage.getUser()
+      let suc = asesores.Sucursales.Codigo;
+      this.ofiServ.getAsesores(suc).subscribe(
+        (ase) => {
+          if (ase) {
+            let diretores = ase as Asesor[]
+            diretores.forEach(aseso => {
+              if (aseso.Grupo == 'DTRAGMGE' || aseso.Grupo == 'LIDPDS' || aseso.Grupo == 'LDRANMGE') {
+
+                Swal.fire({
+                  title: '¿Desea Enviar Analisis de credito?',
+                  html: `Se enviara email al director:
               <br><b>`+ aseso.Nombre + `</b>, 
               <br><small>`+ aseso.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
               <br><b>Solicitud :</b>` + numeroSolicitud + `
               <br><b>Oficina :</b> `+ aseso.Sucursales.Nombre,
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Si, Enviar!',
-              cancelButtonText: 'No, Cancelar!',
-              reverseButtons: true,
-              allowOutsideClick: false
-            }).then((result) => {
-              if (result.isConfirmed) {
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Si, Enviar!',
+                  cancelButtonText: 'No, Cancelar!',
+                  reverseButtons: true,
+                  allowOutsideClick: false
+                }).then((result) => {
+                  if (result.isConfirmed) {
 
-                Swal.fire({
-                  title: 'Enviando analisis de credito!',
-                  html: 'Por favor espere mientras se envia el reporte',
-                  allowOutsideClick: false,
-                  didOpen: () => {
-                    Swal.showLoading()
+                    Swal.fire({
+                      title: 'Enviando analisis de credito!',
+                      html: 'Por favor espere mientras se envia el analisis',
+                      allowOutsideClick: false,
+                      didOpen: () => {
+                        Swal.showLoading()
+                      }
+                    })
+
+                    const content = this.analisis.reporte.nativeElement
+                    const op = {
+                      filename: 'Analisis de credito ' + numeroSolicitud + '.pdf',
+                      image: { type: 'jpeg' },
+                      html2canvas: {
+                      },
+                      margin: 15,
+                      jsPDF: { format: 'a3', orientation: 'p' }
+                    }
+                    let email: Email = new Email;
+                    email.To = "jorge.mojica@fundaciondelamujer.com";
+                    email.Subject = "Analisis de credito"
+                    email.Body = `<h3>Buen dia, ` + aseso.Nombre + ` </h3>
+                              <p>A continuacion adjunto se encuentra el formato de analisis de credito</p>`
+                    html2pdf()
+                      .from(content)
+                      .set(op)
+                      .outputPdf()
+                      .then((pdf) => {
+                        let pdfBase64 = btoa(pdf)
+                        email.Base64Pdf = pdfBase64
+                        this.emailServ.Send(email).subscribe(
+                          (su) => {
+                            Swal.close()
+                            Swal.fire('Enviado!', 'Se envio correctamente', 'success')
+                          },
+                          (er) => {
+                            Swal.close()
+                            Swal.fire('Error', 'Se ha producido un error' + er, 'error')
+                          }
+                        )
+
+                      });
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
                   }
                 })
-
-                const content = this.analisis.reporte.nativeElement
-                const op = {
-                  filename: 'Analisis de credito ' + numeroSolicitud + '.pdf',
-                  image: { type: 'jpeg' },
-                  html2canvas: {
-                  },
-                  margin: 15,
-                  jsPDF: { format: 'a3', orientation: 'p' }
-                }
-                let email: Email = new Email;
-                email.To = "jorge.mojica@fundaciondelamujer.com";
-                email.Subject = "Analisis de credito"
-                email.Body = `<h3>Buen dia, ` + aseso.Nombre + ` </h3>
-                              <p>A continuacion adjunto se encuentra el formato de analisis de credito</p>`
-                html2pdf()
-                  .from(content)
-                  .set(op)
-                  .outputPdf()
-                  .then((pdf) => {
-                    let pdfBase64 = btoa(pdf)
-                    email.Base64Pdf = pdfBase64
-                    this.emailServ.Send(email).subscribe(
-                      (su) => {
-                        Swal.close()
-                        Swal.fire('Enviado!', 'Se envio correctamente', 'success')
-                      },
-                      (er)=>{
-                        Swal.close()
-                        Swal.fire('Error', 'Se ha producido un error'+er, 'error')                        
-                      }
-                    )
-
-                  });
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
+              } else {
+                Swal.fire({
+                  icon: 'info',
+                  title: 'No autorizado',
+                  text: 'En este momento la oficina a la que corresponde no tiene director por favor comuniquese con el area de riesgos',
+                })
               }
-            })
+            });
           }
-        });
-      }
-    })
+        },
+        (err)=>{
+          Swal.fire({
+            icon: 'info',
+            title: 'Oops...',
+            text: 'No se encontro director para la oficina '+suc+' '+err,    
+          })
+        })
+    } else {
+      Swal.fire({
+        icon: 'info',
+        title: 'Oops...',
+        text: 'En este momento no tiene conexion a internet, su informacion seguira guardada en el movil pero debe tener conexion para enviarla :(',
+
+      })
+    }
+  }
+  openProfile(): void {
+    this._bottomSheet.open(ProfileComponent);
   }
 }
 

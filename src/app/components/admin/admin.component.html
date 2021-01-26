@@ -14,6 +14,18 @@
 <mat-sidenav-container class="menu-container" (backdropClick)="action()">
 
     <mat-sidenav fxFlex="30%" fxFlex.xs="60%" mode="push" #sidenav (keydown.escape)="action()">
+        <mat-list>
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <img fxFlex="30%" fxFlex.xs="30%" src="assets/pictures/profile.png">
+            </div>
+            <mat-list-item>
+                <div mat-line><b>{{perfil.Nombre}}</b></div>
+                <div mat-line><small>{{perfil.Sucursales.Nombre }}</small></div>
+                <div mat-line> {{perfil.Grupo }} </div>
+                <div mat-line><b>#Solicitud:</b> {{sol}} </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </mat-list>
         <mat-nav-list (click)="action()">
             <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion"
                 [queryParams]="{solicitud:sol}">
@@ -47,25 +59,22 @@
                     <mat-icon mat-list-icon>web</mat-icon>
                     <div mat-line>Analisis</div>
                 </mat-list-item>
-
             </ng-container>
-
-            <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>receipt</mat-icon>
-                <div mat-line>Flujo de Caja</div>
-            </mat-list-item>
             <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item"
                 [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>thumb_up</mat-icon>
                 <div mat-line>Propuesta</div>
             </mat-list-item>
+            <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2"
+                [queryParams]="{solicitud:sol}">
+                <mat-icon mat-list-icon>receipt</mat-icon>
+                <div mat-line>Flujo de Caja</div>
+            </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item (click)="onLogout()">
-                <mat-icon mat-list-icon>exit_to_app</mat-icon>
+                <mat-icon mat-list-icon>power_settings_new</mat-icon>
                 <div mat-line>Cerrar Session</div>
             </mat-list-item>
-
         </mat-nav-list>
     </mat-sidenav>
 
