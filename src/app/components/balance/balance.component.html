@@ -173,7 +173,8 @@
                     </div>
                     <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{inv}}" formControlName="valor" readonly>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{inv}}" formControlName="valor"
+                                readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="inv==0"
@@ -234,7 +235,8 @@
                     </div>
                     <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actneg}}" formControlName="valor" readonly>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{actneg}}" formControlName="valor"
+                                readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="actneg==0"
@@ -294,7 +296,8 @@
                     </div>
                     <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actfam}}" formControlName="valor" readonly>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{actfam}}" formControlName="valor"
+                                readonly>
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="actfam==0"
@@ -324,36 +327,43 @@
                 </mat-slide-toggle>
                 Si
             </mat-card-content>
-            <ng-container *ngIf="balanceForm.controls.aplicaproveedores.value">
-                <div formArrayName="proveedoresRow" class="alternate">
-                    <div fxLayout="row wrap" class="content"
-                        *ngFor="let itemrow of balanceForm.controls.proveedoresRow['controls']; let prov=index"
-                        [formGroupName]="prov">
+            <ng-container *ngIf="tipoSol==1">
+                <ng-container *ngIf="balanceForm.controls.aplicaproveedores.value">
+                    <div formArrayName="proveedoresRow" class="alternate">
+                        <div fxLayout="row wrap" class="content"
+                            *ngFor="let itemrow of balanceForm.controls.proveedoresRow['controls']; let prov=index"
+                            [formGroupName]="prov">
 
-                        <div class="gr" fxFlex="30%" fxFlex.xs="60%" fxFlex.sm="33%">
-                            <mat-form-field>
-                                <input type="text" matInput placeholder="Proveedor" id="descripcion{{prov}}"
-                                    formControlName="descripcion">
-                            </mat-form-field>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="60%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="Proveedor" id="descripcion{{prov}}"
+                                        formControlName="descripcion">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="tel" matInput placeholder="Valor" id="valor{{prov}}"
+                                        formControlName="valor">
+                                </mat-form-field>
+                            </div>
+                            <button class="btndelete" color="warn" mat-icon-button [disabled]="prov==0"
+                                (click)="deleteProvRow(prov)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
                         </div>
-                        <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="33%">
-                            <mat-form-field>
-                                <input type="tel" matInput placeholder="Valor" id="valor{{prov}}"
-                                    formControlName="valor">
-                            </mat-form-field>
-                        </div>
-                        <button class="btndelete" color="warn" mat-icon-button [disabled]="prov==0"
-                            (click)="deleteProvRow(prov)">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
                     </div>
-                </div>
-                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
-                (click)="addNewProvRow()" [disabled]="balanceForm.controls.proveedoresRow['controls'].length >=4">
-                <mat-icon>add</mat-icon>
-            </button>
+                    <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                        (click)="addNewProvRow()"
+                        [disabled]="balanceForm.controls.proveedoresRow['controls'].length >=4">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </ng-container>
             </ng-container>
-            
+            <ng-container *ngIf="tipoSol==2">
+
+                
+            </ng-container>
+
         </mat-card-content>
     </mat-card>
     <!-- creditos -->

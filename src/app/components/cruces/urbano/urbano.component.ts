@@ -57,8 +57,8 @@ export class UrbanoComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
-        this.sol = params.get('solicitud')
-      });
+      this.sol = params.get('solicitud')
+    });
 
     this.srvSol.getSol(this.sol).subscribe((datasol) => {
 
@@ -76,6 +76,7 @@ export class UrbanoComponent implements OnInit {
         //---------------------Ventas Historicas--------------------------------------
         ctrl.controls.forEach((x) => {
           let total = 0
+          let tipoactividad = x.get("tipo").value
           let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
           let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
           const ventashistoricas = <FormArray>x.get('ventasHis')
@@ -107,6 +108,19 @@ export class UrbanoComponent implements OnInit {
           x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
           //---------------------------------------------------------------
 
+          //----------------Total Cruce 2----------------------------------
+          let totalCruce2 = 0
+          if (tipoactividad == 2) {
+            if (totalPromedio > totalprod) {
+              totalCruce2 = totalprod
+            } else {
+              totalCruce2 = totalPromedio
+            }
+          } else {
+            totalCruce2 = totalPromedio
+          }          
+          //---------------------------------------------------------------
+
           let margen = 0
           let totalparticipacion = 0
           //------------------Costo de venta------------------------------
@@ -127,7 +141,7 @@ export class UrbanoComponent implements OnInit {
 
           //--------------Costo de venta [materia prima]----------------------
           const materiapri = <FormArray>x.get('materiaprima')
-          materiapri.controls.forEach((mat, idxmat) => {
+          materiapri.controls.forEach((mat) => {
             let cantidad = this.formatNumber(mat.get("cantidad").value)
             let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
             let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
@@ -230,8 +244,8 @@ export class UrbanoComponent implements OnInit {
           let promedio = (valorB + valorR + valorM) / valorpromedio
           let totalpromedio = promedio * totaldias
           let totalbrm = totalB + totalR + totalM
-         
-          
+
+
           if (valorR > valorB) {
             valorR = 0
             this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
@@ -249,7 +263,7 @@ export class UrbanoComponent implements OnInit {
             totalCruce1 = totalbrm
           } else {
             totalCruce1 = totalpromedio
-          }      
+          }
 
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
@@ -262,6 +276,7 @@ export class UrbanoComponent implements OnInit {
             totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
             totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
             totalCruce1: isFinite(totalCruce1) ? totalCruce1.toLocaleString() : 0,
+            totalCruce2: isFinite(totalCruce2) ? totalCruce2.toLocaleString() : 0,
           }, { emitEvent: false })
         });
 
@@ -291,10 +306,11 @@ export class UrbanoComponent implements OnInit {
       totalVentas: '',
       totalDias: '',
       totalPromedio: '',
-      totalCruce1:'',
+      totalCruce1: '',
       ventasHis: this.fb.array([this.itemventas()]),
       totalVentasHis: '',
       promtotalvenHis: '',
+      totalCruce2: '',
       produccion: this.fb.array([this.itemProd()]),
       totalProduccion: '',
       compras: this.fb.array([this.itemCompras()]),
@@ -344,6 +360,7 @@ export class UrbanoComponent implements OnInit {
           totalVentasHis: [cruces[cru].totalVentasHis],
           produccion: this.loadProd(cruces[cru].produccion),
           totalProduccion: cruces[cru].totalProduccion,
+          totalCruce2: cruces[cru].totalCruce2,
           compras: this.loadCompras(cruces[cru].compras),
           totalCompras: cruces[cru].totalCompras,
           costoventa: this.loadCostoVenta(cruces[cru].costoventa),

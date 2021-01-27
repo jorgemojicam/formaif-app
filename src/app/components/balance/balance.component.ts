@@ -15,6 +15,7 @@ import { Creditos } from 'src/app/model/creditos';
 import { Inversiones } from 'src/app/model/inversiones';
 import { Pasivos } from 'src/app/model/pasivos';
 import Utils from '../../utils'
+import { ProveedoresEstacionales } from 'src/app/model/proveedoresestacinales';
 
 @Component({
   selector: 'app-balance',
@@ -34,7 +35,7 @@ export class BalanceComponent implements OnInit {
   clasePasivo: any = DataSelect.ClasePasivo;
   periodo: any = DataSelect.Periodo;
   meses: any = DataSelect.Meses;
-  CuotasDifiere: any= DataSelect.CuotasDifiere;
+  CuotasDifiere: any = DataSelect.CuotasDifiere;
 
   tipoSol: number;
   totalActFam: number;
@@ -68,6 +69,8 @@ export class BalanceComponent implements OnInit {
     aplicaproveedores: false,
     proveedoresRow: this.fb.array([this.initProvRows()]),
     proveedoresTotal: '',
+    proveedoresEstacionales: this.fb.array([this.initProvRows()]),
+    totalProveedoresEst: '',
     creditoactual: '',
     creditos: this.fb.array([this.initCreditos()]),
     totalCreditos: '',
@@ -140,9 +143,9 @@ export class BalanceComponent implements OnInit {
         let totalInv = 0
         const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
         inven.controls.forEach(x => {
-          let cantidad=Utils.formatNumber(x.get('cantidad').value)
-          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
-          let valor=vlrUni*cantidad
+          let cantidad = Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
+          let valor = vlrUni * cantidad
           totalInv += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -164,9 +167,9 @@ export class BalanceComponent implements OnInit {
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
         actneg.controls.forEach(x => {
-          let cantidad=Utils.formatNumber(x.get('cantidad').value)
-          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
-          let valor=cantidad*vlrUni
+          let cantidad = Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
+          let valor = cantidad * vlrUni
           totalactneg += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -176,9 +179,9 @@ export class BalanceComponent implements OnInit {
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
         actfam.controls.forEach(x => {
-          let cantidad=Utils.formatNumber(x.get('cantidad').value)
-          let vlrUni=Utils.formatNumber(x.get('vlrUni').value)
-          let valor=cantidad*vlrUni
+          let cantidad = Utils.formatNumber(x.get('cantidad').value)
+          let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
+          let valor = cantidad * vlrUni
           totalactfam += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -276,7 +279,7 @@ export class BalanceComponent implements OnInit {
               x.patchValue({
                 corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
-                proyeccion:isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+                proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
               }, { emitEvent: false })
             }
 
@@ -336,7 +339,7 @@ export class BalanceComponent implements OnInit {
 
             let corrienteN = numcuota * 30
             tcorrienten += saldo
-            tcuotan +=corrienteN
+            tcuotan += corrienteN
             x.patchValue({
               cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
@@ -353,9 +356,9 @@ export class BalanceComponent implements OnInit {
             if (saldo > 0) {
               nocorriente = saldo - corriente
               if (periodo == 1) {
-                corriente = saldo/2
-                nocorriente = saldo/2
-                
+                corriente = saldo / 2
+                nocorriente = saldo / 2
+
               } else if (periodo == 2) {
                 corriente = saldo
                 nocorriente = 0
@@ -387,7 +390,7 @@ export class BalanceComponent implements OnInit {
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
 
-          //Otras periodicidades
+            //Otras periodicidades
           } else if (tipo.id == "7") {
 
             let tasa = x.get('tasa').value
@@ -535,7 +538,7 @@ export class BalanceComponent implements OnInit {
           tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
           cantidad: [a.cantidad],
-        vlrUni: [a.vlrUni],
+          vlrUni: [a.vlrUni],
           valor: a.valor,
         })
       )
@@ -615,6 +618,40 @@ export class BalanceComponent implements OnInit {
     this.proveedores().push(this.initProvRows());
   }
   deleteProvRow(index: number) {
+    this.proveedores().removeAt(index);
+  }
+  //------------------------------------------------
+
+  //---------------Proveedores Estacionales-------------------------
+  proveedoresEst() {
+    return this.balanceForm.get('proveedoresEstacionales') as FormArray;
+  }
+  initProvEstacionales() {
+    return this.fb.group({
+      nombre: '',
+      numcuotas: '',
+      total: '',
+      cuotas: []
+    });
+  }
+  laodProveedoresEst(proveedores: ProveedoresEstacionales[]) {
+    let proveedoresArr = this.fb.array([])
+    proveedores.forEach(prov => {
+      proveedoresArr.push(
+        this.fb.group({
+          nombre: prov.nombre,
+          numcuotas: prov.numcuotas,
+          total: prov.total,
+          cuotas: []
+        })
+      )
+    });
+    return proveedoresArr;
+  }
+  addNewProvEst() {
+    this.proveedores().push(this.initProvRows());
+  }
+  deleteProvEst(index: number) {
     this.proveedores().removeAt(index);
   }
   //----------------------------------------

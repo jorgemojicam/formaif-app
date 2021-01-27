@@ -91,14 +91,26 @@
                                 </button>
                             </mat-card>
                         </div>
-                        <ng-container [ngSwitch]="acti.value.tipo">
-                            <!-- agricola -->
-                            <ng-container *ngSwitchCase="1">
-                                <!-- precio -->
+
+                        <!-- precio -->
+                        <ng-container *ngIf="acti.value.tipo">
+                            <ng-container *ngIf="acti.value.tipo!=3">
                                 <div class="precio">
                                     <mat-card>
                                         <mat-card-content>
                                             <div fxLayout="row wrap">
+                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <mat-form-field>
+                                                        <mat-label>Unidad Venta</mat-label>
+                                                        <mat-select formControlName="unidadventa" id="unidadventa{{ac}}"
+                                                            required>
+                                                            <mat-option>--</mat-option>
+                                                            <mat-option *ngFor="let un of unidades" [value]="un.id">
+                                                                {{un.name}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                     <mat-form-field>
                                                         <input type="tel" matInput placeholder="Precio Min"
@@ -118,54 +130,62 @@
                                                             readonly formControlName="preciopromedio">
                                                     </mat-form-field>
                                                 </div>
-                                                <!-- Permanente meses cosecha,pepeo,traviesa-->
-                                                <ng-container *ngIf="acti.value.nombre.tipoproducto=='Permanente'">
+                                                <ng-container *ngIf="acti.value.tipo==1">
+                                                    <!-- Permanente meses cosecha,pepeo,traviesa-->
+                                                    <ng-container *ngIf="acti.value.nombre.tipoproducto=='Permanente'">
 
-                                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                                                        <mat-form-field>
-                                                            <mat-label>Cosecha</mat-label>
-                                                            <mat-select formControlName="mesCos" multiple
-                                                                id="mesCos{{ac}}" required>
-                                                                <mat-option *ngFor="let mes of meses"
-                                                                    [disabled]="acti.value.mesTra.indexOf(mes.id) >= 0 || acti.value.mesPepeo.indexOf(mes.id) >= 0"
-                                                                    [value]="mes.id">
-                                                                    {{mes.name}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                                                        <mat-form-field>
-                                                            <mat-label>Traviesa</mat-label>
-                                                            <mat-select formControlName="mesTra" multiple
-                                                                id="mesTra{{ac}}" required>
-                                                                <mat-option *ngFor="let mes of meses"
-                                                                    [disabled]="acti.value.mesCos.indexOf(mes.id) >= 0 || acti.value.mesPepeo.indexOf(mes.id) >= 0"
-                                                                    [value]="mes.id">
-                                                                    {{mes.name}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                                                        <mat-form-field>
-                                                            <mat-label>Pepeo</mat-label>
-                                                            <mat-select formControlName="mesPepeo" multiple
-                                                                id="mesPepeo{{ac}}" required>
-                                                                <mat-option *ngFor="let mes of meses"
-                                                                    [disabled]="acti.value.mesCos.indexOf(mes.id) >= 0 || acti.value.mesTra.indexOf(mes.id) >= 0"
-                                                                    [value]="mes.id">
-                                                                    {{mes.name}}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                                            <mat-form-field>
+                                                                <mat-label>Cosecha</mat-label>
+                                                                <mat-select formControlName="mesCos" multiple
+                                                                    id="mesCos{{ac}}" required>
+                                                                    <mat-option *ngFor="let mes of meses"
+                                                                        [disabled]="acti.value.mesTra.indexOf(mes.id) >= 0 || acti.value.mesPepeo.indexOf(mes.id) >= 0"
+                                                                        [value]="mes.id">
+                                                                        {{mes.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                                            <mat-form-field>
+                                                                <mat-label>Traviesa</mat-label>
+                                                                <mat-select formControlName="mesTra" multiple
+                                                                    id="mesTra{{ac}}" required>
+                                                                    <mat-option *ngFor="let mes of meses"
+                                                                        [disabled]="acti.value.mesCos.indexOf(mes.id) >= 0 || acti.value.mesPepeo.indexOf(mes.id) >= 0"
+                                                                        [value]="mes.id">
+                                                                        {{mes.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                                            <mat-form-field>
+                                                                <mat-label>Pepeo</mat-label>
+                                                                <mat-select formControlName="mesPepeo" multiple
+                                                                    id="mesPepeo{{ac}}" required>
+                                                                    <mat-option *ngFor="let mes of meses"
+                                                                        [disabled]="acti.value.mesCos.indexOf(mes.id) >= 0 || acti.value.mesTra.indexOf(mes.id) >= 0"
+                                                                        [value]="mes.id">
+                                                                        {{mes.name}}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </ng-container>
                                                 </ng-container>
-
                                             </div>
                                         </mat-card-content>
                                     </mat-card>
                                 </div>
+                            </ng-container>
+                        </ng-container>
+
+                        <ng-container [ngSwitch]="acti.value.tipo">
+
+                            <!-- agricola -->
+                            <ng-container *ngSwitchCase="1">
                                 <!-- Lotes agro -->
                                 <div formArrayName="lotesAgro">
                                     <mat-accordion class="example-headers-align" multi>
@@ -274,18 +294,6 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </ng-container>
-                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                    <mat-form-field>
-                                                        <mat-label>Unidad Venta</mat-label>
-                                                        <mat-select formControlName="unidadventa"
-                                                            id="unidadventa{{ac}}-{{lot}}" required>
-                                                            <mat-option>--</mat-option>
-                                                            <mat-option *ngFor="let un of unidades" [value]="un.id">
-                                                                {{un.name}}
-                                                            </mat-option>
-                                                        </mat-select>
-                                                    </mat-form-field>
-                                                </div>
                                                 <ng-container *ngIf="acti.value.nombre.tipoproducto=='Permanente'">
                                                     <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                         <mat-form-field>
@@ -928,6 +936,7 @@
                             </ng-container>
                             <!-- pecuario -->
                             <ng-container *ngSwitchCase="2">
+                                <!-- Lotes pecuario -->
                                 <div formArrayName="lotesPecuario">
                                     <mat-accordion class="example-headers-align" multi>
                                         <mat-expansion-panel
@@ -963,44 +972,34 @@
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="60%"
                                                                 fxFlex.sm="15%">
                                                                 <mat-form-field>
-                                                                    <input type="text" matInput placeholder="Producto derivado"
-                                                                        id="prodderivado{{ac}}-{{lot}}" formControlName="prodderivado">
+                                                                    <input type="text" matInput
+                                                                        placeholder="Producto derivado"
+                                                                        id="prodderivado{{ac}}-{{lot}}"
+                                                                        formControlName="prodderivado">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="40%"
                                                                 fxFlex.sm="35%">
                                                                 <mat-form-field>
-                                                                    <input type="number" matInput placeholder="N° animales"
-                                                                        id="numanimales{{ac}}-{{lot}}" formControlName="numanimales">
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="30%"
-                                                                fxFlex.sm="25%">
-                                                                <mat-form-field>
-                                                                    <mat-label>Unidad Venta</mat-label>
-                                                                    <mat-select formControlName="unidadventa" id="unidadventa{{ac}}-{{lot}}" required>
-                                                                        <mat-option>--</mat-option>
-                                                                        <mat-option *ngFor="let un of unidades"
-                                                                            [value]="un.id" [disabled]="un.id ==5">
-                                                                            {{un.name}}
-                                                                        </mat-option>
-                                                                    </mat-select>
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="30%"
-                                                                fxFlex.sm="25%">
-                                                                <mat-form-field>
                                                                     <input type="number" matInput
-                                                                        placeholder="Cant por animal" id="cantidadxanimal{{ac}}-{{lot}}"
-                                                                        formControlName="cantidadxanimal">
+                                                                        placeholder="N° animales"
+                                                                        autocomplete="off"
+                                                                        formControlName="numanimales">
                                                                 </mat-form-field>
                                                             </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="40%"
-                                                                fxFlex.sm="25%">
+
+                                                            <div class="gr" fxFlex="40%" fxFlex.xs="40%"
+                                                                fxFlex.sm="40%">
+                                                                <mat-form-field>
+                                                                    <mat-label>Cantidad</mat-label>
+                                                                    <input type="number" autocomplete="off" matInput placeholder="Por animal" formControlName="cantidadxanimal">
+                                                                </mat-form-field>
+                                                            </div>
+                                                            <div class="gr" fxFlex="60%" fxFlex.xs="60%"
+                                                                fxFlex.sm="60%">
                                                                 <mat-form-field>
                                                                     <mat-label>Frecuencia</mat-label>
-                                                                    <mat-select formControlName="frecuencia"
-                                                                        id="frecuencia{{ac}}-{{lot}}" required>
+                                                                    <mat-select formControlName="frecuencia" id="frecuencia{{ac}}-{{lot}}" required>
                                                                         <mat-option>--</mat-option>
                                                                         <mat-option *ngFor="let fre of frecuencia"
                                                                             [value]="fre">
@@ -1035,36 +1034,14 @@
                                                                         formControlName="perdida">
                                                                 </mat-form-field>
                                                             </div>
+
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
-                                                                <mat-form-field>
-                                                                    <input type="tel" matInput
-                                                                        placeholder="Precio mínimo"
-                                                                        id="preciomin{{ac}}-{{lot}}"
-                                                                        formControlName="preciomin">
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="33%"
-                                                                fxFlex.sm="33%">
-                                                                <mat-form-field>
-                                                                    <input type="tel" matInput
-                                                                        placeholder="Precio actual"
-                                                                        id="precioactual{{ac}}-{{lot}}"
-                                                                        formControlName="precioactual">
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="33%"
-                                                                fxFlex.sm="33%">
-                                                                <mat-form-field>
-                                                                    <input type="tel" matInput placeholder="Precio promedio" readonly
-                                                                        formControlName="preciopromedio">
-                                                                </mat-form-field>
-                                                            </div>
-                                                            <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                                 <mat-form-field>
                                                                     <mat-label>Mes Ingreso</mat-label>
                                                                     <mat-select formControlName="mesingreso" required>
-                                                                        <mat-option *ngFor="let mes of meses" [value]="mes.id">
+                                                                        <mat-option *ngFor="let mes of meses"
+                                                                            [value]="mes.id">
                                                                             {{mes.name}}
                                                                         </mat-option>
                                                                     </mat-select>
@@ -1073,13 +1050,16 @@
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
-                                                                    <input type="number" matInput placeholder="Producción" formControlName="produccion">
+                                                                    <input type="number" matInput
+                                                                        placeholder="Producción"
+                                                                        formControlName="produccion">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
-                                                                    <input type="number" matInput placeholder="No producción"
+                                                                    <input type="number" matInput
+                                                                        placeholder="No producción"
                                                                         formControlName="noproduccion">
                                                                 </mat-form-field>
                                                             </div>

@@ -8,15 +8,11 @@ export class LotePecuario {
     ingresomes: string;
     mesingreso: [];
     numanimales: number;
-    perdida: number;
-    precioactual: number;
-    preciomin: string;
-    preciopromedio: string;
+    perdida: number;    
     prodderivado: string;
     totalEgresos: string;
     produccion: string;
     noproduccion: string;
-    unidadventa: string;
     unitotalesventa: string;
 
 }

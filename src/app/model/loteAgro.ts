@@ -10,7 +10,6 @@ export class LoteAgro {
     diastancia: string;
     planatasinformacli: string;
     numplantas: string;
-    unidadventa: string;
     fechafinal:Date;
     edadcult: string;
     periodoedad: string;

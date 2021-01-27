@@ -242,14 +242,14 @@ export class RuralComponent implements OnInit {
                 duration: 3000,
               });
             }
-
+            let totalIngreso = unidadestotales * preciopromedio
             let unidadtotal = unidadesCos + unidadesTra + unidadesPepeo
             let procentageCos = (unidadesCos / unidadtotal) * 100
             let procentageTra = (unidadesTra / unidadtotal) * 100
             let procentagePepeo = (unidadesPepeo / unidadtotal) * 100
             let totalanual = totalCos + totalTra + totalPepeo
 
-            //----------------------------------------------------------------------------
+            //------------------------Egresos ----------------------------------------------------
             let totalEgAdecuacion = 0
             const egresoAdecua = <FormArray>lot.get('egresosAdecuacion')
             egresoAdecua.controls.forEach((lot, idxlot) => {
@@ -298,7 +298,7 @@ export class RuralComponent implements OnInit {
                 total: isFinite(total) ? total.toLocaleString() : 0
               }, { emitEvent: false })
             })
-
+            
             let totalEgresos = 0
             if (tipoproducto == 'Transitorio') {
               totalEgresos = totalEgAdecuacion + totalEgCosecha + totalEgMante + totalEgSiembra
@@ -326,6 +326,7 @@ export class RuralComponent implements OnInit {
               totalPepeo: isFinite(totalPepeo) ? totalPepeo.toLocaleString('es-CO') : 0,
               totalUnidades: isFinite(unidadtotal) ? unidadtotal : 0,
               totalLoteAunual: isFinite(totalanual) ? totalanual.toLocaleString('es-CO') : 0,
+              totalIngreso: isFinite(totalIngreso) ? totalIngreso.toLocaleString('es-CO') : 0,
               totalEgresosAdecuacion: isFinite(totalEgAdecuacion) ? totalEgAdecuacion.toLocaleString('es-CO') : 0,
               totalEgresosSiembre: isFinite(totalEgSiembra) ? totalEgSiembra.toLocaleString('es-CO') : 0,
               totalEgresosCosecha: isFinite(totalEgCosecha) ? totalEgCosecha.toLocaleString('es-CO') : 0,
@@ -338,10 +339,7 @@ export class RuralComponent implements OnInit {
           //-------------------Pecuario--------------------------------
           const lotesPecuArr = <FormArray>x.get('lotesPecuario')
           lotesPecuArr.controls.forEach((lot) => {
-            let totalEg = 0
-            let preciomin = Utils.formatNumber(lot.get("preciomin").value)
-            let precioactual = Utils.formatNumber(lot.get("precioactual").value)
-            let preciopromedio = (preciomin + precioactual) / 2
+            let totalEg = 0            
             const egresoAdecua = <FormArray>lot.get('egresos')
             egresoAdecua.controls.forEach((egr) => {
 
@@ -448,6 +446,7 @@ export class RuralComponent implements OnInit {
       mesPepeo: '',
       mesTra: '',
       mesCos: '',
+      unidadventa: '',
       lotesAgro: this.fb.array([this.itemLotes()]),
       lotesPecuario: this.fb.array([this.itemLotesPecuario()]),
 
@@ -483,7 +482,8 @@ export class RuralComponent implements OnInit {
           totalVentas: '',
           promedio: '',
           totalDias: '',
-          totalPromedio: '',
+          totalPromedio: '',          
+          unidadventa: [cruces[cru].unidadventa],
 
           totalCompras: '',
           ventasEstimadas: '',
@@ -514,7 +514,6 @@ export class RuralComponent implements OnInit {
           dplantas: [lotes[lo].dplantas],
           diastancia: [lotes[lo].diastancia],
           planatasinformacli: [lotes[lo].planatasinformacli],
-          unidadventa: [lotes[lo].unidadventa],
           fechafinal: [lotes[lo].fechafinal],
           edadcult: [lotes[lo].edadcult],
           periodoedad: [lotes[lo].periodoedad],
@@ -563,16 +562,12 @@ export class RuralComponent implements OnInit {
       lotesArray.push(
         this.fb.group({
           numanimales: [lotes[lo].numanimales],
-          prodderivado: [lotes[lo].prodderivado],
-          unidadventa: [lotes[lo].unidadventa],
+          prodderivado: [lotes[lo].prodderivado],          
           cantidadxanimal: [lotes[lo].cantidadxanimal],
           frecuencia: [lotes[lo].frecuencia],
           cantproducida: [lotes[lo].cantproducida],
           unitotalesventa: [lotes[lo].unitotalesventa],
           perdida: [lotes[lo].perdida],
-          preciomin: [lotes[lo].preciomin],
-          precioactual: [lotes[lo].precioactual],
-          preciopromedio: [lotes[lo].preciopromedio],
           ingresomes: [lotes[lo].ingresomes],
           produccion:[lotes[lo].produccion],
           noproduccion:[lotes[lo].noproduccion],
@@ -620,8 +615,7 @@ export class RuralComponent implements OnInit {
   itemLotesPecuario() {
     return this.fb.group({
       numanimales: '',
-      prodderivado: '',
-      unidadventa: '',
+      prodderivado: '',      
       cantidadxanimal: '',
       frecuencia: '',
       cantproducida: '',
@@ -636,7 +630,6 @@ export class RuralComponent implements OnInit {
       noproduccion:'',
       egresos: this.fb.array([this.itemEgresos()]),
       totalEgresos: ''
-
     })
   }
   removeLotesPecuario(act: number, lote: number) {
@@ -659,8 +652,7 @@ export class RuralComponent implements OnInit {
       dsurcos: '',
       dplantas: '',
       diastancia: '',
-      planatasinformacli: '',
-      unidadventa: '',
+      planatasinformacli: '',      
       fechafinal: '',
       edadcult: '',
       periodoedad: '',

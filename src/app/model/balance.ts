@@ -5,6 +5,7 @@ import { Inventario } from './inventario';
 import { Inversiones } from './inversiones';
 import { Pasivos } from './pasivos';
 import { Proveedores } from './proveedores';
+import { ProveedoresEstacionales } from './proveedoresestacinales';
 import { Recuperacion } from './recuperacion';
 
 export class Balance {
@@ -25,8 +26,10 @@ export class Balance {
     actividadNegRows: ActivosNegocio[];
     actnegTotal: number;
     aplicaproveedores:boolean;
-    proveedoresRow:Proveedores[];
+    proveedoresRow:Proveedores[];    
     proveedoresTotal:number;
+    proveedoresEstacionales:ProveedoresEstacionales[];
+    totalProveedoresEst:number;
     creditoactual:boolean;
     creditos: Creditos[];
     totalCreditos: number;
