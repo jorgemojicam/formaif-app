@@ -28,6 +28,7 @@ import { AnalisisComponent } from './components/analisis/analisis.component';
 import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
 import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component';
 import { ProfileComponent } from './components/admin/profile/profile.component';
+import { ResultadoComponent } from './components/resultado/resultado.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { ProfileComponent } from './components/admin/profile/profile.component';
     AnalisisComponent,
     FlujocajaComponent,
     AnalisisagroComponent,
-    ProfileComponent
+    ProfileComponent,
+    ResultadoComponent
   ],
   imports: [
     BrowserModule,

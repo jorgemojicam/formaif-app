@@ -21,7 +21,6 @@ export class UrbanoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private ref: ChangeDetectorRef,
     public srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
@@ -57,8 +56,7 @@ export class UrbanoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.activeRoute.queryParamMap
-      .subscribe((params) => {
+    this.activeRoute.queryParamMap.subscribe((params) => {
         this.sol = params.get('solicitud')
       });
 
@@ -71,22 +69,17 @@ export class UrbanoComponent implements OnInit {
       }
       this.loadData = true
       this.isLoad.emit(true)
-      this.actividadesForm.valueChanges.subscribe(values => {
-        this.dataCruces = values.act
-        this.datasolicitud.Cruces = this.dataCruces
-        this.srvSol.saveSol(this.sol, this.datasolicitud)
-      })
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         //---------------------Ventas Historicas--------------------------------------
-        ctrl.controls.forEach((x, index) => {
+        ctrl.controls.forEach((x) => {
           let total = 0
           let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
           let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
           const ventashistoricas = <FormArray>x.get('ventasHis')
-          ventashistoricas.controls.forEach((ven, idxven) => {
+          ventashistoricas.controls.forEach((ven) => {
             let valor = this.formatNumber(ven.get("valor").value)
             total += valor
             ven.patchValue({
@@ -103,7 +96,7 @@ export class UrbanoComponent implements OnInit {
           //--------------------Produccion --------------------------------------------
           let totalprod = 0
           const produccionArr = <FormArray>x.get('produccion')
-          produccionArr.controls.forEach((prod, idxprod) => {
+          produccionArr.controls.forEach((prod) => {
             let valor = this.formatNumber(prod.get("valor").value)
             let cantidad = this.formatNumber(prod.get("cantidad").value)
             let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
@@ -130,7 +123,7 @@ export class UrbanoComponent implements OnInit {
               porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
             }, { emitEvent: false })
           })
-          //-----------------------------------------------------------------
+          //------------------------------------------------------------------
 
           //--------------Costo de venta [materia prima]----------------------
           const materiapri = <FormArray>x.get('materiaprima')
@@ -207,6 +200,7 @@ export class UrbanoComponent implements OnInit {
           }, { emitEvent: false })
           //---------------------------------------------------------------
 
+          //-----------------------Cruce 1 ventas B R M -------------------  
           let cantperiodo = 0
           let valorpromedio = 0
           let periodoventas = x.get('periodoventas').value
@@ -226,29 +220,36 @@ export class UrbanoComponent implements OnInit {
           let valorB = this.formatNumber(x.get('valorB').value)
           let valorR = this.formatNumber(x.get('valorR').value)
           let valorM = this.formatNumber(x.get('valorM').value)
-          
+
           let totalB = cantB * valorB * cantperiodo
-          let totalR = cantR * valorR * cantperiodo          
+          let totalR = cantR * valorR * cantperiodo
           let totalM = cantM * valorM * cantperiodo
 
           let totaldias = this.formatNumber(x.get('totalDias').value)
-          
+
           let promedio = (valorB + valorR + valorM) / valorpromedio
           let totalpromedio = promedio * totaldias
-
+          let totalbrm = totalB + totalR + totalM
+         
           
           if (valorR > valorB) {
             valorR = 0
             this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
-              duration: 3000,
+              duration: 9000,
             });
           }
           if (valorM > valorR) {
             valorM = 0
             this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
-              duration: 3000,
+              duration: 9000,
             });
           }
+          let totalCruce1 = 0
+          if (totalpromedio > totalbrm) {
+            totalCruce1 = totalbrm
+          } else {
+            totalCruce1 = totalpromedio
+          }      
 
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
@@ -258,12 +259,15 @@ export class UrbanoComponent implements OnInit {
             totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
             totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
             promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
+            totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
             totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
+            totalCruce1: isFinite(totalCruce1) ? totalCruce1.toLocaleString() : 0,
           }, { emitEvent: false })
-
-          this.ref.detectChanges()
-
         });
+
+        this.dataCruces = this.actividadesForm.get('act').value
+        this.datasolicitud.Cruces = this.dataCruces
+        this.srvSol.saveSol(this.sol, this.datasolicitud)
       })
     })
   }
@@ -287,6 +291,7 @@ export class UrbanoComponent implements OnInit {
       totalVentas: '',
       totalDias: '',
       totalPromedio: '',
+      totalCruce1:'',
       ventasHis: this.fb.array([this.itemventas()]),
       totalVentasHis: '',
       promtotalvenHis: '',
@@ -312,7 +317,7 @@ export class UrbanoComponent implements OnInit {
 
     for (let cru = 0; cru < cruces.length; cru++) {
       let periodhis = []
-      if(cruces[cru].periodohistoricas)
+      if (cruces[cru].periodohistoricas)
         periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
       crucesArray.push(
         this.fb.group({
@@ -329,7 +334,8 @@ export class UrbanoComponent implements OnInit {
           totalR: [cruces[cru].totalR],
           totalM: [cruces[cru].totalM],
           promedio: [cruces[cru].promedio],
-          totalVentas: '',
+          totalVentas: [cruces[cru].totalVentas],
+          totalCruce1: [cruces[cru].totalCruce1],
           totalDias: [cruces[cru].totalDias],
           periodohistoricas: [periodhis],
           ventasHis: this.loadDataVentas(cruces[cru].ventasHis),

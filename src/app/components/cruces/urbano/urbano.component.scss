@@ -12,15 +12,13 @@ mat-form-field {
 div.alternate>div:nth-of-type(odd) {
   background: rgba(239, 239, 239, 0.58);
 }
-.mat-radio-button~.mat-radio-button {
-  margin-left: 5px;
-}
 .encabezado{
   margin-top: 10px;
   margin-bottom: 10px;
 }
 .radioperiodo{
   margin-bottom: 8px;
+  width: 100%;
 }
 .content {
   border-radius: 8px;

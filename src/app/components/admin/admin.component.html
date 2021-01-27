@@ -60,6 +60,11 @@
                     <div mat-line>Analisis</div>
                 </mat-list-item>
             </ng-container>
+            <mat-list-item [routerLink]="['resultado']" routerLinkActive="active-list-item"
+                [queryParams]="{solicitud:sol}">
+                <mat-icon mat-list-icon>phone_android</mat-icon>
+                <div mat-line>Resultado Formiik</div>
+            </mat-list-item>
             <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item"
                 [queryParams]="{solicitud:sol}">
                 <mat-icon mat-list-icon>thumb_up</mat-icon>

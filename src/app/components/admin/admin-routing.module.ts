@@ -4,6 +4,7 @@ import { AnalisisComponent } from '../analisis/analisis.component';
 import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
 import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { PropuestaComponent } from '../propuesta/propuesta.component';
+import { ResultadoComponent } from '../resultado/resultado.component';
 import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
 
@@ -51,6 +52,11 @@ const routes: Routes = [
       {
         path: 'analisisagro',
         component: AnalisisagroComponent,
+      }
+      ,
+      {
+        path: 'resultado',
+        component: ResultadoComponent,
       }
     ]
   }

@@ -29,7 +29,7 @@ export class Balance {
     proveedoresTotal:number;
     creditoactual:boolean;
     creditos: Creditos[];
-    totalCreditos: string;
+    totalCreditos: number;
     aplicaInversiones:boolean;
     inversiones:Inversiones[];
     totalInversiones:number;
