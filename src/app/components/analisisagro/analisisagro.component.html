@@ -2,17 +2,17 @@
     <!-- Encabezado -->
     <table>
         <tr>
-            <td style="width: 200px;" rowspan="3" align="center">
+            <td style="width: 200px;" rowspan="3" style="text-align:center">
                 <img src="assets/pictures/Logo.png">
             </td>
-            <td rowspan="3" align="center">Analisis de credito agropecuario</td>
-            <td align="center">COL-FO-006</td>
+            <td rowspan="3" style="text-align:center">Analisis de credito agropecuario</td>
+            <td style="text-align:center">COL-FO-006</td>
         </tr>
         <tr>
-            <td align="center">Versión 11</td>
+            <td style="text-align:center">Versión 11</td>
         </tr>
         <tr>
-            <td align="center">Fecha</td>
+            <td style="text-align:center">Fecha</td>
         </tr>
     </table>
     <ng-container *ngIf="datasolicitud.solicitud">
@@ -30,7 +30,7 @@
     <ng-container *ngIf="datasolicitud.Ubicacion">
         <table>
             <tr>
-                <th align="center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
+                <th style="text-align:center" colspan=4> Mapa de ubicación (como llegar al predio)</th>
             </tr>
             <tr>
                 <td colspan=1>tiempo recorrido</td>
@@ -556,9 +556,7 @@
                         </td>
                         <td style="text-align:center">{{lt.diastancia}}</td>
                         <td style="text-align:center"># plantas/semillas del lote</td>
-                        <td style="text-align:center">{{lt.dplantas}}</td>
-                        <td style="text-align:center">Unidad de venta</td>
-                        <td style="text-align:center">{{lt.unidadventa}}</td>
+                        <td style="text-align:center">{{lt.dplantas}}</td>      
                     </tr>
                 </table>
 
@@ -835,9 +833,7 @@
                             <td style="text-align:center">Número de animales por lote</td>
                             <td style="text-align:center">{{ltePec.numanimales}}</td>
                             <td style="text-align:center">Producto derivado</td>
-                            <td style="text-align:center">{{ltePec.prodderivado}}</td>
-                            <td style="text-align:center">Unidad de venta</td>
-                            <td style="text-align:center">{{ltePec.unidadventa}}</td>
+                            <td style="text-align:center">{{ltePec.prodderivado}}</td>           
                             <td style="text-align:center">Cantidad producida por animal (libra)</td>
                             <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
                             <td style="text-align:center">Frecuencia</td>
@@ -850,13 +846,7 @@
                             <td style="text-align:center">Unidades Totales para la Venta (libra)</td>
                             <td style="text-align:center">{{ltePec.unitotalesventa}}</td>
                             <td style="text-align:center">% de mortalidad /perdida/consumo familiar</td>
-                            <td style="text-align:center">{{ltePec.perdida}}%</td>
-                            <td style="text-align:center">Precio minimo (libras)</td>
-                            <td style="text-align:center">${{ltePec.preciomin}}</td>
-                            <td style="text-align:center">Precio actual (libras)</td>
-                            <td style="text-align:center">${{ltePec.precioactual}}</td>
-                            <td style="text-align:center">Precio promedio (libras)</td>
-                            <td style="text-align:center">${{ltePec.preciopromedio}}</td>
+                            <td style="text-align:center">{{ltePec.perdida}}%</td>                            
                             <th style="text-align:center">Meses de ingreso de venta</th>
                             <td style="text-align:center">{{ltePec.mesingreso}}</td>
                         </tr>

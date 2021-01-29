@@ -327,8 +327,10 @@
                 </mat-slide-toggle>
                 Si
             </mat-card-content>
-            <ng-container *ngIf="tipoSol==1">
-                <ng-container *ngIf="balanceForm.controls.aplicaproveedores.value">
+            <ng-container *ngIf="balanceForm.controls.aplicaproveedores.value">
+                <!-- proveedores comercial -->
+                <ng-container *ngIf="tipoSol==1">
+
                     <div formArrayName="proveedoresRow" class="alternate">
                         <div fxLayout="row wrap" class="content"
                             *ngFor="let itemrow of balanceForm.controls.proveedoresRow['controls']; let prov=index"
@@ -358,12 +360,75 @@
                         <mat-icon>add</mat-icon>
                     </button>
                 </ng-container>
-            </ng-container>
-            <ng-container *ngIf="tipoSol==2">
+                <!-- proveedores agropecuario -->
+                <ng-container *ngIf="tipoSol==2">
 
-                
-            </ng-container>
+                    <div formArrayName="proveedoresEstacionales" class="alternate">
+                        <div fxLayout="row wrap" class="content"
+                            *ngFor="let proveedor of proveedoresEst().controls; let prov=index" [formGroupName]="prov">
 
+                            <div class="gr" fxFlex="30%" fxFlex.xs="60%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="text" matInput placeholder="Proveedor" id="nombre"
+                                        formControlName="nombre">
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="33%">
+                                <mat-form-field>
+                                    <input type="number" matInput placeholder="Numero Cuotas" id="numcuotas{{prov}}"
+                                        formControlName="numcuotas"
+                                        (keyup)="loadcuotasProveedores(prov,proveedor.value.numcuotas)">
+                                </mat-form-field>
+                            </div>
+
+                            <div formArrayName="cuotas">
+                                <div fxLayout="row wrap"
+                                    *ngFor="let proveedor of cuotasproveedores(prov).controls; let cuo=index"
+                                    [formGroupName]="cuo">
+
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-form-field>
+                                            <mat-label>Mes</mat-label>
+                                            <mat-select formControlName="mes" required>
+                                                <mat-option>-Seleccione-</mat-option>
+                                                <mat-option *ngFor="let mes of meses" [value]="mes.id">
+                                                    {{mes.name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-form-field>
+                                            <input type="text" matInput placeholder="Valor" formControlName="valor">
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Total</mat-label>
+                                    <input matInput type="Total" readonly 
+                                        formControlName="total">
+                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                </mat-form-field>                            
+                            </div>
+                            <button class="btndelete" color="warn" mat-icon-button [disabled]="prov==0"
+                                (click)="deleteProvEst(prov)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                        (click)="addNewProvEst()"
+                        [disabled]="balanceForm.controls.proveedoresEstacionales['controls'].length >=4">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+
+                </ng-container>
+            </ng-container>
         </mat-card-content>
     </mat-card>
     <!-- creditos -->

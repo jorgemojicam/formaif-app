@@ -69,7 +69,7 @@ export class BalanceComponent implements OnInit {
     aplicaproveedores: false,
     proveedoresRow: this.fb.array([this.initProvRows()]),
     proveedoresTotal: '',
-    proveedoresEstacionales: this.fb.array([this.initProvRows()]),
+    proveedoresEstacionales: this.fb.array([this.initProvEstacionales()]),
     totalProveedoresEst: '',
     creditoactual: '',
     creditos: this.fb.array([this.initCreditos()]),
@@ -199,6 +199,34 @@ export class BalanceComponent implements OnInit {
           }, { emitEvent: false });
         });
 
+        //Calculo proveedores Estacionales  
+        const proveedoresEst = <FormArray>this.balanceForm.controls['proveedoresEstacionales'];
+        proveedoresEst.controls.forEach(x => {
+
+          const cuotas = <FormArray>x.get('cuotas')
+          let total = 0
+          let arrMese = []
+          cuotas.controls.forEach(cuo => {
+            let valor = Utils.formatNumber(cuo.get('valor').value)
+            let mes = cuo.get('mes').value
+            if(arrMese.indexOf(mes) <0)
+              arrMese.push(mes)
+            else
+              mes = ""
+            
+            total += valor
+            cuo.patchValue({
+              valor: isFinite(valor) ? valor.toLocaleString() : 0,
+              mes:mes
+            }, { emitEvent: false });
+          });
+
+          totalProv += total
+          x.patchValue({
+            total: isFinite(total) ? total.toLocaleString() : 0
+          }, { emitEvent: false });
+        });
+
         //calculo inversiones
         let totalInversiones = 0
         const inversiones = <FormArray>this.balanceForm.controls['inversiones'];
@@ -232,182 +260,184 @@ export class BalanceComponent implements OnInit {
           let netocuota = plazo - numcuota
 
           // Entidades Financieras
-          if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
-            let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
-            let nocorriente = saldo - corriente
-            let proyeccion = valor / periodo
-            let descuentolibranza = false
-            if (tipo.id == 3) {
-              descuentolibranza = x.get('descuentolibranza').value
-              if (descuentolibranza) {
-                valor = 0
+          if (tipo) {
+            if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
+              let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
+              let nocorriente = saldo - corriente
+              let proyeccion = valor / periodo
+              let descuentolibranza = false
+              if (tipo.id == 3) {
+                descuentolibranza = x.get('descuentolibranza').value
+                if (descuentolibranza) {
+                  valor = 0
+                }
+              } else if (tipo.id == "5") {
+                x.get("clase").setValue(1, { emitEvent: false });
+                clase = 1
               }
-            } else if (tipo.id == "5") {
-              x.get("clase").setValue(1, { emitEvent: false });
-              clase = 1
-            }
 
-            if (saldo > monto) {
-              saldo = 0
-              this._snackBar.open("Saldo no puede superar el valor del monto", "Ok!", {
-                duration: 4000,
-              });
-            }
+              if (saldo > monto) {
+                saldo = 0
+                this._snackBar.open("Saldo no puede superar el valor del monto", "Ok!", {
+                  duration: 4000,
+                });
+              }
 
-            if (numcuota > plazo) {
-              x.get("cuota").setValue("", { emitEvent: false });
-              this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
-                duration: 4000,
-              });
-            }
+              if (numcuota > plazo) {
+                x.get("cuota").setValue("", { emitEvent: false });
+                this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
+                  duration: 4000,
+                });
+              }
 
-            if (netocuota > 0 && numcuota > 0) {
-              x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
-            }
-            if (clase == 1) {
-              tcuotaf += proyeccion
-              tcorrientef += corriente
-              tnocorrientef += nocorriente
+              if (netocuota > 0 && numcuota > 0) {
+                x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
+              }
+              if (clase == 1) {
+                tcuotaf += proyeccion
+                tcorrientef += corriente
+                tnocorrientef += nocorriente
+                x.patchValue({
+                  corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                  nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                }, { emitEvent: false })
+              } else {
+                tcuotan += proyeccion
+                tcorrienten += corriente
+                tnocorrienten += nocorriente
+                x.patchValue({
+                  corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                  nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                  proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+                }, { emitEvent: false })
+              }
+
               x.patchValue({
-                corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
-              }, { emitEvent: false })
-            } else {
-              tcuotan += proyeccion
-              tcorrienten += corriente
-              tnocorrienten += nocorriente
-              x.patchValue({
-                corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
                 proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+                descuentolibranza: descuentolibranza
               }, { emitEvent: false })
-            }
 
-            x.patchValue({
-              proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
-              descuentolibranza: descuentolibranza
-            }, { emitEvent: false })
-
-            // Hipotecario
-          } else if (tipo.id == "2") {
-            let porcentajeneg = x.get('porcentajeneg').value
-            if (porcentajeneg > 100) {
-              x.get("porcentajeneg").setValue("", { emitEvent: false });
-              this._snackBar.open("No puede superar el 100%", "Ok!", {
-                duration: 3000,
-              });
-            }
-            if (numcuota > plazo) {
-              x.get("cuota").setValue("", { emitEvent: false });
-              this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
-                duration: 4000,
-              });
-            }
-            let montoneg = (saldo * porcentajeneg) / 100
-            let montofam = saldo - montoneg
-
-            let corrienteN = 0
-            let corrienteF = 0
-            let neto = plazo - numcuota
-            if (neto < 12) {
-              corrienteN = montoneg
-              corrienteF = montofam
-            } else {
-              corrienteN = (montoneg / neto) * 12
-              corrienteF = (montofam / neto) * 12
-            }
-            let nocorrienteN = montoneg - corrienteN
-            let nocorrienteF = montofam - corrienteF
-
-            tcorrientef += corrienteF
-            tnocorrientef += nocorrienteF
-            tcorrienten += corrienteN
-            tnocorrienten += nocorrienteN
-
-            x.patchValue({
-              montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
-              montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
-              corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
-              nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
-              corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
-              nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,
-
-            }, { emitEvent: false })
-
-            // Pagadiario
-          } else if (tipo.id == "4") {
-
-            let corrienteN = numcuota * 30
-            tcorrienten += saldo
-            tcuotan += corrienteN
-            x.patchValue({
-              cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
-              corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
-            }, { emitEvent: false })
-
-            //Tarjetas de credito
-          } else if (tipo.id == "6") {
-
-            let corriente = 0
-            let nocorriente = 0
-            let valor = parseFloat("0.071078")
-            let cuotacalcu = monto * valor
-
-            if (saldo > 0) {
-              nocorriente = saldo - corriente
-              if (periodo == 1) {
-                corriente = saldo / 2
-                nocorriente = saldo / 2
-
-              } else if (periodo == 2) {
-                corriente = saldo
-                nocorriente = 0
+              // Hipotecario
+            } else if (tipo.id == "2") {
+              let porcentajeneg = x.get('porcentajeneg').value
+              if (porcentajeneg > 100) {
+                x.get("porcentajeneg").setValue("", { emitEvent: false });
+                this._snackBar.open("No puede superar el 100%", "Ok!", {
+                  duration: 3000,
+                });
               }
-            } else {
-              nocorriente = 0
-              corriente = 0
-            }
+              if (numcuota > plazo) {
+                x.get("cuota").setValue("", { emitEvent: false });
+                this._snackBar.open("El numero de cuota actual no puede superar el plazo", "Ok!", {
+                  duration: 4000,
+                });
+              }
+              let montoneg = (saldo * porcentajeneg) / 100
+              let montofam = saldo - montoneg
 
-            if (clase == 1) {
-              tcuotaf += 0
-              tcorrientef += corriente
-              tnocorrientef += nocorriente
+              let corrienteN = 0
+              let corrienteF = 0
+              let neto = plazo - numcuota
+              if (neto < 12) {
+                corrienteN = montoneg
+                corrienteF = montofam
+              } else {
+                corrienteN = (montoneg / neto) * 12
+                corrienteF = (montofam / neto) * 12
+              }
+              let nocorrienteN = montoneg - corrienteN
+              let nocorrienteF = montofam - corrienteF
+
+              tcorrientef += corrienteF
+              tnocorrientef += nocorrienteF
+              tcorrienten += corrienteN
+              tnocorrienten += nocorrienteN
+
               x.patchValue({
-                corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
+                montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
+                corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
+                nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
+                corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
+                nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,
+
               }, { emitEvent: false })
-            } else {
-              tcuotan += 0
-              tcorrienten += corriente
-              tnocorrienten += nocorriente
+
+              // Pagadiario
+            } else if (tipo.id == "4") {
+
+              let corrienteN = numcuota * 30
+              tcorrienten += saldo
+              tcuotan += corrienteN
               x.patchValue({
-                corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
+                corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
               }, { emitEvent: false })
+
+              //Tarjetas de credito
+            } else if (tipo.id == "6") {
+
+              let corriente = 0
+              let nocorriente = 0
+              let valor = parseFloat("0.071078")
+              let cuotacalcu = monto * valor
+
+              if (saldo > 0) {
+                nocorriente = saldo - corriente
+                if (periodo == 1) {
+                  corriente = saldo / 2
+                  nocorriente = saldo / 2
+
+                } else if (periodo == 2) {
+                  corriente = saldo
+                  nocorriente = 0
+                }
+              } else {
+                nocorriente = 0
+                corriente = 0
+              }
+
+              if (clase == 1) {
+                tcuotaf += 0
+                tcorrientef += corriente
+                tnocorrientef += nocorriente
+                x.patchValue({
+                  corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                  nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                }, { emitEvent: false })
+              } else {
+                tcuotan += 0
+                tcorrienten += corriente
+                tnocorrienten += nocorriente
+                x.patchValue({
+                  corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
+                  nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                }, { emitEvent: false })
+              }
+
+              x.patchValue({
+                cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
+              }, { emitEvent: false })
+
+              //Otras periodicidades
+            } else if (tipo.id == "7") {
+
+              let tasa = x.get('tasa').value
+              if (tasa < 0.8 && tasa > 4) {
+                x.get("tasa").setValue("", { emitEvent: false });
+                this._snackBar.open("La tasa de interes no puede ser menor a 0,8 ni superior a 4", "Ok!", {
+                  duration: 4000,
+                });
+              }
+              let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
+              let calcinteres = saldo * tasa * periodo
+              let calculocap = saldo / (plazo - numcuota)
+              x.patchValue({
+                calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
+                calculocap: isFinite(calculocap) ? calculocap.toLocaleString() : 0,
+              }, { emitEvent: false })
+
             }
-
-            x.patchValue({
-              cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
-            }, { emitEvent: false })
-
-            //Otras periodicidades
-          } else if (tipo.id == "7") {
-
-            let tasa = x.get('tasa').value
-            if (tasa < 0.8 && tasa > 4) {
-              x.get("tasa").setValue("", { emitEvent: false });
-              this._snackBar.open("La tasa de interes no puede ser menor a 0,8 ni superior a 4", "Ok!", {
-                duration: 4000,
-              });
-            }
-            let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
-            let calcinteres = saldo * tasa * periodo
-            let calculocap = saldo / (plazo - numcuota)
-            x.patchValue({
-              calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
-              calculocap: isFinite(calculocap) ? calculocap.toLocaleString() : 0,
-            }, { emitEvent: false })
-
           }
 
           x.patchValue({
@@ -430,7 +460,7 @@ export class BalanceComponent implements OnInit {
           inventarioTotal: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
           actnegTotal: isFinite(totalactneg) ? totalactneg.toLocaleString() : 0,
           actfamTotal: isFinite(totalactfam) ? totalactfam.toLocaleString() : 0,
-          proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
+          proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,         
           totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
           tcuotaf: isFinite(tcuotaf) ? tcuotaf.toLocaleString() : 0,
           tcuotan: isFinite(tcuotan) ? tcuotan.toLocaleString() : 0,
@@ -469,6 +499,8 @@ export class BalanceComponent implements OnInit {
       aplicaproveedores: bal.aplicaproveedores,
       proveedoresRow: this.laodProveedores(bal.proveedoresRow),
       proveedoresTotal: bal.proveedoresTotal,
+      proveedoresEstacionales: this.laodProveedoresEst(bal.proveedoresEstacionales),
+      totalProveedoresEst: bal.totalProveedoresEst,
       creditoactual: bal.creditoactual,
       creditos: this.loadCreditos(bal.creditos),
       totalCreditos: bal.totalCreditos,
@@ -592,7 +624,7 @@ export class BalanceComponent implements OnInit {
   }
   //----------------------------------------------------------------
 
-  //---------------Proveedoresd-------------------------
+  //---------------Proveedoresd-------------------------------------
   proveedores() {
     return this.balanceForm.get('proveedoresRow') as FormArray;
   }
@@ -620,7 +652,7 @@ export class BalanceComponent implements OnInit {
   deleteProvRow(index: number) {
     this.proveedores().removeAt(index);
   }
-  //------------------------------------------------
+  //----------------------------------------------------------------
 
   //---------------Proveedores Estacionales-------------------------
   proveedoresEst() {
@@ -631,7 +663,7 @@ export class BalanceComponent implements OnInit {
       nombre: '',
       numcuotas: '',
       total: '',
-      cuotas: []
+      cuotas: this.fb.array([])
     });
   }
   laodProveedoresEst(proveedores: ProveedoresEstacionales[]) {
@@ -642,17 +674,44 @@ export class BalanceComponent implements OnInit {
           nombre: prov.nombre,
           numcuotas: prov.numcuotas,
           total: prov.total,
-          cuotas: []
+          cuotas: this.loadcuotaprovEst(prov.cuotas)
         })
       )
     });
     return proveedoresArr;
   }
   addNewProvEst() {
-    this.proveedores().push(this.initProvRows());
+    this.proveedoresEst().push(this.initProvEstacionales());
   }
   deleteProvEst(index: number) {
-    this.proveedores().removeAt(index);
+    this.proveedoresEst().removeAt(index);
+  }
+  cuotasproveedores(id: number) {
+    return this.proveedoresEst().at(id).get("cuotas") as FormArray
+  }
+  loadcuotasProveedores(id: number, num: number) {
+    this.cuotasproveedores(id).clear();
+    for (let cuo = 0; cuo < num; cuo++) {
+      this.cuotasproveedores(id).push(this.initcuotaprov());
+    }
+  }
+  initcuotaprov() {
+    return this.fb.group({
+      mes: '',
+      valor: ''
+    })
+  }
+  loadcuotaprovEst(cuotas:any[]) {
+    let arr = this.fb.array([])
+    cuotas.forEach(cuo => {
+      arr.push(
+        this.fb.group({
+          mes: cuo.mes,
+          valor: cuo.valor
+        })
+      )
+    });
+    return arr
   }
   //----------------------------------------
 

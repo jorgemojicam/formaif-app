@@ -198,7 +198,7 @@ export class UrbanoComponent implements OnInit {
           //--------------------Compras-----------------------------------
           let totalcomporas = 0
           const compras = <FormArray>x.get('compras')
-          compras.controls.forEach((com, idxcom) => {
+          compras.controls.forEach((com) => {
             let cantidad = this.formatNumber(com.get("cantidad").value)
             let valor = this.formatNumber(com.get("valor").value)
             let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)

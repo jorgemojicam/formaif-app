@@ -40,4 +40,5 @@ export class Cruces {
     costoventa:CostoVenta[];
     margen:number;
     costo:number;
+    totalCruce3:number;
 }

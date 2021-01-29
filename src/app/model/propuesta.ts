@@ -1,6 +1,6 @@
 export class Propuesta {
     montorecomendado: string;
-    plazo: string;
+    plazo: number;
     destino: string;
     detalle: string;
     valor: string;
