@@ -17,6 +17,8 @@ import { EmailService } from 'src/app/services/email.service';
 import { Email } from 'src/app/model/email';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ProfileComponent } from '../profile/profile.component';
+import { AnalisisagroComponent } from '../../analisisagro/analisisagro.component';
+import { FlujocajaComponent } from '../../flujocaja/flujocaja.component';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +34,9 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(AnalisisComponent, { static: false }) analisis: AnalisisComponent;
+  @ViewChild(AnalisisagroComponent, { static: false }) analisisAgro: AnalisisagroComponent;
+  @ViewChild(FlujocajaComponent, { static: false }) flujo: FlujocajaComponent;
+  procesando: boolean = false
 
   constructor(
     public dialog: MatDialog,
@@ -125,23 +130,26 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  onSend(element) {
 
+  async onSend(element) {
+    this.procesando = true
     if (navigator.onLine) {
 
       const numeroSolicitud: string = element.solicitud.toString();
+
+
       this.srvSol.getSol(numeroSolicitud).subscribe((datasol) => {
         this.datasol = datasol as Solicitud;
       })
 
       let asesores: Asesor = this.tokenStorage.getUser()
       let suc = asesores.Sucursales.Codigo;
-      this.ofiServ.getAsesores(suc).subscribe(
+      this.ofiServ.getAsesores(102).subscribe(
         (ase) => {
           if (ase) {
             let diretores = ase as Asesor[]
             diretores.forEach(aseso => {
-              if (aseso.Grupo == 'DTRAGMGE' || aseso.Grupo == 'LIDPDS' || aseso.Grupo == 'LDRANMGE') {
+              if (aseso.Grupo == 'DTRAGMGE' || aseso.Grupo == 'LIDPDS' || aseso.Grupo == 'LDRANMGE' || aseso.Grupo == 'LIDPDSMJ') {
 
                 Swal.fire({
                   title: '¿Desea Enviar Analisis de credito?',
@@ -156,7 +164,7 @@ export class HomeComponent implements AfterViewInit {
                   cancelButtonText: 'No, Cancelar!',
                   reverseButtons: true,
                   allowOutsideClick: false
-                }).then((result) => {
+                }).then(async (result) => {
                   if (result.isConfirmed) {
 
                     Swal.fire({
@@ -182,27 +190,27 @@ export class HomeComponent implements AfterViewInit {
                     email.Subject = "Analisis de credito"
                     email.Body = `<h3>Buen dia, ` + aseso.Nombre + ` </h3>
                               <p>A continuacion adjunto se encuentra el formato de analisis de credito</p>`
-                    html2pdf()
-                      .from(content)
-                      .set(op)
-                      .outputPdf()
-                      .then((pdf) => {
-                        let pdfBase64 = btoa(pdf)
-                        email.Base64Pdf = pdfBase64
-                        this.emailServ.Send(email).subscribe(
-                          (su) => {
-                            Swal.close()
-                            Swal.fire('Enviado!', 'Se envio correctamente', 'success')
-                          },
-                          (er) => {
-                            Swal.close()
-                            Swal.fire('Error', 'Se ha producido un error' + er, 'error')
-                          }
-                        )
 
-                      });
+                    let pdfBase64: string = await this.createpdf(content, op) as string
+
+                    email.Base64Pdf = pdfBase64
+                    this.emailServ.Send(email).subscribe(
+                      (su) => {
+                        Swal.close()
+                        Swal.fire('Enviado!', 'Se envio correctamente', 'success')
+                        this.procesando = false
+                      },
+                      (er) => {
+                        Swal.close()
+                        Swal.fire('Error', 'Se ha producido un error' + er, 'error')
+                        this.procesando = false
+                      }
+                    )
+
+
                   } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
+                    this.procesando = false
                   }
                 })
               } else {
@@ -211,28 +219,43 @@ export class HomeComponent implements AfterViewInit {
                   title: 'No autorizado',
                   text: 'En este momento la oficina a la que corresponde no tiene director por favor comuniquese con el area de riesgos',
                 })
+                this.procesando = false
               }
             });
           }
         },
-        (err)=>{
+        (err) => {
           Swal.fire({
             icon: 'info',
             title: 'Oops...',
-            text: 'No se encontro director para la oficina '+suc+' '+err,    
+            text: 'No se encontro director para la oficina ' + suc + ' ' + err,
           })
+          this.procesando = false
         })
     } else {
       Swal.fire({
         icon: 'info',
         title: 'Oops...',
-        text: 'En este momento no tiene conexion a internet, su informacion seguira guardada en el movil pero debe tener conexion para enviarla :(',
+        text: 'En este momento no tiene conexion a internet, su informacion seguira guardada en el movil pero debe tener conexion para enviarla :('
 
       })
+      this.procesando = false
     }
   }
   openProfile(): void {
     this._bottomSheet.open(ProfileComponent);
   }
+
+  createpdf(content, op) {
+    return new Promise(resolve => {
+      html2pdf().from(content).set(op).outputPdf()
+        .then((pdf) => {
+          return resolve(btoa(pdf))
+        });
+    })
+  }
+
+
+
 }
 

@@ -29,7 +29,8 @@
     <table>
         <thead>
             <tr>
-                <th [attr.colspan]="cantidadTotalAct" style="text-align:center">Resumen proyectado de Ingresos y Egresos Agropecuarios</th>
+                <th [attr.colspan]="cantidadTotalAct" style="text-align:center">Resumen proyectado de Ingresos y Egresos
+                    Agropecuarios</th>
             </tr>
             <tr>
                 <th rowspan="3" colspan="3">Producto</th>
@@ -39,7 +40,7 @@
                 <th rowspan="3">Total Mensual</th>
             </tr>
             <tr>
-                
+
                 <th *ngFor="let act of datasolicitud.CrucesAgro;let ac=index">Actividad {{ac}}</th>
                 <th *ngFor="let act of datasolicitud.CrucesAgro;let ac=index">Costo {{ac}}</th>
             </tr>
@@ -54,7 +55,11 @@
             </td>
         </tr>
     </table>
-
+    <table>
+        <tr>
+            <th style="text-align:center">Flujo de caja acumulado</th>
+        </tr>
+    </table>
     <ng-container *ngIf="datasolicitud.Propuesta">
 
         <table>
@@ -74,5 +79,40 @@
             </tr>
         </table>
     </ng-container>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="3">Proyección</th>
+                <th>In. Agro Efectivo</th>
+                <th>Recuperación de cartera (cuentas por cobrar)</th>
+                <th>Costos Agro</th>
+                <th>Remuneración personal</th>
+                <th>Gastos del negocio</th>
+                <th>Imprevistos Operativos</th>
+                <th>Obligaciones Finacieras</th>
+                <th>Ingresos Líquidos Agropecuarios</th>
+                <th>Ingresos Líquidos Otras actividades comerciales </th>
+                <th>Otros Ingresos familiares (Independientes)</th>
+                <th>Gastos y obligaciones familiares</th>
+                <th>Flujo de caja antes financiación (sin acumular)</th>
+                <th>Flujo de caja antes financiación acumulable 70%</th>
+                <th>Cuota del crédito</th>
+                <th>Flujo de caja descontando cuota de crédito</th>
+                <th>Flujo de caja con financiación</th>
+                <th>Relación cuota liquidez</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dataFlujoAcumulado">
+
+                <td [ngClass]="{'error': i ==10 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado[0];let i=index ">
+                    {{item[i]}}
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
 
 </div>

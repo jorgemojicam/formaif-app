@@ -20,7 +20,8 @@ export class PropuestaComponent implements OnInit {
   dataSolicitud: Solicitud;
   dataPropuesta: Propuesta;
   meses: any = DataSelect.Meses;
-  periodo: any = DataSelect.Periodo;
+  periodo: any = DataSelect.Periodo.filter((pe) => pe.id < 4);
+  minDate = new Date();
 
   constructor(
     public srvSol: IdbSolicitudService,
@@ -68,38 +69,38 @@ export class PropuestaComponent implements OnInit {
         let valor = Utils.formatNumber(form.valor)
         let valorcapital = Utils.formatNumber(form.valorcapital)
 
-        if(valor> montorecomentado){
-          valor =0
+        if (valor > montorecomentado) {
+          valor = 0
           this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
             duration: 6000,
           });
         }
-        if(valorcapital> montorecomentado){
-          valorcapital =0
+        if (valorcapital > montorecomentado) {
+          valorcapital = 0
           this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
             duration: 6000,
           });
         }
-        let totalmonto = valor + valorcapital        
-        if(totalmonto> montorecomentado){
-          valorcapital =0
+        let totalmonto = valor + valorcapital
+        if (totalmonto > montorecomentado) {
+          valorcapital = 0
           this._snackBar.open("La suma de los valores no puede superar el monto recomentado", "Ok!", {
             duration: 9000,
           });
         }
         const irregular = <FormArray>this.propuestaForm.controls['irregular'];
         irregular.controls.forEach(x => {
-          let valorcuota=Utils.formatNumber(x.get('valorcuota').value)
+          let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
           x.patchValue({
             valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0
           }, { emitEvent: false })
         });
-       
+
         this.propuestaForm.patchValue({
-          montorecomendado: isFinite(montorecomentado)?montorecomentado.toLocaleString():0,
-          valor: isFinite(valor)?valor.toLocaleString():0,
-          valorcapital: isFinite(valorcapital)?valorcapital.toLocaleString():0
-        },{emitEvent:false})
+          montorecomendado: isFinite(montorecomentado) ? montorecomentado.toLocaleString() : 0,
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
+          valorcapital: isFinite(valorcapital) ? valorcapital.toLocaleString() : 0
+        }, { emitEvent: false })
 
         this.dataPropuesta = this.propuestaForm.value
         this.dataSolicitud.Propuesta = this.dataPropuesta
@@ -120,7 +121,7 @@ export class PropuestaComponent implements OnInit {
       this.cuotas().push(this.itemsCuotas());
     }
   }
-  loadCuotas(irregular){
+  loadCuotas(irregular) {
     let array = this.fb.array([])
     irregular.forEach(ir => {
       array.push(this.fb.group({
@@ -132,7 +133,7 @@ export class PropuestaComponent implements OnInit {
   }
 
 
-  loadPropuesta(propuestas:Propuesta){
+  loadPropuesta(propuestas: Propuesta) {
     return this.propuestaForm = this.fb.group({
       montorecomendado: propuestas.montorecomendado,
       plazo: propuestas.plazo,

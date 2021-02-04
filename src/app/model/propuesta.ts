@@ -5,13 +5,17 @@ export class Propuesta {
     detalle: string;
     valor: string;
     detallecapital: string;
-    valorcapital: string;
-    tipocuota: string;
-    formapgo: string;
+    valorcapital: number;
+    tipocuota: number;
+    formapgo: {
+        id: number;
+        name: string;
+        period: number;
+    };
     valorcouta: string;
     numerocuotas: string;
     irregular: {
-        fechacuota: string;
+        fechacuota: Date;
         valorcuota: string;
-    };
+    }[];
 }

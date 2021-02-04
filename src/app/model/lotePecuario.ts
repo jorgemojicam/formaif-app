@@ -6,7 +6,7 @@ export class LotePecuario {
     egresos: Egresos[];
     frecuencia: number;
     ingresomes: string;
-    mesingreso: [];
+    mesingreso: number;
     numanimales: number;
     perdida: number;    
     prodderivado: string;

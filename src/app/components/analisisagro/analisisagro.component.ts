@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
-
-
 
 @Component({
   selector: 'app-analisisagro',
@@ -13,6 +11,9 @@ import DataSelect from '../../data-select/dataselect.json';
   styleUrls: ['./analisisagro.component.scss']
 })
 export class AnalisisagroComponent implements OnInit {
+
+  @ViewChild('reporte') reporte: ElementRef
+  @Input() datossol: Solicitud
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -26,16 +27,21 @@ export class AnalisisagroComponent implements OnInit {
   sol: string;
 
   ngOnInit(): void {
-    this.activeRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
-      this.srvSol.getSol(this.sol).subscribe((datasol) => {
-        let hoy = new Date()
-        let mes: number = hoy.getMonth() + 1
-        this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
-        this.datasolicitud = datasol as Solicitud
-        this.tipoAsesor = this.datasolicitud.asesor
-      })
-    });
+
+    if (!this.datossol) {
+      this.activeRoute.queryParamMap.subscribe((params) => {
+        this.sol = params.get('solicitud')
+        this.srvSol.getSol(this.sol).subscribe((datasol) => {
+          let hoy = new Date()
+          let mes: number = hoy.getMonth() + 1
+          this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
+          this.datasolicitud = datasol as Solicitud
+          this.tipoAsesor = this.datasolicitud.asesor
+        })
+      });
+    } else {
+      this.datasolicitud = this.datossol
+    }
 
   }
 
@@ -45,7 +51,7 @@ export class AnalisisagroComponent implements OnInit {
 
   equivalencia(id: number, lista: string) {
     if (lista == 'tipoinventario') {
-      let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);      
+      let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);
       console.log(inventario)
       return inventario[0].name
     }
@@ -53,7 +59,7 @@ export class AnalisisagroComponent implements OnInit {
 
   MesNombre(id: number, lista: string) {
     if (lista == 'MesNombre') {
-      let Mes = DataSelect.Meses.filter(i => i.id == id);      
+      let Mes = DataSelect.Meses.filter(i => i.id == id);
       console.log(Mes)
       return Mes[0].name
     }
@@ -61,7 +67,7 @@ export class AnalisisagroComponent implements OnInit {
 
   TipoIngreso(id: number, lista: string) {
     if (lista == 'tipoingreso') {
-      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);      
+      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
       console.log(tipo)
       return tipo[0].name
     }
@@ -69,7 +75,7 @@ export class AnalisisagroComponent implements OnInit {
 
   DescripcionEgresos(id: number, lista: string) {
     if (lista == 'descripcionegreso') {
-      let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);      
+      let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);
       console.log(descripcion)
       return descripcion[0].name
     }
@@ -77,12 +83,12 @@ export class AnalisisagroComponent implements OnInit {
 
   DescripcionEgresosPec(id: number, lista: string) {
     if (lista == 'DescripcionEgresosPec') {
-      let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);      
+      let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
       console.log(descripcion)
       return descripcion[0].name
     }
   }
-  
+
 
 }
 
