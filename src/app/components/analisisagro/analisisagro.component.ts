@@ -57,42 +57,43 @@ export class AnalisisagroComponent implements OnInit {
     }
   }
 
-  TipoUnidades(id: number, lista: string){
-    if (lista == 'Unidades') {
-      let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-      console.log(descripcion)
-      return descripcion[0].name
+  TipoUnidades(id: string, lista: string){
+    if(id!==""){
+      if (lista == 'Unidades') {
+        let descripcion=DataSelect.Unidades.filter(i => i.id == id);
+        console.log(descripcion)
+        return descripcion[0].name
+      }
     }
-
   }
-  TipoEdad(id: number, lista: string){
-    if (lista == 'Periodo') {
-      let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-      console.log(descripcion)
-      return descripcion[0].name
+  TipoEdad(id: string, lista: string){
+    if(id!==""){
+      if (lista == 'Periodo') {
+        let descripcion=DataSelect.Unidades.filter(i => i.id == id);
+        console.log(descripcion)
+        return descripcion[0].name
+      }
+
     }
-
   }
 
-  TipoFrecuencia(id: number, lista: string){
+  TipoFrecuencia(id: string, lista: string){
+   if(id!==""){
     if (lista == 'PeriodoEdad') {
       let descripcion=DataSelect.PeriodoEdad.filter(i => i.id == id);
       console.log(descripcion)
       return descripcion[0].name
     }
-
+   }
   }
   
   MesNombre(id: string, lista: string) {
-    
     if(id==""){
-
       return ""
     }
 
     if (lista == 'MesNombre') {
       let Mes = DataSelect.Meses.filter(i => i.id == id);
-      console.log("********"+Mes)
       return Mes[0].name
     }
   }
@@ -105,23 +106,28 @@ export class AnalisisagroComponent implements OnInit {
     }
   }
 
-  DescripcionEgresos(id: number, lista: string) {
-    if (lista == 'descripcionegreso') {
-      let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);
-      console.log(descripcion)
-      return descripcion[0].name
+  DescripcionEgresos(id: string, lista: string) {
+    if(id!==""){
+      if (lista == 'descripcionegreso') {
+        let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);
+        console.log(descripcion)
+        return descripcion[0].name
+      }
+
     }
+    
   }
 
-  DescripcionEgresosPec(id: number, lista: string) {
-    if (lista == 'DescripcionEgresosPec') {
-      let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
-      console.log(descripcion)
-      return descripcion[0].name
+  DescripcionEgresosPec(id: string, lista: string) {
+    if(id!==""){
+      if (lista == 'DescripcionEgresosPec') {
+        let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
+        console.log(descripcion)
+        return descripcion[0].name
+      }
     }
+   
   }
-
-
 }
 
 
