@@ -21,6 +21,7 @@ import { AnalisisagroComponent } from '../../analisisagro/analisisagro.component
 import { FlujocajaComponent } from '../../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
+import { rejects } from 'assert';
 
 @Component({
   selector: 'app-home',
@@ -141,10 +142,7 @@ export class HomeComponent implements AfterViewInit {
 
       const numeroSolicitud: string = element.solicitud.toString();
 
-      this.srvSol.getSol(numeroSolicitud).subscribe((datasol) => {
-        this.datasol = datasol as Solicitud;
-      })
-
+      await this.getSolicitud(numeroSolicitud)
 
       let aseso = await this.getDirector() as Asesor
 
@@ -178,28 +176,36 @@ export class HomeComponent implements AfterViewInit {
                   const b = content.querySelector('b')
                   if (b) {
 
-                    let pdfBase64: string = await this.createpdf("Analisis de credito",numeroSolicitud) as string
-                    console.log("generacion pdf: ", pdfBase64)
-                    b.textContent = "Generacion pdf..."
+                    let pdfBase64: string = "";
+                    let pdfBase64Agro: string = "";
 
-                    let sendEmail = await this.send(pdfBase64, aseso.Nombre, "jorge.mojica@fundaciondelamujer.com")
-                    console.log("Envio email", sendEmail)
-                    b.textContent = "Envio email..."
+                    if (this.datasol.asesor == 2) {
+                      const contentagro = this.analisisAgro.reporte.nativeElement
+                      const contentflujo = this.flujo.reporte.nativeElement
+                      b.textContent = "Generacion Analisis de credito pdf..."
+                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroSolicitud) as string
+                      b.textContent = "Generacion Flujo de caja pdf..."
+                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroSolicitud) as string
 
+                    } else if (this.datasol.asesor == 1) {
+                      const contentana = this.analisis.reporte.nativeElement
+                      b.textContent = "Generacion Analisis de credito pdf..."
+                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroSolicitud) as string
+                    }
+
+                    b.textContent = "Enviando email..."
+                    let sendEmail = await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, "stefany.zambrano@fundaciondelamujer.com")
+
+                    b.textContent = "Insertando el analisis..."
                     let insertAnalisis = await this.insert(this.datasol)
-                    console.log("Insertndo el analisis", insertAnalisis)
-                    b.textContent = "Insertndo el analisis..."
 
                     //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
                     //console.log("Insertndo el carpeta digital",insertaCarpeta)
-       
+
                   }
                 }
               }
             })
-
-
-
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
             this.procesando = false
@@ -228,9 +234,23 @@ export class HomeComponent implements AfterViewInit {
     this._bottomSheet.open(ProfileComponent);
   }
 
-  createpdf(namefile,numeroSolicitud) {
+  getSolicitud(solicitud) {
+    return new Promise((resolve, rejects) => {
+      this.srvSol.getSol(solicitud)
+        .subscribe(
+          (datasol) => {
+            resolve(datasol)
+            this.datasol = datasol as Solicitud;
+          },
+          (err) => {
+            rejects(err)
+          })
+    })
 
-    const content = this.analisis.reporte.nativeElement
+  }
+
+  createpdf(content, namefile, numeroSolicitud) {
+
     const op = {
       filename: namefile + numeroSolicitud + '.pdf',
       image: { type: 'jpeg' },
@@ -255,7 +275,7 @@ export class HomeComponent implements AfterViewInit {
         });
     })
   }
-  send(pdfBase64: string, nombreDir: string, emailDir: string) {
+  send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
 
     let email: Email = new Email;
     email.To = emailDir;
@@ -263,6 +283,7 @@ export class HomeComponent implements AfterViewInit {
     email.Body = `<h3>Buen dia, ` + nombreDir + ` </h3>
               <p>A continuacion adjunto se encuentra el formato de analisis de credito</p>`
     email.Base64Pdf = pdfBase64
+    email.Base64PdfAgro = pdfBase64Agro
 
     return new Promise(resolve => {
       this.emailServ.Send(email).subscribe(

@@ -17,6 +17,7 @@ export class EmailService {
       return this.http.post(environment.AUTH_API + 'Envios/Send', {
           To: email.To,
           Base64Pdf: email.Base64Pdf,
+          Base64PdfAgro: email.Base64PdfAgro,
           Subject: email.Subject,
           Body: email.Body
       });

@@ -151,7 +151,8 @@ export class RuralComponent implements OnInit {
           } else {
             ventasestimadas = totalpromedio
           }
-          let totalliquido = (ventasestimadas * margenBruto) - otrosGastos
+          const realmargen = 100 / margenBruto
+          let totalliquido = (ventasestimadas * realmargen) - otrosGastos
 
           let preciomin = Utils.formatNumber(x.get("preciomin").value)
           let precioactual = Utils.formatNumber(x.get("precioactual").value)
@@ -298,7 +299,7 @@ export class RuralComponent implements OnInit {
                 total: isFinite(total) ? total.toLocaleString() : 0
               }, { emitEvent: false })
             })
-            
+
             let totalEgresos = 0
             if (tipoproducto == 'Transitorio') {
               totalEgresos = totalEgAdecuacion + totalEgCosecha + totalEgMante + totalEgSiembra
@@ -339,7 +340,7 @@ export class RuralComponent implements OnInit {
           //-------------------Pecuario--------------------------------
           const lotesPecuArr = <FormArray>x.get('lotesPecuario')
           lotesPecuArr.controls.forEach((lot) => {
-            let totalEg = 0            
+            let totalEg = 0
             const egresoAdecua = <FormArray>lot.get('egresos')
             egresoAdecua.controls.forEach((egr) => {
 
@@ -370,14 +371,14 @@ export class RuralComponent implements OnInit {
             let totalmes = preciopromedio * unitotalesventa
 
             lot.patchValue({
-              preciomin:isFinite(preciomin) ? preciomin.toLocaleString() : 0,
-              precioactual:isFinite(precioactual) ? precioactual.toLocaleString() : 0,
+              preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
+              precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
               cantproducida: isFinite(cantidadtotal) ? cantidadtotal.toLocaleString() : 0,
               unitotalesventa: unitotalesventa,
               perdida: isFinite(perdida) ? perdida.toFixed(2) : 0,
               ingresomes: isFinite(totalmes) ? totalmes.toLocaleString() : 0,
               totalEgresos: isFinite(totalEg) ? totalEg.toLocaleString() : 0,
-              preciopromedio:isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0,
+              preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0,
             }, { emitEvent: false })
           })
           //---------------------------------------------------------------------
@@ -482,7 +483,7 @@ export class RuralComponent implements OnInit {
           totalVentas: '',
           promedio: '',
           totalDias: '',
-          totalPromedio: '',          
+          totalPromedio: '',
           unidadventa: [cruces[cru].unidadventa],
 
           totalCompras: '',
@@ -562,15 +563,15 @@ export class RuralComponent implements OnInit {
       lotesArray.push(
         this.fb.group({
           numanimales: [lotes[lo].numanimales],
-          prodderivado: [lotes[lo].prodderivado],          
+          prodderivado: [lotes[lo].prodderivado],
           cantidadxanimal: [lotes[lo].cantidadxanimal],
           frecuencia: [lotes[lo].frecuencia],
           cantproducida: [lotes[lo].cantproducida],
           unitotalesventa: [lotes[lo].unitotalesventa],
           perdida: [lotes[lo].perdida],
           ingresomes: [lotes[lo].ingresomes],
-          produccion:[lotes[lo].produccion],
-          noproduccion:[lotes[lo].noproduccion],
+          produccion: [lotes[lo].produccion],
+          noproduccion: [lotes[lo].noproduccion],
           mesingreso: [lotes[lo].mesingreso],
           egresos: this.loadEgresos(lotes[lo].egresos),
           totalEgresos: [lotes[lo].totalEgresos]
@@ -615,7 +616,7 @@ export class RuralComponent implements OnInit {
   itemLotesPecuario() {
     return this.fb.group({
       numanimales: '',
-      prodderivado: '',      
+      prodderivado: '',
       cantidadxanimal: '',
       frecuencia: '',
       cantproducida: '',
@@ -626,8 +627,8 @@ export class RuralComponent implements OnInit {
       preciopromedio: '',
       ingresomes: '',
       mesingreso: '',
-      produccion:'',
-      noproduccion:'',
+      produccion: '',
+      noproduccion: '',
       egresos: this.fb.array([this.itemEgresos()]),
       totalEgresos: ''
     })
@@ -652,7 +653,7 @@ export class RuralComponent implements OnInit {
       dsurcos: '',
       dplantas: '',
       diastancia: '',
-      planatasinformacli: '',      
+      planatasinformacli: '',
       fechafinal: '',
       edadcult: '',
       periodoedad: '',

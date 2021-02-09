@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
@@ -17,6 +17,7 @@ import Utils from '../../utils';
 export class FlujocajaComponent implements OnInit {
 
   @Input() datossol: Solicitud
+  @ViewChild('reporte') reporte: ElementRef
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -45,13 +46,17 @@ export class FlujocajaComponent implements OnInit {
       )
 
     const obtenerSol = () => {
-      return new Promise(resolve => {
-        this.srvSol.getSol(this.sol).subscribe(
-          (datasol) => {
-            return resolve(datasol)
-          }
-        )
-      })
+      if (!this.datossol) {
+        return new Promise(resolve => {
+          this.srvSol.getSol(this.sol).subscribe(
+            (datasol) => {
+              return resolve(datasol)
+            }
+          )
+        })
+      } else {
+        return this.datossol
+      }
     }
 
     const afterInit = async () => {
