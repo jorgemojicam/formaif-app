@@ -566,28 +566,38 @@
     <!-- Actividades del cliente -->
     <div *ngFor="let act of datasolicitud.CrucesAgro" id="actividades">
 
-        <div *ngIf="act.tipoproduccion=='Transitorio'">
+        <div *ngIf="act.tipoproduccion=='Transitorio'"  >
             <table>
                 <thead>
                     <tr>
                         <th colspan=11>Actividades del cliente</th>
                     </tr>
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <th style="text-align:center">Actividad</th>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
+                        <th  style="text-align:center">Nombre de la actividad</th >
                         <td style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
+                        <th  style="text-align:center">Tipo de producción</th >
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <th  style="text-align:center">Ingreso</th>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
+                        <th  style="text-align:center">Egreso</th>
                         <td style="text-align:center">Mirar este 0</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Unidad de venta</td>
+                        <td colspan=3 style="text-align:center">{{TipoUnidades(act.unidadventa,'Unidades')}}</td>
+                        <td style="text-align:center">Precio minimo</td>
+                        <td style="text-align:center">${{act.preciomin}}</td>
+                        <td style="text-align:center">Precio actual</td>
+                        <td style="text-align:center">${{act.precioactual}}</td>
+                        <td style="text-align:center">Precio promedio</td>
+                        <td style="text-align:center">${{act.preciopromedio}}</td>
                     </tr>
                 </thead>
             </table>
 
-            <!-- Lote 1 -->
+            <!-- Lote 1 -->  
             <div *ngFor="let lt of act.lotesAgro; let cont=index">
                 <table>
 
@@ -597,17 +607,18 @@
 
                     <tr>
                         <td style="text-align:center">Edad del cultivo</td>
-                        <td style="text-align:center">{{lt.edadcult}}</td>
-                        <td style="text-align:center">{{lt.periodoedad}}</td>
+                        <td style="text-align:center">{{lt.edadcult}} {{TipoFrecuencia(lt.periodoedad,'PeriodoEdad')}}</td>
                         <td style="text-align:center">Área cultivada</td>
                         <td style="text-align:center">{{lt.areacult}}</td>
-                        <td style="text-align:center">{{lt.periodoedad}}</td>
-                        <td style="text-align:center">Distancia de siembra ó # plantas/semillas del lote que informa el
-                            cliente
-                        </td>
+                        <td style="text-align:center">Distacia entre surcos</td>
+                        <td style="text-align:center">{{lt.dsurcos}}</td>
+                        <td style="text-align:center">Distacia entre plantas</td>
+                        <td style="text-align:center">{{lt.dplantas}}</td>
+                        <td style="text-align:center">Distacia entre siembra</td>
                         <td style="text-align:center">{{lt.diastancia}}</td>
                         <td style="text-align:center"># plantas/semillas del lote</td>
-                        <td style="text-align:center">{{lt.dplantas}}</td>      
+                        <td style="text-align:center">{{lt.numplantas}}</td>
+                          
                     </tr>
                 </table>
 
@@ -616,17 +627,16 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan=12>INGRESO Ciclo de la producción Transitorias</th>
+                            <th colspan=7>INGRESO Ciclo de la producción Transitorias</th>
                         </tr>
                         <tr>
                             <td style="text-align:center">Rendimiento por lote bulto</td>
                             <td style="text-align:center">Unidades Totales para la Venta bulto</td>
                             <td style="text-align:center">% de perdida/consumo familiar</td>
-                            <td style="text-align:center">Precio mínimo</td>
-                            <td style="text-align:center">Precio actual</td>
-                            <td style="text-align:center">Precio Promedio</td>
+                            <td style="text-align:center">Próxima cosecha</td>
+                            <td style="text-align:center">Meses de producción</td>
+                            <td style="text-align:center">Meses de no producción</td>
                             <th style="text-align:center">Total</th>
-                            <td style="text-align:center">Meses de ingreso</td>
                         </tr>
                     </thead>
                     <tfoot>
@@ -634,11 +644,10 @@
                             <td align="right">${{lt.rendiemientolote}}</td>
                             <td align="right">${{lt.unidadestotales}}</td>
                             <td align="right">{{lt.perdida}}%</td>
-                            <!-- <td align="right">${{lt.preciomin}}</td>
-                            <td align="right">${{lt.precioactual}}</td>
-                            <td align="right">${{lt.preciopromedio}}</td> -->
-                            <td align="right">$Se acuerda que ese falta por calcular</td>
-                            <td align="right">$Se acuerda que ese falta por calcular</td>
+                            <td align="right">{{MesNombre(lt.proxcocecha,'MesNombre')}}</td>
+                            <td align="right">mirar este 0</td>
+                            <td align="right">mirar este 0</td>
+                            <td align="right">{{lt.totalCos}}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -725,88 +734,110 @@
                 <thead>
 
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <td style="text-align:center">Edad del cultivo</td>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
+                        <td style="text-align:center">Area cultivada</td>
                         <td style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
+                        <td style="text-align:center">Distancia entre surcos</td>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <td style="text-align:center">Distancia entre plantas</td>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
-                        <td style="text-align:center">Mirar este 0</td>
+                        <td style="text-align:center">Distancia entre siembra</td>
+                        <td style="text-align:center">MIrar este 0</td>
+                        <td style="text-align:center"># plantas/semillas del lote</td>
+                        <td style="text-align:center">MIrar este 0</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Unidad de venta</td>
+                        <td colspan=3 style="text-align:center">{{act.unidadventa}}</td>
+                        <td style="text-align:center">Precio minimo</td>
+                        <td style="text-align:center">{{act.preciomin}}</td>
+                        <td style="text-align:center">Precio actual</td>
+                        <td colspan=2 style="text-align:center">{{act.precioactual}}</td>
+                        <td style="text-align:center">Precio promedio</td>
+                        <td colspan=2 style="text-align:center">{{act.preciopromedio}}</td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Cosecha</td>
+                        <td colspan=4 style="text-align:center">{{act.mesCos}}</td>
+                        <td style="text-align:center">Traviesa</td>
+                        <td colspan=3 style="text-align:center">{{act.mesTra}}</td>
+                        <td style="text-align:center">Pepeo</td>
+                        <td colspan=2 style="text-align:center">{{act.mesPepeo}}</td>
                     </tr>
                 </thead>
             </table>
             <div *ngFor="let lte of act.lotesAgro; let cont=index">
+                <table>
+                <tr>
+                    <th colspan=12>Lote 1 </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Edad del cultivo</th>
+                    <td style="text-align:center">{{lte.edadcult}}</td>
+                    <th style="text-align:center">Area cultivada</th>
+                    <td style="text-align:center">{{lte.areacult}}</td>
+                    <th style="text-align:center">Distancia entre surcos</th>
+                    <td style="text-align:center">{{lte.dsurcos}}</td>
+                    <th style="text-align:center">Distancia entre plantas</th>
+                    <td style="text-align:center">{{lte.dplantas}}</td>
+                    <th style="text-align:center">Distancia entre siembra</th>
+                    <td style="text-align:center">{{lte.diastancia}}</td>
+                    <th style="text-align:center"># plantas/semillas del lote</th>
+                    <td style="text-align:center">{{lte.numplantas}}</td>
+                </tr>
+            </table>
 
                 <table>
                     <thead>
                         <tr>
                             <th colspan=10>INGRESO Ciclo de la producción Permanentes unidades</th>
                         </tr>
-
-                        <tr>
-                            <th style="text-align:center">Precio mínimo</th>
-                            <!-- <td style="text-align:center">{{lte.preciomin}}</td> -->
-                            <th style="text-align:center">Precio actual</th>
-                            <!-- <td style="text-align:center">{{lte.precioactual}}</td> -->
-                            <th style="text-align:center">Precio promedio</th>
-                            <!-- <td style="text-align:center">{{lte.preciopromedio}}</td> -->
-                            <th style="text-align:center">Unidades de venta totales anual</th>
-                            <td style="text-align:center">{{lte.unidadestotales}}</td>
-                            <th style="text-align:center">TOTAL LOTE ANUAL</th>
-                            <td style="text-align:center">{{lte.totalLoteAunual}}</td>
-                        </tr>
                         <tr>
                             <th style="text-align:center">Ciclo</th>
-                            <th colspan="2" style="text-align:center">Meses de ingreso de venta</th>
-                            <th colspan="2" style="text-align:center">Rendimiento por lote bulto</th>
-                            <th colspan="2" style="text-align:center">Unidades totales para la venta</th>
-                            <th style="text-align:center">% perdida/consumo familiar</th>
-                            <th style="text-align:center">% Ciclo</th>
-                            <th style="text-align:center">Total cosecha</th>
+                            <th style="text-align:center">Rendimiento por lote</th>
+                            <th style="text-align:center">Unidades totales para la venta</th>
+                            <th style="text-align:center">% de perdida/consumo familiar</th>
+                            <th style="text-align:center">% ciclo</th>
+                            <th style="text-align:center">TOTAL COSECHA</th>
                         </tr>
+
                         <tr>
                             <td style="text-align:center">Cosecha</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesCos}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoCos}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesCos}}</td>
-                            <td style="text-align:center">{{lte.perdidaCos}}%</td>
-                            <td style="text-align:center">{{lte.procentageCos}}%</td>
-                            <td style="text-align:center">${{lte.totalCos}}</td>
+                            <td style="text-align:center">{{lte.rendimientoCos}}</td>
+                            <td style="text-align:center">{{lte.unidadesCos}}</td>
+                            <td style="text-align:center">{{lte.perdidaCos}}</td>
+                            <td style="text-align:center">{{lte.procentageCos}}</td>
+                            <td style="text-align:center">{{lte.totalCos}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Traviesa</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesTra}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoTra}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesTra}}</td>
-                            <td style="text-align:center">{{lte.perdidaTra}}%</td>
-                            <td style="text-align:center">{{lte.procentageTra}}%</td>
-                            <td style="text-align:center">${{lte.totalTra}}</td>
+                            <td style="text-align:center">{{lte.rendimientoTra}}</td>
+                            <td style="text-align:center">{{lte.unidadesTra}}</td>
+                            <td style="text-align:center">{{lte.perdidaTra}}</td>
+                            <td style="text-align:center">{{lte.procentageTra}}</td>
+                            <td style="text-align:center">{{lte.totalTra}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Pepeo</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesPepeo}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoPepeo}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesPepeo}}</td>
-                            <td style="text-align:center">{{lte.perdidaPepeo}}%</td>
-                            <td style="text-align:center">{{lte.procentagePepeo}}%</td>
-                            <td style="text-align:center">${{lte.totalPepeo}}</td>
+                            <td style="text-align:center">{{lte.rendimientoPepeo}}</td>
+                            <td style="text-align:center">{{lte.unidadesPepeo}}</td>
+                            <td style="text-align:center">{{lte.perdidaPepeo}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.totalPepeo}}</td>
                         </tr>
-
                         <tr>
-                            <td colspan="8" style="text-align:left">Total</td>
-                            <td style="text-align:center">100%</td>
+                            <td style="text-align:center">Total anual</td>
                             <td style="text-align:center">{{lte.totalUnidades}}</td>
+                            <td style="text-align:center">{{lte.unidadestotales}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.totalLoteAunual}}</td>
                         </tr>
-
+                     
                     </thead>
-
-
                 </table>
-
-
                 <!-- Egresos permanentes -->
 
                 <table>
@@ -858,24 +889,26 @@
             <table>
                 <thead>
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <th style="text-align:center">Actividad</th>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
-                        <td colspan="2" style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
-                        <td colspan="2" style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <th style="text-align:center">Nombre de la actividad</th>
+                        <td  style="text-align:center">{{act.nombre.name}}</td>
+                        <th style="text-align:center">Tipo de producción</th>
+                        <td  style="text-align:center">{{act.tipoproduccion}}</td>
+                        <th style="text-align:center">Ingreso</th>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
+                        <th style="text-align:center">Egreso</th>
                         <td style="text-align:center">Mirar este 0</td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="text-align:center">Precio minimo (libras</td>
-                        <td style="text-align:center">{{act.preciomin}}</td>
-                        <td colspan="3" style="text-align:center">Precio promedio (libras</td>
-                        <td style="text-align:center">{{act.preciopromedio}}</td>
-                        <td colspan="3" style="text-align:center">Precio actual (libras)</td>
-                        <td style="text-align:center">{{act.precioactual}}</td>
+                        <th  style="text-align:center">Unidad de venta</th>
+                        <td colspan="3" style="text-align:center">{{TipoUnidades(act.unidadventa,'Unidades')}}</td>
+                        <th  style="text-align:center">Precio minimo</th>
+                        <td style="text-align:center">${{act.preciomin}}</td>
+                        <th style="text-align:center">Precio actual</th>
+                        <td style="text-align:center">${{act.precioactual}}</td>
+                        <th  style="text-align:center">Precio promedio</th>
+                        <td style="text-align:center">${{act.preciopromedio}}</td>
                         
                     </tr>
                 </thead>
@@ -884,33 +917,39 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan=14>Lote1</th>
+                            <th colspan=11>Lote1</th>
                         </tr>
                         <tr>
-                            <th colspan=14>Ingreso</th>
+                            <th colspan=11>Ingreso</th>
                         </tr>
                         <tr>
-                            <td colspan=2 style="text-align:center">Número de animales por lote</td>
-                            <td style="text-align:center">{{ltePec.numanimales}}</td>
-                            <td style="text-align:center">Producto derivado</td>
-                            <td style="text-align:center">{{ltePec.prodderivado}}</td>   
-                            <td style="text-align:center">Unidad de venta</td>
-                            <td style="text-align:center">{{TipoUnidades(act.unidadventa,'Unidades')}}</td>        
-                            <td style="text-align:center">Cantidad producida por animal (libra)</td>
-                            <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
-                            <td style="text-align:center">Frecuencia</td>
-                            <td colspan=2 style="text-align:center">{{ltePec.frecuencia.cant}} {{ltePec.frecuencia.name}}</td>
-                            <td style="text-align:center">Cantidad producida total (libra)</td>
-                            <td style="text-align:center">{{ltePec.cantproducida}}</td>
+                            <th style="text-align:center">Producto derivado</th>
+                            <th style="text-align:center">Número de animales por lote</th>
+                            <th style="text-align:center">Cantidad producida por animal</th>
+                            <th style="text-align:center">Frecuencia</th>
+                            <th style="text-align:center">Cantidad producida total</th>
+                            <th style="text-align:center">Unidades totales para la venta</th>
+                            <th style="text-align:center">% de mortalidad /perdida/consumo familiar</th>
+                            <th style="text-align:center">Proximo mes de ingreso</th>
+                            <th style="text-align:center">Meses de producción</th>
+                            <th style="text-align:center">Meses de no produccion</th>
+                            <th style="text-align:center">Total</th>
+                                                      
 
                         </tr>
                         <tr>
-                            <td colspan=2 style="text-align:center">Unidades Totales para la Venta (libra)</td>
+                            <td style="text-align:center">{{ltePec.prodderivado}}</td>
+                            <td style="text-align:center">{{ltePec.numanimales}}</td>  
+                            <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
+                            <td style="text-align:center">{{ltePec.frecuencia.cant}} {{ltePec.frecuencia.name}}</td>
+                            <td style="text-align:center">{{ltePec.cantproducida}}</td>
                             <td style="text-align:center">{{ltePec.unitotalesventa}}</td>
-                            <td style="text-align:center">% de mortalidad /perdida/consumo familiar</td>
-                            <td style="text-align:center">{{ltePec.perdida}}%</td>                           
-                            <td style="text-align:center">Meses de ingreso de venta</td>
+                            <td style="text-align:center">{{ltePec.perdida}}%</td>  
                             <td style="text-align:center">{{MesNombre(ltePec.mesingreso,'MesNombre')}}</td>
+                            <td style="text-align:center">{{ltePec.produccion}}</td>  
+                            <td style="text-align:center">{{ltePec.noproduccion}}</td> 
+                            <td style="text-align:center">{{ltePec.unitotalesventa}}</td>   
+                           
                         </tr>
                     </thead>
                 </table>
