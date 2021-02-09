@@ -74,7 +74,7 @@
                 <td>N. de clientes</td>
                 <td>{{datasolicitud.Balance.clienteCobrar}}</td>
                 <td>Valor</td>
-                <td>{{datasolicitud.Balance.valorCobrar}}</td>
+                <td style="width: 10%;">{{datasolicitud.Balance.valorCobrar}}</td>
                 <td>Incobrable</td>
                 <td>{{datasolicitud.Balance.incobrableCobrar}}</td>
                 <td>Total</td>
@@ -99,19 +99,19 @@
                 <th align="center" colspan=10>Inventarios</th>
             </tr>
             <tr>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Valor unitario</th>
+                <th style="width: 20%;">Tipo</th>
+                <th style="width: 30%;">Descripción</th>
+                <th style="width: 20%;">Cantidad</th>
+                <th style="width: 20%;">Valor unitario</th>
                 <th>Valor</th>
             </tr>
             <tbody *ngFor="let inven of datasolicitud.Balance.inventarioRow; let cont=index">
                 <tr>
-                    <td>{{equivalencia(inven.tipo,'tipoinventario')}}</td>
-                    <td>{{inven.descripcion}}</td>
-                    <td>{{inven.cantidad}}</td>
-                    <td>${{inven.vlrUni}}</td>
-                    <td>${{inven.valor}}</td>
+                    <td style="width: 20%;">{{equivalencia(inven.tipo,'tipoinventario')}}</td>
+                    <td style="width: 30%;">{{inven.descripcion}}</td>
+                    <td style="width: 20%;">{{inven.cantidad}}</td>
+                    <td style="width: 20%;">${{inven.vlrUni}}</td>
+                    <td align="right">${{inven.valor}}</td>
                 </tr>
             </tbody>
             <tr>
@@ -123,22 +123,22 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan=5>Activos Negocio</th>
+                    <th colspan=10>Activos Negocio</th>
                 </tr>
                 <tr>
-                    <th style="text-align:center">Tipo</th>
-                    <th style="text-align:center">Descripcion</th>
-                    <th style="text-align:center">Cantidad</th>
-                    <th style="text-align:center">Valor unitario</th>
+                    <th style="width: 20%;" style="text-align:center">Tipo</th>
+                    <th style="width: 30%;" style="text-align:center">Descripcion</th>
+                    <th style="width: 20%;" style="text-align:center">Cantidad</th>
+                    <th style="width: 20%;" style="text-align:center">Valor unitario</th>
                     <th style="text-align:center">Valor</th>
                 </tr>
             </thead>
             <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
                 <tr>
-                    <td>{{act.tipo.name}}</td>
-                    <td>{{act.detalle}}</td>
-                    <td>{{act.cantidad}}</td>
-                    <td>${{act.vlrUni}}</td>
+                    <td style="width: 20%;"> {{act.tipo.name}}</td>
+                    <td style="width: 30%;">{{act.detalle}}</td>
+                    <td style="width: 20%;">{{act.cantidad}}</td>
+                    <td style="width: 20%;">${{act.vlrUni}}</td>
                     <td align="right">${{act.valor}}</td>
                 </tr>
             </tbody>
@@ -153,22 +153,22 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan=5>Activos de la familia</th>
+                    <th colspan=10>Activos de la familia</th>
                 </tr>
                 <tr>
-                    <th style="text-align:center">Tipo</th>
-                    <th style="text-align:center">Descripción</th>
-                    <th style="text-align:center">Cantidad</th>
-                    <th style="text-align:center">Valor unitario</th>
+                    <th style="width: 20%;" style="text-align:center">Tipo</th>
+                    <th style="width: 30%;" style="text-align:center">Descripción</th>
+                    <th style="width: 20%;" style="text-align:center">Cantidad</th>
+                    <th style="width: 20%;" style="text-align:center">Valor unitario</th>
                     <th style="text-align:center">Valor</th>
                 </tr>
             </thead>
             <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
                 <tr>
-                    <td>{{inv.tipo.name}}</td>
-                    <td>{{inv.detalle}}</td>
-                    <td>{{inv.cantidad}}</td>
-                    <td>${{inv.vlrUni}}</td>
+                    <td style="width: 20%;">{{inv.tipo.name}}</td>
+                    <td style="width: 30%;">{{inv.detalle}}</td>
+                    <td style="width: 20%;">{{inv.cantidad}}</td>
+                    <td style="width: 20%;">${{inv.vlrUni}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>
             </tbody>
@@ -235,25 +235,49 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan=4>Créditos con proveedor</th>
+                    <th colspan=12>Créditos con proveedor</th>
                 </tr>
-                <tr>
-                    <th style="text-align:center">Proveedor</th>
-                    <th style="text-align:center">Valor</th>
+                <tr *ngIf="datasolicitud.Balance.proveedoresRow.length+1==0">
+                    <th colspan=3>¿Cuenta actualmete con créditos con proveedores?</th>
+                    <td style="text-align:center">NO</td>
+                    <th colspan=3>¿Cuantos?</th>
+                    <td>{{datasolicitud.Balance.proveedoresRow.length+1}}</td>
+                    <th colspan=3>Total:</th>
+                    <td>${{datasolicitud.Balance.proveedoresTotal}}</td>
                 </tr>
+                <tr *ngIf="datasolicitud.Balance.proveedoresRow.length+1!==0">
+                    <th colspan=3>¿Cuenta actualmete con créditos con proveedores?</th>
+                    <td style="text-align:center">SI</td>
+                    <th colspan=3>¿Cuantos?</th>
+                    <td>{{datasolicitud.Balance.proveedoresRow.length+1}}</td>
+                    <th colspan=3>Total:</th>
+                    <td>${{datasolicitud.Balance.proveedoresTotal}}</td>
+                </tr>
+               
+               
             </thead>
-            <tbody *ngFor="let credpro of datasolicitud.Balance.proveedoresRow; let cont=index">
+            <tbody *ngFor="let credpro of datasolicitud.Balance.proveedoresEstacionales; let cont=index">
                 <tr>
-                    <td>{{credpro.descripcion}}</td>
-                    <td align="right">${{credpro.valor}}</td>
+                    
+                    <th style="text-align:center">Proveedor</th>
+                    <td>{{credpro.nombre}}</td>
+                    <th style="text-align:center">Numero de cuotas</th>
+                    <td>{{credpro.numcuotas}}</td>
+                    <th colspan=4 style="text-align:center">Total Proveedor</th>
+                    <td colspan=4 align="right">${{credpro.total}}</td>
                 </tr>
+                    <tr *ngFor="let credproMes of credpro.cuotas; let cont=index">
+                        
+                            <th >Mes</th>
+                            <td colspan=2>{{MesNombre(credproMes.mes,'MesNombre')}}</td>
+                            <th >Valor</th>
+                            <td colspan=8 style="text-align:right">${{credproMes.valor}}</td>
+                        </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <td>Total</td>
-                    <td align="right" colspan=3>${{datasolicitud.Balance.proveedoresTotal}}</td>
-                </tr>
-            </tfoot>
+                    
+                
+            
+            
         </table>
         <!-- Pasivo del negocio -->
         <table>
@@ -274,6 +298,18 @@
             </thead>
             <tbody *ngFor="let pasNeg of datasolicitud.Balance.pasivosRows; let cont=index">
                 <tr *ngIf="pasNeg.clase==2">
+                    
+                    <td>{{pasNeg.acreedor}}</td>
+                    <td>{{pasNeg.monto}}</td>
+                    <td>{{pasNeg.saldo}}</td>
+                    <td>{{pasNeg.destino}}</td>
+                    <td>{{pasNeg.periodo.name}}</td>
+                    <td>{{pasNeg.cuota}}</td>
+                    <td>{{pasNeg.corrienteN}}</td>
+                    <td align="right">${{pasNeg.nocorrienteN}}</td>
+                </tr>
+                <tr *ngIf="pasNeg.negociovivienda">
+                    
                     <td>{{pasNeg.acreedor}}</td>
                     <td>{{pasNeg.monto}}</td>
                     <td>{{pasNeg.saldo}}</td>
@@ -319,10 +355,25 @@
                     <td>
                         <ng-container *ngIf="pasfa.periodo"> {{pasfa.periodo.name}}</ng-container>
                     </td>
-                    <td>{{pasfa.cuota}}</td>
+                    <td>${{pasfa.proyeccion}}</td>
                     <td>{{pasfa.corrienteF}}</td>
                     <td align="right">${{pasfa.nocorrienteF}}</td>
                 </tr>
+         
+                <tr *ngIf="pasfa.negociovivienda">
+                    <td>{{pasfa.acreedor}}</td>
+                    <td>{{pasfa.monto}}</td>
+                    <td>{{pasfa.saldo}}</td>
+                    <td>{{pasfa.destino}}</td>
+                    <td>
+                        <ng-container *ngIf="pasfa.periodo"> {{pasfa.periodo.name}}</ng-container>
+                    </td>
+                    <td>${{pasfa.proyeccion}}</td>
+                    <td>{{pasfa.corrienteF}}</td>
+                    <td align="right">${{pasfa.nocorrienteF}}</td>
+                </tr>
+                
+                
             </tbody>
             <tfoot>
                 <tr>
@@ -515,28 +566,38 @@
     <!-- Actividades del cliente -->
     <div *ngFor="let act of datasolicitud.CrucesAgro" id="actividades">
 
-        <div *ngIf="act.tipoproduccion=='Transitorio'">
+        <div *ngIf="act.tipoproduccion=='Transitorio'"  >
             <table>
                 <thead>
                     <tr>
                         <th colspan=11>Actividades del cliente</th>
                     </tr>
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <th style="text-align:center">Actividad</th>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
+                        <th  style="text-align:center">Nombre de la actividad</th >
                         <td style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
+                        <th  style="text-align:center">Tipo de producción</th >
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <th  style="text-align:center">Ingreso</th>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
+                        <th  style="text-align:center">Egreso</th>
                         <td style="text-align:center">Mirar este 0</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Unidad de venta</td>
+                        <td colspan=3 style="text-align:center">{{TipoUnidades(act.unidadventa,'Unidades')}}</td>
+                        <td style="text-align:center">Precio minimo</td>
+                        <td style="text-align:center">${{act.preciomin}}</td>
+                        <td style="text-align:center">Precio actual</td>
+                        <td style="text-align:center">${{act.precioactual}}</td>
+                        <td style="text-align:center">Precio promedio</td>
+                        <td style="text-align:center">${{act.preciopromedio}}</td>
                     </tr>
                 </thead>
             </table>
 
-            <!-- Lote 1 -->
+            <!-- Lote 1 -->  
             <div *ngFor="let lt of act.lotesAgro; let cont=index">
                 <table>
 
@@ -546,17 +607,18 @@
 
                     <tr>
                         <td style="text-align:center">Edad del cultivo</td>
-                        <td style="text-align:center">{{lt.edadcult}}</td>
-                        <td style="text-align:center">{{lt.periodoedad}}</td>
+                        <td style="text-align:center">{{lt.edadcult}} {{TipoFrecuencia(lt.periodoedad,'PeriodoEdad')}}</td>
                         <td style="text-align:center">Área cultivada</td>
                         <td style="text-align:center">{{lt.areacult}}</td>
-                        <td style="text-align:center">{{lt.periodoedad}}</td>
-                        <td style="text-align:center">Distancia de siembra ó # plantas/semillas del lote que informa el
-                            cliente
-                        </td>
+                        <td style="text-align:center">Distacia entre surcos</td>
+                        <td style="text-align:center">{{lt.dsurcos}}</td>
+                        <td style="text-align:center">Distacia entre plantas</td>
+                        <td style="text-align:center">{{lt.dplantas}}</td>
+                        <td style="text-align:center">Distacia entre siembra</td>
                         <td style="text-align:center">{{lt.diastancia}}</td>
                         <td style="text-align:center"># plantas/semillas del lote</td>
-                        <td style="text-align:center">{{lt.dplantas}}</td>      
+                        <td style="text-align:center">{{lt.numplantas}}</td>
+                          
                     </tr>
                 </table>
 
@@ -565,17 +627,16 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan=12>INGRESO Ciclo de la producción Transitorias</th>
+                            <th colspan=7>INGRESO Ciclo de la producción Transitorias</th>
                         </tr>
                         <tr>
                             <td style="text-align:center">Rendimiento por lote bulto</td>
                             <td style="text-align:center">Unidades Totales para la Venta bulto</td>
                             <td style="text-align:center">% de perdida/consumo familiar</td>
-                            <td style="text-align:center">Precio mínimo</td>
-                            <td style="text-align:center">Precio actual</td>
-                            <td style="text-align:center">Precio Promedio</td>
+                            <td style="text-align:center">Próxima cosecha</td>
+                            <td style="text-align:center">Meses de producción</td>
+                            <td style="text-align:center">Meses de no producción</td>
                             <th style="text-align:center">Total</th>
-                            <td style="text-align:center">Meses de ingreso</td>
                         </tr>
                     </thead>
                     <tfoot>
@@ -583,11 +644,10 @@
                             <td align="right">${{lt.rendiemientolote}}</td>
                             <td align="right">${{lt.unidadestotales}}</td>
                             <td align="right">{{lt.perdida}}%</td>
-                            <!-- <td align="right">${{lt.preciomin}}</td>
-                            <td align="right">${{lt.precioactual}}</td>
-                            <td align="right">${{lt.preciopromedio}}</td> -->
-                            <td align="right">$Se acuerda que ese falta por calcular</td>
-                            <td align="right">$Se acuerda que ese falta por calcular</td>
+                            <td align="right">{{MesNombre(lt.proxcocecha,'MesNombre')}}</td>
+                            <td align="right">mirar este 0</td>
+                            <td align="right">mirar este 0</td>
+                            <td align="right">{{lt.totalCos}}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -674,88 +734,110 @@
                 <thead>
 
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <td style="text-align:center">Edad del cultivo</td>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
+                        <td style="text-align:center">Area cultivada</td>
                         <td style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
+                        <td style="text-align:center">Distancia entre surcos</td>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <td style="text-align:center">Distancia entre plantas</td>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
-                        <td style="text-align:center">Mirar este 0</td>
+                        <td style="text-align:center">Distancia entre siembra</td>
+                        <td style="text-align:center">MIrar este 0</td>
+                        <td style="text-align:center"># plantas/semillas del lote</td>
+                        <td style="text-align:center">MIrar este 0</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Unidad de venta</td>
+                        <td colspan=3 style="text-align:center">{{act.unidadventa}}</td>
+                        <td style="text-align:center">Precio minimo</td>
+                        <td style="text-align:center">{{act.preciomin}}</td>
+                        <td style="text-align:center">Precio actual</td>
+                        <td colspan=2 style="text-align:center">{{act.precioactual}}</td>
+                        <td style="text-align:center">Precio promedio</td>
+                        <td colspan=2 style="text-align:center">{{act.preciopromedio}}</td>
+
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">Cosecha</td>
+                        <td colspan=4 style="text-align:center">{{act.mesCos}}</td>
+                        <td style="text-align:center">Traviesa</td>
+                        <td colspan=3 style="text-align:center">{{act.mesTra}}</td>
+                        <td style="text-align:center">Pepeo</td>
+                        <td colspan=2 style="text-align:center">{{act.mesPepeo}}</td>
                     </tr>
                 </thead>
             </table>
             <div *ngFor="let lte of act.lotesAgro; let cont=index">
+                <table>
+                <tr>
+                    <th colspan=12>Lote 1 </th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Edad del cultivo</th>
+                    <td style="text-align:center">{{lte.edadcult}}</td>
+                    <th style="text-align:center">Area cultivada</th>
+                    <td style="text-align:center">{{lte.areacult}}</td>
+                    <th style="text-align:center">Distancia entre surcos</th>
+                    <td style="text-align:center">{{lte.dsurcos}}</td>
+                    <th style="text-align:center">Distancia entre plantas</th>
+                    <td style="text-align:center">{{lte.dplantas}}</td>
+                    <th style="text-align:center">Distancia entre siembra</th>
+                    <td style="text-align:center">{{lte.diastancia}}</td>
+                    <th style="text-align:center"># plantas/semillas del lote</th>
+                    <td style="text-align:center">{{lte.numplantas}}</td>
+                </tr>
+            </table>
 
                 <table>
                     <thead>
                         <tr>
                             <th colspan=10>INGRESO Ciclo de la producción Permanentes unidades</th>
                         </tr>
-
-                        <tr>
-                            <th style="text-align:center">Precio mínimo</th>
-                            <!-- <td style="text-align:center">{{lte.preciomin}}</td> -->
-                            <th style="text-align:center">Precio actual</th>
-                            <!-- <td style="text-align:center">{{lte.precioactual}}</td> -->
-                            <th style="text-align:center">Precio promedio</th>
-                            <!-- <td style="text-align:center">{{lte.preciopromedio}}</td> -->
-                            <th style="text-align:center">Unidades de venta totales anual</th>
-                            <td style="text-align:center">{{lte.unidadestotales}}</td>
-                            <th style="text-align:center">TOTAL LOTE ANUAL</th>
-                            <td style="text-align:center">{{lte.totalLoteAunual}}</td>
-                        </tr>
                         <tr>
                             <th style="text-align:center">Ciclo</th>
-                            <th colspan="2" style="text-align:center">Meses de ingreso de venta</th>
-                            <th colspan="2" style="text-align:center">Rendimiento por lote bulto</th>
-                            <th colspan="2" style="text-align:center">Unidades totales para la venta</th>
-                            <th style="text-align:center">% perdida/consumo familiar</th>
-                            <th style="text-align:center">% Ciclo</th>
-                            <th style="text-align:center">Total cosecha</th>
+                            <th style="text-align:center">Rendimiento por lote</th>
+                            <th style="text-align:center">Unidades totales para la venta</th>
+                            <th style="text-align:center">% de perdida/consumo familiar</th>
+                            <th style="text-align:center">% ciclo</th>
+                            <th style="text-align:center">TOTAL COSECHA</th>
                         </tr>
+
                         <tr>
                             <td style="text-align:center">Cosecha</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesCos}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoCos}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesCos}}</td>
-                            <td style="text-align:center">{{lte.perdidaCos}}%</td>
-                            <td style="text-align:center">{{lte.procentageCos}}%</td>
-                            <td style="text-align:center">${{lte.totalCos}}</td>
+                            <td style="text-align:center">{{lte.rendimientoCos}}</td>
+                            <td style="text-align:center">{{lte.unidadesCos}}</td>
+                            <td style="text-align:center">{{lte.perdidaCos}}</td>
+                            <td style="text-align:center">{{lte.procentageCos}}</td>
+                            <td style="text-align:center">{{lte.totalCos}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Traviesa</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesTra}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoTra}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesTra}}</td>
-                            <td style="text-align:center">{{lte.perdidaTra}}%</td>
-                            <td style="text-align:center">{{lte.procentageTra}}%</td>
-                            <td style="text-align:center">${{lte.totalTra}}</td>
+                            <td style="text-align:center">{{lte.rendimientoTra}}</td>
+                            <td style="text-align:center">{{lte.unidadesTra}}</td>
+                            <td style="text-align:center">{{lte.perdidaTra}}</td>
+                            <td style="text-align:center">{{lte.procentageTra}}</td>
+                            <td style="text-align:center">{{lte.totalTra}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Pepeo</td>
-                            <!-- <td colspan="2" style="text-align:center">{{lte.mesPepeo}}</td> -->
-                            <td colspan="2" style="text-align:center">{{lte.rendimientoPepeo}}</td>
-                            <td colspan="2" style="text-align:center">{{lte.unidadesPepeo}}</td>
-                            <td style="text-align:center">{{lte.perdidaPepeo}}%</td>
-                            <td style="text-align:center">{{lte.procentagePepeo}}%</td>
-                            <td style="text-align:center">${{lte.totalPepeo}}</td>
+                            <td style="text-align:center">{{lte.rendimientoPepeo}}</td>
+                            <td style="text-align:center">{{lte.unidadesPepeo}}</td>
+                            <td style="text-align:center">{{lte.perdidaPepeo}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.totalPepeo}}</td>
                         </tr>
-
                         <tr>
-                            <td colspan="8" style="text-align:left">Total</td>
-                            <td style="text-align:center">100%</td>
+                            <td style="text-align:center">Total anual</td>
                             <td style="text-align:center">{{lte.totalUnidades}}</td>
+                            <td style="text-align:center">{{lte.unidadestotales}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.procentagePepeo}}</td>
+                            <td style="text-align:center">{{lte.totalLoteAunual}}</td>
                         </tr>
-
+                     
                     </thead>
-
-
                 </table>
-
-
                 <!-- Egresos permanentes -->
 
                 <table>
@@ -807,16 +889,27 @@
             <table>
                 <thead>
                     <tr>
-                        <td style="text-align:center">Actividad</td>
+                        <th style="text-align:center">Actividad</th>
                         <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
-                        <td colspan="2" style="text-align:center">{{act.nombre.name}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
-                        <td colspan="2" style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
+                        <th style="text-align:center">Nombre de la actividad</th>
+                        <td  style="text-align:center">{{act.nombre.name}}</td>
+                        <th style="text-align:center">Tipo de producción</th>
+                        <td  style="text-align:center">{{act.tipoproduccion}}</td>
+                        <th style="text-align:center">Ingreso</th>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Egreso</td>
+                        <th style="text-align:center">Egreso</th>
                         <td style="text-align:center">Mirar este 0</td>
+                    </tr>
+                    <tr>
+                        <th  style="text-align:center">Unidad de venta</th>
+                        <td colspan="3" style="text-align:center">{{TipoUnidades(act.unidadventa,'Unidades')}}</td>
+                        <th  style="text-align:center">Precio minimo</th>
+                        <td style="text-align:center">${{act.preciomin}}</td>
+                        <th style="text-align:center">Precio actual</th>
+                        <td style="text-align:center">${{act.precioactual}}</td>
+                        <th  style="text-align:center">Precio promedio</th>
+                        <td style="text-align:center">${{act.preciopromedio}}</td>
+                        
                     </tr>
                 </thead>
             </table>
@@ -824,31 +917,39 @@
                 <table>
                     <thead>
                         <tr>
-                            <th colspan=12>Lote1</th>
+                            <th colspan=11>Lote1</th>
                         </tr>
                         <tr>
-                            <th colspan=12>Ingreso</th>
+                            <th colspan=11>Ingreso</th>
                         </tr>
                         <tr>
-                            <td style="text-align:center">Número de animales por lote</td>
-                            <td style="text-align:center">{{ltePec.numanimales}}</td>
-                            <td style="text-align:center">Producto derivado</td>
-                            <td style="text-align:center">{{ltePec.prodderivado}}</td>           
-                            <td style="text-align:center">Cantidad producida por animal (libra)</td>
-                            <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
-                            <td style="text-align:center">Frecuencia</td>
-                            <td style="text-align:center">{{ltePec.frecuencia}}</td>
-                            <td style="text-align:center">Cantidad producida total (libra)</td>
-                            <td style="text-align:center">{{ltePec.cantproducida}}</td>
+                            <th style="text-align:center">Producto derivado</th>
+                            <th style="text-align:center">Número de animales por lote</th>
+                            <th style="text-align:center">Cantidad producida por animal</th>
+                            <th style="text-align:center">Frecuencia</th>
+                            <th style="text-align:center">Cantidad producida total</th>
+                            <th style="text-align:center">Unidades totales para la venta</th>
+                            <th style="text-align:center">% de mortalidad /perdida/consumo familiar</th>
+                            <th style="text-align:center">Proximo mes de ingreso</th>
+                            <th style="text-align:center">Meses de producción</th>
+                            <th style="text-align:center">Meses de no produccion</th>
+                            <th style="text-align:center">Total</th>
+                                                      
 
                         </tr>
                         <tr>
-                            <td style="text-align:center">Unidades Totales para la Venta (libra)</td>
+                            <td style="text-align:center">{{ltePec.prodderivado}}</td>
+                            <td style="text-align:center">{{ltePec.numanimales}}</td>  
+                            <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
+                            <td style="text-align:center">{{ltePec.frecuencia.cant}} {{ltePec.frecuencia.name}}</td>
+                            <td style="text-align:center">{{ltePec.cantproducida}}</td>
                             <td style="text-align:center">{{ltePec.unitotalesventa}}</td>
-                            <td style="text-align:center">% de mortalidad /perdida/consumo familiar</td>
-                            <td style="text-align:center">{{ltePec.perdida}}%</td>                            
-                            <th style="text-align:center">Meses de ingreso de venta</th>
-                            <td style="text-align:center">{{ltePec.mesingreso}}</td>
+                            <td style="text-align:center">{{ltePec.perdida}}%</td>  
+                            <td style="text-align:center">{{MesNombre(ltePec.mesingreso,'MesNombre')}}</td>
+                            <td style="text-align:center">{{ltePec.produccion}}</td>  
+                            <td style="text-align:center">{{ltePec.noproduccion}}</td> 
+                            <td style="text-align:center">{{ltePec.unitotalesventa}}</td>   
+                           
                         </tr>
                     </thead>
                 </table>

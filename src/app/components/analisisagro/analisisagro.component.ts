@@ -57,10 +57,42 @@ export class AnalisisagroComponent implements OnInit {
     }
   }
 
-  MesNombre(id: number, lista: string) {
+  TipoUnidades(id: number, lista: string){
+    if (lista == 'Unidades') {
+      let descripcion=DataSelect.Unidades.filter(i => i.id == id);
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+
+  }
+  TipoEdad(id: number, lista: string){
+    if (lista == 'Periodo') {
+      let descripcion=DataSelect.Unidades.filter(i => i.id == id);
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+
+  }
+
+  TipoFrecuencia(id: number, lista: string){
+    if (lista == 'PeriodoEdad') {
+      let descripcion=DataSelect.PeriodoEdad.filter(i => i.id == id);
+      console.log(descripcion)
+      return descripcion[0].name
+    }
+
+  }
+  
+  MesNombre(id: string, lista: string) {
+    
+    if(id==""){
+
+      return ""
+    }
+
     if (lista == 'MesNombre') {
       let Mes = DataSelect.Meses.filter(i => i.id == id);
-      console.log(Mes)
+      console.log("********"+Mes)
       return Mes[0].name
     }
   }
