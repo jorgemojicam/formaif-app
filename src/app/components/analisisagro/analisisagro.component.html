@@ -609,7 +609,7 @@
                         <td style="text-align:center">Edad del cultivo</td>
                         <td style="text-align:center">{{lt.edadcult}} {{TipoFrecuencia(lt.periodoedad,'PeriodoEdad')}}</td>
                         <td style="text-align:center">Área cultivada</td>
-                        <td style="text-align:center">{{lt.areacult}}</td>
+                        <td style="text-align:center">{{lt.areacult}} m²</td>
                         <td style="text-align:center">Distacia entre surcos</td>
                         <td style="text-align:center">{{lt.dsurcos}}</td>
                         <td style="text-align:center">Distacia entre plantas</td>
@@ -630,8 +630,8 @@
                             <th colspan=7>INGRESO Ciclo de la producción Transitorias</th>
                         </tr>
                         <tr>
-                            <td style="text-align:center">Rendimiento por lote bulto</td>
-                            <td style="text-align:center">Unidades Totales para la Venta bulto</td>
+                            <td style="text-align:center">Rendimiento por lote {{TipoUnidades(act.unidadventa,'Unidades')}}</td>
+                            <td style="text-align:center">Unidades Totales para la Venta {{TipoUnidades(act.unidadventa,'Unidades')}}</td>
                             <td style="text-align:center">% de perdida/consumo familiar</td>
                             <td style="text-align:center">Próxima cosecha</td>
                             <td style="text-align:center">Meses de producción</td>
@@ -737,7 +737,7 @@
                         <td style="text-align:center">Edad del cultivo</td>
                         <td style="text-align:center">{{act.tipo}}</td>
                         <td style="text-align:center">Area cultivada</td>
-                        <td style="text-align:center">{{act.nombre.name}}</td>
+                        <td style="text-align:center">{{act.nombre.name}} m²</td>
                         <td style="text-align:center">Distancia entre surcos</td>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
                         <td style="text-align:center">Distancia entre plantas</td>
@@ -775,9 +775,9 @@
                 </tr>
                 <tr>
                     <th style="text-align:center">Edad del cultivo</th>
-                    <td style="text-align:center">{{lte.edadcult}}</td>
+                    <td style="text-align:center">{{lte.edadcult}}{{TipoEdad(lte.edadcult,'descripcionegreso')}}</td>
                     <th style="text-align:center">Area cultivada</th>
-                    <td style="text-align:center">{{lte.areacult}}</td>
+                    <td style="text-align:center">{{lte.areacult}} m²</td>
                     <th style="text-align:center">Distancia entre surcos</th>
                     <td style="text-align:center">{{lte.dsurcos}}</td>
                     <th style="text-align:center">Distancia entre plantas</th>
@@ -925,10 +925,10 @@
                         <tr>
                             <th style="text-align:center">Producto derivado</th>
                             <th style="text-align:center">Número de animales por lote</th>
-                            <th style="text-align:center">Cantidad producida por animal</th>
+                            <th style="text-align:center">Cantidad producida por animal {{TipoUnidades(act.unidadventa,'Unidades')}}</th>
                             <th style="text-align:center">Frecuencia</th>
-                            <th style="text-align:center">Cantidad producida total</th>
-                            <th style="text-align:center">Unidades totales para la venta</th>
+                            <th style="text-align:center">Cantidad producida total {{TipoUnidades(act.unidadventa,'Unidades')}}</th>
+                            <th style="text-align:center">Unidades totales para la venta {{TipoUnidades(act.unidadventa,'Unidades')}}</th>
                             <th style="text-align:center">% de mortalidad /perdida/consumo familiar</th>
                             <th style="text-align:center">Proximo mes de ingreso</th>
                             <th style="text-align:center">Meses de producción</th>
