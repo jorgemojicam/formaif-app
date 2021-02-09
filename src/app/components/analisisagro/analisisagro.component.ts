@@ -52,7 +52,7 @@ export class AnalisisagroComponent implements OnInit {
   equivalencia(id: number, lista: string) {
     if (lista == 'tipoinventario') {
       let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);
-      console.log(inventario)
+     
       return inventario[0].name
     }
   }
@@ -61,7 +61,7 @@ export class AnalisisagroComponent implements OnInit {
     if(id!==""){
       if (lista == 'Unidades') {
         let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-        console.log(descripcion)
+       
         return descripcion[0].name
       }
     }
@@ -70,7 +70,7 @@ export class AnalisisagroComponent implements OnInit {
     if(id!==""){
       if (lista == 'Periodo') {
         let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-        console.log(descripcion)
+        
         return descripcion[0].name
       }
 
@@ -81,7 +81,7 @@ export class AnalisisagroComponent implements OnInit {
    if(id!==""){
     if (lista == 'PeriodoEdad') {
       let descripcion=DataSelect.PeriodoEdad.filter(i => i.id == id);
-      console.log(descripcion)
+      
       return descripcion[0].name
     }
    }
@@ -101,7 +101,7 @@ export class AnalisisagroComponent implements OnInit {
   TipoIngreso(id: number, lista: string) {
     if (lista == 'tipoingreso') {
       let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
-      console.log(tipo)
+     
       return tipo[0].name
     }
   }
@@ -110,7 +110,7 @@ export class AnalisisagroComponent implements OnInit {
     if(id!==""){
       if (lista == 'descripcionegreso') {
         let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);
-        console.log(descripcion)
+        
         return descripcion[0].name
       }
 
@@ -122,7 +122,7 @@ export class AnalisisagroComponent implements OnInit {
     if(id!==""){
       if (lista == 'DescripcionEgresosPec') {
         let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
-        console.log(descripcion)
+        
         return descripcion[0].name
       }
     }

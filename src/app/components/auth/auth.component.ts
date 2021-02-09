@@ -52,7 +52,7 @@ export class AuthComponent implements OnInit {
             Nombre: use,
             Iniciales: "N/A",
             Grupo: "SOPORTE",
-            Clave: "N/A",
+            Clave: "use",
             Sucursales: {
               Codigo: "969",
               Direccion: "",

@@ -21,7 +21,6 @@ import { AnalisisagroComponent } from '../../analisisagro/analisisagro.component
 import { FlujocajaComponent } from '../../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
-import { rejects } from 'assert';
 
 @Component({
   selector: 'app-home',
@@ -183,21 +182,25 @@ export class HomeComponent implements AfterViewInit {
                       const contentagro = this.analisisAgro.reporte.nativeElement
                       const contentflujo = this.flujo.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroSolicitud) as string
+                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroSolicitud, "p") as string
                       b.textContent = "Generacion Flujo de caja pdf..."
-                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroSolicitud) as string
+                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroSolicitud, "l") as string
 
                     } else if (this.datasol.asesor == 1) {
                       const contentana = this.analisis.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroSolicitud) as string
+                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroSolicitud, "p") as string
                     }
 
                     b.textContent = "Enviando email..."
-                    let sendEmail = await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, "stefany.zambrano@fundaciondelamujer.com")
+                    await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, "jorge.mojica@fundaciondelamujer.com")
 
                     b.textContent = "Insertando el analisis..."
-                    let insertAnalisis = await this.insert(this.datasol)
+                    await this.insert(this.datasol)
+
+                    Swal.close()
+                    Swal.fire('Enviado!', 'Se envio correctamente', 'success')
+                    this.procesando = false
 
                     //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
                     //console.log("Insertndo el carpeta digital",insertaCarpeta)
@@ -207,8 +210,8 @@ export class HomeComponent implements AfterViewInit {
               }
             })
           } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
             this.procesando = false
+            Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
           }
         })
 
@@ -249,7 +252,7 @@ export class HomeComponent implements AfterViewInit {
 
   }
 
-  createpdf(content, namefile, numeroSolicitud) {
+  createpdf(content, namefile, numeroSolicitud, orintation) {
 
     const op = {
       filename: namefile + numeroSolicitud + '.pdf',
@@ -257,7 +260,7 @@ export class HomeComponent implements AfterViewInit {
       html2canvas: {
       },
       margin: 15,
-      jsPDF: { format: 'a3', orientation: 'p' }
+      jsPDF: { format: 'a3', orientation: orintation }
     }
     return new Promise(resolve => {
       html2pdf().from(content).set(op).outputPdf()
@@ -285,18 +288,16 @@ export class HomeComponent implements AfterViewInit {
     email.Base64Pdf = pdfBase64
     email.Base64PdfAgro = pdfBase64Agro
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.emailServ.Send(email).subscribe(
         (su) => {
-          Swal.close()
-          Swal.fire('Enviado!', 'Se envio correctamente', 'success')
-          this.procesando = false
           return resolve(su)
         },
         (er) => {
           Swal.close()
-          Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er, 'error')
+          Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.reason, 'error')
           this.procesando = false
+          reject(er)
         }
       )
     })

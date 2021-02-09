@@ -14,6 +14,8 @@ import { TokenStorageService } from '../services/token-storage.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { CarpetadigitalService } from '../services/carpetadigital.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const TOKEN_HEADER_KEY = 'Authorization';
 
@@ -23,7 +25,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private token: TokenStorageService,
     private carpetaSrv: CarpetadigitalService,
-    public dialog: MatDialog
+    private route: Router,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
   ) { }
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
@@ -45,11 +49,18 @@ export class AuthInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-        let data = {};
+        let data = {};        
         data = {
           reason: error && error.error && error.error.reason ? error.error.reason : '',
           status: error.status
         };
+        if (error.status == 401) {
+          this.token.signOut()
+          this.route.navigate(['auth'])
+          this._snackBar.open("Epa! Debe volver a iniciar sesion para enviar el analisis", "Ok!", {
+            duration: 10000,
+          });
+        }
         return throwError(data);
       }));
   }
