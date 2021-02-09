@@ -49,10 +49,18 @@
                 <th *ngFor="let act of datasolicitud.CrucesAgro">{{act.nombre.name}}</th>
             </tr>
         </thead>
-        <tr *ngFor="let item of dataFlujo">
+        <tr *ngFor="let item of dataFlujo;let j=index">
+
             <td *ngFor="let col of dataFlujo[0];let i=index ">
-                {{item[i]}}
+                <ng-container *ngIf="i > 2">
+                    {{item[i] |currency:"$":'symbol':'4.2-2'}}
+                </ng-container>
+                <ng-container *ngIf="i <= 2">
+                    {{item[i]}}
+                </ng-container>
             </td>
+
+
         </tr>
     </table>
     <table>
@@ -104,10 +112,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of dataFlujoAcumulado">
 
-                <td [ngClass]="{'error': i ==10 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado[0];let i=index ">
-                    {{item[i]}}
+            <tr *ngFor="let item of dataFlujoAcumulado">
+                <td [ngClass]="{'error': i ==10 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado[0];let i=index">
+                    <ng-container *ngIf="i > 2">
+                        {{item[i] |currency:"$":'symbol':'4.2-2'}}
+                    </ng-container>
+                    <ng-container *ngIf="i <= 2">
+                        {{item[i]}}
+                    </ng-container>
                 </td>
             </tr>
 

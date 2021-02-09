@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-const API_CP = 'https://infopfdlmpru.azurewebsites.net/wApiFDLM/api/'
+import { environment } from 'src/environments/environment';
+import { Solicitud } from '../model/solicitud';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,24 +21,23 @@ export class CarpetadigitalService {
   ) { }
 
   loginCD() {
-    return this.http.post(API_CP + 'login/authenticate', {
+    return this.http.post(environment.API_CP + 'login/authenticate', {
       UserName: "admin",
       Password: "123456",
     }, httpOptions);
   }
 
   get(sol) {
-    return this.http.post(API_CP + 'ConsCarpetaSolicitud', {
+    return this.http.post(environment.API_CP + 'ConsCarpetaSolicitud', {
       NumSolicitud: sol
     }, httpOptions);
   }
 
-  insert(numdocumento:string,numsolicitud:string,fileBase64:string) {
+  insert(solicitud:Solicitud,fileBase64:string) {
 
-    return this.http.post(API_CP + 'ActualizaCarpeta', {
-      NumDocCli: numdocumento,
-      NombreCli: "Jorge E. Mojica",
-      NumSolicitud: numsolicitud,
+    return this.http.post(environment.API_CP + 'ActualizaCarpeta', {
+      NumDocCli: solicitud.cedula,
+      NumSolicitud: solicitud.solicitud,
       Usuario: "imglatam@fundaciondelamujer.com",
       lstMetadata: [],
       lstSoporte: [

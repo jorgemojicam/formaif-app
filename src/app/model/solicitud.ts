@@ -9,6 +9,8 @@ export class Solicitud {
     solicitud: number;
     cedula: number;
     asesor: number;
+    oficina:string;
+    usuario:string;
     fechacreacion: Date;
     Balance: Balance;
     Cruces: Cruces[];

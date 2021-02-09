@@ -3,7 +3,9 @@ import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Asesor } from 'src/app/model/asesor';
 import { Solicitud } from 'src/app/model/solicitud';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../idb-solicitud.service';
 
 @Component({
@@ -15,8 +17,8 @@ export class InitComponent implements OnInit {
 
   public initForm = new FormGroup({
     solicitud: new FormControl('', [Validators.required,
-      Validators.min(999999999),
-      Validators.max(9999999999)]),
+    Validators.min(999999999),
+    Validators.max(9999999999)]),
     cedula: new FormControl('', [Validators.required,
     Validators.min(99999),
     Validators.max(9999999999)]),
@@ -29,21 +31,25 @@ export class InitComponent implements OnInit {
     public srvSol: IdbSolicitudService,
     private _snackBar: MatSnackBar,
     private route: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private tokenStorage: TokenStorageService,
   ) { }
 
   ngOnInit(): void {
 
   }
 
-  onSave() {
+  async onSave() {
 
     if (this.initForm.valid) {
 
       const numsol = this.initForm.value.solicitud.toString()
       this.newSolicitud = Object.assign(this.newSolicitud, this.initForm.value);
       let hoy: Date = new Date();
+      let asesores: Asesor = this.tokenStorage.getUser()
       this.newSolicitud.fechacreacion = hoy
+      this.newSolicitud.usuario = asesores.Clave
+      this.newSolicitud.oficina = asesores.Sucursales.Codigo
 
       this.srvSol.getSol(numsol)
         .subscribe((sol) => {

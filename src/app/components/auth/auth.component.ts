@@ -53,8 +53,25 @@ export class AuthComponent implements OnInit {
             Iniciales: "N/A",
             Grupo: "SOPORTE",
             Clave: "N/A",
-            Sucursales: { Codigo: "900", Direccion: "", Nombre: "SEDE ADMINISTRATIVA", Regionales: "0" },
-            Director: null
+            Sucursales: {
+              Codigo: "969",
+              Direccion: "",
+              Nombre: "SEDE ADMINISTRATIVA",
+              Regionales: "0"
+            },
+            Director: {
+              Nombre: "Transformacion Digital",
+              Iniciales: "TD",
+              Clave: "transformaciondigital",
+              Sucursales: {
+                Codigo: "969",
+                Direccion: "",
+                Nombre: "SEDE ADMINISTRATIVA",
+                Regionales: "0"
+              },
+              Director: null,
+              Grupo: "TRADIG"
+            }
           }
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(perfil);
@@ -82,13 +99,13 @@ export class AuthComponent implements OnInit {
         res => {
           this.tokenStorage.saveToken(res);
           this.ofiServ.getOficina(user.Username).subscribe(
-            (ofi) => {            
+            (ofi) => {
               if (ofi) {
-                this.tokenStorage.saveUser(ofi);                
+                this.tokenStorage.saveUser(ofi);
               }
             },
             (err) => {
-              this._snackBar.open("No se encontro oficina asignada, comuniquese con el area de Riesgos [codigo "+err.status+"]", "Ok!", {
+              this._snackBar.open("No se encontro oficina asignada, comuniquese con el area de Riesgos [codigo " + err.status + "]", "Ok!", {
                 duration: 10000,
               });
             }

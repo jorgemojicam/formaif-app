@@ -418,7 +418,7 @@
                                             Cruce #3
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            ${{acti.value.totalCruce3}}
+                                            {{acti.value.totalCruce3|currency:"$":'symbol':'4.2-2'}}
                                             <mat-icon>add_shopping_cart</mat-icon>
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
@@ -700,7 +700,7 @@
                                         </mat-card>
                                     </ng-container>
                                     <!-- Costo de venta -->
-                                    <ng-container *ngIf="acti.value.tipo!=2">
+                                    <ng-container *ngIf="acti.value.tipo==1">
                                         <mat-card class="mat-card-cruce">
                                             <mat-card-header>
                                                 <mat-card-title>Costo de venta</mat-card-title>

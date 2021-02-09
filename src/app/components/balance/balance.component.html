@@ -167,7 +167,7 @@
                     </div>
                     <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{inv}}"
+                            <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{inv}}"
                                 formControlName="vlrUni">
                         </mat-form-field>
                     </div>
@@ -229,7 +229,7 @@
                     </div>
                     <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{actneg}}"
+                            <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{actneg}}"
                                 formControlName="vlrUni">
                         </mat-form-field>
                     </div>
@@ -290,7 +290,7 @@
                     </div>
                     <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="number" matInput placeholder="Vlr unitario" id="vlrUni{{actfam}}"
+                            <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{actfam}}"
                                 formControlName="vlrUni">
                         </mat-form-field>
                     </div>
@@ -443,7 +443,7 @@
         <mat-card-content>
             <mat-card-content>
                 No
-                <mat-slide-toggle formControlName="creditoactual">
+                <mat-slide-toggle (change)="clear(balanceForm.controls.creditos)" formControlName="creditoactual">
                 </mat-slide-toggle>
                 Si
             </mat-card-content>

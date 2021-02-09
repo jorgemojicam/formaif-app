@@ -24,19 +24,21 @@ export class AnalisisComponent implements OnInit {
 
   ngOnInit(): void {
 
+    let hoy = new Date()
+    let mes: number = hoy.getMonth() + 1
+    this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
+
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
         let sol = params.get('solicitud')
         this.srvSol.getSol(sol).subscribe((datasol) => {
-          let hoy = new Date()
-          let mes: number = hoy.getMonth() + 1
-          this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })
       });
     } else {
       this.datasolicitud = this.datossol
+      this.tipoAsesor = this.datasolicitud.asesor;
     }
   }
 

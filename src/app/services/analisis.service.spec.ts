@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { IdbCrucesService } from './idb-cruces.service';
+import { AnalisisService } from './analisis.service';
 
-describe('IdbCrucesService', () => {
-  let service: IdbCrucesService;
+describe('AnalisisService', () => {
+  let service: AnalisisService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(IdbCrucesService);
+    service = TestBed.inject(AnalisisService);
   });
 
   it('should be created', () => {

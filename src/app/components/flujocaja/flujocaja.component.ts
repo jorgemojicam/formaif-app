@@ -54,7 +54,6 @@ export class FlujocajaComponent implements OnInit {
       })
     }
 
-
     const afterInit = async () => {
       let hoy = new Date()
       let meshoy: number = hoy.getMonth() + 1
@@ -96,10 +95,6 @@ export class FlujocajaComponent implements OnInit {
 
           let totalingresos = 0
           let totalegresos = 0
-          let mesprod = 0
-          let mesnoprod = 0
-          let flag = true
-          let flagp = true
 
           //-Posicion de las columnas ingresos
           let columnIngreso = cr + 3
@@ -117,38 +112,6 @@ export class FlujocajaComponent implements OnInit {
             // ---------------- pecuario ----------------------------------
             for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
               let lotesP: LotePecuario = cruce.lotesPecuario[lote];
-
-              // -------------------Ingresos------------------------------------
-              let totalingresos = Utils.formatNumber(lotesP.ingresomes)
-              let mesingreso = Utils.formatNumber(lotesP.mesingreso)
-              let produccion = Utils.formatNumber(lotesP.produccion)
-              let noproduccion = Utils.formatNumber(lotesP.noproduccion)
-
-              if (flujo[1] >= mesingreso && flag) {
-                produccion = Utils.formatNumber(lotesP.produccion)
-                flagp = false
-              }
-
-              if (!flagp) {
-                if (produccion > 0) {
-                  this.dataFlujo[flujocaja][columnIngreso] = totalingresos.toLocaleString()
-                  let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalingresos).toLocaleString()
-
-                  let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                  this.dataFlujoAcumulado[flujocaja][3] = (totalingresos + totalIngAcumu).toLocaleString()
-
-                  produccion--
-                } else if (noproduccion > 0) {
-                  this.dataFlujo[flujocaja][columnIngreso] = 0
-                  noproduccion--
-                  if (produccion == 0 && noproduccion == 0) {
-                    produccion = Utils.formatNumber(lotesP.produccion)
-                    noproduccion = Utils.formatNumber(lotesP.noproduccion)
-                  }
-                }
-              }
-
               //----------------------------Egresos---------------------------------
               if (lotesP.egresos) {
                 for (let eg = 0; eg < lotesP.egresos.length; eg++) {
@@ -157,13 +120,13 @@ export class FlujocajaComponent implements OnInit {
                     const mes = egreso.mes[me];
                     if (flujo[1] == mes) {
                       totalegresos += Utils.formatNumber(egreso.total)
-                      this.dataFlujo[flujocaja][columnEgresos] = totalegresos.toLocaleString();
+                      this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
 
                       let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                      this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                      this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                       let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                      this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos).toLocaleString()
+                      this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
 
                     }
                   }
@@ -185,6 +148,7 @@ export class FlujocajaComponent implements OnInit {
                 totalTraviesa += Utils.formatNumber(lote.totalTra);
                 totalPepeo += Utils.formatNumber(lote.totalPepeo);
               }
+
               let cantMesCos = cruce.mesCos.length
               let cantMesTra = cruce.mesTra.length
               let cantMesPepeo = cruce.mesPepeo.length
@@ -195,32 +159,38 @@ export class FlujocajaComponent implements OnInit {
 
               cruce.mesCos.forEach(mesC => {
                 if (flujo[1] == mesC) {
-                  this.dataFlujo[flujocaja][columnIngreso] = valorMesCos.toLocaleString()
+                  let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                  this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesCos)
+
                   let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos).toLocaleString()
+                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos)
 
                   let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu).toLocaleString()
+                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu)
                 }
               });
               cruce.mesTra.forEach(mes => {
                 if (flujo[1] == mes) {
-                  this.dataFlujo[flujocaja][columnIngreso] = valorMesTra.toLocaleString()
+                  let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                  this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesTra)
+
                   let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra).toLocaleString()
+                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra)
 
                   let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu).toLocaleString()
+                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu)
                 }
               });
               cruce.mesPepeo.forEach(mes => {
                 if (flujo[1] == mes) {
-                  this.dataFlujo[flujocaja][columnIngreso] = valorMesPepeo.toLocaleString()
+                  let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                  this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesPepeo)
+
                   let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo).toLocaleString()
+                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo)
 
                   let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu).toLocaleString()
+                  this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu)
                 }
               });
 
@@ -235,16 +205,18 @@ export class FlujocajaComponent implements OnInit {
                     for (let me = 0; me < egreso.mes.length; me++) {
                       const mes = egreso.mes[me];
                       if (flujo[1] == mes) {
+
                         totalegresos += Utils.formatNumber(egreso.total);
-                        this.dataFlujo[flujocaja][columnEgresos] = totalegresos.toLocaleString();
+                        this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
+
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                        this.dataFlujoAcumulado[flujocaja][3] = (totalegresos + totalIngAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][3] = (totalegresos + totalIngAcumu)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
                       }
                     }
                   }
@@ -258,11 +230,12 @@ export class FlujocajaComponent implements OnInit {
                       if (flujo[1] == mes) {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -277,10 +250,10 @@ export class FlujocajaComponent implements OnInit {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -295,10 +268,10 @@ export class FlujocajaComponent implements OnInit {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -306,11 +279,19 @@ export class FlujocajaComponent implements OnInit {
               }
 
             }
-            //-Transitorio
-            else if (cruce.nombre.tipoproducto == "Transitorio") {
-              for (let lote = 0; lote < cruce.lotesAgro.length; lote++) {
-                let lotesA: LoteAgro = cruce.lotesAgro[lote];
+          }
+          //Agricola transitorio
+          if (cruce.nombre.tipoproducto == "Transitorio") {
 
+            for (let lote = 0; lote < cruce.lotesAgro.length; lote++) {
+              let lotesA: LoteAgro = cruce.lotesAgro[lote];
+
+              let mesprod = 0
+              let mesnoprod = 0
+              let flag = true
+
+              for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
+                const flujo = this.dataFlujo[flujocaja];
                 // -------------------Ingresos------------------------------------
                 let totalingresos = Utils.formatNumber(lotesA.totalIngreso)
                 let proxcosecha = Utils.formatNumber(lotesA.proxcocecha)
@@ -323,18 +304,23 @@ export class FlujocajaComponent implements OnInit {
                 }
                 let totalmes = totalingresos / cantcosecha
 
+
                 if (!flag) {
                   if (mesprod > 0) {
-                    this.dataFlujo[flujocaja][columnIngreso] = totalmes.toLocaleString()
-                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalmes).toLocaleString()
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (totalmes + totalIngAcumu).toLocaleString()
+                    let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                    this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalmes)
+
+                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalmes)
+
+                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                    this.dataFlujoAcumulado[flujocaja][3] = (totalmes + totalIngAcumu)
 
                     mesprod--
                   } else if (mesnoprod > 0) {
-                    this.dataFlujo[flujocaja][columnIngreso] = 0
+                    let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                    this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes)
                     mesnoprod--
                     if (mesprod == 0 && mesnoprod == 0) {
                       mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
@@ -354,12 +340,12 @@ export class FlujocajaComponent implements OnInit {
                       const mes = egreso.mes[me];
                       if (flujo[1] == mes) {
                         totalegresos += Utils.formatNumber(egreso.total);
-                        this.dataFlujo[flujocaja][columnEgresos] = totalegresos.toLocaleString();
+                        this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -374,10 +360,10 @@ export class FlujocajaComponent implements OnInit {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -392,10 +378,10 @@ export class FlujocajaComponent implements OnInit {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
@@ -410,23 +396,76 @@ export class FlujocajaComponent implements OnInit {
                         totalegresos += Utils.formatNumber(egreso.total)
                         this.dataFlujo[flujocaja][columnEgresos] = totalegresos
                         let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos).toLocaleString()
+                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
                         let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu).toLocaleString()
+                        this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
                       }
                     }
                   }
                 }
+              }
 
+            }
+          }
+
+          //Pecuario Ingresos
+
+          // -------------------Ingresos------------------------------------
+          for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
+            let lotesP: LotePecuario = cruce.lotesPecuario[lote];
+            let flagp = true
+
+            let produccion = 0
+            let noproduccion = 0
+
+            for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
+              const flujo = this.dataFlujo[flujocaja];
+
+              let totalingresos = Utils.formatNumber(lotesP.ingresomes)
+              let mesingreso = Utils.formatNumber(lotesP.mesingreso)
+
+              if (flujo[1] >= mesingreso && flagp) {
+                produccion = Utils.formatNumber(lotesP.produccion)
+                noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                flagp = false
+              }
+
+              if (!flagp) {
+                if (produccion > 0) {
+
+                  let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                  this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalingresos)
+
+                  let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                  this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalingresos)
+
+                  let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                  this.dataFlujoAcumulado[flujocaja][3] = (totalingresos + totalIngAcumu)
+
+                  produccion--
+                } else if (noproduccion > 0) {
+
+                  let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                  this.dataFlujo[flujocaja][columnIngreso] = sumatoriaTotalmes
+
+                  let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                  this.dataFlujoAcumulado[flujocaja][3] = (totalIngAcumu)
+
+                  noproduccion--
+                  if (produccion == 0 && noproduccion == 0) {
+                    produccion = Utils.formatNumber(lotesP.produccion)
+                    noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                  }
+                }
               }
             }
-
           }
+
         }
 
         let primerano: boolean = true
-        let totalRec = this.datasolicitud.Balance.recuperacion.length - 1
+        let totalRec = 0
 
         let totalRemuneracion = 0
         let efectivo = 0
@@ -440,12 +479,12 @@ export class FlujocajaComponent implements OnInit {
           totalGastosN = Utils.formatNumber(this.datasolicitud.Gastos.totalN)
           totalGastosF = Utils.formatNumber(this.datasolicitud.Gastos.totalF)
           totalOtrosIngresos = Utils.formatNumber(this.datasolicitud.Gastos.totalOtros)
+          totalRec = this.datasolicitud.Balance.recuperacion.length - 1
         }
         //-Existe Balance
         if (this.datasolicitud.Balance) {
           efectivo = Utils.formatNumber(this.datasolicitud.Balance.efectivo)
           totalObligaciones = Utils.formatNumber(this.datasolicitud.Balance.tcuotan)
-
         }
 
         //-Ingresos Líquidos Otras actividades comerciales
@@ -482,7 +521,7 @@ export class FlujocajaComponent implements OnInit {
           }
 
           //Remuneracion de personal
-          this.dataFlujoAcumulado[f][6] = totalRemuneracion.toLocaleString()
+          this.dataFlujoAcumulado[f][6] = totalRemuneracion
 
           //Existe gastos
           if (this.datasolicitud.Gastos) {
@@ -505,17 +544,17 @@ export class FlujocajaComponent implements OnInit {
               }
             }
 
-            this.dataFlujoAcumulado[f][7] = (totalEstacionalN + totalGastosN).toLocaleString()
-            this.dataFlujoAcumulado[f][13] = (totalEstacionalF + totalGastosF).toLocaleString()
+            this.dataFlujoAcumulado[f][7] = (totalEstacionalN + totalGastosN)
+            this.dataFlujoAcumulado[f][13] = (totalEstacionalF + totalGastosF)
           }
 
           //Imprevistos Operativos
           let costos = Utils.formatNumber(this.dataFlujoAcumulado[f][5])
           let imprevistos = costos * 0.1
-          this.dataFlujoAcumulado[f][8] = imprevistos.toLocaleString()
+          this.dataFlujoAcumulado[f][8] = imprevistos
 
           //Obligaciones Finacieras
-          this.dataFlujoAcumulado[f][9] = totalObligaciones.toLocaleString()
+          this.dataFlujoAcumulado[f][9] = totalObligaciones
 
           let ingreso = Utils.formatNumber(this.dataFlujoAcumulado[f][3])
           let recuperacion = Utils.formatNumber(this.dataFlujoAcumulado[f][4])
@@ -592,7 +631,7 @@ export class FlujocajaComponent implements OnInit {
             } else {
               flujodescontando = (flujoantes * 0.85) + efectivo - cuotacredito
             }
-            console.log(flujodescontando)
+
             this.dataFlujoAcumulado[f][17] = flujodescontando
             primermes = false;
           } else {

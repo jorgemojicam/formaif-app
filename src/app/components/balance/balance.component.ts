@@ -148,7 +148,8 @@ export class BalanceComponent implements OnInit {
           let valor = vlrUni * cantidad
           totalInv += valor
           x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0
+            valor: isFinite(valor) ? valor.toLocaleString() : 0,
+            vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false })
         });
 
@@ -172,7 +173,8 @@ export class BalanceComponent implements OnInit {
           let valor = cantidad * vlrUni
           totalactneg += valor
           x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0
+            valor: isFinite(valor) ? valor.toLocaleString() : 0,
+            vlrUni:isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
         //Calculo activos familia
@@ -184,7 +186,8 @@ export class BalanceComponent implements OnInit {
           let valor = cantidad * vlrUni
           totalactfam += valor
           x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0
+            valor: isFinite(valor) ? valor.toLocaleString() : 0,
+            vlrUni: isFinite(valor) ? valor.toLocaleString() : 0,
           }, { emitEvent: false });
         });
 
@@ -928,6 +931,11 @@ export class BalanceComponent implements OnInit {
       corrienteN: 0,
       nocorrienteN: 0
     }, { emitEvent: false })
+
+  }
+  clear(form){
+    form.clear()
+    this.addNewCredito()
 
   }
 

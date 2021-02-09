@@ -1,20 +1,20 @@
 <!-- <button mat-raised-button color="accent" (click)="download()">Descarga provisional</button> -->
 <div #reporte class="content" id="contentPDF">
-<table>
-    <tr>
-        <td rowspan="3"  colspan="1" align="center">
-            <img src= "assets/pictures/Logo.png"> 
-        </td>
-        <td rowspan="3" align="center" colspan="3">Analisis de credito</td>
-        <td align="center" colspan="2">COL-FO-006</td>
-    </tr>
-    <tr>
-        <td align="center" colspan="2">Versión 11</td>
-    </tr>
-    <tr>
-        <td align="center" colspan="2">{{fechahoy}}</td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td rowspan="3" colspan="1" align="center">
+                <img src="assets/pictures/Logo.png">
+            </td>
+            <td rowspan="3" align="center" colspan="3">Analisis de credito</td>
+            <td align="center" colspan="2">COL-FO-006</td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2">Versión 11</td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2">{{fechahoy}}</td>
+        </tr>
+    </table>
 
 
 
@@ -328,12 +328,12 @@
                     <tr>
                         <th style="text-align:center">Cargo</th>
                         <th style="text-align:center">Valor</th>
-                    
+
                     </tr>
                 </thead>
                 <tbody *ngFor="let rem of datasolicitud.Gastos.remuneracionRow; let cont=index">
                     <tr>
-                        <td>{{rem.cargo}}</td>                    
+                        <td>{{rem.cargo}}</td>
                         <td style="text-align:right">${{rem.valor}}</td>
                     </tr>
                 </tbody>
@@ -404,32 +404,37 @@
         </table>
 
         <h3>Cruce #2</h3>
-        <div class="medio">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Semana</th>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let his of act.ventasHis; let cont=index">
-                    <tr>
-                        <td>{{cont}}</td>
-                        <td>${{his.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td>${{act.totalVentasHis}}</td>
-                    </tr>
-                </tfoot>
+        <ng-container *ngIf="act.ventasHis">
+            <div class="medio">
+                <table>
+                    <thead>
+                        <tr>
+                            <ng-container *ngIf="act.periodohistoricas">
+                                <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Semana</th>
+                            <th style="text-align:center">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let his of act.ventasHis; let cont=index">
+                        <tr>
+                            <td>{{cont}}</td>
+                            <td>${{his.valor}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td>${{act.totalVentasHis}}</td>
+                        </tr>
+                    </tfoot>
 
-            </table>
-        </div>
+                </table>
+            </div>
+        </ng-container>
+
         <div class="medio">
             <table>
                 <thead>

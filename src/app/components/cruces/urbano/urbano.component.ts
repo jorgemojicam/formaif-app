@@ -73,151 +73,13 @@ export class UrbanoComponent implements OnInit {
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
-        //---------------------Ventas Historicas--------------------------------------
         ctrl.controls.forEach((x) => {
-          let total = 0
-          let tipoactividad = x.get("tipo").value
-          let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
-          let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
-          const ventashistoricas = <FormArray>x.get('ventasHis')
-          ventashistoricas.controls.forEach((ven) => {
-            let valor = this.formatNumber(ven.get("valor").value)
-            total += valor
-            ven.patchValue({
-              valor: isFinite(valor) ? valor.toLocaleString() : 0
-            }, { emitEvent: false })
-          })
-          let promedioven = total / frechis
-          let totalPromedio = promedioven * frechisdias
-          x.patchValue({
-            promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toLocaleString() : 0,
-            totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString() : 0
-          }, { emitEvent: false })
-
-          //--------------------Produccion --------------------------------------------
-          let totalprod = 0
-          const produccionArr = <FormArray>x.get('produccion')
-          produccionArr.controls.forEach((prod) => {
-            let valor = this.formatNumber(prod.get("valor").value)
-            let cantidad = this.formatNumber(prod.get("cantidad").value)
-            let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
-            let total = valor * cantidad * frec
-            prod.get("total").setValue(total, { emitEvent: false });
-            totalprod += total
-          })
-          x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
-          //---------------------------------------------------------------
-
-          //----------------Total Cruce 2----------------------------------
-          let totalCruce2 = 0
-          if (tipoactividad == 2) {
-            if (totalPromedio > totalprod) {
-              totalCruce2 = totalprod
-            } else {
-              totalCruce2 = totalPromedio
-            }
-          } else {
-            totalCruce2 = totalPromedio
-          }          
-          //---------------------------------------------------------------
-
-          let margen = 0
-          let totalparticipacion = 0
-          //------------------Costo de venta------------------------------
-          const costoventa = <FormArray>x.get('costoventa')
-          costoventa.controls.forEach((cos, idxmat) => {
-            let preciocompra = this.formatNumber(cos.get("precioCompra").value)
-            let precioventa = this.formatNumber(cos.get("precioVenta").value)
-            let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
-            var participacion = this.formatNumber(cos.get("participacion").value)
-            let margenglobal = (participacion / 100) * porcentaje
-            totalparticipacion += participacion
-            margen += margenglobal
-            cos.patchValue({
-              porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
-            }, { emitEvent: false })
-          })
-          //------------------------------------------------------------------
-
-          //--------------Costo de venta [materia prima]----------------------
-          const materiapri = <FormArray>x.get('materiaprima')
-          materiapri.controls.forEach((mat) => {
-            let cantidad = this.formatNumber(mat.get("cantidad").value)
-            let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
-            let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
-            let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
-            let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
-            let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
-            let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
-            let valormao = this.formatNumber(mat.get("valorMao").value)
-            let valorcif = this.formatNumber(mat.get("valorCif").value)
-            var participacion = this.formatNumber(mat.get("participacion").value)
-            totalparticipacion += participacion
-            if (totalparticipacion > 100) {
-              participacion = 0
-              this._snackBar.open("No puede superar el 100% en el total de participacion", "Ok!", {
-                duration: 3000,
-              });
-            }
-            let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
-            let precioventa = cantidad * preciovenorod
-            let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
-            let margenglobal = (participacion / 100) * porcentaje
-            margen += margenglobal
-            mat.patchValue({
-              precioVenProd: preciovenorod.toLocaleString("es-CO"),
-              valorMatPri: valormatpri.toLocaleString("es-CO"),
-              valorMatPri2: valormatpri2.toLocaleString("es-CO"),
-              valorMatPri3: valormatpri3.toLocaleString("es-CO"),
-              valorMatPri4: valormatpri4.toLocaleString("es-CO"),
-              valorMatPri5: valormatpri5.toLocaleString("es-CO"),
-              valorMao: valormao.toLocaleString("es-CO"),
-              valorCif: valorcif.toLocaleString("es-CO"),
-              precioCompra: preciocompra.toLocaleString("es-CO"),
-              precioVenta: precioventa.toLocaleString("es-CO"),
-              porcentaje: isNaN(porcentaje) ? 0 : porcentaje.toFixed(),
-              participacion: participacion
-            }, { emitEvent: false })
-
-          })
-          //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
-          let costo = 100 - margen
-          x.patchValue({
-            costo: isNaN(costo) ? 0 : costo.toFixed(),
-            margen: isNaN(margen) ? 0 : margen.toFixed()
-          }, { emitEvent: false })
-
-          let unidadrend = materiapri.controls[0].get("unidad").value.name
-          let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
-
-          x.patchValue({
-            rendUnidad: unidadrend,
-            rendMateriaprima: materiaprimarend
-          }, { emitEvent: false })
-
-          //--------------------Compras-----------------------------------
-          let totalcomporas = 0
-          const compras = <FormArray>x.get('compras')
-          compras.controls.forEach((com) => {
-            let cantidad = this.formatNumber(com.get("cantidad").value)
-            let valor = this.formatNumber(com.get("valor").value)
-            let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
-            let total = cantidad * valor * frec
-            totalcomporas += total
-            com.patchValue({
-              valor: valor.toLocaleString(),
-              total: isFinite(total) ? total.toLocaleString() : 0,
-            }, { emitEvent: false })
-          })
-          x.patchValue({
-            totalCompras: isFinite(totalcomporas) ? totalcomporas.toLocaleString() : 0
-          }, { emitEvent: false })
-          //---------------------------------------------------------------
 
           //-----------------------Cruce 1 ventas B R M -------------------  
           let cantperiodo = 0
           let valorpromedio = 0
           let periodoventas = x.get('periodoventas').value
+
           if (periodoventas == 1) {
             cantperiodo = 4
             valorpromedio = 3
@@ -264,6 +126,160 @@ export class UrbanoComponent implements OnInit {
           } else {
             totalCruce1 = totalpromedio
           }
+          //---------------------------------------------------------------------------
+
+          //---------------------Ventas Historicas--------------------------------------
+          let total = 0
+          let tipoactividad = x.get("tipo").value
+          let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
+          let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
+
+          const ventashistoricas = <FormArray>x.get('ventasHis')
+          ventashistoricas.controls.forEach((ven) => {
+            let valor = this.formatNumber(ven.get("valor").value)
+            total += valor
+            ven.patchValue({
+              valor: isFinite(valor) ? valor.toLocaleString() : 0
+            }, { emitEvent: false })
+          })
+          let promedioven = total / frechis
+          let totalPromedio = promedioven * frechisdias
+          x.patchValue({
+            promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toLocaleString() : 0,
+            totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString() : 0
+          }, { emitEvent: false })
+
+          //--------------------Produccion --------------------------------------------
+          let totalprod = 0
+          const produccionArr = <FormArray>x.get('produccion')
+          produccionArr.controls.forEach((prod) => {
+            let valor = this.formatNumber(prod.get("valor").value)
+            let cantidad = this.formatNumber(prod.get("cantidad").value)
+            let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
+            let total = valor * cantidad * frec
+            prod.get("total").setValue(total, { emitEvent: false });
+            totalprod += total
+          })
+          x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
+          //---------------------------------------------------------------
+
+          //----------------Total Cruce 2----------------------------------
+          let totalCruce2 = 0
+          if (tipoactividad == 2) {
+            if (totalPromedio > totalprod) {
+              totalCruce2 = totalprod
+            } else {
+              totalCruce2 = totalPromedio
+            }
+          } else {
+            totalCruce2 = totalPromedio
+          }
+          //---------------------------------------------------------------
+
+          let margen = 0
+          let totalparticipacion = 0
+          //------------------Costo de venta------------------------------
+          const costoventa = <FormArray>x.get('costoventa')
+          costoventa.controls.forEach((cos, idxmat) => {
+            let preciocompra = this.formatNumber(cos.get("precioCompra").value)
+            let precioventa = this.formatNumber(cos.get("precioVenta").value)
+            let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
+            var participacion = this.formatNumber(cos.get("participacion").value)
+            let margenglobal = (participacion / 100) * porcentaje
+            totalparticipacion += participacion
+            margen += margenglobal
+
+            cos.patchValue({
+              precioVenta: isFinite(precioventa) ? precioventa.toLocaleString() : 0,
+              precioCompra: isFinite(preciocompra) ? preciocompra.toLocaleString() : 0,
+              porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
+            }, { emitEvent: false })
+          })
+
+          //------------------------------------------------------------------
+
+          //--------------Costo de venta [materia prima]----------------------
+          if (tipoactividad == 2) {
+            const materiapri = <FormArray>x.get('materiaprima')
+            materiapri.controls.forEach((mat) => {
+              let cantidad = this.formatNumber(mat.get("cantidad").value)
+              let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
+              let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
+              let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
+              let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
+              let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
+              let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
+              let valormao = this.formatNumber(mat.get("valorMao").value)
+              let valorcif = this.formatNumber(mat.get("valorCif").value)
+              var participacion = this.formatNumber(mat.get("participacion").value)
+              totalparticipacion += participacion
+              if (totalparticipacion > 100) {
+                participacion = 0
+                this._snackBar.open("No puede superar el 100% en el total de participacion", "Ok!", {
+                  duration: 3000,
+                });
+              }
+              let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
+              let precioventa = cantidad * preciovenorod
+              let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
+              let margenglobal = (participacion / 100) * porcentaje
+              margen += margenglobal
+              mat.patchValue({
+                precioVenProd: preciovenorod.toLocaleString("es-CO"),
+                valorMatPri: valormatpri.toLocaleString("es-CO"),
+                valorMatPri2: valormatpri2.toLocaleString("es-CO"),
+                valorMatPri3: valormatpri3.toLocaleString("es-CO"),
+                valorMatPri4: valormatpri4.toLocaleString("es-CO"),
+                valorMatPri5: valormatpri5.toLocaleString("es-CO"),
+                valorMao: valormao.toLocaleString("es-CO"),
+                valorCif: valorcif.toLocaleString("es-CO"),
+                precioCompra: preciocompra.toLocaleString("es-CO"),
+                precioVenta: precioventa.toLocaleString("es-CO"),
+                porcentaje: isNaN(porcentaje) ? 0 : porcentaje.toFixed(),
+                participacion: participacion
+              }, { emitEvent: false })
+
+            })
+            let unidadrend = materiapri.controls[0].get("unidad").value.name
+            let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
+
+            x.patchValue({
+              rendUnidad: unidadrend,
+              rendMateriaprima: materiaprimarend
+            }, { emitEvent: false })
+          }
+          //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
+          let costo = 100 - margen
+
+          //--------------------Compras-----------------------------------
+          let totalcomporas = 0
+          const compras = <FormArray>x.get('compras')
+          compras.controls.forEach((com) => {
+            let cantidad = this.formatNumber(com.get("cantidad").value)
+            let valor = this.formatNumber(com.get("valor").value)
+            let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
+            let total = cantidad * valor * frec
+            totalcomporas += total
+            com.patchValue({
+              valor: valor.toLocaleString(),
+              total: isFinite(total) ? total.toLocaleString() : 0,
+            }, { emitEvent: false })
+          })
+          x.patchValue({
+            totalCompras: isFinite(totalcomporas) ? totalcomporas.toLocaleString() : 0
+          }, { emitEvent: false })
+          //---------------------------------------------------------------
+
+          //--------------Total cruce3-------------------------------------
+
+          let promreal:number = 0;
+          if (tipoactividad == 1) {
+            promreal = (100 - margen) / 100
+            let totalcruce = totalcomporas / promreal
+            x.patchValue({
+              totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
+            }, { emitEvent: false })
+          }
 
           x.patchValue({
             valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
@@ -277,6 +293,8 @@ export class UrbanoComponent implements OnInit {
             totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
             totalCruce1: isFinite(totalCruce1) ? totalCruce1.toLocaleString() : 0,
             totalCruce2: isFinite(totalCruce2) ? totalCruce2.toLocaleString() : 0,
+            costo: isNaN(costo) ? 0 : costo.toFixed(),
+            margen: isNaN(margen) ? 0 : margen.toFixed()
           }, { emitEvent: false })
         });
 
@@ -324,7 +342,8 @@ export class UrbanoComponent implements OnInit {
       rendFrecuencia: '',
       rendValorU: '',
       rendValorT: '',
-      rendTotal: ''
+      rendTotal: '',
+      totalCruce3: ''
     })
   }
 
@@ -374,7 +393,7 @@ export class UrbanoComponent implements OnInit {
           rendValorU: '',
           rendValorT: '',
           rendTotal: '',
-
+          totalCruce3: cruces[cru].totalCruce3,
         })
       )
     }
