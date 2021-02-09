@@ -81,15 +81,19 @@
     </div>
 
   </div>
+  
   <ng-container *ngIf="datasol">
     <div style="display: none;">
+
       <ng-container *ngIf="datasol.asesor==1">
         <app-analisis [datossol]="datasol"></app-analisis>
       </ng-container>
+
       <ng-container *ngIf="datasol.asesor==2">
         <app-analisisagro [datossol]="datasol"></app-analisisagro>
         <app-flujocaja [datossol]="datasol"></app-flujocaja>
       </ng-container>
+
     </div>
   </ng-container>
 
