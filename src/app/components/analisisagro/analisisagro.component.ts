@@ -66,13 +66,15 @@ export class AnalisisagroComponent implements OnInit {
       }
     }
   }
-  TipoEdad(id: number, lista: string){
-    if (lista == 'Periodo') {
-      let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-      console.log(descripcion)
-      return descripcion[0].name
-    }
+  TipoEdad(id: string, lista: string){
+    if(id!==""){
+      if (lista == 'Periodo') {
+        let descripcion=DataSelect.Unidades.filter(i => i.id == id);
+        console.log(descripcion)
+        return descripcion[0].name
+      }
 
+    }
   }
 
   TipoFrecuencia(id: string, lista: string){

@@ -734,36 +734,35 @@
                 <thead>
 
                     <tr>
-                        <td style="text-align:center">Edad del cultivo</td>
-                        <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Area cultivada</td>
-                        <td style="text-align:center">{{act.nombre.name}} m²</td>
-                        <td style="text-align:center">Distancia entre surcos</td>
+                        <th style="text-align:center">Actividad</th>
+                        <td colspan=2 style="text-align:center">{{act.tipo}}</td>
+                        <th style="text-align:center">Nombre de la actividad</th>
+                        <td style="text-align:center">{{act.nombre.name}}</td>
+                        <th style="text-align:center">Tipo de producción</th>
                         <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Distancia entre plantas</td>
+                        <th style="text-align:center">Ingreso</th>
                         <td style="text-align:center">Mirar este 0</td>
-                        <td style="text-align:center">Distancia entre siembra</td>
+                        <th style="text-align:center">Egreso</th>
                         <td style="text-align:center">MIrar este 0</td>
-                        <td style="text-align:center"># plantas/semillas del lote</td>
-                        <td style="text-align:center">MIrar este 0</td>
+                        
                     </tr>
                     <tr>
-                        <td style="text-align:center">Unidad de venta</td>
+                        <th style="text-align:center">Unidad de venta</th>
                         <td colspan=3 style="text-align:center">{{act.unidadventa}}</td>
-                        <td style="text-align:center">Precio minimo</td>
-                        <td style="text-align:center">{{act.preciomin}}</td>
-                        <td style="text-align:center">Precio actual</td>
-                        <td colspan=2 style="text-align:center">{{act.precioactual}}</td>
-                        <td style="text-align:center">Precio promedio</td>
-                        <td colspan=2 style="text-align:center">{{act.preciopromedio}}</td>
+                        <th style="text-align:center">Precio minimo</th>
+                        <td style="text-align:center">${{act.preciomin}}</td>
+                        <th style="text-align:center">Precio actual</th>
+                        <td colspan=2 style="text-align:center">${{act.precioactual}}</td>
+                        <th style="text-align:center">Precio promedio</th>
+                        <td colspan=2 style="text-align:center">${{act.preciopromedio}}</td>
 
                     </tr>
                     <tr>
-                        <td style="text-align:center">Cosecha</td>
+                        <th style="text-align:center">Cosecha</th>
                         <td colspan=4 style="text-align:center">{{act.mesCos}}</td>
-                        <td style="text-align:center">Traviesa</td>
+                        <th style="text-align:center">Traviesa</th>
                         <td colspan=3 style="text-align:center">{{act.mesTra}}</td>
-                        <td style="text-align:center">Pepeo</td>
+                        <th style="text-align:center">Pepeo</th>
                         <td colspan=2 style="text-align:center">{{act.mesPepeo}}</td>
                     </tr>
                 </thead>
