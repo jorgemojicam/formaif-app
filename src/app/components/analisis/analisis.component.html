@@ -85,11 +85,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan=4>Activos Negocio</th>
+                        <th colspan=5>Activos Negocio</th>
                     </tr>
                     <tr>
                         <th style="text-align:center">Descripcion</th>
                         <th style="text-align:center">Tipo</th>
+                        <th style="text-align:center">Cantidad</th>
+                        <th style="text-align:center">Valor U</th>
                         <th style="text-align:center">Valor</th>
                     </tr>
                 </thead>
@@ -97,13 +99,15 @@
                     <tr>
                         <td>{{act.detalle}}</td>
                         <td>{{act.tipo.name}}</td>
+                        <td>{{act.cantidad}}</td>
+                        <td style="text-align: right;">{{act.vlrUni}}</td>
                         <td align="right">${{act.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td align="right" colspan=3>${{datasolicitud.Balance.actnegTotal}}</td>
+                        <td align="right" colspan=4>${{datasolicitud.Balance.actnegTotal}}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -113,19 +117,23 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan=4>Activos Familiares</th>
+                        <th colspan=5>Activos Familiares</th>
                     </tr>
                     <tr>
+                        <th style="text-align:center">Descripcion</th>
                         <th style="text-align:center">Tipo</th>
-                        <th style="text-align:center">Detalle</th>
+                        <th style="text-align:center">Cantidad</th>
+                        <th style="text-align:center">Valor U</th>
                         <th style="text-align:center">Valor</th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let inv of datasolicitud.Balance.activosFamRows; let cont=index">
+                <tbody *ngFor="let act of datasolicitud.Balance.activosFamRows; let cont=index">
                     <tr>
-                        <td>{{inv.tipo.name}}</td>
-                        <td>{{inv.detalle}}</td>
-                        <td align="right">${{inv.valor}}</td>
+                        <td>{{act.detalle}}</td>
+                        <td>{{act.tipo.name}}</td>
+                        <td>{{act.cantidad}}</td>
+                        <td style="text-align: right;">{{act.vlrUni}}</td>
+                        <td align="right">${{act.valor}}</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -227,6 +235,50 @@
                 </tr>
             </thead>
             <tbody *ngFor="let pas of datasolicitud.Balance.pasivosRows; let cont=index">
+                <tr *ngIf="pas.clase==2">
+                    <td>{{pas.acreedor}}</td>
+                    <td>{{pas.monto}}</td>
+                    <td>{{pas.destino}}</td>
+                    <td>{{pas.cuotaN}}</td>
+                    <td>{{pas.corrienteN}}</td>
+                    <td>{{pas.nocorrienteN}}</td>
+                </tr>
+                <ng-container *ngIf="pas.clase==0">
+                    <tr *ngIf="pas.negociovivienda">
+                        <td>{{pas.acreedor}}</td>
+                        <td>{{pas.monto}}</td>
+                        <td>{{pas.destino}}</td>
+                        <td>{{pas.cuotaN}}</td>
+                        <td>{{pas.corrienteN}}</td>
+                        <td>{{pas.nocorrienteN}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td>{{datasolicitud.Balance.tcuotan}}</td>
+                    <td>${{datasolicitud.Balance.tcorrienten}}</td>
+                    <td>{{datasolicitud.Balance.tnocorrienten}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- pasivos de la familia -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="6">Pasivos de la familia</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Acreedor</th>
+                    <th style="text-align:center">Monto original</th>
+                    <th style="text-align:center">Destino</th>
+                    <th style="text-align:center">Cuota</th>
+                    <th style="text-align:center">Corriente</th>
+                    <th style="text-align:center">No corriente</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let pas of datasolicitud.Balance.pasivosRows; let cont=index">
                 <tr *ngIf="pas.clase==1">
 
                     <td>{{pas.acreedor}}</td>
@@ -240,12 +292,13 @@
             <tfoot>
                 <tr>
                     <td colspan="3">Total</td>
-                    <td>{{datasolicitud.Balance.tcuotan}}</td>
-                    <td>${{datasolicitud.Balance.tcorrienten}}</td>
-                    <td>{{datasolicitud.Balance.tnocorrienten}}</td>
+                    <td>{{datasolicitud.Balance.tcuotaf}}</td>
+                    <td>${{datasolicitud.Balance.tcorrientef}}</td>
+                    <td>{{datasolicitud.Balance.tnocorrientef}}</td>
                 </tr>
             </tfoot>
         </table>
+
     </ng-container>
     <ng-container *ngIf="datasolicitud.Gastos">
         <!-- gatos del negocio -->

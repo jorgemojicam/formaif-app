@@ -24,7 +24,7 @@ export class CarpetadigitalService {
     return this.http.post(environment.API_CP + 'login/authenticate', {
       UserName: "admin",
       Password: "123456",
-    }, httpOptions);
+    });
   }
 
   get(sol) {

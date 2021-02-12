@@ -109,6 +109,7 @@ export class BalanceComponent implements OnInit {
         let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
         let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
         let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
+        let recuperacionCobrar= Utils.formatNumber(this.balanceForm.controls.recuperacionCobrar.value)
         if (incobrable > valorCobrar) {
           incobrable = 0
           this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {
@@ -174,7 +175,7 @@ export class BalanceComponent implements OnInit {
           totalactneg += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0,
-            vlrUni:isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
+            vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
         //Calculo activos familia
@@ -187,7 +188,7 @@ export class BalanceComponent implements OnInit {
           totalactfam += valor
           x.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0,
-            vlrUni: isFinite(valor) ? valor.toLocaleString() : 0,
+            vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
 
@@ -212,15 +213,15 @@ export class BalanceComponent implements OnInit {
           cuotas.controls.forEach(cuo => {
             let valor = Utils.formatNumber(cuo.get('valor').value)
             let mes = cuo.get('mes').value
-            if(arrMese.indexOf(mes) <0)
+            if (arrMese.indexOf(mes) < 0)
               arrMese.push(mes)
             else
               mes = ""
-            
+
             total += valor
             cuo.patchValue({
               valor: isFinite(valor) ? valor.toLocaleString() : 0,
-              mes:mes
+              mes: mes
             }, { emitEvent: false });
           });
 
@@ -262,17 +263,19 @@ export class BalanceComponent implements OnInit {
           let meses = 12
           let netocuota = plazo - numcuota
 
-          // Entidades Financieras
           if (tipo) {
+            // Entidades Financieras
             if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
               let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
               let nocorriente = saldo - corriente
               let proyeccion = valor / periodo
+
               let descuentolibranza = false
               if (tipo.id == 3) {
                 descuentolibranza = x.get('descuentolibranza').value
                 if (descuentolibranza) {
                   valor = 0
+                  proyeccion = 0
                 }
               } else if (tipo.id == "5") {
                 x.get("clase").setValue(1, { emitEvent: false });
@@ -320,8 +323,10 @@ export class BalanceComponent implements OnInit {
                 descuentolibranza: descuentolibranza
               }, { emitEvent: false })
 
-              // Hipotecario
-            } else if (tipo.id == "2") {
+
+            }
+            // Hipotecario
+            else if (tipo.id == "2") {  
               let porcentajeneg = x.get('porcentajeneg').value
               if (porcentajeneg > 100) {
                 x.get("porcentajeneg").setValue("", { emitEvent: false });
@@ -357,6 +362,8 @@ export class BalanceComponent implements OnInit {
               tnocorrienten += nocorrienteN
 
               x.patchValue({
+                clase: 0,
+                porcentajeneg: isFinite(porcentajeneg) ? porcentajeneg.toLocaleString() : 0,
                 montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
                 montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
                 corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
@@ -366,24 +373,30 @@ export class BalanceComponent implements OnInit {
 
               }, { emitEvent: false })
 
-              // Pagadiario
-            } else if (tipo.id == "4") {
+
+            }
+            // Pagadiario
+            else if (tipo.id == "4") {
 
               let corrienteN = numcuota * 30
               tcorrienten += saldo
               tcuotan += corrienteN
               x.patchValue({
+                clase: 2,
                 cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
                 corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
               }, { emitEvent: false })
 
-              //Tarjetas de credito
-            } else if (tipo.id == "6") {
+
+            }
+            //Tarjetas de credito
+            else if (tipo.id == "6") {
 
               let corriente = 0
               let nocorriente = 0
               let valor = parseFloat("0.071078")
               let cuotacalcu = monto * valor
+              let cuota = Utils.formatNumber(x.get('cuota').value)
 
               if (saldo > 0) {
                 nocorriente = saldo - corriente
@@ -401,7 +414,7 @@ export class BalanceComponent implements OnInit {
               }
 
               if (clase == 1) {
-                tcuotaf += 0
+                tcuotaf += cuotacalcu
                 tcorrientef += corriente
                 tnocorrientef += nocorriente
                 x.patchValue({
@@ -409,7 +422,7 @@ export class BalanceComponent implements OnInit {
                   nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
                 }, { emitEvent: false })
               } else {
-                tcuotan += 0
+                tcuotan += cuotacalcu
                 tcorrienten += corriente
                 tnocorrienten += nocorriente
                 x.patchValue({
@@ -419,13 +432,17 @@ export class BalanceComponent implements OnInit {
               }
 
               x.patchValue({
+                cuota: isFinite(cuota) ? cuota.toLocaleString() : 0,
                 cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
               }, { emitEvent: false })
 
-              //Otras periodicidades
-            } else if (tipo.id == "7") {
 
-              let tasa = x.get('tasa').value
+            }
+            //Otras periodicidades
+            else if (tipo.id == "7") {
+
+              let tasa = Utils.formatNumber(x.get('tasa').value)
+              let tasaporcen = tasa / 100
               if (tasa < 0.8 && tasa > 4) {
                 x.get("tasa").setValue("", { emitEvent: false });
                 this._snackBar.open("La tasa de interes no puede ser menor a 0,8 ni superior a 4", "Ok!", {
@@ -433,7 +450,7 @@ export class BalanceComponent implements OnInit {
                 });
               }
               let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
-              let calcinteres = saldo * tasa * periodo
+              let calcinteres = saldo * tasaporcen * periodo
               let calculocap = saldo / (plazo - numcuota)
               x.patchValue({
                 calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
@@ -458,19 +475,20 @@ export class BalanceComponent implements OnInit {
           incobrableCobrar: isFinite(incobrable) ? incobrable.toLocaleString() : 0,
           valorCobrar: isFinite(valorCobrar) ? valorCobrar.toLocaleString() : 0,
           cobrarTotal: isFinite(totalCobrar) ? totalCobrar.toLocaleString() : 0,
+          recuperacionCobrar: isFinite(recuperacionCobrar) ? recuperacionCobrar.toLocaleString() : 0,
           porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
-          totalRecuperacion: isFinite(totalrec) ? totalrec.toLocaleString() : 0,
+          totalRecuperacion: isFinite(totalrec) ? totalrec : 0,
           inventarioTotal: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
           actnegTotal: isFinite(totalactneg) ? totalactneg.toLocaleString() : 0,
           actfamTotal: isFinite(totalactfam) ? totalactfam.toLocaleString() : 0,
-          proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,         
+          proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
           totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
-          tcuotaf: isFinite(tcuotaf) ? tcuotaf.toLocaleString() : 0,
-          tcuotan: isFinite(tcuotan) ? tcuotan.toLocaleString() : 0,
-          tcorrientef: isFinite(tcorrientef) ? tcorrientef.toLocaleString() : 0,
-          tnocorrientef: isFinite(tnocorrientef) ? tnocorrientef.toLocaleString() : 0,
-          tcorrienten: isFinite(tcorrienten) ? tcorrienten.toLocaleString() : 0,
-          tnocorrienten: isFinite(tnocorrienten) ? tnocorrienten.toLocaleString() : 0,
+          tcuotaf: isFinite(tcuotaf) ? tcuotaf.toFixed() : 0,
+          tcuotan: isFinite(tcuotan) ? tcuotan.toFixed() : 0,
+          tcorrientef: isFinite(tcorrientef) ? tcorrientef.toFixed() : 0,
+          tnocorrientef: isFinite(tnocorrientef) ? tnocorrientef.toFixed() : 0,
+          tcorrienten: isFinite(tcorrienten) ? tcorrienten.toFixed() : 0,
+          tnocorrienten: isFinite(tnocorrienten) ? tnocorrienten.toFixed() : 0,
         }, { emitEvent: false })
 
         this.dataBalance = this.balanceForm.value
@@ -704,7 +722,7 @@ export class BalanceComponent implements OnInit {
       valor: ''
     })
   }
-  loadcuotaprovEst(cuotas:any[]) {
+  loadcuotaprovEst(cuotas: any[]) {
     let arr = this.fb.array([])
     cuotas.forEach(cuo => {
       arr.push(
@@ -824,6 +842,7 @@ export class BalanceComponent implements OnInit {
       cuota: [''],
       valor: [''],
       periodo: [''],
+      cuotadifiere: [''],
       cuotacalcu: '',
       tasa: [''],
       pago: [''],//Periodico =1, Irregular=2
@@ -852,11 +871,14 @@ export class BalanceComponent implements OnInit {
     pasivos.forEach(pas => {
       let tipopas = [];
       let periodopas = [];
+      let cuotadifpas = [];
 
       if (pas.tipo)
         tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
       if (pas.periodo)
         periodopas = this.periodo.find(pe => pe.id == pas.periodo.id)
+      if (pas.cuotadifiere)
+        cuotadifpas = this.CuotasDifiere.find(ca => ca.id == pas.cuotadifiere.id)
 
       pasivosArray.push(
         this.fb.group({
@@ -872,6 +894,7 @@ export class BalanceComponent implements OnInit {
           destino: [pas.destino],
           cuota: [pas.cuota],
           valor: [pas.valor],
+          cuotadifiere: [cuotadifpas],
           periodo: [periodopas],
           cuotacalcu: [pas.cuotacalcu],
           tasa: [pas.tasa],
@@ -925,6 +948,7 @@ export class BalanceComponent implements OnInit {
     }
   }
   changeHipoteca(pasivo: FormGroup) {
+
     pasivo.patchValue({
       porcentajeneg: 0,
       montoN: 0,
@@ -933,10 +957,24 @@ export class BalanceComponent implements OnInit {
     }, { emitEvent: false })
 
   }
-  clear(form){
+  clear(form, name) {
     form.clear()
-    this.addNewCredito()
-
+    switch (name) {
+      case 'creditoactual':
+        this.addNewCredito()
+        break
+      case 'inversiones':
+        this.addInversion()
+        break
+      case 'proveedores':
+        if (this.tipoSol == 1) {
+          this.addNewProvRow()
+        } else if (this.tipoSol == 2) {
+          this.proveedoresEst().clear()
+          this.addNewProvEst()
+        }
+        break
+    }
   }
 
 }

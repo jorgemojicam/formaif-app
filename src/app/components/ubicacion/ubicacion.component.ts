@@ -120,6 +120,9 @@ export class UbicacionComponent implements OnInit {
 
   fileChangeEvent1(fileInput: any) {
 
+    this.dataUbicacion = this.ubicacionForm.value
+    this.dataSolicitud.Ubicacion = this.dataUbicacion
+
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.myfilename1 = '';
       Array.from(fileInput.target.files).forEach((file: File) => {
@@ -146,8 +149,11 @@ export class UbicacionComponent implements OnInit {
       this.myfilename1 = 'Seleccione Imagen';
     }
   }
-  
+
   fileChangeEvent2(fileInput: any) {
+    this.dataUbicacion = this.ubicacionForm.value
+    this.dataSolicitud.Ubicacion = this.dataUbicacion
+
     if (fileInput.target.files && fileInput.target.files[0]) {
       this.myfilename2 = '';
       Array.from(fileInput.target.files).forEach((file: File) => {
@@ -158,7 +164,7 @@ export class UbicacionComponent implements OnInit {
         const image = new Image();
         image.src = e.target.result;
         image.onload = rs => {
-          const imgBase64Path = e.target.result;    
+          const imgBase64Path = e.target.result;
           this.ubicacionForm.patchValue({
             fotopllegada: imgBase64Path
           }, { emitEvent: false })
@@ -175,7 +181,7 @@ export class UbicacionComponent implements OnInit {
     }
   }
 
-  quitar1(){
+  quitar1() {
     this.myfilename1 = 'Seleccione Imagen';
     this.ubicacionForm.patchValue({
       fotoppartida: ""
@@ -184,7 +190,7 @@ export class UbicacionComponent implements OnInit {
     this.dataSolicitud.Ubicacion.fotoppartida = this.dataUbicacion.fotoppartida
     this.srvSol.saveSol(this.sol, this.dataSolicitud)
   }
-  quitar2(){
+  quitar2() {
     this.myfilename2 = 'Seleccione Imagen';
     this.ubicacionForm.patchValue({
       fotopllegada: ""

@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   AUTH_API: 'https://fidelapipruebas.fundaciondelamujer.com:54000/api/',
-  API_CP : 'https://infopfdlmpru.azurewebsites.net/wApiFDLM/api/'
+  API_CP : 'https://infopfdlmpru.azurewebsites.net/wApiFDLM/api/',
+  appVersion: require('../../package.json').version + '-dev',
 };
 
 /*

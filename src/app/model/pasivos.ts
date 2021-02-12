@@ -20,6 +20,11 @@ export class Pasivos {
         name: string;
         period: number;
     };
+    cuotadifiere: {
+        id: number;
+        name: string;
+        period:number;
+    }
     cuotacalcu: string;
     tasa: string;
     pago: string;

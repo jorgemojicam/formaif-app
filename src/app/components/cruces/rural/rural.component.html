@@ -30,9 +30,9 @@
                                         <div class="gr" fxFlex="35%" fxFlex.xs="30%" fxFlex.sm="35%">
                                             <mat-form-field>
                                                 <mat-label>Tipo Actividad</mat-label>
-                                                <mat-select formControlName="tipo" id="tipo{{ac}}" required>
+                                                <mat-select formControlName="tipo" required>
                                                     <mat-option>--</mat-option>
-                                                    <mat-option *ngFor="let tip of tipoActRural" [value]="tip.id">
+                                                    <mat-option (click)="clear(acti)" *ngFor="let tip of tipoActRural" [value]="tip.id">
                                                         {{tip.name}}
                                                     </mat-option>
                                                 </mat-select>

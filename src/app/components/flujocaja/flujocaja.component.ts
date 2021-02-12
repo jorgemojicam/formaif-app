@@ -112,11 +112,12 @@ export class FlujocajaComponent implements OnInit {
           for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
             const flujo = this.dataFlujo[flujocaja];
             totalingresos = 0
-            totalegresos = 0
+            //totalegresos = 0
 
             // ---------------- pecuario ----------------------------------
             for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
               let lotesP: LotePecuario = cruce.lotesPecuario[lote];
+              totalegresos = 0
               //----------------------------Egresos---------------------------------
               if (lotesP.egresos) {
                 for (let eg = 0; eg < lotesP.egresos.length; eg++) {
@@ -124,11 +125,14 @@ export class FlujocajaComponent implements OnInit {
                   for (let me = 0; me < egreso.mes.length; me++) {
                     const mes = egreso.mes[me];
                     if (flujo[1] == mes) {
-                      totalegresos += Utils.formatNumber(egreso.total)
-                      this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
+
+                      totalegresos = Utils.formatNumber(egreso.total)
+                      let egresospas = Utils.formatNumber(this.dataFlujo[flujocaja][columnEgresos])
+                      this.dataFlujo[flujocaja][columnEgresos] = totalegresos + egresospas;
 
                       let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
                       this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+                      console.log(mes, " sumatoria ", egreso.total, " - ", totalMesegresos)
 
                       let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
                       this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
@@ -516,7 +520,7 @@ export class FlujocajaComponent implements OnInit {
               for (let b = 0; b < this.datasolicitud.Balance.recuperacion.length; b++) {
                 const recuperacion = this.datasolicitud.Balance.recuperacion[b];
                 if (recuperacion.mes == flujo[1]) {
-                  this.dataFlujoAcumulado[f][4] = recuperacion.valor
+                  this.dataFlujoAcumulado[f][4] = Utils.formatNumber(recuperacion.valor)
                   if (totalRec == b) {
                     primerano = false
                   }

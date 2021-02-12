@@ -32,13 +32,15 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
     if (request.url.indexOf(environment.API_CP) >= 0) {
-    }
-    const token = this.token.getToken();
-    if (token != null) {
-      request = request.clone({
-        url: request.url.replace('http://', 'https://'),
-        headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
-      });
+      console.log("entro")
+    } else {
+      const token = this.token.getToken();
+      if (token != null) {
+        request = request.clone({
+          url: request.url.replace('http://', 'https://'),
+          headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
+        });
+      }
     }
 
     return next.handle(request).pipe(
@@ -49,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return event;
       }),
       catchError((error: HttpErrorResponse) => {
-        let data = {};        
+        let data = {};
         data = {
           reason: error && error.error && error.error.reason ? error.error.reason : '',
           status: error.status

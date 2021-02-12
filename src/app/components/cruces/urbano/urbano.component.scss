@@ -59,7 +59,7 @@ div.alternate>div:nth-of-type(odd) {
   flex-basis: 0;
 }
 ::ng-deep .mat-expansion-panel-body {
-  padding: 0 14px 16px;
+  padding: 0 14px 16px !important;
 }
 ::ng-deep .mat-radio-label-content {
   margin-right: 2px;

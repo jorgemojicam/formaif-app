@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -75,10 +75,11 @@ export class RuralComponent implements OnInit {
       if (this.datasolicitud.CrucesAgro) {
         this.loadactividad(this.datasolicitud.CrucesAgro)
       }
-      this.loadData = true
-      this.isLoad.emit(true)
+      this.loadData = true;
+      this.isLoad.emit(true);
 
       this.actividadesForm.get('act').valueChanges.subscribe(values => {
+
         const ctrl = <FormArray>this.actividadesForm.controls['act'];
         ctrl.controls.forEach((x) => {
           //---------------------Otras actividades ---------------------------
@@ -789,6 +790,9 @@ export class RuralComponent implements OnInit {
   }
   //-------------------------------------------------------------------
 
-
-
+  clear(acti: FormGroup) {
+    acti.patchValue({
+      nombre:""
+    }, { emitEvent: false })
+  }
 }

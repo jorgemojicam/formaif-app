@@ -19,12 +19,12 @@ export class Cruces {
     valorR: number;
     promedio: number;
     totalDias: number;
-    totalVentas:string;
+    totalVentas: string;
     totalPromedio: number;
-    totalCruce1:string;
+    totalCruce1: string;
     ventasHis: VentasHis[];
-    promtotalvenHis:number;  
-    totalVentasHis:number;
+    promtotalvenHis: number;
+    totalVentasHis: number;
     periodohistoricas: {
         id: number,
         name: string,
@@ -32,13 +32,25 @@ export class Cruces {
         cant: number
     }
     produccion: Produccion[];
-    totalProduccion:number;
-    totalCruce2:string;
-    materiaprima:MateriaPrima[];
-    compras:Compras[];
-    totalCompras:number;
-    costoventa:CostoVenta[];
-    margen:number;
-    costo:number;
-    totalCruce3:number;
+    totalProduccion: number;
+    totalCruce2: string;
+    materiaprima: MateriaPrima[];
+    compras: Compras[];
+    totalCompras: number;
+    costoventa: CostoVenta[];
+    margen: number;
+    rendUnidad: number;
+    rendCantidad: number;
+    rendMateriaprima: number;
+    rendFrecuencia: {
+        id: number;
+        name: string;
+        dias: number;
+        cant: number;
+    };
+    rendValorU: number;
+    rendValorT: number;
+    rendTotal: number;
+    costo: number;
+    totalCruce3: number;
 }

@@ -49,7 +49,8 @@ export class HomeComponent implements AfterViewInit {
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
     private carpetaServ: CarpetadigitalService,
-    private _bottomSheet: MatBottomSheet
+    private _bottomSheet: MatBottomSheet,
+    private srvCarpeta: CarpetadigitalService
   ) {
   }
 
@@ -60,6 +61,7 @@ export class HomeComponent implements AfterViewInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
+
   }
 
   applyFilter(event: Event) {

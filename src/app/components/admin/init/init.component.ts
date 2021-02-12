@@ -50,7 +50,8 @@ export class InitComponent implements OnInit {
       this.newSolicitud.fechacreacion = hoy
       this.newSolicitud.usuario = asesores.Clave
       this.newSolicitud.oficina = asesores.Sucursales.Codigo
-
+      const key = asesores.Clave.toLocaleLowerCase()+"_"+numsol
+  
       this.srvSol.getSol(numsol)
         .subscribe((sol) => {
           if (sol) {

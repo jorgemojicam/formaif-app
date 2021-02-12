@@ -8,14 +8,14 @@
                     <p>
                         <mat-form-field appearance="outline">
                             <mat-label>Usuario</mat-label>
-                            <input matInput placeholder="Ingrese usuario" formControlName="Username">
+                            <input matInput placeholder="Ingrese usuario" autocomplete="off" formControlName="Username">
                             <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
                     </p>
                     <p>
                         <mat-form-field appearance="outline">
                             <mat-label>Contraseña</mat-label>
-                            <input [type]="hidenPass ? 'text' : 'password'" matInput placeholder="Ingrese contraseña"
+                            <input [type]="hidenPass ? 'text' : 'password'" autocomplete="off" matInput placeholder="Ingrese contraseña"
                                 formControlName="Passw">
                             <mat-icon matSuffix>lock</mat-icon>
                             <mat-hint>
@@ -35,5 +35,6 @@
                 </div>
             </ng-template>
         </mat-card-content>
+        <small>{{currentApplicationVersion}}</small>
     </mat-card>
 </div>

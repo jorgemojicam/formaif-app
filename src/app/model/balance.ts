@@ -9,13 +9,13 @@ import { ProveedoresEstacionales } from './proveedoresestacinales';
 import { Recuperacion } from './recuperacion';
 
 export class Balance {
-    efectivo: string;
+    efectivo: number;
     clienteCobrar: string;
     observacionesCobrar: string;
     valorCobrar: string;
     incobrableCobrar: string;
-    recuperacionCobrar: string;
-    cobrarTotal: string;
+    recuperacionCobrar: number;
+    cobrarTotal: number;
     porcentajeCobrar: number;
     recuperacion:Recuperacion[];
     totalRecuperacion:number;
@@ -41,6 +41,6 @@ export class Balance {
     tcorrientef: string;
     tnocorrientef: string;
     tcuotan: string;
-    tcorrienten: string;
-    tnocorrienten: string;
+    tcorrienten: number;
+    tnocorrienten: number;
 }

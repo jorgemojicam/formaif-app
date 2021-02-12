@@ -7,6 +7,7 @@ import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { OficinaService } from 'src/app/services/oficina.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-auth',
@@ -20,6 +21,7 @@ export class AuthComponent implements OnInit {
     Username: new FormControl('', [Validators.pattern('^[A-Za-z0-9-.-/]+$')]),
     Passw: new FormControl('', Validators.required)
   });
+  currentApplicationVersion = environment.appVersion;
 
   hidenPass: boolean = false
 
@@ -52,7 +54,7 @@ export class AuthComponent implements OnInit {
             Nombre: use,
             Iniciales: "N/A",
             Grupo: "SOPORTE",
-            Clave: "use",
+            Clave: use,
             Sucursales: {
               Codigo: "969",
               Direccion: "",

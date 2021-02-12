@@ -9,39 +9,75 @@
             <tbody>
                 <tr>
                     <td>2- Efectivo/Balance</td>
-                    <td><mat-chip-list><mat-chip>$0</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{efectivo}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>3- Cuentas por cobrar</td>
-                    <td></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalcuentascobrar}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>4-Total Inventarios </td>
-                    <td><mat-chip-list><mat-chip>${{totalinventarios}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalinventarios}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>6- Total Activo fijo</td>
-                    <td><mat-chip-list><mat-chip>${{totalactivosneg}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalactivosneg}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>8- Créditos con proveedores</td>
-                    <td><mat-chip-list><mat-chip>${{creditosproveedores}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{creditosproveedores}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>10- Otros pasivos corrientes</td>
-                    <td></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>{{otraspasivoscor| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>13- Otros pasivos no corrientes</td>
-                    <td></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>{{otraspasivosNocor| currency:'$' : 'symbol' : '1.0-0'}} </mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>17- Total Activos familiar </td>
-                    <td><mat-chip-list><mat-chip>${{totalactivosfam}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalactivosfam}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>18- Total pasivos familiar </td>
-                    <td></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>{{totalpasivosfam| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>21- Ventas de contado</td>
@@ -49,7 +85,11 @@
                 </tr>
                 <tr>
                     <td>22-Recuperación de cartera</td>
-                    <td></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>{{recuperacion| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>23-costo de venta</td>
@@ -57,23 +97,43 @@
                 </tr>
                 <tr>
                     <td>24-salarios</td>
-                    <td><mat-chip-list><mat-chip>${{salarios}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{salarios}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>25-Gastos generales </td>
-                    <td><mat-chip-list><mat-chip>${{gastosgenerales}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{gastosgenerales}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>26- Obligaciones Financieras</td>
-                    <td><mat-chip-list><mat-chip>${{obligacionesfin}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{obligacionesfin}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>28- Otros ingresos familiares </td>
-                    <td><mat-chip-list><mat-chip>${{totalotrosingresosfam}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalotrosingresosfam}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
                 <tr>
                     <td>29- Gastos y obligaciones familiares</td>
-                    <td><mat-chip-list><mat-chip>${{totalgastosfam}}</mat-chip></mat-chip-list></td>
+                    <td>
+                        <mat-chip-list>
+                            <mat-chip>${{totalgastosfam}}</mat-chip>
+                        </mat-chip-list>
+                    </td>
                 </tr>
             </tbody>
         </table>
