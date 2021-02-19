@@ -5,10 +5,10 @@ export class LotePecuario {
     cantproducida: number;
     egresos: Egresos[];
     frecuencia: {
-        cant: number;
-        dias: number;
         id: number;
         name: string;
+        dias: number;
+        cant: number;
     };
     ingresomes: string;
     mesingreso: number;

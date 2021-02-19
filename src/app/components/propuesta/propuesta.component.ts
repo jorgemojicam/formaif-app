@@ -7,6 +7,7 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
 import Utils from '../../utils'
+import { type } from 'os';
 
 @Component({
   selector: 'app-propuesta',
@@ -89,10 +90,36 @@ export class PropuestaComponent implements OnInit {
           });
         }
         const irregular = <FormArray>this.propuestaForm.controls['irregular'];
+        let arrDate = []
+
         irregular.controls.forEach(x => {
+
           let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
+          let fecha = x.get('fechacuota').value
+
+          if (fecha != "" || fecha != null) {
+
+            if (fecha == "") {
+              console.log("No tiene mes")
+            } else {
+              fecha as Date
+
+              let ano = fecha.getMonth()
+              let mes = fecha.getFullYear()
+              let fulldate = ano + "-" + mes
+
+              if (arrDate.indexOf(fulldate) >= 0) {
+                this._snackBar.open("La cuota del mes ya se ingreso", "Ok!", {
+                  duration: 9000,
+                });
+                fecha = ""
+              }
+              arrDate.push(fulldate)
+            }
+          }
           x.patchValue({
-            valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0
+            valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0,
+            fechacuota: fecha
           }, { emitEvent: false })
         });
 
@@ -114,11 +141,27 @@ export class PropuestaComponent implements OnInit {
       valorcuota: [''],
     });
   }
-  initCuotas(event) {
-    let num = event.key
-    this.cuotas().clear();
-    for (let i = 0; i < num; i++) {
-      this.cuotas().push(this.itemsCuotas());
+  initCuotas(numcuotas, maxcuotas) {
+
+    let num = 0
+    if (numcuotas == "" || numcuotas == null) {
+      this._snackBar.open("Ingrese el valor de las cuotas", "Ok!", {
+        duration: 6000,
+      });
+
+    } else {
+      if (numcuotas > maxcuotas) {
+        this.cuotas().clear();
+        this._snackBar.open("No puede superar el plazo", "Ok!", {
+          duration: 6000,
+        });
+      } else {
+        num = Utils.formatNumber(numcuotas)
+        this.cuotas().clear();
+        for (let i = 0; i < num; i++) {
+          this.cuotas().push(this.itemsCuotas());
+        }
+      }
     }
   }
   loadCuotas(irregular) {

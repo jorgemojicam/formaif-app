@@ -1,6 +1,6 @@
 {
   "name": "formaif-app",
-  "version": "0.0.4",
+  "version": "0.0.12",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

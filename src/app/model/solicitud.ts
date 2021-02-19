@@ -18,4 +18,5 @@ export class Solicitud {
     Gastos: Gastos;
     Ubicacion:Ubicacion;
     Propuesta:Propuesta;
+    Flujo:any[];
 }

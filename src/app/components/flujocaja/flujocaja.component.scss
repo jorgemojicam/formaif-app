@@ -9,6 +9,12 @@ table {
   border-collapse: collapse;
   margin-top: 5px;
   margin-bottom: 15px;
+  page-break-inside: auto;
+}
+
+tr {
+  page-break-inside: avoid;
+  page-break-after: auto
 }
 
 .mediod {
@@ -25,7 +31,7 @@ table {
 }
 
 .content {
-  width: 1003px;
+  width: 1403px;
 }
 
 .error {
@@ -41,6 +47,6 @@ table {
   color: green;
 }
 
-.none{
+.none {
   color: white;
 }

@@ -20,22 +20,16 @@ export class CarpetadigitalService {
     private http: HttpClient
   ) { }
 
-  loginCD() {
-    return this.http.post(environment.API_CP + 'login/authenticate', {
-      UserName: "admin",
-      Password: "123456",
-    });
-  }
 
   get(sol) {
-    return this.http.post(environment.API_CP + 'ConsCarpetaSolicitud', {
+    return this.http.post(environment.AUTH_API + 'Carpetadig/GetSol', {
       NumSolicitud: sol
     }, httpOptions);
   }
 
   insert(solicitud:Solicitud,fileBase64:string) {
 
-    return this.http.post(environment.API_CP + 'ActualizaCarpeta', {
+    return this.http.post(environment.AUTH_API + 'Carpetadig/InsertFile', {
       NumDocCli: solicitud.cedula,
       NumSolicitud: solicitud.solicitud,
       Usuario: "imglatam@fundaciondelamujer.com",

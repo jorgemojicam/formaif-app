@@ -13,13 +13,11 @@ export class IdbSolicitudService {
     private tokenStorage: TokenStorageService,
   ) { }
 
-
-
-  saveSol(name: string, data: any) {
+  saveSol(name: string, data: any) { 
     this.storage.set(name, data).subscribe(() => { });
   }
   getSol(name: string): any {
-    return this.storage.get(name);
+    return this.storage.get(name.toString());
   }
   deleteSol(name: string) {
     return this.storage.delete(name.toString())

@@ -122,7 +122,7 @@ export class AuthComponent implements OnInit {
           } else if (err.status == 0) {
             errMsg = "¡Error al ingresar! verifique la conexión a intenet."
           } else {
-            errMsg = "Se presento error con la conexion con el servidor. " + err.message
+            errMsg = "Se presento error en la conexion con el servidor. " + err.message
           }
           this._snackBar.open(errMsg, "Ok!", {
             duration: 3000,

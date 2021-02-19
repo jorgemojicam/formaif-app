@@ -74,7 +74,8 @@
                 <mat-card-title>Recuperacion de cartera</mat-card-title>
                 <mat-card-subtitle>recuperacion</mat-card-subtitle>
                 <mat-chip-list>
-                    <mat-chip color="accent" selected>{{balanceForm.controls.totalRecuperacion.value| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                    <mat-chip color="accent" selected>{{balanceForm.controls.totalRecuperacion.value| currency:'$' :
+                        'symbol' : '1.0-0'}}</mat-chip>
                 </mat-chip-list>
             </mat-card-header>
             <mat-card-content>
@@ -140,7 +141,7 @@
                                     <mat-label>Tipo</mat-label>
                                     <mat-select formControlName="tipo" id="tipo{{inv}}" required>
                                         <mat-option>--</mat-option>
-                                        <mat-option *ngFor="let tip of tipoInventario" [value]="tip.id">
+                                        <mat-option *ngFor="let tip of tipoInventario" [value]="tip">
                                             {{tip.name}}
                                         </mat-option>
                                     </mat-select>
@@ -151,7 +152,7 @@
                                     <mat-label>Tipo</mat-label>
                                     <mat-select formControlName="tipo" id="tipo{{inv}}" required>
                                         <mat-option>Tipo Inventario</mat-option>
-                                        <mat-option *ngFor="let tip of tipoInventarioAgro" [value]="tip.id">
+                                        <mat-option *ngFor="let tip of tipoInventarioAgro" [value]="tip">
                                             {{tip.name}}
                                         </mat-option>
                                     </mat-select>
@@ -370,14 +371,14 @@
 
                             <div class="gr" fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
                                 <mat-form-field>
-                                    <input type="text" matInput placeholder="Proveedor" id="nombre"
+                                    <input type="text" matInput autocomplete="off" placeholder="Proveedor" id="nombre"
                                         formControlName="nombre">
                                 </mat-form-field>
                             </div>
                             <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                                 <mat-form-field>
-                                    <input type="number" matInput placeholder="Numero Cuotas" id="numcuotas{{prov}}"
-                                        formControlName="numcuotas"
+                                    <input type="number" matInput autocomplete="off" placeholder="Numero Cuotas"
+                                        id="numcuotas{{prov}}" formControlName="numcuotas"
                                         (keyup)="loadcuotasProveedores(prov,proveedor.value.numcuotas)">
                                 </mat-form-field>
                             </div>
@@ -426,7 +427,6 @@
                         <mat-icon>add</mat-icon>
                     </button>
 
-
                 </ng-container>
             </ng-container>
         </mat-card-content>
@@ -449,28 +449,99 @@
                 Si
             </mat-card-content>
             <ng-container *ngIf="balanceForm.controls.creditoactual.value">
-                <div formArrayName="creditos" class="alternate">
-                    <div fxLayout="row wrap" class="content"
-                        *ngFor="let itemrow of balanceForm.controls.creditos['controls']; let cre=index"
-                        [formGroupName]="cre">
+                <!-- creditos con fdlm Comercial -->
+                <ng-container *ngIf="tipoSol==1">
+                    <div formArrayName="creditos" class="alternate">
+                        <div fxLayout="row wrap" class="content"
+                            *ngFor="let itemrow of balanceForm.controls.creditos['controls']; let cre=index"
+                            [formGroupName]="cre">
 
-                        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                            <mat-form-field>
-                                <input type="tel" matInput placeholder="Valor" id="valor{{cre}}"
-                                    formControlName="valor">
-                            </mat-form-field>
+                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field>
+                                    <input type="tel" autocomplete="off" matInput placeholder="Valor" id="valor{{cre}}"
+                                        formControlName="valor">
+                                </mat-form-field>
+                            </div>
+                            <button class="btndelete" color="warn" mat-icon-button [disabled]="cre==0"
+                                (click)="deleteCredito(cre)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
                         </div>
-                        <button class="btndelete" color="warn" mat-icon-button [disabled]="cre==0"
-                            (click)="deleteCredito(cre)">
-                            <mat-icon>cancel</mat-icon>
-                        </button>
                     </div>
-                </div>
-                <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
-                    [disabled]="balanceForm.controls.creditos['controls'].length >=4" color="accent"
-                    (click)="addNewCredito()">
-                    <mat-icon>add</mat-icon>
-                </button>
+                    <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
+                        [disabled]="balanceForm.controls.creditos['controls'].length >=4" color="accent"
+                        (click)="addNewCredito()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </ng-container>
+                <!-- creditos con fdlm Agropecuario -->
+                <ng-container *ngIf="tipoSol==2">
+
+                    <div formArrayName="creditosDetalle" class="alternate">
+                        <div fxLayout="row wrap" class="content"
+                            *ngFor="let credito of creditosDetalle().controls; let cre=index" [formGroupName]="cre">
+
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field>
+                                    <mat-label>Periodo</mat-label>
+                                    <mat-select formControlName="frecuencia" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let pe of periodo" [value]="pe">
+                                            {{pe.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field>
+                                    <input type="tel" matInput autocomplete="off" placeholder="Numero cuotas"
+                                        formControlName="numcuota"
+                                        (keyup)="loadcuotasCreditos(cre,credito.value.numcuota)">
+                                </mat-form-field>
+                            </div>
+
+                            <!-- cuotas del credito que le hacen falta  -->
+                            <div formArrayName="cuotas">
+                                <div fxLayout="row wrap"
+                                    *ngFor="let proveedor of cuotasCreditos(cre).controls; let cuo=index"
+                                    [formGroupName]="cuo">
+
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-form-field>
+                                            <mat-label>Fecha</mat-label>
+                                            <input matInput [matDatepicker]="fecha" autocomplete="off"
+                                                formControlName="fecha" readonly [min]="minDate">
+                                            <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+                                            <mat-datepicker #fecha disabled="false"></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                        <mat-form-field>
+                                            <input type="tel" autocomplete="off" matInput placeholder="Valor"
+                                                formControlName="valor">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Total</mat-label>
+                                    <input matInput type="Total" readonly formControlName="total">
+                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <button class="btndelete" color="warn" mat-icon-button *ngIf="cre>0"
+                                (click)="deleteCreditoDetalle(cre)">
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button" color="accent"
+                        (click)="addCreditoDetalle()" [disabled]="creditosDetalle().controls.length >=4">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                </ng-container>
             </ng-container>
         </mat-card-content>
     </mat-card>
@@ -592,8 +663,8 @@
 
                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
-                                        <input type="text" matInput placeholder="Acreedor" id="acreedor{{pas}}"
-                                            formControlName="acreedor">
+                                        <input type="text" autocomplete="off" matInput placeholder="Acreedor"
+                                            id="acreedor{{pas}}" formControlName="acreedor">
                                     </mat-form-field>
                                 </div>
                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
@@ -1130,16 +1201,22 @@
                 </thead>
                 <tr>
                     <td>Familia</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tcuotaf.value| currency:'$' : 'symbol' : '1.0-0'}}</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tcorrientef.value| currency:'$': 'symbol' : '1.0-0'}}</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tnocorrientef.value| currency:'$': 'symbol' : '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tcuotaf.value| currency:'$' : 'symbol' :
+                        '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tcorrientef.value| currency:'$': 'symbol' :
+                        '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tnocorrientef.value| currency:'$': 'symbol' :
+                        '1.0-0'}}</td>
 
                 </tr>
                 <tr>
                     <td>Negocio</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tcuotan.value| currency:'$': 'symbol' : '1.0-0'}}</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tcorrienten.value| currency:'$': 'symbol' : '1.0-0'}}</td>
-                    <td style="text-align: right;">{{balanceForm.controls.tnocorrienten.value| currency:'$': 'symbol' : '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tcuotan.value| currency:'$': 'symbol' :
+                        '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tcorrienten.value| currency:'$': 'symbol' :
+                        '1.0-0'}}</td>
+                    <td style="text-align: right;">{{balanceForm.controls.tnocorrienten.value| currency:'$': 'symbol' :
+                        '1.0-0'}}</td>
                 </tr>
                 <tr>
 

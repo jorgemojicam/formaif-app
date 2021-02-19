@@ -11,7 +11,7 @@
                             formControlName="montorecomendado" autocomplete="off">
                     </mat-form-field>
                 </div>
-                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="26%">
+                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                     Plazo: <span>{{propuestaForm.value.plazo}}</span> meses
                     <mat-slider thumbLabel formControlName="plazo" min="6" max="60" step="1">
                     </mat-slider>
@@ -53,10 +53,10 @@
                     <b>Propuesta de crédito</b>
                 </div>
                 <mat-radio-group fxLayout="row wrap" class="radio-group" formControlName="tipocuota">
-                    <mat-radio-button fxFlex="33%" fxFlex.xs="50%" class="radio-button" value="1">
+                    <mat-radio-button fxFlex="80%" fxFlex.xs="70%" class="radio-button" value="1">
                         Cuota fija
                     </mat-radio-button>
-                    <mat-radio-button fxFlex="33%" fxFlex.xs="50%" class="radio-button" value="2">
+                    <mat-radio-button fxFlex="20%" fxFlex.xs="30%" class="radio-button" value="2">
                         Cuota Irregular
                     </mat-radio-button>
                 </mat-radio-group>
@@ -102,12 +102,19 @@
             <mat-card-content>
 
                 <div fxLayout="row wrap">
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div class="gr" fxFlex="80%" fxFlex.xs="80%" fxFlex.sm="80%">
                         <mat-form-field>
-                            <input type="number" (keyup)="initCuotas($event)" matInput placeholder="Numero Cuotas" formControlName="numerocuotas"
+                            <input type="number" matInput placeholder="Numero Cuotas" formControlName="numerocuotas"
                                 autocomplete="off">
                         </mat-form-field>
                     </div>
+                    <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+                        <button mat-mini-fab color="primary"
+                            (click)="initCuotas(propuestaForm.value.numerocuotas,propuestaForm.value.plazo)">
+                            <mat-icon>expand_more</mat-icon>
+                        </button>
+                    </div>
+
 
                     <div formArrayName="irregular" class="alternate">
                         <div fxLayout="row wrap" class="content"
@@ -115,7 +122,7 @@
 
                             <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                 <mat-form-field>
-                                    <mat-label>Fecha Desembolso</mat-label>
+                                    <mat-label>Fecha Pago</mat-label>
                                     <input matInput [matDatepicker]="fechacuota" autocomplete="off"
                                         formControlName="fechacuota" [min]="minDate">
                                     <mat-datepicker-toggle matSuffix [for]="fechacuota"></mat-datepicker-toggle>

@@ -1,5 +1,6 @@
 import { ActivosFamilia } from './activosfamilia';
 import { ActivosNegocio } from './activosnegocio';
+import { CreditoDetalle } from './creditodetalle';
 import { Creditos } from './creditos';
 import { Inventario } from './inventario';
 import { Inversiones } from './inversiones';
@@ -33,6 +34,8 @@ export class Balance {
     creditoactual:boolean;
     creditos: Creditos[];
     totalCreditos: number;
+    creditosDetalle:CreditoDetalle[];
+    totalcreditosDetalle:number;
     aplicaInversiones:boolean;
     inversiones:Inversiones[];
     totalInversiones:number;

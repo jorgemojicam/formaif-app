@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
+import Utils from '../../utils';
+import { CrucesAgro } from 'src/app/model/crucesagro';
 
 @Component({
   selector: 'app-analisisagro',
@@ -21,112 +23,154 @@ export class AnalisisagroComponent implements OnInit {
     public srvSol: IdbSolicitudService
   ) { }
 
-  datasolicitud: Solicitud = new Solicitud()
+  datasolicitud: Solicitud = new Solicitud();
   tipoAsesor: number;
   fechahoy: string;
-  sol: string;
+
 
   ngOnInit(): void {
 
+    let hoy = new Date()
+    let mes: number = hoy.getMonth() + 1
+    this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
+
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
-        this.sol = params.get('solicitud')
-        this.srvSol.getSol(this.sol).subscribe((datasol) => {
-          let hoy = new Date()
-          let mes: number = hoy.getMonth() + 1
-          this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
-          this.datasolicitud = datasol as Solicitud
-          this.tipoAsesor = this.datasolicitud.asesor
+        let sol = params.get('solicitud')
+        this.srvSol.getSol(sol).subscribe((datasol) => {
+          this.datasolicitud = datasol as Solicitud;
+          this.tipoAsesor = this.datasolicitud.asesor;
         })
       });
     } else {
       this.datasolicitud = this.datossol
+      this.tipoAsesor = this.datasolicitud.asesor;
     }
-
   }
+
+
 
   transform(base) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(base);
-  }
-
-  equivalencia(id: number, lista: string) {
-    if (lista == 'tipoinventario') {
-      let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);
-     
-      return inventario[0].name
-    }
-  }
-
-  TipoUnidades(id: string, lista: string){
-    if(id!==""){
-      if (lista == 'Unidades') {
-        let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-       
-        return descripcion[0].name
-      }
-    }
-  }
-  TipoEdad(id: string, lista: string){
-    if(id!==""){
-      if (lista == 'Periodo') {
-        let descripcion=DataSelect.Unidades.filter(i => i.id == id);
-        
-        return descripcion[0].name
-      }
-
-    }
-  }
-
-  TipoFrecuencia(id: string, lista: string){
-   if(id!==""){
-    if (lista == 'PeriodoEdad') {
-      let descripcion=DataSelect.PeriodoEdad.filter(i => i.id == id);
-      
-      return descripcion[0].name
-    }
-   }
-  }
-  
-  MesNombre(id: string, lista: string) {
-    if(id==""){
+    if (base != "") {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(base);
+    } else {
       return ""
     }
-
-    if (lista == 'MesNombre') {
-      let Mes = DataSelect.Meses.filter(i => i.id == id);
-      return Mes[0].name
-    }
   }
 
-  TipoIngreso(id: number, lista: string) {
-    if (lista == 'tipoingreso') {
-      let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
-     
-      return tipo[0].name
+  equivalencia(id: string, lista: string) {
+
+    if (id == "") {
+      return ""
     }
-  }
-
-  DescripcionEgresos(id: string, lista: string) {
-    if(id!==""){
-      if (lista == 'descripcionegreso') {
-        let descripcion = DataSelect.DetalleAgricola.filter(i => i.id == id);
-        
-        return descripcion[0].name
-      }
-
-    }
-    
-  }
-
-  DescripcionEgresosPec(id: string, lista: string) {
-    if(id!==""){
-      if (lista == 'DescripcionEgresosPec') {
+    let texto = ""
+    switch (lista) {
+      case 'tipoinventario':
+        let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);
+        texto = inventario[0].name
+        break;
+      case 'MesNombre':
+        let Mes = DataSelect.Meses.filter(i => i.id == id);
+        texto = Mes[0].name
+        break;
+      case 'TipoActividad':
+        let act = DataSelect.TipoActividadRural.filter(i => i.id == id);
+        texto = act[0].name
+        break;
+      case 'Periodo':
+        let periodo = DataSelect.PeriodoEdad.filter(i => i.id == id);
+        texto = periodo[0].name
+        break;
+      case 'Unidades':
+        let uni = DataSelect.Unidades.filter(i => i.id == id);
+        texto = uni[0].name
+        break;
+      case 'PeriodoEdad':
+        let priodo = DataSelect.PeriodoEdad.filter(i => i.id == id);
+        texto = priodo[0].name
+        break;
+      case 'tipoingreso':
+        let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
+        texto = tipo[0].name
+        break;
+      case 'descripcionegreso':
+        let deta = DataSelect.DetalleAgricola.filter(i => i.id == id);
+        texto = deta[0].name
+        break;
+      case 'DescripcionEgresosPec':
         let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
-        
-        return descripcion[0].name
-      }
+        texto = descripcion[0].name
+        break;
+      default:
+        texto = ""
+        break;
     }
-   
+    return texto
+
+  }
+
+  totales(perdidaPepeo, perdidaTra, perdidaCos) {
+    return Utils.formatNumber(perdidaPepeo) + Utils.formatNumber(perdidaCos) + Utils.formatNumber(perdidaTra)
+  }
+
+  totalegreso(act: CrucesAgro) {
+    let totalegreso = 0
+    act.lotesAgro.forEach(loteA => {
+      loteA.egresosAdecuacion.forEach(eg => {
+        totalegreso += Utils.formatNumber(eg.total)
+      });
+      loteA.egresosCocecha.forEach(eg => {
+        totalegreso += Utils.formatNumber(eg.total)
+      });
+      loteA.egresosMante.forEach(eg => {
+        totalegreso += Utils.formatNumber(eg.total)
+      });
+      loteA.egresosSiembra.forEach(eg => {
+        totalegreso += Utils.formatNumber(eg.total)
+      });
+    });
+    return totalegreso.toLocaleString()
+  }
+  totalegresoP(act: CrucesAgro) {
+
+    let totalegreso = 0
+    act.lotesPecuario.forEach(loteP => {
+      loteP.egresos.forEach(eg => {
+        totalegreso += Utils.formatNumber(eg.total)
+      });
+    });
+    return totalegreso
+  }
+
+  totalingreso(act: CrucesAgro) {
+    let totalingreso = 0
+    act.lotesAgro.forEach(LoteA => {
+      totalingreso += Utils.formatNumber(LoteA.totalLoteAunual)
+    });
+    return totalingreso.toLocaleString()
+  }
+  totalingresoP(act: CrucesAgro) {
+    let totalingreso = 0
+    act.lotesPecuario.forEach(lotP => {
+      totalingreso += Utils.formatNumber(lotP.ingresomes)
+    });
+    return totalingreso.toLocaleString()
+  }
+
+  Mes(mes: []) {
+    let mesTexto = []
+    if (mes.length > 0) {
+      if (mes.length > 11) {
+        return "Todo el Año"
+      } else {
+        mes.forEach(m => {
+          mesTexto.push(Utils.changeMonth(m))
+        });
+        return mesTexto
+      }
+    } else {
+      return ""
+    }
   }
 }
 

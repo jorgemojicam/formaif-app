@@ -143,7 +143,7 @@ export class HomeComponent implements AfterViewInit {
 
       const numeroSolicitud: string = element.solicitud.toString();
 
-      await this.getSolicitud(numeroSolicitud)
+      this.datasol = await this.getSolicitud(numeroSolicitud) as Solicitud
 
       let aseso = await this.getDirector() as Asesor
 
@@ -152,10 +152,10 @@ export class HomeComponent implements AfterViewInit {
         Swal.fire({
           title: '¿Desea Enviar Analisis de credito?',
           html: `Se enviara email al director:
-      <br><b>`+ aseso.Nombre + `</b>, 
-      <br><small>`+ aseso.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
-      <br><b>Solicitud :</b>` + numeroSolicitud + `
-      <br><b>Oficina :</b> `+ aseso.Sucursales.Nombre,
+        <br><b>`+ aseso.Nombre + `</b>, 
+        <br><small>`+ aseso.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
+        <br><b>Solicitud :</b>` + numeroSolicitud + `
+        <br><b>Oficina :</b> `+ aseso.Sucursales.Nombre,
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Si, Enviar!',
@@ -195,7 +195,8 @@ export class HomeComponent implements AfterViewInit {
                     }
 
                     b.textContent = "Enviando email..."
-                    await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, "jorge.mojica@fundaciondelamujer.com")
+                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
+                    await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
 
                     b.textContent = "Insertando el analisis..."
                     await this.insert(this.datasol)
@@ -204,6 +205,8 @@ export class HomeComponent implements AfterViewInit {
                     Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                     this.procesando = false
 
+                    let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
+                    console.log(existeSolicitud)
                     //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
                     //console.log("Insertndo el carpeta digital",insertaCarpeta)
 
@@ -217,6 +220,7 @@ export class HomeComponent implements AfterViewInit {
           }
         })
 
+
       } else {
         this.procesando = false
         Swal.fire({
@@ -225,6 +229,7 @@ export class HomeComponent implements AfterViewInit {
           text: 'En este momento la oficina a la que corresponde no tiene director por favor comuniquese con el area de riesgos',
         })
       }
+
     } else {
       this.procesando = false
       Swal.fire({
@@ -240,16 +245,14 @@ export class HomeComponent implements AfterViewInit {
   }
 
   getSolicitud(solicitud) {
-    return new Promise((resolve, rejects) => {
-      this.srvSol.getSol(solicitud)
-        .subscribe(
-          (datasol) => {
-            resolve(datasol)
-            this.datasol = datasol as Solicitud;
-          },
-          (err) => {
-            rejects(err)
-          })
+    return new Promise((resolve, reject) => {
+      this.srvSol.getSol(solicitud).subscribe(
+        (datasol) => {
+          return resolve(datasol)
+        },
+        (err) => {
+          reject(err)
+        })
     })
 
   }
@@ -305,6 +308,15 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
+  getCarpetaDigital(solicitud: Solicitud) {
+    return new Promise(resolve => {
+      this.carpetaServ.get(solicitud.solicitud)
+        .subscribe((res) => {
+          return resolve(res)
+        });
+    })
+
+  }
   inserCarpetaDigital(solicitud: Solicitud, pfd: string) {
     return new Promise(resolve => {
       this.carpetaServ.insert(solicitud, pfd)
@@ -324,7 +336,7 @@ export class HomeComponent implements AfterViewInit {
     } else {
 
       return new Promise((resolve, reject) => {
-        this.ofiServ.getAsesores(suc).subscribe(
+        this.ofiServ.getAsesores("609").subscribe(
           (ase) => {
             let diretores = ase as Asesor[]
             if (ase) {

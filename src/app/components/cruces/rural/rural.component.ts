@@ -421,7 +421,7 @@ export class RuralComponent implements OnInit {
   itemactividad() {
     return this.fb.group({
       nombre: [''],
-      tipo: [''],
+      tipo: [0],
       periodoventas: [''],
       tipoproduccion: '',
       diasB: '',
@@ -457,6 +457,10 @@ export class RuralComponent implements OnInit {
   loadactividad(cruces: CrucesAgro[]): FormGroup {
     let crucesArray = this.fb.array([])
     for (let cru = 0; cru < cruces.length; cru++) {
+      let unidadVenta = []
+      if(cruces[cru].unidadventa){
+        unidadVenta = this.unidades.filter((un)=> un.id == cruces[cru].unidadventa.id)
+      }
       let tipoprod
       if (cruces[cru].tipo == 2) {
         tipoprod = cruces[cru].tipoproduccion
@@ -485,7 +489,7 @@ export class RuralComponent implements OnInit {
           promedio: '',
           totalDias: '',
           totalPromedio: '',
-          unidadventa: [cruces[cru].unidadventa],
+          unidadventa: unidadVenta,
 
           totalCompras: '',
           ventasEstimadas: '',
@@ -511,12 +515,12 @@ export class RuralComponent implements OnInit {
         this.fb.group({
           areacult: [lotes[lo].areacult],
           aplicadiastancia: [lotes[lo].aplicadiastancia],
-          aplicaplantasinformacli: [''],
+          aplicaplantasinformacli: [lotes[lo].aplicaplantasinformacli],
           dsurcos: [lotes[lo].dsurcos],
           dplantas: [lotes[lo].dplantas],
           diastancia: [lotes[lo].diastancia],
           planatasinformacli: [lotes[lo].planatasinformacli],
-          fechafinal: [lotes[lo].fechafinal],
+          //fechafinal: [lotes[lo].fechafinal],
           edadcult: [lotes[lo].edadcult],
           periodoedad: [lotes[lo].periodoedad],
           rendiemientolote: [lotes[lo].rendiemientolote],
@@ -561,12 +565,16 @@ export class RuralComponent implements OnInit {
   loaditemLotesP(lotes: LotePecuario[]) {
     let lotesArray = this.fb.array([])
     for (let lo = 0; lo < lotes.length; lo++) {
+      let frec = []
+      if(lotes[lo].frecuencia){        
+        frec = this.frecuencia.find((f)=> f.id == lotes[lo].frecuencia.id)
+      }
       lotesArray.push(
         this.fb.group({
           numanimales: [lotes[lo].numanimales],
           prodderivado: [lotes[lo].prodderivado],
           cantidadxanimal: [lotes[lo].cantidadxanimal],
-          frecuencia: [lotes[lo].frecuencia],
+          frecuencia: [frec],
           cantproducida: [lotes[lo].cantproducida],
           unitotalesventa: [lotes[lo].unitotalesventa],
           perdida: [lotes[lo].perdida],
@@ -655,7 +663,7 @@ export class RuralComponent implements OnInit {
       dplantas: '',
       diastancia: '',
       planatasinformacli: '',
-      fechafinal: '',
+      //fechafinal: '',
       edadcult: '',
       periodoedad: '',
       rendiemientolote: '',

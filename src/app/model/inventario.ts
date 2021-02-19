@@ -1,5 +1,8 @@
 export class Inventario {   
-    tipo:number;
+    tipo:{
+      id:number;
+      name:string;
+    };
     cantidad: number;
     vlrUni: number;
     descripcion:string;

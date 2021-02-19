@@ -14,12 +14,12 @@
                     *ngFor="let itemrow of gastosForm.controls.remuneracionRow['controls']; let re=index"
                     [formGroupName]="re">
 
-                    <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="40%">
+                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
                             <input type="text" matInput placeholder="Cargo" id="cargo{{re}}" formControlName="cargo">
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="30%">
+                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
                             <input type="tel" matInput placeholder="Valor" id="valor{{re}}" formControlName="valor">
                         </mat-form-field>
@@ -110,30 +110,23 @@
                         *ngFor="let itemrow of gastosForm.controls.estacionalesN['controls']; let es=index"
                         [formGroupName]="es">
 
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="40%">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-form-field>
                                 <input type="text" matInput placeholder="Concepto" id="concepto{{es}}"
                                     formControlName="concepto">
                             </mat-form-field>
-                        </div>
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="30%">
-                            <mat-form-field>
-                                <input type="text" matInput placeholder="Descripción" id="valor{{es}}"
-                                    formControlName="descripcion">
-                            </mat-form-field>
-                        </div>
-                        <div class="gr" fxFlex="20%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        </div>                     
+                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <mat-label>Mes</mat-label>
-                                <mat-select formControlName="mes" id="mes{{es}}" required>
-                                    <mat-option>--</mat-option>
+                                <mat-select formControlName="mes" multiple>                                    
                                     <mat-option *ngFor="let mes of meses" [value]="mes.id">
                                         {{mes.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="30%">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <input type="tel" matInput placeholder="Valor" id="valor{{es}}" formControlName="valor">
                             </mat-form-field>
@@ -230,30 +223,23 @@
                         *ngFor="let itemrow of gastosForm.controls.estacionalesF['controls']; let es=index"
                         [formGroupName]="es">
 
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="40%">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%">
                             <mat-form-field>
                                 <input type="text" matInput placeholder="Concepto" id="concepto{{es}}"
                                     formControlName="concepto">
                             </mat-form-field>
-                        </div>
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="30%">
-                            <mat-form-field>
-                                <input type="text" matInput placeholder="Descripción" id="valor{{es}}"
-                                    formControlName="descripcion">
-                            </mat-form-field>
-                        </div>
-                        <div class="gr" fxFlex="20%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        </div>                     
+                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <mat-label>Mes</mat-label>
-                                <mat-select formControlName="mes" id="mes{{es}}" required>
-                                    <mat-option>--</mat-option>
+                                <mat-select formControlName="mes" multiple>                                   
                                     <mat-option *ngFor="let mes of meses" [value]="mes.id">
                                         {{mes.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="30%">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <input type="tel" matInput placeholder="Valor" id="valor{{es}}" formControlName="valor">
                             </mat-form-field>
@@ -287,14 +273,14 @@
                     *ngFor="let itemrow of gastosForm.controls.otrosIngresosRow['controls']; let ot=index"
                     [formGroupName]="ot">
 
-                    <div class="gr" fxFlex="30%" fxFlex.xs="100%" fxFlex.sm="26%">
+                    <div class="gr" fxFlex="33%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <input type="text" matInput placeholder="Observacion" id="observacion{{ot}}"
                                 formControlName="observacion">
                         </mat-form-field>
                     </div>
 
-                    <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="26%">
+                    <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
                             <mat-label>Ingreso</mat-label>
                             <mat-select formControlName="ingreso" id="ingreso{{ot}}" required>
@@ -306,7 +292,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="26%">
+                    <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
                             <input type="tel" matInput placeholder="Valor" id="valor{{ot}}" formControlName="valor">
                         </mat-form-field>

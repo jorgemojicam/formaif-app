@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Estacionales } from 'src/app/model/estacionales';
@@ -166,7 +166,7 @@ export class GastosComponent implements OnInit {
           totalOtros: isFinite(totalOtros) ? totalOtros.toLocaleString() : 0,
         }, { emitEvent: false })
 
-        this.dataGastos = values
+        this.dataGastos = this.gastosForm.value
         this.dataSolicitud.Gastos = this.dataGastos
         this.srvSol.saveSol(this.sol, this.dataSolicitud)
       })
@@ -236,8 +236,7 @@ export class GastosComponent implements OnInit {
   //---------------Estacionales---------------------
   initEstacionales() {
     return this.fb.group({
-      concepto: ['', Validators.required],
-      descripcion: ['', Validators.required],
+      concepto: ['', Validators.required],     
       mes: ['', Validators.required],
       valor: ['', Validators.required],
     });
@@ -247,8 +246,7 @@ export class GastosComponent implements OnInit {
     estacionales.forEach(estacional => {
       esta.push(
         this.fb.group({
-          concepto: [estacional.concepto, Validators.required],
-          descripcion: [estacional.descripcion, Validators.required],
+          concepto: [estacional.concepto, Validators.required],         
           mes: [estacional.mes, Validators.required],
           valor: [estacional.valor, Validators.required]
         })

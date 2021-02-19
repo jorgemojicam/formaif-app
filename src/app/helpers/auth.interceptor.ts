@@ -30,18 +30,14 @@ export class AuthInterceptor implements HttpInterceptor {
     private _snackBar: MatSnackBar,
   ) { }
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-    if (request.url.indexOf(environment.API_CP) >= 0) {
-      console.log("entro")
-    } else {
-      const token = this.token.getToken();
-      if (token != null) {
-        request = request.clone({
-          url: request.url.replace('http://', 'https://'),
-          headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
-        });
-      }
+    const token = this.token.getToken();
+    if (token != null) {
+      request = request.clone({
+        url: request.url.replace('http://', 'https://'),
+        headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
+      });
     }
+
 
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {

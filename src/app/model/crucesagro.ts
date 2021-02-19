@@ -30,7 +30,10 @@ export class CrucesAgro {
     mesCos: [];
     mesTra: [];
     mesPepeo: [];
-    unidadventa:''
+    unidadventa:{
+        id:number;
+        name:string;
+    }
     lotesAgro:LoteAgro[];
     lotesPecuario:LotePecuario[];
 }

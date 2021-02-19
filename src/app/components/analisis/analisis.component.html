@@ -97,8 +97,8 @@
                 </thead>
                 <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
                     <tr>
-                        <td>{{act.detalle}}</td>
-                        <td>{{act.tipo.name}}</td>
+                        <td *ngIf="act.detalle">{{act.detalle}}</td>
+                        <td *ngIf="act.tipo">{{act.tipo.name}}</td>
                         <td>{{act.cantidad}}</td>
                         <td style="text-align: right;">{{act.vlrUni}}</td>
                         <td align="right">${{act.valor}}</td>
@@ -130,7 +130,7 @@
                 <tbody *ngFor="let act of datasolicitud.Balance.activosFamRows; let cont=index">
                     <tr>
                         <td>{{act.detalle}}</td>
-                        <td>{{act.tipo.name}}</td>
+                        <td *ngIf="act.tipo">{{act.tipo.name}}</td>
                         <td>{{act.cantidad}}</td>
                         <td style="text-align: right;">{{act.vlrUni}}</td>
                         <td align="right">${{act.valor}}</td>

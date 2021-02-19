@@ -79,62 +79,132 @@
                         </mat-chip-list>
                     </td>
                 </tr>
-                <tr>
-                    <td>21- Ventas de contado</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>22-Recuperación de cartera</td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>{{recuperacion| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
-                <tr>
-                    <td>23-costo de venta</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>24-salarios</td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>${{salarios}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
-                <tr>
-                    <td>25-Gastos generales </td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>${{gastosgenerales}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
-                <tr>
-                    <td>26- Obligaciones Financieras</td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>${{obligacionesfin}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
-                <tr>
-                    <td>28- Otros ingresos familiares </td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>${{totalotrosingresosfam}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
-                <tr>
-                    <td>29- Gastos y obligaciones familiares</td>
-                    <td>
-                        <mat-chip-list>
-                            <mat-chip>${{totalgastosfam}}</mat-chip>
-                        </mat-chip-list>
-                    </td>
-                </tr>
+                <!-- comercial -->
+                <ng-container *ngIf="tiposol==1">
+                    <tr>
+                        <td>21- Ventas de contado</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>22-Recuperación de cartera</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{recuperacion| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>23-costo de venta</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>24-salarios</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>${{salarios}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>25-Gastos generales </td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>${{gastosgenerales}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>26- Obligaciones Financieras</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>${{obligacionesfin}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>28- Otros ingresos familiares </td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>${{totalotrosingresosfam}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>29- Gastos y obligaciones familiares</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>${{totalgastosfam}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                </ng-container>
+                <!-- agropecuario -->
+                <ng-container *ngIf="tiposol==2">
+                    <tr>
+                        <td>21- Ventas de contado</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{totalingreosflujo| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>22-Recuperación de cartera</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{totalrecuperacioncartera| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>23-costo de venta</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{costodeventaA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>24-salarios</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{salariosA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>25-Gastos generales </td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{gastosGeneralesA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>26- Obligaciones Financieras</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{obligacionesA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>28- Otros ingresos familiares </td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{otrosIngresosA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>29- Gastos y obligaciones familiares</td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{gastosFamiliaresA| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </mat-card-content>

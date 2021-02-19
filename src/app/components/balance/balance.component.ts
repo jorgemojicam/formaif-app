@@ -16,6 +16,7 @@ import { Inversiones } from 'src/app/model/inversiones';
 import { Pasivos } from 'src/app/model/pasivos';
 import Utils from '../../utils'
 import { ProveedoresEstacionales } from 'src/app/model/proveedoresestacinales';
+import { CreditoDetalle } from 'src/app/model/creditodetalle';
 
 @Component({
   selector: 'app-balance',
@@ -36,11 +37,12 @@ export class BalanceComponent implements OnInit {
   periodo: any = DataSelect.Periodo;
   meses: any = DataSelect.Meses;
   CuotasDifiere: any = DataSelect.CuotasDifiere;
-
+  fechahoy: Date = new Date()
   tipoSol: number;
   totalActFam: number;
   totalProv: number;
   sol: string;
+  minDate = new Date();
 
   constructor(
     public srvSol: IdbSolicitudService,
@@ -74,6 +76,8 @@ export class BalanceComponent implements OnInit {
     creditoactual: '',
     creditos: this.fb.array([this.initCreditos()]),
     totalCreditos: '',
+    creditosDetalle: this.fb.array([this.initCreditosDetalle()]),
+    totalcreditosDetalle: [0],
     aplicaInversiones: '',
     inversiones: this.fb.array([this.initInversiones()]),
     totalInversiones: '',
@@ -104,12 +108,14 @@ export class BalanceComponent implements OnInit {
           this.loadBalance(this.dataSolicitud.Balance)
         }
       }
+
+      //------------Se ejecuta cuando se realiza cualquier cambio en el formulario-----------
       this.balanceForm.valueChanges.subscribe(form => {
 
         let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
         let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
         let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
-        let recuperacionCobrar= Utils.formatNumber(this.balanceForm.controls.recuperacionCobrar.value)
+        let recuperacionCobrar = Utils.formatNumber(this.balanceForm.controls.recuperacionCobrar.value)
         if (incobrable > valorCobrar) {
           incobrable = 0
           this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {
@@ -165,6 +171,40 @@ export class BalanceComponent implements OnInit {
           }, { emitEvent: false });
         });
 
+        //Calculo creditos FDLM agro
+        const creditosDetalle = <FormArray>this.balanceForm.controls['creditosDetalle'];
+        let totalcreditosDetalle = 0
+        creditosDetalle.controls.forEach(x => {
+          const cuotas = <FormArray>x.get('cuotas')
+          let total = 0
+          let arrMese = []
+          cuotas.controls.forEach(cuo => {
+            let valor = Utils.formatNumber(cuo.get('valor').value)
+            let fecha = cuo.get('fecha').value
+
+            if (fecha != "") {
+              fecha as Date
+              let mes = fecha.getMonth()
+              let ano = fecha.getFullYear()
+              let fullfecha = mes + "-" + ano
+              if (arrMese.indexOf(fullfecha) < 0)
+                arrMese.push(fullfecha)
+              else
+                fecha = ""
+            }
+
+            total += valor
+            cuo.patchValue({
+              valor: isFinite(valor) ? valor.toLocaleString() : 0,
+              fecha: fecha
+            }, { emitEvent: false });
+          });
+
+          totalcreditosDetalle += total
+          x.patchValue({
+            total: isFinite(total) ? total.toLocaleString() : 0,
+          }, { emitEvent: false });
+        });
         //Calculo activos negocio
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
@@ -191,7 +231,6 @@ export class BalanceComponent implements OnInit {
             vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
-
         //Calculo proveedores
         let totalProv = 0
         const proveedores = <FormArray>this.balanceForm.controls['proveedoresRow'];
@@ -202,17 +241,16 @@ export class BalanceComponent implements OnInit {
             valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false });
         });
-
         //Calculo proveedores Estacionales  
         const proveedoresEst = <FormArray>this.balanceForm.controls['proveedoresEstacionales'];
         proveedoresEst.controls.forEach(x => {
-
           const cuotas = <FormArray>x.get('cuotas')
           let total = 0
           let arrMese = []
           cuotas.controls.forEach(cuo => {
             let valor = Utils.formatNumber(cuo.get('valor').value)
             let mes = cuo.get('mes').value
+
             if (arrMese.indexOf(mes) < 0)
               arrMese.push(mes)
             else
@@ -303,18 +341,20 @@ export class BalanceComponent implements OnInit {
                 tcuotaf += proyeccion
                 tcorrientef += corriente
                 tnocorrientef += nocorriente
+
                 x.patchValue({
-                  corrienteF: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                  nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
+                  corrienteF: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                  nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                 }, { emitEvent: false })
               } else {
                 tcuotan += proyeccion
                 tcorrienten += corriente
                 tnocorrienten += nocorriente
+
                 x.patchValue({
-                  corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
-                  nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
-                  proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+                  corrienteN: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                  nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                  proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                 }, { emitEvent: false })
               }
 
@@ -323,10 +363,9 @@ export class BalanceComponent implements OnInit {
                 descuentolibranza: descuentolibranza
               }, { emitEvent: false })
 
-
             }
             // Hipotecario
-            else if (tipo.id == "2") {  
+            else if (tipo.id == "2") {
               let porcentajeneg = x.get('porcentajeneg').value
               if (porcentajeneg > 100) {
                 x.get("porcentajeneg").setValue("", { emitEvent: false });
@@ -499,7 +538,9 @@ export class BalanceComponent implements OnInit {
     });
   }
 
+  //----------Carga el balance cuando ya existe en la BD Local
   loadBalance(bal: Balance) {
+
     return this.balanceForm = this.fb.group({
       efectivo: bal.efectivo,
       clienteCobrar: bal.clienteCobrar,
@@ -525,6 +566,8 @@ export class BalanceComponent implements OnInit {
       creditoactual: bal.creditoactual,
       creditos: this.loadCreditos(bal.creditos),
       totalCreditos: bal.totalCreditos,
+      creditosDetalle: this.loadCreditoDetalle(bal.creditosDetalle),
+      totalcreditosDetalle: bal.totalcreditosDetalle,
       aplicaInversiones: bal.aplicaInversiones,
       inversiones: this.loadInversiones(bal.inversiones),
       totalInversiones: bal.totalInversiones,
@@ -537,7 +580,6 @@ export class BalanceComponent implements OnInit {
       tnocorrienten: [bal.tnocorrienten]
     })
   }
-
   //----------------Inventario--------------------------------
   initInventarioRows() {
     return this.fb.group({
@@ -551,8 +593,19 @@ export class BalanceComponent implements OnInit {
   loadInventarioRows(inventarios: Inventario[]) {
     let arrayInventario = this.fb.array([])
     inventarios.forEach(inv => {
+      let tipoinv = []
+
+      if (this.tipoSol == 2) {
+        if (inv.tipo) {
+          tipoinv = this.tipoInventarioAgro.find(inve => inve.id == inv.tipo.id)
+        }
+      } else if (this.tipoSol == 1) {
+        if (inv.tipo) {
+          tipoinv = this.tipoInventario.find(inve => inve.id == inv.tipo.id)
+        }
+      }
       arrayInventario.push(this.fb.group({
-        tipo: [inv.tipo],
+        tipo: [tipoinv],
         cantidad: [inv.cantidad],
         vlrUni: [inv.vlrUni],
         descripcion: [inv.descripcion],
@@ -561,7 +614,6 @@ export class BalanceComponent implements OnInit {
     });
     return arrayInventario
   }
-
   inventario() {
     return this.balanceForm.get('inventarioRow') as FormArray;
   }
@@ -585,10 +637,17 @@ export class BalanceComponent implements OnInit {
   }
   loadActividad(act: ActivosNegocio[]) {
     let activosArr = this.fb.array([]);
+
     act.forEach(a => {
+      let tipo = []
+
+      if (a.tipo) {
+        tipo = this.tipoActivo.find(inve => inve.id == a.tipo.id)
+      }
+
       activosArr.push(
         this.fb.group({
-          tipo: [a.tipo, Validators.required],
+          tipo: [tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
@@ -622,9 +681,15 @@ export class BalanceComponent implements OnInit {
   loadActividadFam(act: ActivosFamilia[]) {
     let activosArr = this.fb.array([]);
     act.forEach(a => {
+
+      let tipo = []
+
+      if (a.tipo) {
+        tipo = this.tipoActivoFam.find(actt => actt.id == a.tipo.id)
+      }
       activosArr.push(
         this.fb.group({
-          tipo: [a.tipo, Validators.required],
+          tipo: [tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
@@ -734,7 +799,73 @@ export class BalanceComponent implements OnInit {
     });
     return arr
   }
-  //----------------------------------------
+  //------------------------------------------------
+
+  //--------------Crefitos FDLM AGRO----------------
+  creditosDetalle() {
+    return this.balanceForm.get('creditosDetalle') as FormArray;
+  }
+  initCreditosDetalle() {
+    return this.fb.group({
+      frecuencia: '',
+      numcuota: '',
+      total: 0,
+      cuotas: this.fb.array([])
+    })
+  }
+  addCreditoDetalle() {
+    this.creditosDetalle().push(this.initCreditosDetalle());
+  }
+  loadCreditoDetalle(creaditos: CreditoDetalle[]) {
+    let creditosArr = this.fb.array([])
+
+    if (creaditos) {
+      creaditos.forEach(cred => {
+        creditosArr.push(
+          this.fb.group({
+            numcuota: cred.numcuota,
+            frecuencia: cred.frecuencia,
+            total: cred.total,
+            cuotas: this.loadcuotaCredito(cred.cuotas)
+          })
+        )
+      });
+    }
+    return creditosArr
+  }
+  cuotasCreditos(ti: number) {
+    return this.creditosDetalle().at(ti).get("cuotas") as FormArray
+  }
+  loadcuotasCreditos(id: number, num: number) {
+    this.cuotasCreditos(id).clear();
+    for (let cuo = 0; cuo < num; cuo++) {
+      this.cuotasCreditos(id).push(this.initcuotaCredito());
+    }
+  }
+  initcuotaCredito() {
+    return this.fb.group({
+      fecha: '',
+      valor: [0]
+    })
+  }
+  loadcuotaCredito(cuotas: any[]) {
+    let arr = this.fb.array([])
+    cuotas.forEach(cuo => {
+      arr.push(
+        this.fb.group({
+          fecha: cuo.fecha,
+          valor: cuo.valor
+        })
+      )
+    });
+    return arr
+  }
+
+  deleteCreditoDetalle(cred: number) {
+    this.creditosDetalle().removeAt(cred)
+  }
+
+  //-------------------------------------------------
 
   //---------------Creditos-------------------------
   creditos() {

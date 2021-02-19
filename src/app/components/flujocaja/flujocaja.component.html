@@ -41,12 +41,12 @@
             </tr>
             <tr>
 
-                <th *ngFor="let act of datasolicitud.CrucesAgro;let ac=index">Actividad {{ac}}</th>
-                <th *ngFor="let act of datasolicitud.CrucesAgro;let ac=index">Costo {{ac}}</th>
+                <th *ngFor="let act of datosCruces;let ac=index">Actividad {{ac}}</th>
+                <th *ngFor="let act of datosCruces;let ac=index">Costo {{ac}}</th>
             </tr>
             <tr>
-                <th *ngFor="let act of datasolicitud.CrucesAgro">{{act.nombre.name}}</th>
-                <th *ngFor="let act of datasolicitud.CrucesAgro">{{act.nombre.name}}</th>
+                <th *ngFor="let act of datosCruces">{{act.nombre.name}}</th>
+                <th *ngFor="let act of datosCruces">{{act.nombre.name}}</th>
             </tr>
         </thead>
         <tr *ngFor="let item of dataFlujo;let j=index">
@@ -75,15 +75,26 @@
                 <td>Plazo Total del Crédito Actual(MESES)</td>
                 <td>{{datasolicitud.Propuesta.plazo}}</td>
                 <td>Forma de Pago</td>
-                <td>{{datasolicitud.Propuesta.formapgo}} </td>
+                <td>
+                    <ng-container *ngIf="datasolicitud.Propuesta.tipocuota==1">
+                        <ng-container *ngIf="datasolicitud.Propuesta.formapgo">
+                            {{datasolicitud.Propuesta.formapgo.name}}
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="datasolicitud.Propuesta.tipocuota==2">
+                        Irregular
+                    </ng-container>
+                </td>
                 <td>Monto recomendado</td>
-                <td>0</td>
+                <td>{{datasolicitud.Propuesta.montorecomendado}}</td>
                 <td>Efectivo Disponible</td>
                 <td *ngIf="datasolicitud.Balance"> {{datasolicitud.Balance.efectivo}} </td>
                 <td>Plan de Inversión (Activos Fijos)</td>
-                <td>0</td>
+                <td>{{datasolicitud.Propuesta.valor}}</td>
+                <td>{{datasolicitud.Propuesta.detalle}}</td>
                 <td>Plan de Inversión (capital de trabajo)</td>
-                <td>0</td>
+                <td>{{datasolicitud.Propuesta.valorcapital}}</td>
+                <td>{{datasolicitud.Propuesta.detallecapital}}</td>
             </tr>
         </table>
     </ng-container>
@@ -91,30 +102,20 @@
     <table>
         <thead>
             <tr>
-                <th colspan="3">Proyección</th>
-                <th>In. Agro Efectivo</th>
-                <th>Recuperación de cartera (cuentas por cobrar)</th>
-                <th>Costos Agro</th>
-                <th>Remuneración personal</th>
-                <th>Gastos del negocio</th>
-                <th>Imprevistos Operativos</th>
-                <th>Obligaciones Finacieras</th>
-                <th>Ingresos Líquidos Agropecuarios</th>
-                <th>Ingresos Líquidos Otras actividades comerciales </th>
-                <th>Otros Ingresos familiares (Independientes)</th>
-                <th>Gastos y obligaciones familiares</th>
-                <th>Flujo de caja antes financiación (sin acumular)</th>
-                <th>Flujo de caja antes financiación acumulable 85%</th>
-                <th>Cuota del crédito</th>
-                <th>Flujo de caja descontando cuota de crédito</th>
-                <th>Flujo de caja con financiación</th>
-                <th>Relación cuota liquidez</th>
+                <th style="width: 9%;" colspan="3">Proyección</th>
+                <th style="width: 13%;">In. Agro Efectivo</th>
+                <th style="width: 13%;">Recuperación de cartera (cuentas por cobrar)</th>
+                <th style="width: 13%;">Costos Agro</th>
+                <th style="width: 13%;">Remuneración personal</th>
+                <th style="width: 13%;">Gastos del negocio</th>
+                <th style="width: 13%;">Imprevistos Operativos</th>
+                <th style="width: 13%;">Obligaciones Finacieras</th>
+
             </tr>
         </thead>
         <tbody>
-
-            <tr *ngFor="let item of dataFlujoAcumulado">
-                <td [ngClass]="{'error': i >5 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado[0];let i=index">
+            <tr *ngFor="let item of dataFlujoAcumulado1">
+                <td [ngClass]="{'error': i >2 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado1[0];let i=index">
                     <ng-container *ngIf="i > 2">
                         {{item[i] | currency:'$': 'symbol' : '1.0-0'}}
                     </ng-container>
@@ -123,9 +124,42 @@
                     </ng-container>
                 </td>
             </tr>
-
         </tbody>
-
     </table>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 9%;" colspan="3">Proyección</th>
+                <th style="width: 9%;">Ingresos Líquidos Agropecuarios</th>
+                <th style="width: 9%;">Ingresos Líquidos Otras actividades comerciales </th>
+                <th style="width: 9%;">Otros Ingresos familiares (Independientes)</th>
+                <th style="width: 9%;">Gastos y obligaciones familiares</th>
+                <th style="width: 9%;">Flujo de caja antes financiación (sin acumular)</th>
+                <th style="width: 9%;">Flujo de caja antes financiación acumulable 85%</th>
+                <th style="width: 9%;">Cuota del crédito</th>
+                <th style="width: 9%;">Flujo de caja descontando cuota de crédito</th>
+                <th style="width: 9%;">Flujo de caja con financiación</th>
+                <th style="width: 9%;">Relación cuota liquidez</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of dataFlujoAcumulado2">
+                <td [ngClass]="{'error': i >2 && item[i] <0}" *ngFor="let col of dataFlujoAcumulado2[0];let i=index">
+                    <ng-container *ngIf="i > 2  && i < 12">
+                        {{item[i] | currency:'$': 'symbol' : '1.0-0'}}
+                    </ng-container>
+                    <ng-container *ngIf="i <= 2">
+                        {{item[i]}}
+                    </ng-container>
+                    <ng-container *ngIf="i == 12">
+                        {{item[i]}} %
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 
 </div>
