@@ -1,18 +1,22 @@
 <mat-toolbar color="primary" class="navbar">
-    <span *ngIf="tipo !=0" color="primary" (click)="action()">
+    <span *ngIf="rout != 'home'" color="primary" (click)="action()">
         <mat-icon class="mat-18">menu</mat-icon>
     </span>
-    <button *ngIf="tipo ==0" mat-icon-button routerLink="lobby">
+ 
+    <button  *ngIf="rout == 'home'" routerLink="/" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
     </button>
+
+
     <span class="fill-remaining-space"></span>
-    <span>Asesor Agil</span>
+    <span>Asesor Agil{{here}}</span>
     <span class="fill-remaining-space"></span>
     <span class="example-spacer"></span>
-    <button *ngIf="tipo ==0" mat-icon-button (click)="openProfile()" class="example-icon favorite-icon">
+
+    <button mat-icon-button (click)="openProfile()" class="example-icon favorite-icon">
         <mat-icon>assignment_ind</mat-icon>
     </button>
-    <button *ngIf="tipo !=0" mat-icon-button class="example-icon favorite-icon" routerLink="home">
+    <button *ngIf="rout != 'home'" mat-icon-button class="example-icon favorite-icon" routerLink="home">
         <mat-icon>home</mat-icon>
     </button>
 </mat-toolbar>

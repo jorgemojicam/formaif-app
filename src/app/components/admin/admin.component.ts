@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivationStart,  Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from './idb-solicitud.service';
@@ -19,6 +19,7 @@ export class AdminComponent implements OnInit {
   tipo: number = 0;
   perfil: Asesor = this.srvTokn.getUser();
 
+
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -30,7 +31,9 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
 
     this.activateRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')  
+      this.sol = params.get('solicitud')
     });
+
+    
   }
 }

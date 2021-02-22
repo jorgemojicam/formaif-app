@@ -51,6 +51,7 @@ import { LobbyComponent } from './components/admin/lobby/lobby.component';
     ResultadoComponent,
     ToolbarComponent,
     LobbyComponent
+    
   ],
   imports: [
     BrowserModule,

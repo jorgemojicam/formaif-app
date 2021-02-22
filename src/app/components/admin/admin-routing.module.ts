@@ -13,11 +13,14 @@ import { LobbyComponent } from './lobby/lobby.component';
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,
+    component: AdminComponent,    
     children: [
       {
         path: '',
         component: LobbyComponent,
+        data:{
+          routerName:'lobby'
+        }
       },
       {
         path: 'ubicacion',
@@ -25,18 +28,25 @@ const routes: Routes = [
       },
       {
         path: 'balance',
+        data:{
+          routerName:'balance'
+        },
         loadChildren: () =>
           import('../balance/balance.module').then(m => m.BalanceModule)
       },
       {
         path: 'gastos',
         loadChildren: () =>
-          import('../gastos/gastos.module').then(m => m.GastosModule)
+          import('../gastos/gastos.module').then(m => m.GastosModule),
+          data:{
+            routerName:'gastos'
+          }
       },
       {
         path: 'ventas',
         loadChildren: () =>
-          import('../cruces/cruces.module').then(m => m.CrucesModule)
+          import('../cruces/cruces.module').then(m => m.CrucesModule),
+          
       },
       {
         path: 'analisis',
@@ -57,14 +67,21 @@ const routes: Routes = [
       {
         path: 'resultado',
         component: ResultadoComponent,
+        
       },
       {
         path: 'lobby',
         component: LobbyComponent,
+        data:{
+          routerName:'lobby'
+        }
       },
       {
         path: 'home',
         component: HomeComponent,
+        data:{
+          routerName:'home'
+        }
       }
     ]
   }

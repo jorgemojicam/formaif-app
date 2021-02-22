@@ -107,7 +107,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onGestion(element) {
-    this.route.navigate(['admin'], { queryParams: { solicitud: element.solicitud } })
+    this.route.navigate(['admin/balance'], { queryParams: { solicitud: element.solicitud } })
   }
   onDelete(element) {
     let solicitud = element.solicitud
