@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
+
 
 @Component({
   selector: 'app-logout',
@@ -9,13 +9,14 @@ import { KeycloakService } from 'keycloak-angular';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,
-    private router: Router, private keycloakService: KeycloakService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {}
 
   logout() {
-    this.keycloakService.logout();
+    
   }
 
 

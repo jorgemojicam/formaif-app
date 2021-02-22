@@ -29,7 +29,8 @@ import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
 import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component';
 import { ProfileComponent } from './components/admin/profile/profile.component';
 import { ResultadoComponent } from './components/resultado/resultado.component';
-
+import { ToolbarComponent } from './components/admin/toolbar/toolbar.component';
+import { LobbyComponent } from './components/admin/lobby/lobby.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,9 @@ import { ResultadoComponent } from './components/resultado/resultado.component';
     FlujocajaComponent,
     AnalisisagroComponent,
     ProfileComponent,
-    ResultadoComponent
+    ResultadoComponent,
+    ToolbarComponent,
+    LobbyComponent
   ],
   imports: [
     BrowserModule,

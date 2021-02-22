@@ -7,6 +7,8 @@ import { PropuestaComponent } from '../propuesta/propuesta.component';
 import { ResultadoComponent } from '../resultado/resultado.component';
 import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
+import { HomeComponent } from './home/home.component';
+import { LobbyComponent } from './lobby/lobby.component';
 
 const routes: Routes = [
   {
@@ -15,8 +17,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () =>
-          import('../balance/balance.module').then(m => m.BalanceModule)
+        component: LobbyComponent,
       },
       {
         path: 'ubicacion',
@@ -39,7 +40,7 @@ const routes: Routes = [
       },
       {
         path: 'analisis',
-       component:AnalisisComponent
+        component: AnalisisComponent
       },
       {
         path: 'propuesta',
@@ -52,14 +53,22 @@ const routes: Routes = [
       {
         path: 'analisisagro',
         component: AnalisisagroComponent,
-      }
-      ,
+      },
       {
         path: 'resultado',
         component: ResultadoComponent,
+      },
+      {
+        path: 'lobby',
+        component: LobbyComponent,
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
       }
     ]
   }
+
 ];
 
 @NgModule({
