@@ -43,59 +43,61 @@ export class BalanceComponent implements OnInit {
   totalProv: number;
   sol: string;
   minDate = new Date();
+  balanceForm: FormGroup
 
   constructor(
     public srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private _snackBar: MatSnackBar
-  ) { }
-
-  balanceForm: FormGroup = this.fb.group({
-    efectivo: '',
-    clienteCobrar: '',
-    observacionesCobrar: '',
-    valorCobrar: '',
-    incobrableCobrar: '',
-    recuperacionCobrar: '',
-    cobrarTotal: '',
-    porcentajeCobrar: '',
-    recuperacion: this.fb.array([this.initRecuperacion()]),
-    totalRecuperacion: '',
-    inventarioRow: this.fb.array([this.initInventarioRows()]),
-    inventarioTotal: '',
-    actividadNegRows: this.fb.array([this.initActinegRow()]),
-    actnegTotal: '',
-    activosFamRows: this.fb.array([this.initActifamRow()]),
-    actfamTotal: '',
-    aplicaproveedores: false,
-    proveedoresRow: this.fb.array([this.initProvRows()]),
-    proveedoresTotal: '',
-    proveedoresEstacionales: this.fb.array([this.initProvEstacionales()]),
-    totalProveedoresEst: '',
-    creditoactual: '',
-    creditos: this.fb.array([this.initCreditos()]),
-    totalCreditos: '',
-    creditosDetalle: this.fb.array([this.initCreditosDetalle()]),
-    totalcreditosDetalle: [0],
-    aplicaInversiones: '',
-    inversiones: this.fb.array([this.initInversiones()]),
-    totalInversiones: '',
-    pasivosRows: this.fb.array([this.initPasivoRows()]),
-    tcuotaf: [0],
-    tcorrientef: [0],
-    tnocorrientef: [0],
-    tcuotan: [0],
-    tcorrienten: [0],
-    tnocorrienten: [0]
-  })
-
-  ngOnInit() {
-
+  ) {
     this.route.queryParamMap.subscribe((params) => {
       this.sol = params.get('solicitud')
     });
 
+    this.balanceForm = this.fb.group({
+      efectivo: '',
+      clienteCobrar: '',
+      observacionesCobrar: '',
+      valorCobrar: '',
+      incobrableCobrar: '',
+      recuperacionCobrar: '',
+      cobrarTotal: '',
+      porcentajeCobrar: '',
+      recuperacion: this.fb.array([this.initRecuperacion()]),
+      totalRecuperacion: '',
+      inventarioRow: this.fb.array([this.initInventarioRows()]),
+      inventarioTotal: '',
+      actividadNegRows: this.fb.array([this.initActinegRow()]),
+      actnegTotal: '',
+      activosFamRows: this.fb.array([this.initActifamRow()]),
+      actfamTotal: '',
+      aplicaproveedores: false,
+      proveedoresRow: this.fb.array([this.initProvRows()]),
+      proveedoresTotal: '',
+      proveedoresEstacionales: this.fb.array([this.initProvEstacionales()]),
+      totalProveedoresEst: '',
+      creditoactual: '',
+      creditos: this.fb.array([this.initCreditos()]),
+      totalCreditos: '',
+      creditosDetalle: this.fb.array([this.initCreditosDetalle()]),
+      totalcreditosDetalle: [0],
+      aplicaInversiones: '',
+      inversiones: this.fb.array([this.initInversiones()]),
+      totalInversiones: '',
+      pasivosRows: this.fb.array([this.initPasivoRows()]),
+      tcuotaf: [0],
+      tcorrientef: [0],
+      tnocorrientef: [0],
+      tcuotan: [0],
+      tcorrienten: [0],
+      tnocorrienten: [0]
+    })
+
+   }
+
+  ngOnInit() {
+    
     this.srvSol.getSol(this.sol).subscribe((datasol) => {
       if (this.sol) {
         this.tipoSol = datasol.asesor

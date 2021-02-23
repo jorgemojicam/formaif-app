@@ -1,8 +1,7 @@
-import { Component, Input, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, ActivationStart, Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../idb-solicitud.service';
@@ -24,38 +23,27 @@ export class ToolbarComponent implements OnInit {
   titulo: string;
   rout: string;
 
-  routeSubject: Subject<any> = new Subject<any>();
-
   constructor(
     private router: Router,
     private activateRoute: ActivatedRoute,
     private _bottomSheet: MatBottomSheet,
     private tokenStorage: TokenStorageService,
     public srvSol: IdbSolicitudService,
-  ) { }
+  ) {
+    this.activateRoute.queryParamMap.subscribe((params) => {
+      this.sol = params.get('solicitud')
+    });
+  }
 
   ngOnInit(): void {
 
-    this.routeSubject.next(true);
-
-    this.activateRoute.queryParamMap.subscribe(
-      (params) => {
-        this.sol = params.get('solicitud')
-      }, (err) => {
-        console.log(err)
-      });     
-
     this.router.events.subscribe(e => {
       if (e instanceof ActivationStart) {
-        if (e.snapshot.data.routerName) {          
+        if (e.snapshot.data.routerName) {
           this.rout = e.snapshot.data.routerName
         }
       }
     });
-  }
-
-  get here() {
-    return this.rout
   }
 
   openProfile(): void {
