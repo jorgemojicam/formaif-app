@@ -8,18 +8,33 @@ import { ResultadoComponent } from '../resultado/resultado.component';
 import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
 import { HomeComponent } from './home/home.component';
-import { LobbyComponent } from './lobby/lobby.component';
+import { LobbyComponent } from '../lobby/lobby.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,    
+    component: AdminComponent,
     children: [
       {
         path: '',
+        redirectTo: 'home',
+        pathMatch: 'prefix',
+        data: {
+          routerName: 'home'
+        }
+      },
+      {
+        path: 'lobby',
         component: LobbyComponent,
-        data:{
-          routerName:'lobby'
+        data: {
+          routerName: 'lobby'
+        }
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
+        data: {
+          routerName: 'home'
         }
       },
       {
@@ -28,8 +43,8 @@ const routes: Routes = [
       },
       {
         path: 'balance',
-        data:{
-          routerName:'balance'
+        data: {
+          routerName: 'balance'
         },
         loadChildren: () =>
           import('../balance/balance.module').then(m => m.BalanceModule)
@@ -38,15 +53,15 @@ const routes: Routes = [
         path: 'gastos',
         loadChildren: () =>
           import('../gastos/gastos.module').then(m => m.GastosModule),
-          data:{
-            routerName:'gastos'
-          }
+        data: {
+          routerName: 'gastos'
+        }
       },
       {
         path: 'ventas',
         loadChildren: () =>
           import('../cruces/cruces.module').then(m => m.CrucesModule),
-          
+
       },
       {
         path: 'analisis',
@@ -67,21 +82,7 @@ const routes: Routes = [
       {
         path: 'resultado',
         component: ResultadoComponent,
-        
-      },
-      {
-        path: 'lobby',
-        component: LobbyComponent,
-        data:{
-          routerName:'lobby'
-        }
-      },
-      {
-        path: 'home',
-        component: HomeComponent,
-        data:{
-          routerName:'home'
-        }
+
       }
     ]
   }

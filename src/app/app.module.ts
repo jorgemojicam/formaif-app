@@ -10,18 +10,16 @@ import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ContainerAppComponent } from './components/pages/container-app/container-app.component';
 import { AdminModule } from './components/admin/admin.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdminComponent } from "./components/admin/admin.component";
-
 import { AuthGuard } from './helpers/auth.guard';
 import { AuthInterceptor } from "./helpers/auth.interceptor";
 import { HomeComponent } from './components/admin/home/home.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { InitComponent } from './components/admin/init/init.component';
 import { LogoutComponent } from './shared/logout/logout.component';
-import { NotfoundComponent } from './components/admin/notfound/notfound.component';
+import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { PropuestaComponent } from './components/propuesta/propuesta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
 import { AnalisisComponent } from './components/analisis/analisis.component';
@@ -29,13 +27,14 @@ import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
 import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component';
 import { ProfileComponent } from './components/admin/profile/profile.component';
 import { ResultadoComponent } from './components/resultado/resultado.component';
-import { ToolbarComponent } from './components/admin/toolbar/toolbar.component';
-import { LobbyComponent } from './components/admin/lobby/lobby.component';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { LobbyComponent } from './components/lobby/lobby.component';
+import { MebaModule } from './components/meba/meba.module';
+import { MebaComponent } from './components/meba/meba.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContainerAppComponent,
     AdminComponent,
     HomeComponent,
     ModalComponent,
@@ -50,7 +49,8 @@ import { LobbyComponent } from './components/admin/lobby/lobby.component';
     ProfileComponent,
     ResultadoComponent,
     ToolbarComponent,
-    LobbyComponent
+    LobbyComponent,
+    MebaComponent
     
   ],
   imports: [
@@ -63,7 +63,8 @@ import { LobbyComponent } from './components/admin/lobby/lobby.component';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AdminModule,
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    MebaModule
   ],
   entryComponents: [
     ModalComponent,

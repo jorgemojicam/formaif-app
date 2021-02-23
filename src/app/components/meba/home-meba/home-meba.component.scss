@@ -1,0 +1,20 @@
+.container {
+    margin: 10px;
+  }
+  .table-sol {
+    width: 100%;
+  }
+  table {
+    width: 100%;
+  }
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+    padding-left: 10px;
+  }
+  
+  ::ng-deep .swal2-content{
+    padding: 5px;
+  }

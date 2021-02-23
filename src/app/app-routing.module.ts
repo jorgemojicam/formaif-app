@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { NotfoundComponent } from './components/admin/notfound/notfound.component';
+import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { AuthGuard } from './helpers/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'admin',
+    redirectTo: 'lobby',
     pathMatch: 'full',
   },
   {
     path: 'admin',
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthGuard]
+  },  
+  {
+    path: 'meba',
+    loadChildren: () => import('./components/meba/meba.module').then(m => m.MebaModule),
     canActivate: [AuthGuard]
   },
   {

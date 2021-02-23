@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute, ActivationStart, Router } from '@angular/router';
+import { ActivatedRoute, ActivationEnd, ActivationStart, NavigationEnd, Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { IdbSolicitudService } from '../idb-solicitud.service';
-import { ProfileComponent } from '../profile/profile.component';
+import { IdbSolicitudService } from '../../components/admin/idb-solicitud.service';
+import { ProfileComponent } from '../../components/admin/profile/profile.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -30,20 +30,27 @@ export class ToolbarComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     public srvSol: IdbSolicitudService,
   ) {
+
     this.activateRoute.queryParamMap.subscribe((params) => {
       this.sol = params.get('solicitud')
     });
+
+    router.events.subscribe((val) => {
+
+      if (val instanceof ActivationStart) {
+        if (val.snapshot.data.routerName) {
+          this.rout = val.snapshot.data.routerName
+        }
+      } else if (val instanceof ActivationEnd) {
+        if (val.snapshot.data.routerName) {
+          this.rout = val.snapshot.data.routerName
+        }   
+      }
+    });
+
   }
 
   ngOnInit(): void {
-
-    this.router.events.subscribe(e => {
-      if (e instanceof ActivationStart) {
-        if (e.snapshot.data.routerName) {
-          this.rout = e.snapshot.data.routerName
-        }
-      }
-    });
   }
 
   openProfile(): void {
@@ -55,6 +62,12 @@ export class ToolbarComponent implements OnInit {
       this.sidenav.close();
     } else {
       this.sidenav.open()
+    }
+
+    if (this.sol) {
+      this.srvSol.getSol(this.sol).subscribe((datasol) => {
+        this.tipo = datasol.asesor
+      })
     }
   }
 
