@@ -5,6 +5,7 @@ import { HomeMebaComponent } from './home-meba/home-meba.component';
 import { MebaComponent } from './meba.component';
 import { SensibilidadComponent } from './sensibilidad/sensibilidad.component';
 
+
 const routes: Routes = [
   {
     path: '',

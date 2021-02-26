@@ -1,36 +1,83 @@
+<form [formGroup]="actividadesForm">
 
-<mat-vertical-stepper linear="true" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>Fill out your name</ng-template>
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
-            </mat-form-field>
-            <div>
-                <button mat-button matStepperNext>Next</button>
-            </div>
-        </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Fill out your address</ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
-            </div>
-        </form>
-    </mat-step>
-    <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+    <button mat-mini-fab type="button" class="addact" [disabled]="actividades().controls.length>=6" color="primary"
+        (click)="addActividad()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <mat-tab-group mat-align-tabs="start" [selectedIndex]="selected.value"
+        (selectedIndexChange)="selected.setValue($event)">
+        <div formArrayName="act" fxFlex="100%">
+
+            <mat-tab *ngFor="let acti of actividades().controls; let ac=index">
+                <ng-template mat-tab-label>
+                    <ng-container *ngIf="ac==0">Principal</ng-container>
+                    <ng-container *ngIf="ac>0">Act {{ac}}</ng-container>
+                </ng-template>
+                <div [formGroupName]="ac">
+
+                    <div class="encabezado">
+                        <mat-card>
+                            <mat-card-content>
+                                <div fxLayout="row wrap">
+                                    <button class="deleteact" color="warn" mat-icon-button [disabled]="ac==0"
+                                        (click)="deleteActividad(ac)">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                        <mat-form-field class="example-full-width">
+                                            <mat-label>Actividad</mat-label>
+                                            <input type="text" matInput formControlName="nombre"
+                                                [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                                <mat-option *ngFor="let option of _filter(acti.value.nombre)"
+                                                    [value]="option">
+                                                    {{option.name}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                        Sensibilidad Cambio
+                                    </div>
+
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Temperatura</mat-label>
+                                            <input type="text" matInput placeholder="temperatura"
+                                                value="{{acti.value.nombre.temperatura}}" formControlName="temperatura"
+                                                readonly>
+                                            <mat-icon matSuffix>%</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Precipitación</mat-label>
+                                            <input type="text" matInput placeholder="Precipitación"
+                                                formControlName="precipitacion"
+                                                value="{{acti.value.nombre.precipitacion}}" readonly>
+                                            <mat-icon matSuffix>%</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>PH</mat-label>
+                                            <input type="text" matInput placeholder="PH"
+                                                value="{{acti.value.nombre.ph}}" formControlName="ph" readonly>
+                                            <mat-icon matSuffix>%</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                    </div>
+                    <div echarts [options]="arrayOptions[ac]" class="demo-chart"></div>                    
+                </div>
+
+            </mat-tab>
         </div>
-    </mat-step>
-</mat-vertical-stepper>
+    </mat-tab-group>
+   
+    
+</form>

@@ -32,6 +32,7 @@ import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,7 +65,8 @@ import { MebaComponent } from './components/meba/meba.component';
     AdminModule,
     FlexLayoutModule,
     HttpClientModule,
-    MebaModule
+    MebaModule,
+    
   ],
   entryComponents: [
     ModalComponent,

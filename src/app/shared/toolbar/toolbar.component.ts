@@ -22,6 +22,7 @@ export class ToolbarComponent implements OnInit {
   tipo: number = 0;
   titulo: string;
   rout: string;
+  modul:string;
 
   constructor(
     private router: Router,
@@ -37,13 +38,17 @@ export class ToolbarComponent implements OnInit {
 
     router.events.subscribe((val) => {
 
+      if (val instanceof NavigationEnd) {
+        this.modul = val.url.split('/')[1] 
+      } 
+      
       if (val instanceof ActivationStart) {
         if (val.snapshot.data.routerName) {
-          this.rout = val.snapshot.data.routerName
+          this.rout = val.snapshot.data.routerName         
         }
       } else if (val instanceof ActivationEnd) {
         if (val.snapshot.data.routerName) {
-          this.rout = val.snapshot.data.routerName
+          this.rout = val.snapshot.data.routerName         
         }   
       }
     });

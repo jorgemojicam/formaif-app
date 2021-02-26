@@ -2,8 +2,8 @@
     <span *ngIf="rout != 'home' && rout != 'lobby'" color="primary" (click)="action()">
         <mat-icon class="mat-18">menu</mat-icon>
     </span>
- 
-    <button  *ngIf="rout == 'home'" routerLink="/" mat-icon-button>
+
+    <button *ngIf="rout == 'home'" routerLink="/" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
     </button>
 
@@ -12,10 +12,12 @@
     <span class="fill-remaining-space"></span>
     <span class="example-spacer"></span>
 
-    <button *ngIf="rout == 'home' || rout == 'lobby'" mat-icon-button (click)="openProfile()" class="example-icon favorite-icon">
+    <button *ngIf="rout == 'home' || rout == 'lobby'" mat-icon-button (click)="openProfile()"
+        class="example-icon favorite-icon">
         <mat-icon>assignment_ind</mat-icon>
     </button>
-    <button *ngIf="rout != 'home' && rout != 'lobby'" mat-icon-button class="example-icon favorite-icon" routerLink="home">
+    <button *ngIf="rout != 'home' && rout != 'lobby'" mat-icon-button class="example-icon favorite-icon"
+        routerLink="home">
         <mat-icon>home</mat-icon>
     </button>
 </mat-toolbar>
@@ -36,54 +38,67 @@
             <mat-divider></mat-divider>
         </mat-list>
         <mat-nav-list (click)="action()">
-            <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>location_on</mat-icon>
-                <div mat-line>Ubicacion</div>
-            </mat-list-item>
-            <mat-list-item routerLink="balance" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>assessment</mat-icon>
-                <div mat-line>Balance</div>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['ventas']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>work</mat-icon>
-                <div mat-line>Cruces</div>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['gastos']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>payment</mat-icon>
-                <div mat-line>Gastos</div>
-            </mat-list-item>
-            <ng-container *ngIf="tipo==2">
-                <mat-list-item [routerLink]="['analisisagro']" routerLinkActive="active-list-item"
+            <ng-container *ngIf="modul=='admin'">
+
+                <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion"
                     [queryParams]="{solicitud:sol}">
-                    <mat-icon mat-list-icon>web</mat-icon>
-                    <div mat-line>Analisis</div>
+                    <mat-icon mat-list-icon>location_on</mat-icon>
+                    <div mat-line>Ubicacion</div>
+                </mat-list-item>
+                <mat-list-item routerLink="balance" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>assessment</mat-icon>
+                    <div mat-line>Balance</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['ventas']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>work</mat-icon>
+                    <div mat-line>Cruces</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['gastos']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>payment</mat-icon>
+                    <div mat-line>Gastos</div>
+                </mat-list-item>
+                <ng-container *ngIf="tipo==2">
+                    <mat-list-item [routerLink]="['analisisagro']" routerLinkActive="active-list-item"
+                        [queryParams]="{solicitud:sol}">
+                        <mat-icon mat-list-icon>web</mat-icon>
+                        <div mat-line>Analisis</div>
+                    </mat-list-item>
+                </ng-container>
+                <ng-container *ngIf="tipo==1">
+                    <mat-list-item [routerLink]="['analisis']" routerLinkActive="active-list-item"
+                        [queryParams]="{solicitud:sol}">
+                        <mat-icon mat-list-icon>web</mat-icon>
+                        <div mat-line>Analisis</div>
+                    </mat-list-item>
+                </ng-container>
+                <mat-list-item [routerLink]="['resultado']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>phone_android</mat-icon>
+                    <div mat-line>Resultado Formiik</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item" *ngIf="tipo==2"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>thumb_up</mat-icon>
+                    <div mat-line>Propuesta</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>receipt</mat-icon>
+                    <div mat-line>Flujo de Caja</div>
                 </mat-list-item>
             </ng-container>
-            <ng-container *ngIf="tipo==1">
-                <mat-list-item [routerLink]="['analisis']" routerLinkActive="active-list-item"
+            <ng-container *ngIf="modul=='meba'">
+
+
+                <mat-list-item [routerLink]="['sensibilidad']" routerLinkActive="active-list-item"
                     [queryParams]="{solicitud:sol}">
-                    <mat-icon mat-list-icon>web</mat-icon>
-                    <div mat-line>Analisis</div>
+                    <mat-icon mat-list-icon>eco</mat-icon>
+                    <div mat-line>Sensibilidad</div>
                 </mat-list-item>
             </ng-container>
-            <mat-list-item [routerLink]="['resultado']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>phone_android</mat-icon>
-                <div mat-line>Resultado Formiik</div>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item" *ngIf="tipo==2"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>thumb_up</mat-icon>
-                <div mat-line>Propuesta</div>
-            </mat-list-item>
-            <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2"
-                [queryParams]="{solicitud:sol}">
-                <mat-icon mat-list-icon>receipt</mat-icon>
-                <div mat-line>Flujo de Caja</div>
-            </mat-list-item>
+
             <mat-divider></mat-divider>
             <mat-list-item (click)="onLogout()">
                 <mat-icon mat-list-icon>power_settings_new</mat-icon>

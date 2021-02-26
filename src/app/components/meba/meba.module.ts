@@ -5,16 +5,27 @@ import { MebaRoutingModule } from './meba-routing.module';
 import { SensibilidadComponent } from './sensibilidad/sensibilidad.component';
 import { MaterialModule } from "./../../material.module";
 import { HomeMebaComponent } from './home-meba/home-meba.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { AdaptativaComponent } from './adaptativa/adaptativa.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+
+export function chartModule(): any {
+  return import('echarts');
+}
 
 
 @NgModule({
-  declarations: [SensibilidadComponent, HomeMebaComponent],
+  declarations: [SensibilidadComponent, HomeMebaComponent, AdaptativaComponent],
   imports: [
     CommonModule,
     MebaRoutingModule,
     MaterialModule,
     FormsModule, 
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    NgxEchartsModule.forRoot({
+      echarts: chartModule,
+    }),
+  ] 
 })
 export class MebaModule { }
