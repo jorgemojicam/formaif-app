@@ -18,7 +18,6 @@ import { AuthInterceptor } from "./helpers/auth.interceptor";
 import { HomeComponent } from './components/admin/home/home.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { InitComponent } from './components/admin/init/init.component';
-import { LogoutComponent } from './shared/logout/logout.component';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { PropuestaComponent } from './components/propuesta/propuesta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
@@ -40,7 +39,6 @@ import { MebaComponent } from './components/meba/meba.component';
     HomeComponent,
     ModalComponent,
     InitComponent,
-    LogoutComponent,
     NotfoundComponent,
     PropuestaComponent,
     UbicacionComponent,

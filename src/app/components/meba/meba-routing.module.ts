@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdaptativaComponent } from './adaptativa/adaptativa.component';
 import { HomeMebaComponent } from './home-meba/home-meba.component';
 
 import { MebaComponent } from './meba.component';
@@ -31,6 +32,13 @@ const routes: Routes = [
         component: SensibilidadComponent,
         data: {
           routerName: 'sensibilidad'
+        }
+      },
+      {
+        path: 'adaptativa',
+        component: AdaptativaComponent,
+        data: {
+          routerName: 'adaptativa'
         }
       }
     ]
