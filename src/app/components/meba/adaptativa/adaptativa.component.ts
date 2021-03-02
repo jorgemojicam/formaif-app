@@ -12,6 +12,7 @@ export class AdaptativaComponent implements OnInit {
   dataAdaptativa: any
   adaptativoForm: FormGroup
   aRespuestas = new Array()
+  aDimensiones:any[]
 
   constructor(
     private serAdap: CapacidadAdaptativaService,
@@ -32,7 +33,7 @@ export class AdaptativaComponent implements OnInit {
   async loadPreguntas() {
     this.dataAdaptativa = await this.getPreguntas()
     let arrayForm = new Array()
-
+    this.aDimensiones = this.dataAdaptativa.Dimensiones
     this.dataAdaptativa.PreguntasAdaptativa.forEach(element => {
 
       this.aRespuestas.push(element.respuestas)

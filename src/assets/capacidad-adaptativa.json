@@ -1,94 +1,79 @@
 {
-    "Dimenciones": [
+    "Dimensiones": [
         {
             "id": 1,
-            "dimenesion": "finanzas",
+            "dimension": "finanzas",
             "Titulo": "Fiananzas"
         },
         {
             "id": 2,
-            "dimenesion": "infraestructura",
+            "dimension": "infraestructura",
             "Titulo": "INFRAESTRUCTURA "
         },
         {
             "id": 3,
-            "dimenesion": "servicios",
-            "Titulo": "SERVICIOS EN LA FINCA"
-        },
-        {
-            "id": 3,
-            "dimenesion": "servicios",
+            "dimension": "servicios",
             "Titulo": "SERVICIOS EN LA FINCA"
         },
         {
             "id": 4,
-            "dimenesion": "cadenaproductiva",
+            "dimension": "cadenaproductiva",
             "Titulo": "CADENA PRODUCTIVA (Poscosecha)"
         },
         {
             "id": 5,
-            "dimenesion": "asociatividad",
-            "Titulo": "ASOCIATIVIDAD"
-        },
-        {
-            "id": 5,
-            "dimenesion": "asociatividad",
+            "dimension": "asociatividad",
             "Titulo": "ASOCIATIVIDAD"
         },
         {
             "id": 6,
-            "dimenesion": "calidadsuelo",
+            "dimension": "calidadsuelo",
             "Titulo": "CALIDAD DEL SUELO"
         },
         {
             "id": 7,
-            "dimenesion": "calidadsuelo",
-            "Titulo": "CALIDAD DEL SUELO"
-        },
-        {
-            "id": 8,
-            "dimenesion": "manejonutrintes",
+            "dimension": "manejonutrintes",
             "Titulo": "MANEJO DE NUTRIENTES"
         },
         {
-            "id": 9,
-            "dimenesion": "manejoplagas",
+            "id": 8,
+            "dimension": "manejoplagas",
             "Titulo": "MANEJO DE PLAGAS Y ENFERMEDADES"
         },
         {
-            "id": 10,
-            "dimenesion": "gestionagua",
+            "id": 9,
+            "dimension": "gestionagua",
             "Titulo": "GESTIÓN DEL AGUA"
         },
         {
-            "id": 11,
-            "dimenesion": "gestionecosistemas",
+            "id": 10,
+            "dimension": "gestionecosistemas",
             "Titulo": "GESTIÓN DE ECOSISTEMAS"
         },
         {
-            "id": 12,
-            "dimenesion": "gestionresiduos",
+            "id": 11,
+            "dimension": "gestionresiduos",
             "Titulo": "GESTIÓN DE RESIDUOS"
         },
         {
-            "id": 13,
-            "dimenesion": "manejocultivos",
+            "id": 12,
+            "dimension": "manejocultivos",
             "Titulo": "MANEJO DE CULTIVOS"
         },
         {
-            "id": 14,
-            "dimenesion": "manejoanimales",
+            "id": 13,
+            "dimension": "manejoanimales",
             "Titulo": "MANEJO DE ANIMALES"
         },
         {
-            "id": 15,
-            "dimenesion": "conocimientoeba",
+            "id": 14,
+            "dimension": "conocimientoeba",
             "Titulo": "CONOCIMIENTO EBA"
         }
     ],
     "PreguntasAdaptativa": [
         {
-            "dimencion": "finanzas",
+            "dimension": "finanzas",
             "pregunta": "Relación %  entre gastos e ingresos familiares",
             "respuestas": [
                 {
@@ -114,7 +99,7 @@
             ]
         },
         {
-            "dimencion": "finanzas",
+            "dimension": "finanzas",
             "pregunta": "¿Cual es la fuente de ingreso principal en su finca?",
             "respuestas": [
                 {
@@ -152,7 +137,7 @@
             ]
         },
         {
-            "dimencion": "infraestructura",
+            "dimension": "infraestructura",
             "pregunta": "¿Cuál es el principal material en que está construida la infraestructura de almacenamiento?",
             "respuestas": [
                 {
@@ -190,7 +175,7 @@
             ]
         },
         {
-            "dimencion": "servicion",
+            "dimension": "servicion",
             "pregunta": "¿Cuál es la fuente de energía eléctrica que se utiliza en la finca?",
             "respuestas": [
                 {
@@ -216,7 +201,7 @@
             ]
         },
         {
-            "dimencion": "servicios",
+            "dimension": "servicios",
             "pregunta": "¿Qué tipo de telefonía usa en la finca?",
             "respuestas": [
                 {
@@ -238,7 +223,7 @@
             ]
         },
         {
-            "dimencion": "cadenaproductiva",
+            "dimension": "cadenaproductiva",
             "pregunta": "¿Qué nivel de procesamiento tiene el principal producto que explota en su finca?",
             "respuestas": [
                 {
@@ -256,7 +241,7 @@
             ]
         },
         {
-            "dimencion": "cadenaproductiva",
+            "dimension": "cadenaproductiva",
             "pregunta": "¿Cuál es el modelo de venta de los productos?",
             "respuestas": [
                 {
@@ -282,7 +267,7 @@
             ]
         },
         {
-            "dimencion": "cadenaproductiva",
+            "dimension": "cadenaproductiva",
             "pregunta": "¿Qué medio de transporte utiliza para comercializar los productos de la finca?",
             "respuestas": [
                 {
@@ -304,7 +289,7 @@
             ]
         },
         {
-            "dimencion": "cadenaproductiva",
+            "dimension": "cadenaproductiva",
             "pregunta": "¿Cuánto tiempo toma en sacar su producto hasta el sitio de venta?",
             "respuestas": [
                 {
@@ -318,7 +303,7 @@
             ]
         },
         {
-            "dimencion": "asociatividad",
+            "dimension": "asociatividad",
             "pregunta": "¿Forma parte de una asociación agrícola, ganadera o social?",
             "respuestas": [
                 {
@@ -332,7 +317,7 @@
             ]
         },
         {
-            "dimencion": "calidadsuelo",
+            "dimension": "calidadsuelo",
             "pregunta": "¿Cómo percibe la Erosión del suelo? ",
             "respuestas": [
                 {
@@ -350,7 +335,7 @@
             ]
         },
         {
-            "dimencion": "calidadsuelo",
+            "dimension": "calidadsuelo",
             "pregunta": "¿Cómo percibe la compactación del suelo?",
             "respuestas": [
                 {
@@ -368,7 +353,7 @@
             ]
         },
         {
-            "dimencion": "calidadsuelo",
+            "dimension": "calidadsuelo",
             "pregunta": "¿Con qué periodicidad hace estudio de suelos?",
             "respuestas": [
                 {
@@ -386,7 +371,7 @@
             ]
         },
         {
-            "dimencion": "manejonutrintes",
+            "dimension": "manejonutrintes",
             "pregunta": "¿Qué tipo de abonos utiliza en la finca?",
             "respuestas": [
                 {
@@ -408,7 +393,7 @@
             ]
         },
         {
-            "dimencion": "manejonutrintes",
+            "dimension": "manejonutrintes",
             "pregunta": "¿De dónde obtiene los abonos que utiliza en la finca?",
             "respuestas": [
                 {
@@ -426,7 +411,7 @@
             ]
         },
         {
-            "dimencion": "manejonutrintes",
+            "dimension": "manejonutrintes",
             "pregunta": "¿Qué tipo de abonos orgánicos aplica en la finca?",
             "respuestas": [
                 {
@@ -472,7 +457,7 @@
             ]
         },
         {
-            "dimencion": "manejoplagas",
+            "dimension": "manejoplagas",
             "pregunta": "¿Qué método de control de plagas utiliza?",
             "respuestas": [
                 {
@@ -510,7 +495,7 @@
             ]
         },
         {
-            "dimencion": "manejoplagas",
+            "dimension": "manejoplagas",
             "pregunta": "¿Qué color de etiqueta tienen los pesticidas o fungicidas que utiliza en la finca?",
             "respuestas": [
                 {
@@ -536,7 +521,7 @@
             ]
         },
         {
-            "dimencion": "manejoplagas",
+            "dimension": "manejoplagas",
             "pregunta": "¿Qué método de control de malezas utiliza?",
             "respuestas": [
                 {
@@ -566,7 +551,7 @@
             ]
         },
         {
-            "dimencion": "manejoplagas",
+            "dimension": "manejoplagas",
             "pregunta": "¿Qué color de etiqueta tienen los herbicidas que utiliza en la finca?",
             "respuestas": [
                 {
@@ -592,7 +577,7 @@
             ]
         },
         {
-            "dimencion": "gestionagua",
+            "dimension": "gestionagua",
             "pregunta": "¿Cuál es la principal fuente de agua que utiliza para la producción en la finca?",
             "respuestas": [
                 {
@@ -642,7 +627,7 @@
             ]
         },
         {
-            "dimencion": "gestionagua",
+            "dimension": "gestionagua",
             "pregunta": "¿Qué tipo de riego utiliza para la producción?",
             "respuestas": [
                 {
@@ -668,7 +653,7 @@
             ]
         },
         {
-            "dimencion": "gestionagua",
+            "dimension": "gestionagua",
             "pregunta": "¿Qué método usa para controlar las escorrentías y evitar los encharcamientos en el suelo por lluvias intensas?",
             "respuestas": [
                 {
