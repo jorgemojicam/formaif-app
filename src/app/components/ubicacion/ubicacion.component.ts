@@ -19,7 +19,7 @@ export class UbicacionComponent implements OnInit {
   @ViewChild('UploadFileInput1') uploadFileInput1: ElementRef;
   myfilename2 = 'Seleccione Imagen';
   myfilename1 = 'Seleccione Imagen';
-  sol: string;
+  ced: string;
 
   dataSolicitud: Solicitud = new Solicitud();
   dataUbicacion: Ubicacion = new Ubicacion();
@@ -47,11 +47,11 @@ export class UbicacionComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
-      if (this.sol) {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+      if (this.ced) {
 
         this.dataSolicitud = datasol as Solicitud
         if (this.dataSolicitud.Ubicacion) {
@@ -92,7 +92,7 @@ export class UbicacionComponent implements OnInit {
 
         this.dataUbicacion = this.ubicacionForm.value
         this.dataSolicitud.Ubicacion = this.dataUbicacion
-        this.srvSol.saveSol(this.sol, this.dataSolicitud)
+        this.srvSol.saveSol(this.ced, this.dataSolicitud)
 
       })
     })
@@ -140,7 +140,7 @@ export class UbicacionComponent implements OnInit {
 
           this.dataUbicacion.fotoppartida = imgBase64Path
           this.dataSolicitud.Ubicacion.fotoppartida = this.dataUbicacion.fotoppartida
-          this.srvSol.saveSol(this.sol, this.dataSolicitud)
+          this.srvSol.saveSol(this.ced, this.dataSolicitud)
         };
       };
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -171,7 +171,7 @@ export class UbicacionComponent implements OnInit {
 
           this.dataUbicacion.fotopllegada = imgBase64Path
           this.dataSolicitud.Ubicacion.fotopllegada = this.dataUbicacion.fotopllegada
-          this.srvSol.saveSol(this.sol, this.dataSolicitud)
+          this.srvSol.saveSol(this.ced, this.dataSolicitud)
         };
       };
       reader.readAsDataURL(fileInput.target.files[0]);
@@ -188,7 +188,7 @@ export class UbicacionComponent implements OnInit {
     }, { emitEvent: false })
     this.dataUbicacion.fotoppartida = ""
     this.dataSolicitud.Ubicacion.fotoppartida = this.dataUbicacion.fotoppartida
-    this.srvSol.saveSol(this.sol, this.dataSolicitud)
+    this.srvSol.saveSol(this.ced, this.dataSolicitud)
   }
   quitar2() {
     this.myfilename2 = 'Seleccione Imagen';
@@ -197,7 +197,7 @@ export class UbicacionComponent implements OnInit {
     }, { emitEvent: false })
     this.dataUbicacion.fotopllegada = ""
     this.dataSolicitud.Ubicacion.fotopllegada = this.dataUbicacion.fotopllegada
-    this.srvSol.saveSol(this.sol, this.dataSolicitud)
+    this.srvSol.saveSol(this.ced, this.dataSolicitud)
   }
 
   formatNumber(num) {

@@ -46,7 +46,7 @@ export class UrbanoComponent implements OnInit {
   unidades: any = DataSelect.Unidades;
 
   diasSema: any = [];
-  sol: string;
+  ced: string;
   datasolicitud: Solicitud = new Solicitud()
   dataCruces: [] = []
 
@@ -57,10 +57,10 @@ export class UrbanoComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
       this.datasolicitud = datasol as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor
@@ -337,7 +337,7 @@ export class UrbanoComponent implements OnInit {
 
         this.dataCruces = this.actividadesForm.get('act').value
         this.datasolicitud.Cruces = this.dataCruces
-        this.srvSol.saveSol(this.sol, this.datasolicitud)
+        this.srvSol.saveSol(this.ced, this.datasolicitud)
       })
     })
   }

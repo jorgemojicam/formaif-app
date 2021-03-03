@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, ViewChildren } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,6 +21,7 @@ import { AnalisisagroComponent } from '../../analisisagro/analisisagro.component
 import { FlujocajaComponent } from '../../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
+import Utils from 'src/app/utils';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,7 @@ import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 })
 export class HomeComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['tipo', 'solicitud', 'gestion', 'delete', 'upload'];
+  displayedColumns: string[] = ['tipo', 'cedula', 'gestion', 'delete', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
   dataSolicitudes: any;
   datasol: Solicitud;
@@ -74,26 +75,27 @@ export class HomeComponent implements AfterViewInit {
   }
   onInitSol() {
     const msg = 'Crear Solicitud';
-    this.openDialog(msg);
+    this.openDialog(msg,"");
   }
 
-  openDialog(menssage: string) {
+  openDialog(menssage: string,datos:any) {
     const config = {
       data: {
         mensaje: menssage,
-        content: ''
+        content: datos
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
 
-      this.srvSol.get().subscribe((sol) => {
+      this.srvSol.get().subscribe((sol) => {        
         this.dataSource = new MatTableDataSource(sol);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       })
     })
   }
+
   onLoad() {
     this.srvSol.get().subscribe((sol) => {
       this.dataSource = new MatTableDataSource(sol);
@@ -107,10 +109,11 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onGestion(element) {
-    this.route.navigate(['admin'], { queryParams: { solicitud: element.solicitud } })
+    this.route.navigate(['admin'], { queryParams: { cedula: element.cedula } })
   }
+
   onDelete(element) {
-    let solicitud = element.solicitud
+    let cedula = element.cedula
     Swal.fire({
       icon: 'warning',
       title: '¿Esta seguro de Eliminar?',
@@ -120,12 +123,11 @@ export class HomeComponent implements AfterViewInit {
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.srvSol.deleteSol(solicitud).subscribe((res) => {
+        this.srvSol.deleteSol(cedula).subscribe((res) => {
           console.log(res)
         })
         this.srvSol.get().subscribe((sol) => {
-          let newSol = sol.filter(a => a.solicitud != solicitud)
-          console.log(newSol)
+          let newSol = sol.filter(a => a.cedula != cedula)
           this.srvSol.save(newSol)
           this.onLoad()
         })
@@ -135,15 +137,36 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-
   async onSend(element) {
 
     this.procesando = true
+    if(element.solicitud == ""){
+      Swal.fire({
+        icon: 'info',
+        title: 'Información Incompleta',
+        html: 'Debe ingresar el numero de solicitud',
+      })
+      this.onEdit(element)
+      this.procesando = false
+      return
+    }
     if (navigator.onLine) {
 
-      const numeroSolicitud: string = element.solicitud.toString();
+      const numeroCedula: string = element.cedula.toString();
 
-      this.datasol = await this.getSolicitud(numeroSolicitud) as Solicitud
+      this.datasol = await this.getSolicitud(numeroCedula) as Solicitud
+
+      let faltante = this.validateSol()
+
+      if (faltante != "") {
+        this.procesando = false
+        Swal.fire({
+          icon: 'info',
+          title: 'Información Incompleta',
+          html: 'Aun tiene pendiente completar la siguiente información: ' + faltante,
+        })
+        return
+      }
 
       let aseso = await this.getDirector() as Asesor
 
@@ -154,7 +177,7 @@ export class HomeComponent implements AfterViewInit {
           html: `Se enviara email al director:
         <br><b>`+ aseso.Nombre + `</b>, 
         <br><small>`+ aseso.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
-        <br><b>Solicitud :</b>` + numeroSolicitud + `
+        <br><b>Solicitud :</b>` + numeroCedula + `
         <br><b>Oficina :</b> `+ aseso.Sucursales.Nombre,
           icon: 'warning',
           showCancelButton: true,
@@ -184,14 +207,14 @@ export class HomeComponent implements AfterViewInit {
                       const contentagro = this.analisisAgro.reporte.nativeElement
                       const contentflujo = this.flujo.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroSolicitud, "p") as string
+                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
                       b.textContent = "Generacion Flujo de caja pdf..."
-                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroSolicitud, "l") as string
+                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
                     } else if (this.datasol.asesor == 1) {
                       const contentana = this.analisis.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroSolicitud, "p") as string
+                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
                     }
 
                     b.textContent = "Enviando email..."
@@ -240,6 +263,7 @@ export class HomeComponent implements AfterViewInit {
 
     }
   }
+
   openProfile(): void {
     this._bottomSheet.open(ProfileComponent);
   }
@@ -283,6 +307,7 @@ export class HomeComponent implements AfterViewInit {
         });
     })
   }
+
   send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
 
     let email: Email = new Email;
@@ -317,6 +342,7 @@ export class HomeComponent implements AfterViewInit {
     })
 
   }
+
   inserCarpetaDigital(solicitud: Solicitud, pfd: string) {
     return new Promise(resolve => {
       this.carpetaServ.insert(solicitud, pfd)
@@ -326,6 +352,7 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
+  //Consulta los datos del diretor de la oficina a la cual esta asociado el colaborador
   getDirector() {
 
     let asesores: Asesor = this.tokenStorage.getUser()
@@ -336,7 +363,7 @@ export class HomeComponent implements AfterViewInit {
     } else {
 
       return new Promise((resolve, reject) => {
-        this.ofiServ.getAsesores("609").subscribe(
+        this.ofiServ.getAsesores(suc).subscribe(
           (ase) => {
             let diretores = ase as Asesor[]
             if (ase) {
@@ -347,7 +374,7 @@ export class HomeComponent implements AfterViewInit {
               })
             } else {
               console.error('No se encontro la oficina')
-              return resolve(diretores)
+              return resolve([])
             }
           },
           (err) => {
@@ -358,6 +385,84 @@ export class HomeComponent implements AfterViewInit {
 
     }
 
+  }
+
+  onEdit(row) {   
+    const msg = 'Editar Solicitud';
+    this.openDialog(msg,row);
+  }
+
+  validateSol(): string {
+
+    let faltantes: string = ""
+
+    if (this.datasol.Balance) {
+      if (this.datasol.Balance.inventarioTotal == 0) {
+        faltantes += "<br>Inventario"
+      }
+      if (this.datasol.Balance.actnegTotal == 0) {
+        faltantes += "<br>Activos del Negocio"
+      }
+      if (this.datasol.Balance.actfamTotal == 0) {
+        faltantes += "<br>Activos de la Familia"
+      }
+    } else {
+      faltantes += "<br><b>Balance: </b> Inventario, Activos de la Familia, Activos del Negocio"
+    }
+
+    if (this.datasol.Gastos) {
+      if (this.datasol.Gastos.totalF == 0) {
+        faltantes += "<br>Gastos de la Familia"
+      }
+    } else {
+      faltantes += "<br><b>Gastos :</b> Gastos de la Familia"
+    }
+
+    if (this.datasol.asesor == 1) {
+      if (this.datasol.Cruces) {
+        if (this.datasol.Cruces.length == 0) {
+          faltantes += "<br>Actividades"
+        }
+      } else {
+        faltantes += "<br>Cruces"
+      }
+    } else if (this.datasol.asesor == 2) {
+      if (this.datasol.CrucesAgro) {
+        for (let act = 0; act < this.datasol.CrucesAgro.length; act++) {
+          let num: number = act + 1
+          const cruces = this.datasol.CrucesAgro[act];
+          if (cruces.tipo) {
+
+          } else {
+            faltantes += "<br>Tipo de Actividad " + num
+          }
+          if (cruces.nombre) {
+
+          } else {
+            faltantes += "<br>Nombre Actividad " + num
+          }
+        }
+        if (this.datasol.CrucesAgro.length == 0) {
+          faltantes += "<br>Actividades"
+        }
+      } else {
+        faltantes += "<br><b>Cruces</b>"
+      }
+      if (this.datasol.Propuesta) {
+        if (Utils.formatNumber(this.datasol.Propuesta.montorecomendado) == 0) {
+          faltantes += "<br>Monto recomendado"
+        }
+        if (this.datasol.Propuesta.plazo == 0) {
+          faltantes += "<br>Plazo"
+        }
+        if (this.datasol.Propuesta.tipocuota == 0) {
+          faltantes += "<br>Propuesta de credito"
+        }
+      } else {
+        faltantes += "<br><b>Propuesta: </b> Monto recomendado, Plazo, Propuesta de credito"
+      }
+    }
+    return faltantes
   }
 
 }

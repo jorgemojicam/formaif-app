@@ -41,8 +41,9 @@ export class BalanceComponent implements OnInit {
   tipoSol: number;
   totalActFam: number;
   totalProv: number;
-  sol: string;
+  ced: string;
   minDate = new Date();
+  minDatenxt = new Date(this.minDate.setMonth(this.minDate.getMonth() + 1))
 
   constructor(
     public srvSol: IdbSolicitudService,
@@ -93,11 +94,11 @@ export class BalanceComponent implements OnInit {
   ngOnInit() {
 
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
-      if (this.sol) {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+      if (this.ced) {
         this.tipoSol = datasol.asesor
 
         if (this.tipoSol == 1)
@@ -205,6 +206,7 @@ export class BalanceComponent implements OnInit {
             total: isFinite(total) ? total.toLocaleString() : 0,
           }, { emitEvent: false });
         });
+
         //Calculo activos negocio
         let totalactneg = 0
         const actneg = <FormArray>this.balanceForm.controls['actividadNegRows'];
@@ -218,6 +220,7 @@ export class BalanceComponent implements OnInit {
             vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
+
         //Calculo activos familia
         let totalactfam = 0
         const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
@@ -231,6 +234,7 @@ export class BalanceComponent implements OnInit {
             vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
           }, { emitEvent: false });
         });
+
         //Calculo proveedores
         let totalProv = 0
         const proveedores = <FormArray>this.balanceForm.controls['proveedoresRow'];
@@ -241,6 +245,7 @@ export class BalanceComponent implements OnInit {
             valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false });
         });
+
         //Calculo proveedores Estacionales  
         const proveedoresEst = <FormArray>this.balanceForm.controls['proveedoresEstacionales'];
         proveedoresEst.controls.forEach(x => {
@@ -480,22 +485,58 @@ export class BalanceComponent implements OnInit {
             //Otras periodicidades
             else if (tipo.id == "7") {
 
+              let pago = x.get('pago').value
               let tasa = Utils.formatNumber(x.get('tasa').value)
-              let tasaporcen = tasa / 100
-              if (tasa < 0.8 && tasa > 4) {
-                x.get("tasa").setValue("", { emitEvent: false });
-                this._snackBar.open("La tasa de interes no puede ser menor a 0,8 ni superior a 4", "Ok!", {
-                  duration: 4000,
+
+              //Pago regular
+              if (pago == 1) {
+                let tasaporcen = tasa / 100
+                if (tasa < 0.8 && tasa > 4) {
+                  x.get("tasa").setValue("", { emitEvent: false });
+                  this._snackBar.open("La tasa de interes no puede ser menor a 0,8 ni superior a 4", "Ok!", {
+                    duration: 4000,
+                  });
+                }
+                let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
+                let calcinteres = saldo * tasaporcen * periodo
+                let calculocap = saldo / (plazo - numcuota)
+                x.patchValue({
+                  calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
+                  calculocap: isFinite(calculocap) ? calculocap.toLocaleString() : 0,
+                }, { emitEvent: false })
+
+              }
+              //Pago irregular 
+              else if (pago == 2) {                
+                const cuotas = <FormArray>x.get('cuotasRow')
+                let total = 0
+                let arrMese = []
+                cuotas.controls.forEach(cuo => {
+                  let cuota = Utils.formatNumber(cuo.get('cuota').value)
+                  let fecha = cuo.get('fecha').value
+
+                  if (fecha != "") {
+                    let mes = fecha.getMonth()
+                    let ano = fecha.getFullYear()
+                    let fullfehca = mes + "-" + ano
+
+                    if (arrMese.indexOf(fullfehca) < 0) {
+                      arrMese.push(fullfehca)
+                    } else {
+                      this._snackBar.open("Ya existe una cuota para este mes", "Ok!", {
+                        duration: 5000,
+                      });
+                      fecha = ""
+                    }
+                  }
+
+                  total += valor
+                  cuo.patchValue({
+                    cuota: isFinite(cuota) ? cuota.toLocaleString() : 0,
+                    fecha: fecha
+                  }, { emitEvent: false });
                 });
               }
-              let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
-              let calcinteres = saldo * tasaporcen * periodo
-              let calculocap = saldo / (plazo - numcuota)
-              x.patchValue({
-                calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
-                calculocap: isFinite(calculocap) ? calculocap.toLocaleString() : 0,
-              }, { emitEvent: false })
-
             }
           }
 
@@ -532,7 +573,7 @@ export class BalanceComponent implements OnInit {
 
         this.dataBalance = this.balanceForm.value
         this.dataSolicitud.Balance = this.dataBalance
-        this.srvSol.saveSol(this.sol, this.dataSolicitud)
+        this.srvSol.saveSol(this.ced, this.dataSolicitud)
       })
 
     });
@@ -979,7 +1020,7 @@ export class BalanceComponent implements OnInit {
       pago: [''],//Periodico =1, Irregular=2
       calculoint: [''],
       periodoint: [''],
-      fechaproxint: [null],
+      fechaproxint: [''],
       calculocap: [''],
       periodocap: [''],
       fechaproxcap: [''],
@@ -1003,6 +1044,8 @@ export class BalanceComponent implements OnInit {
       let tipopas = [];
       let periodopas = [];
       let cuotadifpas = [];
+      let periodocap = [];
+      let periodoint = [];
 
       if (pas.tipo)
         tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
@@ -1010,6 +1053,10 @@ export class BalanceComponent implements OnInit {
         periodopas = this.periodo.find(pe => pe.id == pas.periodo.id)
       if (pas.cuotadifiere)
         cuotadifpas = this.CuotasDifiere.find(ca => ca.id == pas.cuotadifiere.id)
+      if (pas.periodocap)
+        periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
+      if (pas.periodoint)
+        periodoint = this.periodo.find(pe => pe.id == pas.periodocap.id)
 
       pasivosArray.push(
         this.fb.group({
@@ -1031,11 +1078,11 @@ export class BalanceComponent implements OnInit {
           tasa: [pas.tasa],
           pago: [pas.pago],//Periodico =1, Irregular=2
           calculoint: [pas.calculoint],
-          periodoint: [''],
+          periodoint: [periodoint],
           fechaproxint: [pas.fechaproxint],
           calculocap: [pas.calculocap],
-          periodocap: [''],
-          fechaproxcap: [''],
+          periodocap: [periodocap],
+          fechaproxcap: [pas.fechaproxcap],
           montoF: [pas.montoF],
           montoN: [pas.montoN],
           cuotaN: [pas.cuotaN],
@@ -1046,7 +1093,7 @@ export class BalanceComponent implements OnInit {
           corrienteN: [pas.corrienteN],
           nocorrienteN: [pas.nocorrienteN],
           numcoutaneto: [pas.numcoutaneto],
-          cuotasRow: this.fb.array([])
+          cuotasRow: this.loadCuotas(pas.cuotasRow)
         })
       )
     });
@@ -1069,6 +1116,20 @@ export class BalanceComponent implements OnInit {
       fecha: [''],
       cuota: [''],
     });
+  }
+  loadCuotas(cuotas: any[]): FormArray {
+    let aCuotas: FormArray = this.fb.array([])
+
+    for (let c = 0; c < cuotas.length; c++) {
+      const cuo = cuotas[c];
+      aCuotas.push(
+        this.fb.group({
+          fecha: [cuo.fecha],
+          cuota: [cuo.cuota],
+        })
+      )
+    }
+    return aCuotas
   }
   addCuotas(ti: number) {
     let neto = this.pasivos().at(ti).get("numcoutaneto").value

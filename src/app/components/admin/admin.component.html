@@ -22,56 +22,56 @@
                 <div mat-line><b>{{perfil.Nombre}}</b></div>
                 <div mat-line><small>{{perfil.Sucursales.Nombre }}</small></div>
                 <div mat-line> {{perfil.Grupo }} </div>
-                <div mat-line><b>#Solicitud:</b> {{sol}} </div>
+                <div mat-line><b>#Cedula:</b> {{ced}} </div>
             </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
         <mat-nav-list (click)="action()">
             <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>location_on</mat-icon>
                 <div mat-line>Ubicacion</div>
             </mat-list-item>
-            <mat-list-item routerLink="balance" routerLinkActive="active-list-item" [queryParams]="{solicitud:sol}">
+            <mat-list-item routerLink="balance" routerLinkActive="active-list-item" [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>assessment</mat-icon>
                 <div mat-line>Balance</div>
             </mat-list-item>
             <mat-list-item [routerLink]="['ventas']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>work</mat-icon>
                 <div mat-line>Cruces</div>
             </mat-list-item>
             <mat-list-item [routerLink]="['gastos']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>payment</mat-icon>
                 <div mat-line>Gastos</div>
             </mat-list-item>
             <ng-container *ngIf="tipo==2">
                 <mat-list-item [routerLink]="['analisisagro']" routerLinkActive="active-list-item"
-                    [queryParams]="{solicitud:sol}">
+                    [queryParams]="{cedula:ced}">
                     <mat-icon mat-list-icon>web</mat-icon>
                     <div mat-line>Analisis</div>
                 </mat-list-item>
             </ng-container>
             <ng-container *ngIf="tipo==1">
                 <mat-list-item [routerLink]="['analisis']" routerLinkActive="active-list-item"
-                    [queryParams]="{solicitud:sol}">
+                    [queryParams]="{cedula:ced}">
                     <mat-icon mat-list-icon>web</mat-icon>
                     <div mat-line>Analisis</div>
                 </mat-list-item>
             </ng-container>
             <mat-list-item [routerLink]="['resultado']" routerLinkActive="active-list-item"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>phone_android</mat-icon>
                 <div mat-line>Resultado Formiik</div>
             </mat-list-item>
             <mat-list-item [routerLink]="['propuesta']" routerLinkActive="active-list-item" *ngIf="tipo==2"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>thumb_up</mat-icon>
                 <div mat-line>Propuesta</div>
             </mat-list-item>
             <mat-list-item [routerLink]="['flujocaja']" routerLinkActive="active-list-item" *ngIf="tipo==2"
-                [queryParams]="{solicitud:sol}">
+                [queryParams]="{cedula:ced}">
                 <mat-icon mat-list-icon>receipt</mat-icon>
                 <div mat-line>Flujo de Caja</div>
             </mat-list-item>

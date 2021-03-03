@@ -30,8 +30,8 @@ export class AnalisisComponent implements OnInit {
 
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
-        let sol = params.get('solicitud')
-        this.srvSol.getSol(sol).subscribe((datasol) => {
+        let ced = params.get('cedula')
+        this.srvSol.getSol(ced).subscribe((datasol) => {
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })

@@ -10,10 +10,10 @@ export class Pasivos {
     descuentolibranza: boolean;
     acreedor: string;
     monto: string;
-    plazo: string;
+    plazo: number;
     saldo: string;
     destino: string;
-    cuota: string;
+    cuota: number;
     valor: string;
     periodo: {
         id: number;
@@ -27,13 +27,21 @@ export class Pasivos {
     }
     cuotacalcu: string;
     tasa: string;
-    pago: string;
+    pago: number;
     calculoint: string;
-    periodoint: string;
-    fechaproxint: string;
+    periodoint: {
+        id: number;
+        name: string;
+        period: number;
+    };
+    fechaproxint: Date;
     calculocap: string;
-    periodocap: string;
-    fechaproxcap: string;
+    periodocap: {
+        id: number;
+        name: string;
+        period: number;
+    };
+    fechaproxcap: Date;
     montoF: string;
     montoN: string;
     cuotaN: string;
@@ -46,7 +54,7 @@ export class Pasivos {
     numcoutaneto: string;
     cuotasRow: [
         {
-            valor: number;
+            cuota: number;
             fecha: Date;
         }
     ]

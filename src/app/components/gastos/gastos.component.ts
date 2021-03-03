@@ -58,16 +58,16 @@ export class GastosComponent implements OnInit {
   otroIngreso: any = DataSelect.OtrosIngresosFamiliar;
   meses: any = DataSelect.Meses;
   tipoSol: number;
-  sol: string;
+  ced: string;
 
   ngOnInit(): void {
 
     this.activeRoute.queryParamMap
       .subscribe((params) => {
-        this.sol = params.get('solicitud')
+        this.ced = params.get('cedula')
       });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
       if (datasol) {
         this.dataSolicitud = datasol as Solicitud
@@ -168,7 +168,7 @@ export class GastosComponent implements OnInit {
 
         this.dataGastos = this.gastosForm.value
         this.dataSolicitud.Gastos = this.dataGastos
-        this.srvSol.saveSol(this.sol, this.dataSolicitud)
+        this.srvSol.saveSol(this.ced, this.dataSolicitud)
       })
     });
   }

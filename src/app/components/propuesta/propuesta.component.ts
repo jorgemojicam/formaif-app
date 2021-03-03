@@ -16,7 +16,7 @@ import { type } from 'os';
 })
 export class PropuestaComponent implements OnInit {
 
-  sol: string;
+  ced: string;
   tipoSol: number;
   dataSolicitud: Solicitud;
   dataPropuesta: Propuesta;
@@ -36,10 +36,10 @@ export class PropuestaComponent implements OnInit {
     plazo: '',
     destino: '',
     detalle: '',
-    valor: '',
+    valor: 0,
     detallecapital: '',
     valorcapital: '',
-    tipocuota: '',
+    tipocuota: 0,
     formapgo: '',
     valorcouta: '',
     numerocuotas: '',
@@ -52,12 +52,12 @@ export class PropuestaComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
-      if (this.sol) {
+      if (this.ced) {
         this.tipoSol = datasol.asesor
         this.dataSolicitud = datasol as Solicitud
         if (this.dataSolicitud.Propuesta) {
@@ -131,7 +131,7 @@ export class PropuestaComponent implements OnInit {
 
         this.dataPropuesta = this.propuestaForm.value
         this.dataSolicitud.Propuesta = this.dataPropuesta
-        this.srvSol.saveSol(this.sol, this.dataSolicitud)
+        this.srvSol.saveSol(this.ced, this.dataSolicitud)
       })
     })
   }

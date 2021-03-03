@@ -13,7 +13,7 @@ export class ResultadoComponent implements OnInit {
 
   datasolicitud: Solicitud = new Solicitud()
   tiposol: number;
-  sol: string;
+  ced: string;
   efectivo: number = 0;
   totalcuentascobrar: number = 0;
   recuperacion: number = 0;
@@ -47,10 +47,10 @@ export class ResultadoComponent implements OnInit {
 
     this.activeRoute.queryParamMap
       .subscribe((params) => {
-        this.sol = params.get('solicitud')
+        this.ced = params.get('solicitud')
       });
 
-    this.srvSol.getSol(this.sol)
+    this.srvSol.getSol(this.ced)
       .subscribe((datasol) => {
         
         this.datasolicitud = datasol as Solicitud

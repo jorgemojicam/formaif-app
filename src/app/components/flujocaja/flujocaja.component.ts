@@ -7,6 +7,7 @@ import { LoteAgro } from 'src/app/model/loteAgro';
 import { CrucesAgro } from 'src/app/model/crucesagro';
 import { LotePecuario } from 'src/app/model/lotePecuario';
 import Utils from '../../utils';
+import { utils } from 'protractor';
 
 @Component({
   selector: 'app-flujocaja',
@@ -68,10 +69,12 @@ export class FlujocajaComponent implements OnInit {
       let meshoy: number = hoy.getMonth() + 1
       this.fechahoy = hoy.getDate() + "/" + meshoy + "/" + hoy.getFullYear()
       this.datasolicitud = await obtenerSol() as Solicitud
+      if (this.datasolicitud.CrucesAgro) {
+        this.actividadPrincipal = this.datasolicitud.CrucesAgro[0].nombre.name
+        this.cantidadActividades = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0).length
+        this.datosCruces = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0)
+      }
 
-      this.actividadPrincipal = this.datasolicitud.CrucesAgro[0].nombre.name
-      this.cantidadActividades = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0).length
-      this.datosCruces = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0)
       let mesingreso = this.meses.slice();
       mesingreso.splice(0, meshoy);
 
@@ -517,6 +520,100 @@ export class FlujocajaComponent implements OnInit {
             }
           }
         }
+        if (this.datasolicitud.Balance) {
+
+          for (let p = 0; p < this.datasolicitud.Balance.pasivosRows.length; p++) {
+            const pas = this.datasolicitud.Balance.pasivosRows[p];
+            if (pas.tipo && pas.clase) {
+
+              let periodoint = pas.periodoint
+              let periodocap = pas.periodocap
+              let cantida = pas.plazo - pas.cuota
+              let primermesint = false
+              let primermescap = false
+
+              if (pas.clase == 2 && pas.tipo.id == 7) {
+                if (pas.pago == 1) {
+
+                  for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+                    if (cantida > 0) {
+                      cantida--
+                      let addmonth = f + 1
+                      var fechahyo = new Date()
+                      var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+
+                      let mesFlujo = fechacrece.getMonth()
+                      let anoFlujo = fechacrece.getFullYear()
+
+                      let mesint = pas.fechaproxint.getMonth()
+                      var calculoint = Utils.formatNumber(pas.calculoint)
+                      let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+
+                      if (!primermesint) {
+                        if (mesFlujo >= mesint) {
+                          primermesint = true
+                        }
+                      }
+                      if (primermesint) {
+                        if (periodoint.id == 1) {
+                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                        } else if (periodoint.id == 2 && f % 2 == 0) {
+                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                        } else if (periodoint.id == 3 && f % 3 == 0) {
+                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                        }
+                      }
+
+                      let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                      let mescap = pas.fechaproxcap.getMonth()
+                      var calculocap = Utils.formatNumber(pas.calculocap)
+                      if (!primermescap) {
+                        if (mesFlujo >= mescap) {
+                          primermescap = true
+                        }
+                      }
+
+                      if (primermescap) {
+                        if (periodocap.id == 1) {
+                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                        } else if (periodocap.id == 2 && f % 2 == 0) {
+                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                        } else if (periodocap.id == 3 && f % 3 == 0) {
+                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                        }
+                      }
+
+                    }
+                  }
+                } else if (pas.pago == 2) {
+
+                  for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+
+                    let addmonth = f + 1
+                    var fechahyo = new Date()
+                    var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                    let totalacomula = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    let mesFlujo = fechacrece.getMonth()
+                    let anoFlujo = fechacrece.getFullYear()
+
+                    for (let ir = 0; ir < pas.cuotasRow.length; ir++) {
+                      const item = pas.cuotasRow[ir];
+                      if (item.fecha) {
+                        let mes = item.fecha.getMonth()
+                        let ano = item.fecha.getFullYear()
+                        
+                        if (mesFlujo == mes && ano == anoFlujo) {
+                          console.log(mes)
+                          this.dataFlujoAcumulado[f][9] = Utils.formatNumber(item.cuota) + totalacomula
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
 
         let primermes = true;
         let primermes1 = true;
@@ -542,6 +639,7 @@ export class FlujocajaComponent implements OnInit {
                 }
               }
             }
+
           }
 
           //Remuneracion de personal
@@ -585,7 +683,8 @@ export class FlujocajaComponent implements OnInit {
           this.dataFlujoAcumulado[f][8] = imprevistos
 
           //Obligaciones Finacieras
-          this.dataFlujoAcumulado[f][9] = totalObligaciones
+          let valorObligaciones = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+          this.dataFlujoAcumulado[f][9] = valorObligaciones + totalObligaciones
 
           let ingreso = Utils.formatNumber(this.dataFlujoAcumulado[f][3])
           let recuperacion = Utils.formatNumber(this.dataFlujoAcumulado[f][4])
@@ -713,7 +812,7 @@ export class FlujocajaComponent implements OnInit {
 
         }
       }
-      
+
       this.datasolicitud.Flujo = this.dataFlujoAcumulado
       this.srvSol.saveSol(this.sol, this.datasolicitud)
 

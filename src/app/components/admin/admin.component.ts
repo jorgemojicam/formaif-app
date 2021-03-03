@@ -15,7 +15,7 @@ export class AdminComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  sol: string;
+  ced: string;
   titulo: string;
   tipo:number;
   perfil:Asesor = this.srvTokn.getUser();
@@ -29,14 +29,12 @@ export class AdminComponent implements OnInit {
    
   ) { }
 
-  
-
   ngOnInit(): void {   
     
     this.activateRoute.queryParamMap .subscribe((params) => {
-        this.sol = params.get('solicitud')
+        this.ced = params.get('cedula')
 
-        this.srvSol.getSol(this.sol).subscribe((datasol) => {
+        this.srvSol.getSol(this.ced).subscribe((datasol) => {
           this.tipo = datasol.asesor
           if (datasol.asesor == 2)
             this.titulo = "Agro";

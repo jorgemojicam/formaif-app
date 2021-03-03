@@ -36,8 +36,8 @@ export class AnalisisagroComponent implements OnInit {
 
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
-        let sol = params.get('solicitud')
-        this.srvSol.getSol(sol).subscribe((datasol) => {
+        let ced = params.get('cedula')
+        this.srvSol.getSol(ced).subscribe((datasol) => {
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })
@@ -70,7 +70,7 @@ export class AnalisisagroComponent implements OnInit {
         texto = inventario[0].name
         break;
       case 'MesNombre':
-        let Mes = DataSelect.Meses.filter(i => i.id == id);
+        let Mes = DataSelect.Meses.filter(i => i.id == id);        
         texto = Mes[0].name
         break;
       case 'TipoActividad':
@@ -145,7 +145,7 @@ export class AnalisisagroComponent implements OnInit {
   totalingreso(act: CrucesAgro) {
     let totalingreso = 0
     act.lotesAgro.forEach(LoteA => {
-      totalingreso += Utils.formatNumber(LoteA.totalLoteAunual)
+      totalingreso += Utils.formatNumber(LoteA.totalIngreso)
     });
     return totalingreso.toLocaleString()
   }

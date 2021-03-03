@@ -1,6 +1,5 @@
 
 import {  Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
@@ -14,12 +13,11 @@ export class CrucesComponent implements OnInit {
 
   constructor(
     public srvSol: IdbSolicitudService,
-    private activeRoute: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private activeRoute: ActivatedRoute
   ) { }
   tipoAsesor: number;
   loadData: boolean = false
-  sol: string;
+  ced: string;
 
   datasolicitud: Solicitud = new Solicitud()
   dataCruces: [] = []
@@ -28,10 +26,10 @@ export class CrucesComponent implements OnInit {
 
     this.activeRoute.queryParamMap
       .subscribe((params) => {
-        this.sol = params.get('solicitud')
+        this.ced = params.get('cedula')
       });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
       this.datasolicitud = datasol as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor

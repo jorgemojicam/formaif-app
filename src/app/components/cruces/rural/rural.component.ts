@@ -50,7 +50,7 @@ export class RuralComponent implements OnInit {
   detallepecu: any = DataSelect.DetallePecuario;
 
   diasSema: any = [];
-  sol: string;
+  ced: string;
 
   datasolicitud: Solicitud = new Solicitud()
   dataCruces: [] = []
@@ -64,10 +64,10 @@ export class RuralComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
       this.datasolicitud = datasol as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor
@@ -307,7 +307,6 @@ export class RuralComponent implements OnInit {
             } else {
               totalEgresos = totalEgMante + totalEgCosecha
             }
-
             lot.patchValue({
               unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
               rendimientoTra: rendimientoTra,
@@ -387,7 +386,7 @@ export class RuralComponent implements OnInit {
         });
         this.dataCruces = this.actividadesForm.get('act').value
         this.datasolicitud.CrucesAgro = this.dataCruces
-        this.srvSol.saveSol(this.sol, this.datasolicitud)
+        this.srvSol.saveSol(this.ced, this.datasolicitud)
       })
 
     })
@@ -520,7 +519,6 @@ export class RuralComponent implements OnInit {
           dplantas: [lotes[lo].dplantas],
           diastancia: [lotes[lo].diastancia],
           planatasinformacli: [lotes[lo].planatasinformacli],
-          //fechafinal: [lotes[lo].fechafinal],
           edadcult: [lotes[lo].edadcult],
           periodoedad: [lotes[lo].periodoedad],
           rendiemientolote: [lotes[lo].rendiemientolote],
@@ -624,11 +622,11 @@ export class RuralComponent implements OnInit {
   }
   itemLotesPecuario() {
     return this.fb.group({
-      numanimales: '',
-      prodderivado: '',
-      cantidadxanimal: '',
+      numanimales: 0,
+      prodderivado: 0,
+      cantidadxanimal: 0,
       frecuencia: '',
-      cantproducida: '',
+      cantproducida: 0,
       unitotalesventa: '',
       perdida: '',
       preciomin: '',
@@ -663,7 +661,6 @@ export class RuralComponent implements OnInit {
       dplantas: '',
       diastancia: '',
       planatasinformacli: '',
-      //fechafinal: '',
       edadcult: '',
       periodoedad: '',
       rendiemientolote: '',
@@ -701,6 +698,7 @@ export class RuralComponent implements OnInit {
       totalEgresosMante: '',
       egresosCocecha: this.fb.array([this.itemEgresos()]),
       totalEgresosCosecha: '',
+      totalEgresos:''
     })
   }
   removeLotes(act: number, lote: number) {

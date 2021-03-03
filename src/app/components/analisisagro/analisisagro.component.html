@@ -15,7 +15,6 @@
             <td style="text-align:center">Fecha</td>
         </tr>
     </table>
-    {{datasolicitud.solicitud}}
 
     <!-- Documento y solicitud -->
     <table>
@@ -296,7 +295,7 @@
                     <td style="text-align:right">${{pasNeg.monto}}</td>
                     <td style="text-align:right">${{pasNeg.saldo}}</td>
                     <td>{{pasNeg.destino}}</td>
-                    <td>{{pasNeg.periodo.name}}</td>
+                    <td *ngIf="pasNeg.periodo">{{pasNeg.periodo.name}}</td>
                     <td style="text-align:right">${{pasNeg.valor}}</td>
                     <td style="text-align:right">${{pasNeg.corrienteN}}</td>
                     <td style="text-align:right">${{pasNeg.nocorrienteN}}</td>
@@ -307,7 +306,7 @@
                     <td style="text-align:right">${{pasNeg.monto}}</td>
                     <td style="text-align:right">${{pasNeg.saldo}}</td>
                     <td>{{pasNeg.destino}}</td>
-                    <td>{{pasNeg.periodo.name}}</td>
+                    <td *ngIf="pasNeg.periodo">{{pasNeg.periodo.name}}</td>
                     <td style="text-align:right">${{pasNeg.valor}}</td>
                     <td style="text-align:right">${{pasNeg.corrienteN}}</td>
                     <td style="text-align:right">${{pasNeg.nocorrienteN}}</td>
@@ -568,7 +567,15 @@
     <!-- Actividades del cliente -->
     <div *ngFor="let act of datasolicitud.CrucesAgro" id="actividades">
 
-        <!-- agricola -->
+        <!--
+        ....###.....######...########..####..######...#######..##..........###...
+        ...##.##...##....##..##.....##..##..##....##.##.....##.##.........##.##..
+        ..##...##..##........##.....##..##..##.......##.....##.##........##...##.
+        .##.....##.##...####.########...##..##.......##.....##.##.......##.....##
+        .#########.##....##..##...##....##..##.......##.....##.##.......#########
+        .##.....##.##....##..##....##...##..##....##.##.....##.##.......##.....##
+        .##.....##..######...##.....##.####..######...#######..########.##.....##
+        -->
         <ng-container *ngIf="act.tipo==1">
             <!-- Transitorio -->
             <div *ngIf="act.nombre.tipoproducto=='Transitorio'">
@@ -578,20 +585,21 @@
                             <td style="text-align: center;">
                                 <mat-icon class="mat-18">local_florist</mat-icon>
                             </td>
-                            <td colspan="5">
+                            <td *ngIf="act.nombre" colspan="5">
                                 Actividad {{equivalencia(act.tipo,'TipoActividad')}} de <b>{{act.nombre.name}}</b>
                             </td>
-                            <td style="text-align:center">
+                            <td *ngIf="act.nombre" style="text-align:center">
                                 Tipo de producción: <b>{{act.nombre.tipoproducto}}</b>
                             </td>
                             <th style="text-align:center">Ingreso</th>
-                            <td style="text-align:center">Mirar este 0</td>
+                            <td style="text-align:right">${{totalingreso(act)}}</td>
                             <th style="text-align:center">Egreso</th>
-                            <td style="text-align:center">Mirar este 0</td>
+                            <td style="text-align:right">${{totalegreso(act)}}</td>
                         </tr>
                         <tr>
                             <td style="text-align:center">Unidad de venta</td>
-                            <td colspan=3 style="text-align:center">{{act.unidadventa.name}}</td>
+                            <td colspan=3 *ngIf="act.unidadventa" style="text-align:center">{{act.unidadventa.name}}
+                            </td>
                             <td style="text-align:center">Precio minimo</td>
                             <td style="text-align:center">${{act.preciomin}}</td>
                             <td style="text-align:center">Precio actual</td>
@@ -629,15 +637,19 @@
                     <table>
                         <thead>
                             <tr>
-                                <th colspan=7>INGRESO LOTE
+                                <th colspan=7>Ingreso Lote
                                     <ng-container *ngIf="cont==0">Principal</ng-container>
                                     <ng-container *ngIf="cont>0">{{cont+1}}</ng-container>
-                                    {{act.nombre.name}}
+                                    <ng-container *ngIf="act.nombre">
+                                        {{act.nombre.name}}
+                                    </ng-container>
                                 </th>
                             </tr>
                             <tr>
-                                <td style="text-align:center">Rendimiento por lote {{act.unidadventa.name}}</td>
-                                <td style="text-align:center">Unidades Totales para la Venta {{act.unidadventa.name}}
+                                <td *ngIf="act.unidadventa" style="text-align:center">Rendimiento por lote
+                                    {{act.unidadventa.name}}</td>
+                                <td *ngIf="act.unidadventa" style="text-align:center">
+                                    Unidades Totales para la Venta {{act.unidadventa.name}}
                                 </td>
                                 <td style="text-align:center">% de perdida / consumo familiar</td>
                                 <td style="text-align:center">Próxima cosecha</td>
@@ -652,9 +664,9 @@
                                 <td align="right">${{lt.unidadestotales}}</td>
                                 <td align="right">{{lt.perdida}}%</td>
                                 <td align="right">{{equivalencia(lt.proxcocecha,'MesNombre')}}</td>
-                                <td align="right">mirar este 0</td>
-                                <td align="right">mirar este 0</td>
-                                <td align="right">{{lt.totalCos}}</td>
+                                <td align="right">{{lt.cantmesescocecha}}</td>
+                                <td align="right">{{lt.cantmesesnoproduccion}}</td>
+                                <td align="right">${{lt.totalIngreso}}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -670,21 +682,22 @@
                                 <th style="text-align:center">Descripción</th>
                                 <th style="text-align:center">Detalle</th>
                                 <th style="text-align:center">Cantidad</th>
-                                <th style="text-align:center">Vlr unitario</th>
-                                <th style="text-align:center">Vlr total mes</th>
+                                <th style="text-align:center">Valor unitario</th>
+                                <th style="text-align:center">Valor total mes</th>
                                 <th style="text-align:center">Mes</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let egTrans of lt.egresosAdecuacion; let cont=index">
                             <tr>
                                 <th style="text-align:center">Adecuación- preparación terreno</th>
-                                <td style="text-align:center">{{equivalencia(egTrans.descripcion,'descripcionegreso')}}
+                                <td style="text-align:center">
+                                    {{equivalencia(egTrans.descripcion,'descripcionegreso')}}
                                 </td>
                                 <td align="right">{{egTrans.detalle}}</td>
                                 <td align="right">{{egTrans.cantidad}}</td>
                                 <td align="right">${{egTrans.valorunitario}}</td>
                                 <td align="right">${{egTrans.total}}</td>
-                                <td align="right">{{equivalencia(egTrans.mes,'MesNombre')}}</td>
+                                <td align="right">{{Mes(egTrans.mes)}}</td>
                             </tr>
                         </tbody>
                         <tbody *ngFor="let egTransSiem of lt.egresosSiembra; let cont=index">
@@ -708,7 +721,7 @@
                                 <td align="right">{{egTransMan.cantidad}}</td>
                                 <td align="right">${{egTransMan.valorunitario}}</td>
                                 <td align="right">${{egTransMan.total}}</td>
-                                <td align="right">{{egTransMan.mes}}</td>
+                                <td align="right">{{Mes(egTransMan.mes)}}</td>
                             </tr>
                         </tbody>
                         <tbody *ngFor="let egTransCos of lt.egresosCocecha; let cont=index">
@@ -724,7 +737,7 @@
                         </tbody>
                         <tr>
                             <th style="text-align:center" colspan=5>Total</th>
-                            <td align="right">${{lt.totalCos}}</td>
+                            <td align="right">${{totalegreso(act)}}</td>
                             <td></td>
 
                         </tr>
@@ -900,8 +913,15 @@
                 </div>
             </div>
         </ng-container>
-
-        <!-- Pecuario -->
+        <!--
+        .########..########..######..##.....##....###....########..####..#######.
+        .##.....##.##.......##....##.##.....##...##.##...##.....##..##..##.....##
+        .##.....##.##.......##.......##.....##..##...##..##.....##..##..##.....##
+        .########..######...##.......##.....##.##.....##.########...##..##.....##
+        .##........##.......##.......##.....##.#########.##...##....##..##.....##
+        .##........##.......##....##.##.....##.##.....##.##....##...##..##.....##
+        .##........########..######...#######..##.....##.##.....##.####..#######.
+        -->
         <div *ngIf="act.tipo==2">
             <table>
                 <thead>
@@ -922,7 +942,7 @@
                     </tr>
                     <tr>
                         <th style="text-align:center">Unidad de venta</th>
-                        <td colspan="3" style="text-align:center">{{act.unidadventa.name}}</td>
+                        <td colspan="3" *ngIf="act.unidadventa" style="text-align:center">{{act.unidadventa.name}}</td>
                         <th style="text-align:center">Precio minimo</th>
                         <td style="text-align:center">${{act.preciomin}}</td>
                         <th style="text-align:center">Precio actual</th>
@@ -946,16 +966,22 @@
                             <th colspan=11>Ingresos Lote
                                 <ng-container *ngIf="cont==0">Principal</ng-container>
                                 <ng-container *ngIf="cont>0">{{cont+1}}</ng-container>
-                                {{act.nombre.name}}
+                                <ng-container *ngIf="act.nombre">{{cont+1}}
+                                    {{act.nombre.name}}
+                                </ng-container>
+
                             </th>
                         </tr>
                         <tr>
                             <th style="text-align:center">Producto derivado</th>
                             <th style="text-align:center">Número de animales por lote</th>
-                            <th style="text-align:center">Cantidad producida por animal {{act.unidadventa.name}}</th>
+                            <th *ngIf="act.unidadventa" style="text-align:center">Cantidad producida por animal
+                                {{act.unidadventa.name}}</th>
                             <th style="text-align:center">Frecuencia</th>
-                            <th style="text-align:center">Cantidad producida total {{act.unidadventa.name}}</th>
-                            <th style="text-align:center">Unidades totales para la venta {{act.unidadventa.name}}</th>
+                            <th *ngIf="act.unidadventa" style="text-align:center">Cantidad producida total
+                                {{act.unidadventa.name}}</th>
+                            <th *ngIf="act.unidadventa" style="text-align:center">Unidades totales para la venta
+                                {{act.unidadventa.name}}</th>
                             <th style="text-align:center">% de mortalidad /perdida/consumo familiar</th>
                             <th style="text-align:center">Proximo mes de ingreso</th>
                             <th style="text-align:center">Meses de producción</th>
@@ -966,7 +992,7 @@
                             <td style="text-align:center">{{ltePec.prodderivado}}</td>
                             <td style="text-align:center">{{ltePec.numanimales}}</td>
                             <td style="text-align:center">{{ltePec.cantidadxanimal}}</td>
-                            <td style="text-align:center">{{ltePec.frecuencia.name}}</td>
+                            <td style="text-align:center" *ngIf="ltePec.frecuencia">{{ltePec.frecuencia.name}}</td>
                             <td style="text-align:center">{{ltePec.cantproducida}}</td>
                             <td style="text-align:center">{{ltePec.unitotalesventa}}</td>
                             <td style="text-align:center">{{ltePec.perdida}}%</td>
@@ -991,14 +1017,14 @@
                         <th style="text-align:center">Descripción</th>
                         <th style="text-align:center">Detalle</th>
                         <th style="text-align:center">Cantidad</th>
-                        <th style="text-align:center">Vlr unitario</th>
-                        <th style="text-align:center">Vlr TOTAL MES</th>
+                        <th style="text-align:center">Valor unitario</th>
+                        <th style="text-align:center">Valor total mes</th>
                         <th style="text-align:center">Mes</th>
                     </tr>
                     <tbody *ngFor="let egrePec of ltePec.egresos; let cont=index">
                         <tr>
                             <td style="text-align:center">
-                                {{equivalencia(egrePec.descripcion,'equivalencia')}}
+                                {{equivalencia(egrePec.descripcion,'DescripcionEgresosPec')}}
                             </td>
                             <td style="text-align:center">{{egrePec.detalle}}</td>
                             <td style="text-align:center">{{egrePec.cantidad}}</td>
