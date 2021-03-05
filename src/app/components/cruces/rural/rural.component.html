@@ -18,7 +18,7 @@
                 <mat-tab *ngFor="let acti of actividades().controls; let ac=index">
                     <ng-template mat-tab-label>
                         <ng-container *ngIf="ac==0">Principal</ng-container>
-                        <ng-container *ngIf="ac>0">Act {{ac}}</ng-container>
+                        <ng-container *ngIf="ac>0">Act {{ac + 1}}</ng-container>
                     </ng-template>
                     <div [formGroupName]="ac">
                         <!-- encabezado -->

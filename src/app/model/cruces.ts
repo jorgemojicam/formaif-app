@@ -21,7 +21,7 @@ export class Cruces {
     totalDias: number;
     totalVentas: string;
     totalPromedio: number;
-    totalCruce1: string;
+    totalCruce1: number;
     ventasHis: VentasHis[];
     promtotalvenHis: number;
     totalVentasHis: number;
@@ -33,7 +33,7 @@ export class Cruces {
     }
     produccion: Produccion[];
     totalProduccion: number;
-    totalCruce2: string;
+    totalCruce2: number;
     materiaprima: MateriaPrima[];
     compras: Compras[];
     totalCompras: number;

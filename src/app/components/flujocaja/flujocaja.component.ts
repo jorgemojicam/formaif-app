@@ -37,7 +37,7 @@ export class FlujocajaComponent implements OnInit {
   meses: any = DataSelect.Meses;
   datosCruces: CrucesAgro[]
 
-  sol: string;
+  ced: string;
   datasol: any;
 
   ngOnInit(): void {
@@ -45,21 +45,21 @@ export class FlujocajaComponent implements OnInit {
     this.activeRoute.queryParamMap
       .subscribe(
         (params) => {
-          this.sol = params.get('solicitud')
+          this.ced = params.get('cedula')
         }
       )
 
     const obtenerSol = () => {
       if (!this.datossol) {
         return new Promise(resolve => {
-          this.srvSol.getSol(this.sol).subscribe(
+          this.srvSol.getSol(this.ced).subscribe(
             (datasol) => {
               return resolve(datasol)
             }
           )
         })
       } else {
-        this.sol = this.datossol.solicitud.toString()
+        this.ced = this.datossol.solicitud.toString()
         return this.datossol
       }
     }
@@ -176,42 +176,48 @@ export class FlujocajaComponent implements OnInit {
                 let valorMesTra = totalTraviesa / cantMesTra
                 let valorMesPepeo = totalPepeo / cantMesPepeo
 
-                cruce.mesCos.forEach(mesC => {
-                  if (flujo[1] == mesC) {
-                    let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                    this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesCos)
+                if (cruce.mesCos) {
+                  cruce.mesCos.forEach(mesC => {
+                    if (flujo[1] == mesC) {
+                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesCos)
 
-                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos)
+                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos)
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu)
-                  }
-                });
-                cruce.mesTra.forEach(mes => {
-                  if (flujo[1] == mes) {
-                    let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                    this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesTra)
+                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu)
+                    }
+                  });
+                }
+                if (cruce.mesTra) {
+                  cruce.mesTra.forEach(mes => {
+                    if (flujo[1] == mes) {
+                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesTra)
 
-                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra)
+                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra)
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu)
-                  }
-                });
-                cruce.mesPepeo.forEach(mes => {
-                  if (flujo[1] == mes) {
-                    let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                    this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesPepeo)
+                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu)
+                    }
+                  });
+                }
+                if (cruce.mesPepeo) {
+                  cruce.mesPepeo.forEach(mes => {
+                    if (flujo[1] == mes) {
+                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesPepeo)
 
-                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo)
+                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo)
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu)
-                  }
-                });
+                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu)
+                    }
+                  });
+                }
 
                 // -------------------Egresos------------------------------------
                 for (let index = 0; index < cruce.lotesAgro.length; index++) {
@@ -601,7 +607,7 @@ export class FlujocajaComponent implements OnInit {
                       if (item.fecha) {
                         let mes = item.fecha.getMonth()
                         let ano = item.fecha.getFullYear()
-                        
+
                         if (mesFlujo == mes && ano == anoFlujo) {
                           console.log(mes)
                           this.dataFlujoAcumulado[f][9] = Utils.formatNumber(item.cuota) + totalacomula
@@ -814,7 +820,7 @@ export class FlujocajaComponent implements OnInit {
       }
 
       this.datasolicitud.Flujo = this.dataFlujoAcumulado
-      this.srvSol.saveSol(this.sol, this.datasolicitud)
+      this.srvSol.saveSol(this.ced, this.datasolicitud)
 
       this.dataFlujoAcumulado1 = this.dataFlujoAcumulado.map(function (val) {
         return val.slice(0, -10);

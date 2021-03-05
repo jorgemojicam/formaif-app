@@ -766,7 +766,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center"><b>Unidad de venta</b></td>
-                            <td colspan=3 style="text-align:center">{{act.unidadventa.name}}</td>
+                            <td *ngIf="act.unidadventa" colspan=3 style="text-align:center">{{act.unidadventa.name}}</td>
                             <td style="text-align:center"><b>Precio minimo</b></td>
                             <td style="text-align:center">${{act.preciomin}}</td>
                             <td style="text-align:center"><b>Precio actual</b></td>

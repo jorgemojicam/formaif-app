@@ -163,32 +163,38 @@
     {
       "id": 1,
       "name": "Mensual",
-      "period": 1
+      "period": 1,
+      "meses":12
     },
     {
       "id": 2,
       "name": "Bimestral",
-      "period": 2
+      "period": 2,
+      "meses":6
     },
     {
       "id": 3,
       "name": "Trimestral",
-      "period": 3
+      "period": 3,
+      "meses":4
     },
     {
       "id": 4,
       "name": "Cuatrimestral",
-      "period": 4
+      "period": 4,
+      "meses":3
     },
     {
       "id": 5,
       "name": "Semestral",
-      "period": 6
+      "period": 6,
+      "meses":2
     },
     {
       "id": 6,
       "name": "Anual",
-      "period": 12
+      "period": 12,
+      "meses":1
     }
   ],
   "CuotasDifiere": [

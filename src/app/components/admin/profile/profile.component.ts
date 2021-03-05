@@ -3,6 +3,7 @@ import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { Router } from '@angular/router';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -12,6 +13,7 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 export class ProfileComponent implements OnInit {
 
   perfil:Asesor = this.srvTokn.getUser();
+  currentApplicationVersion = environment.appVersion;
   
   constructor(
     private srvTokn:TokenStorageService,

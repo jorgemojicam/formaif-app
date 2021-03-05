@@ -14,19 +14,23 @@
             (selectedIndexChange)="selected.setValue($event)">
             <div formArrayName="act" fxFlex="100%">
 
-                <mat-tab *ngFor="let acti of actividades().controls; let ac=index" label="Act {{ac}}">
+                <mat-tab *ngFor="let acti of actividades().controls; let ac=index">
+                    <ng-template mat-tab-label>
+                        <ng-container *ngIf="ac==0">Principal</ng-container>
+                        <ng-container *ngIf="ac>0">Act {{ac + 1}}</ng-container>
+                    </ng-template>
                     <div [formGroupName]="ac">
                         <!-- encavezado -->
                         <mat-card class="encabezado">
                             <mat-card-content>
                                 <div fxLayout="row wrap">
-                                    <div class="gr" fxFlex="40%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                         <mat-form-field>
-                                            <input type="text" matInput placeholder="Actividad" id="nombre{{ac}}"
-                                                formControlName="nombre">
+                                            <input type="text" autocomplete="off" matInput placeholder="Actividad"
+                                                id="nombre{{ac}}" formControlName="nombre">
                                         </mat-form-field>
                                     </div>
-                                    <div class="gr" fxFlex="40%" fxFlex.xs="45%" fxFlex.sm="45%">
+                                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                         <mat-form-field>
                                             <mat-label>Tipo Actividad</mat-label>
                                             <mat-select formControlName="tipo" required>
@@ -48,13 +52,14 @@
                         <ng-container *ngIf="acti.value.tipo">
 
                             <mat-accordion class="example-headers-align" multi>
+                                <!-- cruce 1 -->
                                 <mat-expansion-panel>
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             Cruce #1
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            $ {{acti.value.totalCruce1}}
+                                            {{acti.value.totalCruce1 | currency:'$': 'symbol' : '1.0-0'}}
                                             <mat-icon>account_balance</mat-icon>
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
@@ -266,7 +271,7 @@
                                             Cruce #2
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            $ {{acti.value.totalCruce2}}
+                                            {{acti.value.totalCruce2 | currency:'$': 'symbol' : '1.0-0'}}
                                             <mat-icon>attach_money</mat-icon>
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
@@ -276,7 +281,8 @@
                                             <mat-card-title>Ventas Historicas</mat-card-title>
                                             <mat-chip-list class="pull-right">
                                                 <mat-chip color="accent" matTooltip="Total promedio mensual"
-                                                    matTooltipPosition="below" selected>${{acti.value.promtotalvenHis}}
+                                                    matTooltipPosition="below" selected>{{acti.value.promtotalvenHis|
+                                                    currency:'$': 'symbol' : '1.0-0'}}
                                                 </mat-chip>
                                             </mat-chip-list>
                                         </mat-card-header>
@@ -348,8 +354,8 @@
                                             <mat-card-header>
                                                 <mat-card-title>Produccion</mat-card-title>
                                                 <mat-chip-list class="pull-right">
-                                                    <mat-chip color="accent" selected>$
-                                                        {{acti.value.totalProduccion|currency:"$":'symbol':'4.0-2'}}
+                                                    <mat-chip color="accent" selected>
+                                                        {{acti.value.totalProduccion|currency:"$":'symbol':'1.0-0'}}
                                                     </mat-chip>
                                                 </mat-chip-list>
                                             </mat-card-header>
@@ -429,7 +435,7 @@
                                             Cruce #3
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            {{acti.value.totalCruce3|currency:"$":'symbol':'3.0'}}
+                                            {{acti.value.totalCruce3| currency:'$': 'symbol' : '1.0-0'}}
                                             <mat-icon>add_shopping_cart</mat-icon>
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
@@ -870,6 +876,24 @@
                                             <mat-icon>add</mat-icon>
                                         </button>
                                     </mat-card>
+
+                                    <!-- costo de venta -->
+                                    <ng-container *ngIf="acti.value.tipo==3">
+                                        <mat-card class="mat-card-cruce">
+                                            <mat-card-header>
+                                                <mat-card-title>Costo de venta</mat-card-title>
+                                            </mat-card-header>
+                                            <mat-card-content>
+                                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                    <mat-form-field>
+                                                        <input type="number" autocomplete="off" matInput
+                                                            placeholder="Costo Venta" formControlName="costo">
+                                                    </mat-form-field>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </ng-container>
+
                                 </mat-expansion-panel>
                             </mat-accordion>
 

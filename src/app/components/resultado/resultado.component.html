@@ -83,7 +83,11 @@
                 <ng-container *ngIf="tiposol==1">
                     <tr>
                         <td>21- Ventas de contado</td>
-                        <td></td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{VentasContado| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
                     </tr>
                     <tr>
                         <td>22-Recuperación de cartera</td>
@@ -95,7 +99,11 @@
                     </tr>
                     <tr>
                         <td>23-costo de venta</td>
-                        <td></td>
+                        <td>
+                            <mat-chip-list>
+                                <mat-chip>{{Costodeventa| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
+                            </mat-chip-list>
+                        </td>
                     </tr>
                     <tr>
                         <td>24-salarios</td>

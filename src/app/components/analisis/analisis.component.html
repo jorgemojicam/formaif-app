@@ -69,7 +69,7 @@
                 <tr>
                     <td>{{inv.cantidad}}</td>
                     <td>{{inv.descripcion}}</td>
-                    <td>{{inv.tipo}}</td>
+                    <td *ngIf="inv.tipo">{{inv.tipo.name}}</td>
                     <td align="right"> ${{inv.valor}}</td>
                 </tr>
             </tbody>
@@ -139,7 +139,7 @@
                 <tfoot>
                     <tr>
                         <td>Total</td>
-                        <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+                        <td align="right" colspan=4>${{datasolicitud.Balance.actfamTotal}}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -169,7 +169,7 @@
             <tfoot>
                 <tr>
                     <td>Total</td>
-                    <td align="right" colspan=3>${{datasolicitud.Balance.inventarioTotal}}</td>
+                    <td align="right" colspan=3>${{datasolicitud.Balance.totalInversiones}}</td>
                 </tr>
             </tfoot>
         </table>
@@ -426,68 +426,113 @@
 
         </div>
     </ng-container>
-
-
+    <mat-divider></mat-divider><br>
     <div *ngFor="let act of datasolicitud.Cruces" id="actividades">
+        <!-- encabezdo -->
+        <table>
+            <tr>
+                <td style="text-align:center">
+                    <ng-container [ngSwitch]="act.tipo">
+                        <ng-container *ngSwitchCase="1">
+                            <mat-icon>point_of_sale</mat-icon>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="2">
+                            <mat-icon>construction</mat-icon>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="3">
+                            <mat-icon>emoji_people</mat-icon>
+                        </ng-container>
+                    </ng-container>
+                </td>
+                <th style="text-align:center">
+                    Actividad
+                    <ng-container [ngSwitch]="act.tipo">
+                        <ng-container *ngSwitchCase="1">
+                            Comercial
+                        </ng-container>
+                        <ng-container *ngSwitchCase="2">
+                            de Produccion
+                        </ng-container>
+                        <ng-container *ngSwitchCase="3">
+                            de Servicios
+                        </ng-container>
+                    </ng-container>
+
+                </th>
+                <td style="text-align:center">{{act.nombre}}</td>
+            </tr>
+        </table>
+
         <h3>Cruce #1 Ventas B R M</h3>
         <table>
             <thead>
                 <tr>
-                    <th style="text-align:center">Ventas</th>
-                    <th style="text-align:center">Valor</th>
-                    <th style="text-align:center">Total</th>
+                    <th colspan="2" style="text-align:center">Ventas</th>
+                    <th colspan="2" style="text-align:center">Valor</th>
+                    <th colspan="2" style="text-align:center">Total</th>
                 </tr>
             </thead>
             <tr>
-                <td>{{act.diasB}}</td>
-                <td>${{act.valorB}}</td>
-                <td>${{act.totalB}}</td>
+                <td colspan="2">{{diaNombre(act.diasB,act.periodoventas)}}</td>
+                <td colspan="2" style="text-align:right">${{act.valorB}}</td>
+                <td colspan="2" style="text-align:right">${{act.totalB}}</td>
             </tr>
             <tr>
-                <td>{{act.diasR}}</td>
-                <td>${{act.valorR}}</td>
-                <td>${{act.totalR}}</td>
+                <td colspan="2">{{diaNombre(act.diasR,act.periodoventas)}}</td>
+                <td colspan="2" style="text-align:right">${{act.valorR}}</td>
+                <td colspan="2" style="text-align:right">${{act.totalR}}</td>
             </tr>
             <tr>
-                <td>{{act.diasM}}</td>
-                <td>${{act.valorM}}</td>
-                <td>${{act.totalM}}</td>
+                <td colspan="2">{{diaNombre(act.diasM,act.periodoventas)}}</td>
+                <td colspan="2" style="text-align:right">${{act.valorM}}</td>
+                <td colspan="2" style="text-align:right">${{act.totalM}}</td>
+            </tr>
+            <tr>
+                <th colspan="2">Total</th>
+                <td style="text-align:right" colspan="4">${{act.totalVentas}}</td>
+            </tr>
+            <tr>
+                <th>Promedio</th>
+                <td style="text-align:right">{{act.promedio}}</td>
+                <th style="text-align:center">Dias</th>
+                <td style="text-align:center">{{act.totalDias}}</td>
+                <th style="text-align:center">Total Promedio</th>
+                <td style="text-align:right">${{act.totalPromedio}}</td>
             </tr>
         </table>
 
         <h3>Cruce #2</h3>
         <ng-container *ngIf="act.ventasHis">
-            <div class="medio">
-                <table>
-                    <thead>
-                        <tr>
-                            <ng-container *ngIf="act.periodohistoricas">
-                                <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
-                            </ng-container>
-                        </tr>
-                        <tr>
-                            <th style="text-align:center">Semana</th>
-                            <th style="text-align:center">Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody *ngFor="let his of act.ventasHis; let cont=index">
-                        <tr>
-                            <td>{{cont}}</td>
-                            <td>${{his.valor}}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>Total</td>
-                            <td>${{act.totalVentasHis}}</td>
-                        </tr>
-                    </tfoot>
+            <table>
+                <thead>
+                    <tr>
+                        <ng-container *ngIf="act.periodohistoricas">
+                            <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
+                        </ng-container>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center">Semana</th>
+                        <th style="text-align:center">Valor</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let his of act.ventasHis; let cont=index">
+                    <tr>
+                        <td>{{cont + 1}}</td>
+                        <td style="text-align:right"> ${{his.valor}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td style="text-align:right">${{act.totalVentasHis}}</td>
+                    </tr>
+                </tfoot>
 
-                </table>
-            </div>
+            </table>
+
         </ng-container>
 
-        <div class="medio">
+        <ng-container *ngIf="act.tipo ==2">
             <table>
                 <thead>
                     <tr>
@@ -517,614 +562,217 @@
                     </tr>
                 </tfoot>
             </table>
-        </div>
+        </ng-container>
+
+        <h3>Cruce #3</h3>
+        <ng-container *ngIf="act.tipo ==1">
+            <!-- costo de venta -->
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="5">
+                            Costo de venta
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Compra</th>
+                        <th>Precio Venta</th>
+                        <th>%Participación</th>
+                        <th>Margen</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let cos of act.costoventa; let cont=index">
+                    <tr>
+                        <td style="text-align:center"> {{cos.nombre}}</td>
+                        <td style="text-align:right">${{cos.precioCompra}}</td>
+                        <td style="text-align:right">${{cos.precioVenta}}</td>
+                        <td style="text-align:center">{{cos.participacion}} %</td>
+                        <td style="text-align:center">{{cos.porcentaje}} %</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">Margen Total</td>
+                        <td style="text-align:center">{{act.margen}}%</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </ng-container>
+        <!-- materia prima -->
+        <ng-container *ngIf="act.tipo ==2">
+            <!-- materia prima -->
+            <table>
+                <thead>
+                    <tr>
+                        <th [attr.colspan]="act.materiaprima.length + 1">Costo de Venta</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre Producto</th>
+                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                            {{item.producto}}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Materia Prima 1</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: left;">{{item.materiaprimapri}}</div>
+                            <div style="float: right;">${{item.valorMatPri}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Materia Prima 2</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: left;">{{item.matPrima2}}</div>
+                            <div style="float: right;">${{item.valorMatPri2}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Materia Prima 3</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: left;">{{item.matPrima3}}</div>
+                            <div style="float: right;">${{item.valorMatPri3}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Materia Prima 4</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: left;">{{item.matPrima4}}</div>
+                            <div style="float: right;">${{item.valorMatPri4}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Materia Prima 5</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: left;">{{item.matPrima5}}</div>
+                            <div style="float: right;">${{item.valorMatPri5}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mano de Obra</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: right;">${{item.valorMao}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CIF</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: right;">${{item.valorCif}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Precio de venta</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: right;">${{item.precioVenta}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cantidad</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: right;">{{item.cantidad}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Precio de Compra</td>
+                        <td *ngFor="let item of act.materiaprima">
+                            <div style="float: right;">${{item.precioCompra}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Participacion</td>
+                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                            {{item.participacion}} %
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Margen de Utilidad</td>
+                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                            {{item.porcentaje}} %
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- materia prima -->
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="6">Materia Prima</th>
+                    </tr>
+                    <tr>
+                        <th>Unidad</th>
+                        <th>Cantidad</th>
+                        <th>Frecuencia</th>
+                        <th>Materia Prima</th>
+                        <th>Valor Unitario</th>
+                        <th>Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{act.rendUnidad}}</td>
+                        <td>{{act.rendCantidad}}</td>
+                        <td *ngIf="act.rendFrecuencia">{{act.rendFrecuencia.name}}</td>
+                        <td>{{act.rendMateriaprima}}</td>
+                        <td style="text-align: right;">${{act.rendValorU}}</td>
+                        <td style="text-align: right;">${{act.rendValorT}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </ng-container>
+
+        <!-- ventas maximas -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="5">
+                        <ng-container *ngIf="act.tipo ==2">
+                            Compras
+                        </ng-container>
+                        <ng-container *ngIf="act.tipo ==1">
+                            Ventas Maximas
+                        </ng-container>
+
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Descripcion</th>
+                    <th>Frecuencia</th>
+                    <th>Valor Unitario</th>
+                    <th>Valor Total</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let con of act.compras; let cont=index">
+                <tr>
+                    <td>{{con.cantidad}}</td>
+                    <td>{{con.descripcion}}</td>
+                    <td *ngIf="con.frecuencia">{{con.frecuencia.name}}</td>
+                    <td style="text-align:right">${{con.valor}}</td>
+                    <td style="text-align:right">${{con.total}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="2">Total</th>
+                    <td colspan="3" style="text-align:right">${{act.totalCompras}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">%Costo</th>
+                    <td colspan="3" style="text-align:right">{{act.costo}}%</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Total Cruce</th>
+                    <td colspan="3" style="text-align:right">{{act.totalCruce3 | currency:'$': 'symbol' : '1.0-0' }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <mat-divider></mat-divider>
+        <br>
     </div>
-
-    <!--     
-    <table>
-        <tr>
-            <th colspan="2" style="text-align:center">Logo</th>
-            <th colspan="6" style="text-align:center">FLUJO DE CAJA AGROPECUARIO</th>
-        </tr>
-        <tr>
-            <td>Numero de Solicitud </td>
-            <td>1</td>
-            <td>Actividad Principal y Otras Agro</td>
-            <td>1</td>
-            <td>Producto Solicitado </td>
-            <td>1</td>
-            <td>Fecha del Estudio</td>
-            <td>Hoy</td>
-        </tr>
-    </table>
-    <br>
-    <table class="table table-bordered">
-        <tr>
-            <th colspan="14" style="text-align:center">FLUJO DE CAJA AGROPECUARIO PROYECTADO</th>
-        </tr>
-        <tr>
-            <td> Plazo Total del Crédito Actual (MESES) </td>
-            <td>1</td>
-            <td>Forma de Pago</td>
-            <td>1</td>
-            <td>Propuesta del crédito</td>
-            <td>1</td>
-            <td>Efectivo disponible</td>
-            <td>1</td>
-            <td> Ctas x Cobrar</td>
-            <td>1</td>
-            <td> Plan de Inversión (Activos Fijos)</td>
-            <td>1</td>
-            <td> Plan de Inversión (capital de trabajo)</td>
-            <td>1</td>
-        </tr>
-    </table>
-    <br>
-    <table class="table table-bordered">
-        <tr>
-            <th colspan="2">Fecha Hoy</th>
-            <th colspan="6" style="text-align:center">INGRESOS Act Agropecuaria</th>
-            <th colspan="6" style="text-align:center">EGRESOS Act Agropecuaria</th>
-            <th colspan="3" style="text-align:center">Actividades comerciales</th>
-        </tr>
-        <tr>
-            <th rowspan="2" colspan="2">DETALLE</th>
-            <td>Act1</td>
-            <td>Act2</td>
-            <td>Act3</td>
-            <td>Act4</td>
-            <td>Act5</td>
-            <th rowspan="2">TOTAL</th>
-            <td>Costo 1</td>
-            <td>Costo 2</td>
-            <td>Costo 3</td>
-            <td>Costo 4</td>
-            <td>Costo 5</td>
-            <th rowspan="2">TOTAL</th>
-            <td>Ingreso</td>
-            <td>Egreso</td>
-            <td>Otros Ingresos Independientes)</td>
-        <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>1</td>
-            <td>2</td>
-            <td> </td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> Ing </td>
-            <td> Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> Ing </td>
-            <td> Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> Ing </td>
-            <td> Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>8</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>9</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>10</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>11</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <td>12</td>
-            <td>mes</td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td>Total </td>
-            <td>Ing </td>
-            <td>Egr </td>
-            <td>Otro</td>
-        </tr>
-        <tr>
-            <th colspan="2">TOTAL AÑO 1</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="2">TOTAL/PLAZO</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-    </table>
-    <br>
-    <table class="table table-bordered">
-        <tr>
-            <th colspan="18">GASTOS</th>
-        </tr>
-        <tr>
-            <th colspan="3">Fecha Hoy</th>
-            <th>0</th>
-            <th>enero</th>
-            <th>febrero</th>
-            <th>marzo</th>
-            <th>abril </th>
-            <th>mayo </th>
-            <th>junio </th>
-            <th>julio </th>
-            <th>agosto </th>
-            <th>septiembre </th>
-            <th>octubre </th>
-            <th>noviembre </th>
-            <th>TOTAL</th>
-            <th>TOTAL/PLAZO</th>
-        </tr>
-        <tr>
-            <th colspan="3">Plan de inversión (Capital de trabajo)</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Imprevistos</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">CtsxPagar/Proveedores</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Gastos Familiares otros</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Cuota Otros Créditos Incluidos FDLM</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">TOTAL GASTOS</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">TOTAL EGRESOS CRÉDITO</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-
-        <tr>
-            <th colspan="3">Flujo de caja sin acumular</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Flujo de caja acumulado</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Proyección Cuota Crédito</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Flujo de caja sin acumular(+cuota)</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">RELACION CUOTA/LIQUIDEZ</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">Flujo de caja acumulado (+cuota)</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-        <tr>
-            <th colspan="3">RELACION CUOTA/LIQUIDEZ</th>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-            <td> </td>
-        </tr>
-    </table> -->
 
 </div>

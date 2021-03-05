@@ -81,7 +81,7 @@ export class BalanceComponent implements OnInit {
     totalcreditosDetalle: [0],
     aplicaInversiones: '',
     inversiones: this.fb.array([this.initInversiones()]),
-    totalInversiones: '',
+    totalInversiones: 0,
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [0],
     tcorrientef: [0],
@@ -298,17 +298,19 @@ export class BalanceComponent implements OnInit {
           let tipo = x.get('tipo').value
           let clase = x.get('clase').value
           let periodo = (x.get('periodo').value ? x.get('periodo').value.period : 0)
+          let meses = (x.get('periodo').value ? x.get('periodo').value.meses : 0)
           let saldo = Utils.formatNumber(x.get('saldo').value)
           let plazo = Utils.formatNumber(x.get('plazo').value)
           let monto = Utils.formatNumber(x.get('monto').value)
           let numcuota = Utils.formatNumber(x.get('cuota').value)
-          let valor = Utils.formatNumber(x.get('valor').value)
-          let meses = 12
+          let valor = Utils.formatNumber(x.get('valor').value)         
+
           let netocuota = plazo - numcuota
 
           if (tipo) {
             // Entidades Financieras
             if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
+
               let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
               let nocorriente = saldo - corriente
               let proyeccion = valor / periodo
@@ -343,28 +345,27 @@ export class BalanceComponent implements OnInit {
                 x.get("numcoutaneto").setValue(netocuota, { emitEvent: false });
               }
               if (clase == 1) {
-                tcuotaf += proyeccion
-                tcorrientef += corriente
-                tnocorrientef += nocorriente
+                tcuotaf += isFinite(proyeccion) ? proyeccion : 0
+                tcorrientef += isFinite(corriente) ? corriente : 0
+                tnocorrientef += isFinite(nocorriente) ? nocorriente : 0
 
                 x.patchValue({
                   corrienteF: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                   nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                 }, { emitEvent: false })
               } else {
-                tcuotan += proyeccion
-                tcorrienten += corriente
-                tnocorrienten += nocorriente
+                tcuotan += isFinite(proyeccion) ? proyeccion : 0
+                tcorrienten += isFinite(corriente) ? corriente : 0
+                tnocorrienten += isFinite(nocorriente) ? nocorriente : 0
 
                 x.patchValue({
                   corrienteN: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                   nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
-                  proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                 }, { emitEvent: false })
               }
 
               x.patchValue({
-                proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+                proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
                 descuentolibranza: descuentolibranza
               }, { emitEvent: false })
 
@@ -507,7 +508,7 @@ export class BalanceComponent implements OnInit {
 
               }
               //Pago irregular 
-              else if (pago == 2) {                
+              else if (pago == 2) {
                 const cuotas = <FormArray>x.get('cuotasRow')
                 let total = 0
                 let arrMese = []

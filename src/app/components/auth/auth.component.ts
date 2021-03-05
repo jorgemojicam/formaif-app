@@ -49,7 +49,9 @@ export class AuthComponent implements OnInit {
     if (dom.toLocaleLowerCase() == "soporte") {
       user.Username = use
       this.authServ.login(user).subscribe(
+        
         (res) => {
+          
           let perfil: Asesor = {
             Nombre: use,
             Iniciales: "N/A",
@@ -81,7 +83,7 @@ export class AuthComponent implements OnInit {
           this.isLogged = false
         },
         (err) => {
-
+         
           let errMsg = ""
           if (err.status == 401) {
             errMsg = "Usuario o contraseña incorrecta "
@@ -98,22 +100,24 @@ export class AuthComponent implements OnInit {
       )
     } else {
       this.authServ.login(user).subscribe(
-        res => {
+        res => {         
           this.tokenStorage.saveToken(res);
           this.ofiServ.getOficina(user.Username).subscribe(
             (ofi) => {
               if (ofi) {
                 this.tokenStorage.saveUser(ofi);
+                this.isLogged = false
               }
             },
             (err) => {
+              this.isLogged = false
               this._snackBar.open("No se encontro oficina asignada, comuniquese con el area de Riesgos [codigo " + err.status + "]", "Ok!", {
                 duration: 10000,
               });
             }
           )
           this.route.navigate(['home']);
-          this.isLogged = false
+          
         },
         err => {
           let errMsg = ""

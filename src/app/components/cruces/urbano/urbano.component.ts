@@ -11,6 +11,7 @@ import { MateriaPrima } from 'src/app/model/materiaprima';
 import { Compras } from 'src/app/model/compras';
 import { CostoVenta } from 'src/app/model/costoventa';
 import Utils from '../../../utils';
+import { utils } from 'protractor';
 
 @Component({
   selector: 'app-urbano',
@@ -145,8 +146,8 @@ export class UrbanoComponent implements OnInit {
           let promedioven = total / frechis
           let totalPromedio = promedioven * frechisdias
           x.patchValue({
-            promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toLocaleString() : 0,
-            totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString() : 0
+            promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toFixed() : 0,
+            totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0
           }, { emitEvent: false })
 
           //--------------------Produccion --------------------------------------------
@@ -180,6 +181,7 @@ export class UrbanoComponent implements OnInit {
           //---------------------------------------------------------------
 
           let margen = 0
+          let costo = 0
           let totalparticipacion = 0
           //------------------Costo de venta------------------------------
           const costoventa = <FormArray>x.get('costoventa')
@@ -284,11 +286,22 @@ export class UrbanoComponent implements OnInit {
             }, { emitEvent: false })
 
           }
-          //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
-          let costo = 100 - margen
+          //Costo de venta cuando la actividad es servicios
+          if (tipoactividad == 3) {
+            costo = Utils.formatNumber(x.get('costo').value)
 
-          //--------------------Compras-----------------------------------
-
+            if (costo > 100) {
+              costo = 0
+              this._snackBar.open("El porcentaje de costo de venta no puede superar el 100", "Ok!", {
+                duration: 9000,
+              });
+            }
+          } else {
+            //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
+            costo = 100 - margen
+          }
+          console.log(costo)
+          //--------------------Compras---------------------------------------
           const compras = <FormArray>x.get('compras')
           compras.controls.forEach((com) => {
             let cantidad = this.formatNumber(com.get("cantidad").value)
@@ -315,6 +328,10 @@ export class UrbanoComponent implements OnInit {
             x.patchValue({
               totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
             }, { emitEvent: false })
+          } else if (tipoactividad == 3) {
+            x.patchValue({
+              totalCruce3: isFinite(totalcomporas) ? totalcomporas.toFixed() : 0
+            }, { emitEvent: false })
           }
 
 
@@ -328,10 +345,11 @@ export class UrbanoComponent implements OnInit {
             promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
             totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
             totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
-            totalCruce1: isFinite(totalCruce1) ? totalCruce1.toLocaleString() : 0,
-            totalCruce2: isFinite(totalCruce2) ? totalCruce2.toLocaleString() : 0,
+            totalCruce1: isFinite(totalCruce1) ? totalCruce1.toFixed() : 0,
+            totalCruce2: isFinite(totalCruce2) ? totalCruce2.toFixed() : 0,
             costo: isNaN(costo) ? 0 : costo.toFixed(),
-            margen: isNaN(margen) ? 0 : margen.toFixed()
+            margen: isNaN(margen) ? 0 : margen.toFixed(),
+
           }, { emitEvent: false })
         });
 
