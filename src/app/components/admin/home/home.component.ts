@@ -217,8 +217,9 @@ export class HomeComponent implements AfterViewInit {
                       pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
                     }
 
-                    b.textContent = "Enviando email..."
+                    b.textContent = "Enviando email..."                  
                     let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
+                    //let email = "jorge.mojica@fundaciondelamujer.com"
                     await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
 
                     b.textContent = "Insertando el analisis..."

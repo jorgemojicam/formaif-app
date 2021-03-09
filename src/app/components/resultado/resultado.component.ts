@@ -37,8 +37,8 @@ export class ResultadoComponent implements OnInit {
   obligacionesA: number = 0;
   otrosIngresosA: number = 0;
   gastosFamiliaresA: number = 0;
-  Costodeventa:number=0;
-  VentasContado:number=0;
+  Costodeventa: number = 0;
+  VentasContado: number = 0;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -87,36 +87,38 @@ export class ResultadoComponent implements OnInit {
 
         }
         this.VentasContado = 0
-        
-        let costoscruce =[]
-        for (let j = 0; j < this.datasolicitud.Cruces.length; j++) {
-          const cru = this.datasolicitud.Cruces[j];  
-          let cruces =[]
-          if (cru.totalCruce1 > 0)
-            cruces.push(cru.totalCruce1)
-          if (cru.totalCruce2 > 0)
-            cruces.push(cru.totalCruce2)
-          if (cru.totalCruce3 > 0)
-            cruces.push(cru.totalCruce3)
 
-          let mincruces = Math.min.apply(null,cruces)     
-          costoscruce.push([mincruces,cru.costo])        
-          this.VentasContado += mincruces
+        let costoscruce = []
+        if (this.datasolicitud.Cruces) {
+          for (let j = 0; j < this.datasolicitud.Cruces.length; j++) {
+            const cru = this.datasolicitud.Cruces[j];
+            let cruces = []
+            if (cru.totalCruce1 > 0)
+              cruces.push(cru.totalCruce1)
+            if (cru.totalCruce2 > 0)
+              cruces.push(cru.totalCruce2)
+            if (cru.totalCruce3 > 0)
+              cruces.push(cru.totalCruce3)
+
+            let mincruces = Math.min.apply(null, cruces)
+            costoscruce.push([mincruces, cru.costo])
+            this.VentasContado += mincruces
+          }
         }
 
         let costototal = 0
         for (let c = 0; c < costoscruce.length; c++) {
           const item = costoscruce[c];
-          const crucemin = parseInt(item[0])          
+          const crucemin = parseInt(item[0])
           const costo = parseInt(item[1]) / 100
-          let participacion = crucemin / this.VentasContado          
+          let participacion = crucemin / this.VentasContado
           let porcentaje = costo * participacion
-          costototal+=porcentaje                  
-        }        
-        let ventastotales = this.recuperacion + this.VentasContado        
+          costototal += porcentaje
+        }
+        let ventastotales = this.recuperacion + this.VentasContado
         this.Costodeventa = ventastotales * costototal;
-       
-       
+
+
         if (this.datasolicitud.Flujo) {
           let formapago = 0
           let plazo = 0

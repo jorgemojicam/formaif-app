@@ -102,6 +102,7 @@ export class AuthComponent implements OnInit {
       this.authServ.login(user).subscribe(
         res => {         
           this.tokenStorage.saveToken(res);
+          //this.ofiServ.getOficina('MAIRA.LAJUD').subscribe(
           this.ofiServ.getOficina(user.Username).subscribe(
             (ofi) => {
               if (ofi) {
