@@ -102,6 +102,11 @@
                     <mat-icon mat-list-icon>chalet</mat-icon>
                     <div mat-line>Capacidad Adaptativa</div>
                 </mat-list-item>
+                <mat-list-item [routerLink]="['verificacion']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>agriculture</mat-icon>
+                    <div mat-line>Verificación EbA</div>
+                </mat-list-item>
             </ng-container>
 
             <mat-divider></mat-divider>

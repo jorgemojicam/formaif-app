@@ -5,6 +5,7 @@ import { HomeMebaComponent } from './home-meba/home-meba.component';
 
 import { MebaComponent } from './meba.component';
 import { SensibilidadComponent } from './sensibilidad/sensibilidad.component';
+import { VerificacionComponent } from './verificacion/verificacion.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,13 @@ const routes: Routes = [
         component: AdaptativaComponent,
         data: {
           routerName: 'adaptativa'
+        }
+      },
+      {
+        path: 'verificacion',
+        component: VerificacionComponent,
+        data: {
+          routerName: 'verificacion'
         }
       }
     ]

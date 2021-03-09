@@ -1,0 +1,303 @@
+{
+    "Medidas": [
+        {
+            "id": 1,
+            "name": "Abonos orgánicos",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": [
+                        {
+                            "texto": "Techo o plástico protector",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Superficie con poca pendiente",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Recolector de lixiviados",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Fácil acceso",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Termómetro",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Criba",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Acceso a agua",
+                            "puntaje": 1
+                        }
+                    ]
+                },
+                {
+                    "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 2
+                        }
+                    ]
+                },
+                {
+                    "titulo": "Aplicación o venta del abono",
+                    "respuestas": [
+                        {
+                            "texto": "Se vende",
+                            "puntaje": 2
+                        },
+                        {
+                            "texto": "Se aplica en pedido",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Ningun uso verificable",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "titulo": "Almacenamiento",
+                    "respuestas": [
+                        {
+                            "texto": "En costales",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "En una pila bajo techo",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "En una pila expuesta al sol y lluvia",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "En bolsas para venta al menudeo",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "titulo": "El productor recibió capacitación o asistencia técnica",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Agricultura orgánica",
+            "preguntas": [
+                {
+                    "multi": true,
+                    "titulo": "El área de producción cuenta con:",
+                    "respuestas": [
+                        {
+                            "texto": "Almácigo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Cerca viva o de alambre alrededor del cultivo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Sistemas de riego eficientes con ferti-irrigación orgánica",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Invernadero",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Cultivos diversificados",
+                            "puntaje": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Apicultura",
+            "preguntas": [
+                {
+                    "multi": true,
+                    "titulo": "La colmena cuenta con:",
+                    "respuestas": [
+                        {
+                            "texto": "Tabla de vuelo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Base de soporte",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Cámaras de cría",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Techo de lámina",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Cera estampada en bastidores",
+                            "puntaje": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Diversificación de cultivos",
+            "preguntas": [
+                {
+                    "multi": true,
+                    "titulo": "El sistema cuenta con:",
+                    "respuestas": [
+                        {
+                            "texto": "Cultivos anuales",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Hortalizas",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Frutales",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Arbustivas perennes ",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Forestales",
+                            "puntaje": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Huertos familiares",
+            "preguntas": [
+                {
+                    "multi": true,
+                    "titulo": "El sistema cuenta con:",
+                    "respuestas": [
+                        {
+                            "texto": "Suficiente área ",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Camas de cultivo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Composta",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Acceso a agua",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Almácigo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Frutales",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Invernadero",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Protección perimetral",
+                            "puntaje": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Invernadero",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": []
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Piscicultura",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": []
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Reservorios de agua de lluvia",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": []
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Riego eficiente",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": []
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "name": "Sombra natural",
+            "preguntas": [
+                {
+                    "multiple": true,
+                    "titulo": "El lugar de producción cuenta con:",
+                    "respuestas": []
+                }
+            ]
+        }
+    ]
+}
