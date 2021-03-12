@@ -20,7 +20,7 @@ export class AdaptativaComponent implements OnInit {
   aDimensiones: any[]
   sol: string
   dSolicitud: Solicitud = new Solicitud();
-  dAdaptativa:Adaptativa[] = [];
+  dAdaptativa: Adaptativa[] = [];
 
   constructor(
     private serAdap: CapacidadAdaptativaService,
@@ -41,24 +41,30 @@ export class AdaptativaComponent implements OnInit {
 
     await this.loadPreguntas()
 
-    this.adaptativoForm.get('adaptativa').valueChanges.subscribe(values => {      
-      const adaptativa = <FormArray>this.adaptativoForm.controls['adaptativa'];     
+    this.adaptativoForm.get('adaptativa').valueChanges.subscribe(values => {
+      const adaptativa = <FormArray>this.adaptativoForm.controls['adaptativa'];
       adaptativa.controls.forEach(x => {
 
-        let preguntas = <FormArray>x.get("preguntas")        
+        let preguntas = <FormArray>x.get("preguntas")
 
-        let acumulado =  0
+        let acumulado = 0
         preguntas.controls.forEach(pre => {
           let resultado = pre.get("resultado").value
-          let puntaje = resultado.puntaje
-          acumulado+= puntaje
+          let peso = pre.get("peso").value
+          if (resultado) {
+            let puntaje = resultado.puntaje
+            let porcentaje = (peso / 100) * puntaje
+            acumulado += porcentaje
+          }
         })
-     
+       
+        x.patchValue({
+          total:acumulado
+        }, { emitEvent: false })
       })
 
       this.dAdaptativa = this.adaptativoForm.value
       this.dSolicitud.Adaptativa = this.dAdaptativa
-      
       //this.srvSol.saveSol(this.sol, this.dSolicitud)
     })
 
@@ -73,7 +79,8 @@ export class AdaptativaComponent implements OnInit {
       arrayForm.push(
         this._formbuild.group({
           dimension: [element.dimension],
-          preguntas: this.loadRespuestas(element.preguntas)
+          preguntas: this.loadRespuestas(element.preguntas),
+          total: [0]
         })
       )
     });
@@ -90,6 +97,7 @@ export class AdaptativaComponent implements OnInit {
     respuestas.forEach(pre => {
       aRespuestas.push(this._formbuild.group({
         descripcion: [pre.descripcion],
+        peso: [pre.peso],
         respuestas: [pre.respuestas],
         multiple: [pre.multiple],
         resultado: ['']
