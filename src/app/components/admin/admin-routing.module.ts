@@ -40,6 +40,9 @@ const routes: Routes = [
       {
         path: 'ubicacion',
         component: UbicacionComponent,
+        data: {
+          routerName: 'Ubicacion'
+        }
       },
       {
         path: 'balance',
@@ -61,28 +64,45 @@ const routes: Routes = [
         path: 'ventas',
         loadChildren: () =>
           import('../cruces/cruces.module').then(m => m.CrucesModule),
+        data: {
+          routerName: 'ventas'
+        }
 
       },
       {
         path: 'analisis',
-        component: AnalisisComponent
+        component: AnalisisComponent,
+        data: {
+          routerName: 'analisis'
+        }
       },
       {
         path: 'propuesta',
         component: PropuestaComponent,
+        data: {
+          routerName: 'propuesta'
+        }
       },
       {
         path: 'flujocaja',
         component: FlujocajaComponent,
+        data: {
+          routerName: 'flujocaja'
+        }
       },
       {
         path: 'analisisagro',
         component: AnalisisagroComponent,
+        data: {
+          routerName: 'analisisagro'
+        }
       },
       {
         path: 'resultado',
         component: ResultadoComponent,
-
+        data: {
+          routerName: 'resultado'
+        }
       }
     ]
   }

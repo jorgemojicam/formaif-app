@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { VerificacionService } from 'src/app/services/verificacion.service';
+import Utils from '../../../utils';
 
 @Component({
   selector: 'app-verificacion',
@@ -13,7 +14,6 @@ export class VerificacionComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   verificacionForm: FormGroup
   dataVerificacion: any
-  aPreguntas: any[] = new Array()
 
   constructor(
     private serVer: VerificacionService,
@@ -25,9 +25,43 @@ export class VerificacionComponent implements OnInit {
   }
 
 
+  /**
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-03-08
+   * Nombre: loadPreguntas
+   * Descripcion : Método de devolución de llamada que se invoca inmediatamente después de 
+   * que el detector de cambios predeterminado haya verificado las propiedades vinculadas a 
+   * datos de la directiva por primera vez y antes de que se haya verificado cualquiera de los 
+   * elementos secundarios de la vista o el contenido. Se invoca solo una vez cuando se crea una 
+   * instancia de la directiva
+  */
+  async ngOnInit() {
+    await this.loadPreguntas()
 
-  ngOnInit(): void {
-    this.loadPreguntas()
+    this.verificacionForm.get('verificacion').valueChanges.subscribe(values => {
+      const verifica = <FormArray>this.verificacionForm.controls['verificacion'];
+
+      verifica.controls.forEach(x => {
+        let preguntas = <FormArray>x.get("preguntas")
+        let acumulado =  0
+        preguntas.controls.forEach(pre => {
+          let resultado = pre.get("resultado").value
+          let multiple = pre.get("multiple").value
+          
+          if(multiple){           
+            for (let re = 0; re < resultado.length; re++) {
+              const resul = resultado[re];
+              acumulado += Utils.formatNumber(resul.puntaje)              
+            }           
+          }else{
+            acumulado +=Utils.formatNumber(resultado.puntaje)
+          }
+         
+        });
+        
+        console.log("acumulado ",acumulado)
+      })
+    })
   }
 
   /**
@@ -41,11 +75,12 @@ export class VerificacionComponent implements OnInit {
     let arrayForm = this._formbuild.array([])
 
     this.dataVerificacion.Medidas.forEach(element => {
-      console.log(element.preguntas)
+
       arrayForm.push(
         this._formbuild.group({
           name: [element.name],
-          preguntas:this.loadRespuestas(element.preguntas)
+          aplicapregunta: [false],
+          preguntas: this.loadRespuestas(element.preguntas)
         })
       )
     });
@@ -53,13 +88,6 @@ export class VerificacionComponent implements OnInit {
     this.verificacionForm = this._formbuild.group({
       verificacion: arrayForm
     })
-
-  }
-  verificacion() {
-    return this.verificacionForm.get('verificacion') as FormArray;
-  }
-  preguntas(ti): FormArray {
-    return this.verificacion().at(ti).get("preguntas") as FormArray
   }
   loadRespuestas(respuestas): FormArray {
 
@@ -69,11 +97,10 @@ export class VerificacionComponent implements OnInit {
       aRespuestas.push(this._formbuild.group({
         titulo: [pre.titulo],
         respuestas: [pre.respuestas],
-        respuesta: ['']
+        multiple: [pre.multiple],
+        resultado: ['']
       }))
     });
-
-
     return aRespuestas
   }
 
@@ -91,6 +118,13 @@ export class VerificacionComponent implements OnInit {
           resolve(data)
         })
     })
+  }
+
+  verificacion() {
+    return this.verificacionForm.get('verificacion') as FormArray;
+  }
+  preguntas(ti): FormArray {
+    return this.verificacion().at(ti).get("preguntas") as FormArray
   }
 
 }

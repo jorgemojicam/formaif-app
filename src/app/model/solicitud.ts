@@ -1,3 +1,4 @@
+import { Adaptativa } from './adaptativa';
 import { Balance } from './balance';
 import { Cruces } from './cruces';
 import { CrucesAgro } from './crucesagro';
@@ -19,4 +20,5 @@ export class Solicitud {
     Ubicacion:Ubicacion;
     Propuesta:Propuesta;
     Flujo:any[];
+    Adaptativa:Adaptativa[];
 }

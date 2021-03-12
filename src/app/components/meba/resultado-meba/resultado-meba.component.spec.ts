@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeMebaComponent } from './home-meba.component';
+import { ResultadoMebaComponent } from './resultado-meba.component';
 
-describe('HomeMebaComponent', () => {
-  let component: HomeMebaComponent;
-  let fixture: ComponentFixture<HomeMebaComponent>;
+describe('ResultadoMebaComponent', () => {
+  let component: ResultadoMebaComponent;
+  let fixture: ComponentFixture<ResultadoMebaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HomeMebaComponent ]
+      declarations: [ ResultadoMebaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomeMebaComponent);
+    fixture = TestBed.createComponent(ResultadoMebaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -21,7 +21,6 @@
         <mat-icon>home</mat-icon>
     </button>
 </mat-toolbar>
-
 <mat-sidenav-container class="menu-container" (backdropClick)="action()">
 
     <mat-sidenav fxFlex="30%" fxFlex.xs="60%" mode="push" #sidenav (keydown.escape)="action()">
@@ -106,6 +105,11 @@
                     [queryParams]="{solicitud:sol}">
                     <mat-icon mat-list-icon>agriculture</mat-icon>
                     <div mat-line>Verificación EbA</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['resultado-meba']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>donut_small</mat-icon>
+                    <div mat-line>Resultado</div>
                 </mat-list-item>
             </ng-container>
 

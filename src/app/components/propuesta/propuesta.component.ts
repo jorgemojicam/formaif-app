@@ -7,7 +7,6 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../admin/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
 import Utils from '../../utils'
-import { type } from 'os';
 
 @Component({
   selector: 'app-propuesta',

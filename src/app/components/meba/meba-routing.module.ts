@@ -4,6 +4,7 @@ import { AdaptativaComponent } from './adaptativa/adaptativa.component';
 import { HomeMebaComponent } from './home-meba/home-meba.component';
 
 import { MebaComponent } from './meba.component';
+import { ResultadoMebaComponent } from './resultado-meba/resultado-meba.component';
 import { SensibilidadComponent } from './sensibilidad/sensibilidad.component';
 import { VerificacionComponent } from './verificacion/verificacion.component';
 
@@ -46,7 +47,14 @@ const routes: Routes = [
         path: 'verificacion',
         component: VerificacionComponent,
         data: {
-          routerName: 'verificacion'
+          routerName: 'verificacion',
+        }
+      },
+      {
+        path: 'resultado-meba',
+        component: ResultadoMebaComponent,
+        data: {
+          routerName: 'resultado'
         }
       }
     ]

@@ -63,8 +63,7 @@ import { MebaComponent } from './components/meba/meba.component';
     AdminModule,
     FlexLayoutModule,
     HttpClientModule,
-    MebaModule,
-    
+    MebaModule,    
   ],
   entryComponents: [
     ModalComponent,

@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdaptativaComponent } from './adaptativa/adaptativa.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { VerificacionComponent } from './verificacion/verificacion.component';
+import { ResultadoMebaComponent } from './resultado-meba/resultado-meba.component';
 
 export function chartModule(): any {
   return import('echarts');
@@ -16,7 +17,7 @@ export function chartModule(): any {
 
 
 @NgModule({
-  declarations: [SensibilidadComponent, HomeMebaComponent, AdaptativaComponent, VerificacionComponent],
+  declarations: [SensibilidadComponent, HomeMebaComponent, AdaptativaComponent, VerificacionComponent, ResultadoMebaComponent],
   imports: [
     CommonModule,
     MebaRoutingModule,

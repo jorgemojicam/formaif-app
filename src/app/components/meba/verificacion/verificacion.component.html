@@ -1,36 +1,48 @@
 <form [formGroup]="verificacionForm">
+    <div formArrayName="verificacion">
+        <div fxLayout="row wrap" *ngFor="let itemrow of verificacion().controls; let pre=index" [formGroupName]="pre">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>
+                        {{itemrow.value.name}}
+                        <mat-slide-toggle formControlName="aplicapregunta">
+                        </mat-slide-toggle>
 
-    <div formArrayName="verificacion" class="alternate">
-        <div fxLayout="row wrap" class="content"
-            *ngFor="let itemrow of verificacion().controls; let pre=index" [formGroupName]="pre">
+                    </mat-card-title>
+                </mat-card-header>
+                <ng-container *ngIf="itemrow.value.aplicapregunta">
 
-            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                {{itemrow.value.name}}
-            </div>
+                    <mat-card-content fxLayout="row wrap">
 
-            <div formArrayName="preguntas" class="alternate">
+                        <div formArrayName="preguntas">
 
-                <div *ngFor="let respu of preguntas(pre).controls; let res=index" [formGroupName]="res">
-                    {{respu.value.titulo}}
-                </div>
+                            <div fxLayout="row wrap" *ngFor="let respu of preguntas(pre).controls; let res=index"
+                                [formGroupName]="res">
+                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    {{respu.value.titulo}}
 
-            </div>
+                                </div>
+                                <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                    <mat-form-field>
+                                        <mat-label>Respuesta</mat-label>
+                                        <mat-select formControlName="resultado" [multiple]="respu.value.multiple"
+                                            required>
+                                            <mat-option disabled>--</mat-option>
+                                            <mat-option *ngFor="let res of respu.value.respuestas" [value]="res">
+                                                {{res.texto}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-   
-            <!-- <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-form-field>
-                    <mat-label>Respuesta</mat-label>
-                    <mat-select formControlName="respuesta" required>
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let res of aRespuestas[pre]" [value]="res">
-                            {{res.texto}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
+                            </div>
 
+                        </div>
+
+                    </mat-card-content>
+
+                </ng-container>
+            </mat-card>
         </div>
     </div>
-
-
 </form>

@@ -1,303 +1,1028 @@
 {
     "Medidas": [
-        {
-            "id": 1,
-            "name": "Abonos orgánicos",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": [
-                        {
-                            "texto": "Techo o plástico protector",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Superficie con poca pendiente",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Recolector de lixiviados",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Fácil acceso",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Termómetro",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Criba",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Acceso a agua",
-                            "puntaje": 1
-                        }
-                    ]
-                },
-                {
-                    "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
-                    "respuestas": [
-                        {
-                            "texto": "Si",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "No",
-                            "puntaje": 2
-                        }
-                    ]
-                },
-                {
-                    "titulo": "Aplicación o venta del abono",
-                    "respuestas": [
-                        {
-                            "texto": "Se vende",
-                            "puntaje": 2
-                        },
-                        {
-                            "texto": "Se aplica en pedido",
-                            "puntaje": 5
-                        },
-                        {
-                            "texto": "Ningun uso verificable",
-                            "puntaje": 0
-                        }
-                    ]
-                },
-                {
-                    "titulo": "Almacenamiento",
-                    "respuestas": [
-                        {
-                            "texto": "En costales",
-                            "puntaje": 5
-                        },
-                        {
-                            "texto": "En una pila bajo techo",
-                            "puntaje": 5
-                        },
-                        {
-                            "texto": "En una pila expuesta al sol y lluvia",
-                            "puntaje": 0
-                        },
-                        {
-                            "texto": "En bolsas para venta al menudeo",
-                            "puntaje": 0
-                        }
-                    ]
-                },
-                {
-                    "titulo": "El productor recibió capacitación o asistencia técnica",
-                    "respuestas": [
-                        {
-                            "texto": "Si",
-                            "puntaje": 5
-                        },
-                        {
-                            "texto": "No",
-                            "puntaje": 0
-                        }
-                    ]
-                }
+      {
+        "id": 1,
+        "name": "Abonos orgánicos",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El lugar de producción cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Techo o plástico protector",
+                "puntaje": 1
+              },
+              {
+                "texto": "Superficie con poca pendiente",
+                "puntaje": 1
+              },
+              {
+                "texto": "Recolector de lixiviados",
+                "puntaje": 1
+              },
+              {
+                "texto": "Fácil acceso",
+                "puntaje": 1
+              },
+              {
+                "texto": "Termómetro",
+                "puntaje": 1
+              },
+              {
+                "texto": "Criba",
+                "puntaje": 1
+              },
+              {
+                "texto": "Acceso a agua",
+                "puntaje": 1
+              }
             ]
-        },
-        {
-            "id": 2,
-            "name": "Agricultura orgánica",
-            "preguntas": [
-                {
-                    "multi": true,
-                    "titulo": "El área de producción cuenta con:",
-                    "respuestas": [
-                        {
-                            "texto": "Almácigo",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Cerca viva o de alambre alrededor del cultivo",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Sistemas de riego eficientes con ferti-irrigación orgánica",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Invernadero",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Cultivos diversificados",
-                            "puntaje": 1
-                        }
-                    ]
-                }
+          },
+          {
+            "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
             ]
-        },
-        {
-            "id": 3,
-            "name": "Apicultura",
-            "preguntas": [
-                {
-                    "multi": true,
-                    "titulo": "La colmena cuenta con:",
-                    "respuestas": [
-                        {
-                            "texto": "Tabla de vuelo",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Base de soporte",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Cámaras de cría",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Techo de lámina",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Cera estampada en bastidores",
-                            "puntaje": 1
-                        }
-                    ]
-                }
+          },
+          {
+            "titulo": "Aplicación o venta del abono",
+            "respuestas": [
+              {
+                "texto": "Se vende",
+                "puntaje": 3
+              },
+              {
+                "texto": "Se aplica en pedido",
+                "puntaje": 5
+              },
+              {
+                "texto": "Ningun uso verificable",
+                "puntaje": 0
+              }
             ]
-        },
-        {
-            "id": 4,
-            "name": "Diversificación de cultivos",
-            "preguntas": [
-                {
-                    "multi": true,
-                    "titulo": "El sistema cuenta con:",
-                    "respuestas": [
-                        {
-                            "texto": "Cultivos anuales",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Hortalizas",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Frutales",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Arbustivas perennes ",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Forestales",
-                            "puntaje": 1
-                        }
-                    ]
-                }
+          },
+          {
+            "titulo": "Almacenamiento",
+            "respuestas": [
+              {
+                "texto": "En costales",
+                "puntaje": 5
+              },
+              {
+                "texto": "En una pila bajo techo",
+                "puntaje": 5
+              },
+              {
+                "texto": "En una pila expuesta al sol y lluvia",
+                "puntaje": 0
+              },
+              {
+                "texto": "En bolsas para venta al menudeo",
+                "puntaje": 5
+              }
             ]
-        },
-        {
-            "id": 5,
-            "name": "Huertos familiares",
-            "preguntas": [
-                {
-                    "multi": true,
-                    "titulo": "El sistema cuenta con:",
-                    "respuestas": [
-                        {
-                            "texto": "Suficiente área ",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Camas de cultivo",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Composta",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Acceso a agua",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Almácigo",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Frutales",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Invernadero",
-                            "puntaje": 1
-                        },
-                        {
-                            "texto": "Protección perimetral",
-                            "puntaje": 1
-                        }
-                    ]
-                }
+          },
+          {
+            "titulo": "El productor recibió capacitación o asistencia técnica",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
             ]
-        },
-        {
-            "id": 6,
-            "name": "Invernadero",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": []
-                }
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Agricultura orgánica",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El área de producción cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Almácigo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cerca viva o de alambre alrededor del cultivo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Sistemas de riego eficientes con ferti-irrigación orgánica",
+                "puntaje": 1
+              },
+              {
+                "texto": "Invernadero",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cultivos diversificados",
+                "puntaje": 1
+              }
             ]
-        },
-        {
-            "id": 7,
-            "name": "Piscicultura",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": []
-                }
+          },
+          {
+            "multiple": false,
+            "titulo": "Inició la acreditación o cuenta con certificado de agricultura orgánica",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
             ]
-        },
-        {
-            "id": 8,
-            "name": "Reservorios de agua de lluvia",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": []
-                }
+          },
+          {
+            "multiple": true,
+            "titulo": "Insumos para fertilizar el suelo",
+            "respuestas": [
+              {
+                "texto": "Abonos orgánicos (composta, lombricomposta, bocashi)",
+                "puntaje": 4
+              },
+              {
+                "texto": "Te de hierbas o estiércol",
+                "puntaje": 3
+              },
+              {
+                "texto": "Biol (fertilizantes fermentados líquidos)",
+                "puntaje": 2
+              },
+              {
+                "texto": "Caldos minerales y harina de roca",
+                "puntaje": 1
+              },
+              {
+                "texto": "Procesados biodinámicos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Biocarbón",
+                "puntaje": 1
+              },
+              {
+                "texto": "Agroquímicos ",
+                "puntaje": 1
+              }
             ]
-        },
-        {
-            "id": 9,
-            "name": "Riego eficiente",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": []
-                }
+          }, 
+          {
+            "multiple": true,
+            "titulo": "El control de plagas se realiza con:",
+            "respuestas": [
+              {
+                "texto": "Plantas repelentes y plantas hospederas",
+                "puntaje": 1
+              },
+              {
+                "texto": "Preparados vegetales, (te, fermentos, etc.)",
+                "puntaje": 1
+              },
+              {
+                "texto": "Control manual o mecánico",
+                "puntaje": 1
+              },
+              {
+                "texto": "Preparados minerales, (sulfato de cobra, azufre, etc.)",
+                "puntaje": 1
+              },
+              {
+                "texto": "Control biológico  (avispas, ácaros)",
+                "puntaje": 1
+              },
+               {
+                "texto": "Biopesticidas (preparados con vegetales y microorganismos)",
+                "puntaje": 1
+              },
+              {
+                "texto": "Rotación o asociación de cultivos",
+                "puntaje": 1
+              }
             ]
-        },
-        {
-            "id": 10,
-            "name": "Sombra natural",
-            "preguntas": [
-                {
-                    "multiple": true,
-                    "titulo": "El lugar de producción cuenta con:",
-                    "respuestas": []
-                }
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
             ]
-        }
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Apicultura",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "La colmena cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Tabla de vuelo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Base de soporte",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cámaras de cría",
+                "puntaje": 1
+              },
+              {
+                "texto": "Techo de lámina",
+                "puntaje": 1
+              },
+              {
+                "texto": "Alzas melarias",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cera estampada en bastidores",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Número de colmenas por ha",
+            "respuestas": [
+              {
+                "texto": "Entre 1 y 7 colmenas",
+                "puntaje": 5
+              },
+              {
+                "texto": "Entre 8 y 10 colmenas",
+                "puntaje": 3
+              },
+              {
+                "texto": "Más de 11 colmenas",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Existen bebederos de agua limpia cerca",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "Productos del apiario",
+            "respuestas": [
+              {
+                "texto": "Miel",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cera",
+                "puntaje": 1
+              },
+              {
+                "texto": "Propóleo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Jalea real",
+                "puntaje": 1
+              },
+              {
+                "texto": "Polen",
+                "puntaje": 1
+              },
+              {
+                "texto": "Veneno",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El apicultor recibió capacitación o asistencia técnica ",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Diversificación de cultivos",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Cultivos anuales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Hortalizas",
+                "puntaje": 1
+              },
+              {
+                "texto": "Frutales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Arbustivas perennes ",
+                "puntaje": 1
+              },
+              {
+                "texto": "Forestales",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Se cuenta con un calendario de siembra y cosecha",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Las asociaciones se hacen en estratos",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Huertos familiares",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Suficiente área",
+                "puntaje": 1
+              },
+              {
+                "texto": "Camas de cultivo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Composta",
+                "puntaje": 1
+              },
+              {
+                "texto": "Acceso a agua",
+                "puntaje": 1
+              },
+              {
+                "texto": "Almácigo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Frutales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Invernadero",
+                "puntaje": 1
+              },
+              {
+                "texto": "Protección perimetral",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El huerto familiar está cercano al hogar",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "Existe una amplia variedad de especies",
+            "respuestas": [
+              {
+                "texto": "Legumbres",
+                "puntaje": 1
+              },
+              {
+                "texto": "Vegetales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Tubérculos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Medicinales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Especies y condimentos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Frutales",
+                "puntaje": 1
+              },
+              {
+                "texto": "Granos",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El sustrato se preparó con tierra fértil, abono y arena",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica ",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Invernadero",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Cobertura de plástico para invernadero",
+                "puntaje": 1
+              },
+              {
+                "texto": "Estructura de invernadero sólida ",
+                "puntaje": 1
+              },
+              {
+                "texto": "Sistema de ventilación",
+                "puntaje": 1
+              },
+              {
+                "texto": "Antesala o área para desinfectar zapatos  antes de ingresar al invernadero",
+                "puntaje": 1
+              },
+              {
+                "texto": "Camas o mesas de cultivo con sustrato fértil",
+                "puntaje": 1
+              },
+              {
+                "texto": "Acceso a agua",
+                "puntaje": 1
+              },
+              {
+                "texto": "Área con poca pendiente",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El sistema de amarre del plástico a la estructura no perfora el plástico",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El invernadero tiene forma de regular la temperatura interna",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "El invernadero cuenta con las siguientes buenas prácticas",
+            "respuestas": [
+              {
+                "texto": "Manejo de suelo o sustrato (uso de abonos, acondicionado de suelo, etc.)",
+                "puntaje": 1
+              },
+              {
+                "texto": "Manejo de agua (Riego eficiente)",
+                "puntaje": 1
+              },
+              {
+                "texto": "Manejo integrado de plagas",
+                "puntaje": 1
+              },
+              {
+                "texto": "Rotación de cultivos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Diversificación",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica ",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Piscicultura",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Filtros",
+                "puntaje": 1
+              },
+              {
+                "texto": "Acceso permanente de agua",
+                "puntaje": 1
+              },
+              {
+                "texto": "Tanque de cría",
+                "puntaje": 1
+              },
+              {
+                "texto": "Tanque de engorda",
+                "puntaje": 1
+              },
+              {
+                "texto": "Tratamiento del agua residual",
+                "puntaje": 1
+              },
+              {
+                "texto": "Desagüe",
+                "puntaje": 1
+              },
+              {
+                "texto": "Sistemas de aireación",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "Se realizan análisis de agua",
+            "respuestas": [
+              {
+                "texto": "Antes de cada nueva producción",
+                "puntaje": 5
+              },
+              {
+                "texto": "Una vez al año",
+                "puntaje": 3
+              },
+              {
+                "texto": "Nunca",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "La calidad de agua es:",
+            "respuestas": [
+              {
+                "texto": "De cristalina a verde, poca espuma en superficie y comportamiento activo de los peces",
+                "puntaje": 5
+              },
+              {
+                "texto": "Turbia (peces hambrientos)",
+                "puntaje": 3
+              },
+              {
+                "texto": "Muy verde, espuma en superficie y burbujas de gas",
+                "puntaje": 1
+              },
+              {
+                "texto": "Marrón con burbujas de gas y olor fuerte",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El sistema de amarre del plástico a la estructura no perfora el plástico",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Reservorios de agua de lluvia",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Capa de material impermeable ",
+                "puntaje": 1
+              },
+              {
+                "texto": "Entrada con filtro de sólidos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Salida con filtro",
+                "puntaje": 1
+              },
+              {
+                "texto": "Cerco",
+                "puntaje": 1
+              },
+              {
+                "texto": "Rebosadero",
+                "puntaje": 1
+              },
+              {
+                "texto": "Presas filtrantes",
+                "puntaje": 1
+              },
+              {
+                "texto": "Vegetación circundante",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "La calidad del agua es",
+            "respuestas": [
+              {
+                "texto": "Transparente",
+                "puntaje": 5
+              },
+              {
+                "texto": "Turbia",
+                "puntaje": 3
+              },
+              {
+                "texto": "Nunca",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El reservorio tiene fugas",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": true,
+            "titulo": "Frecuencia con la que se extraen sedimentos",
+            "respuestas": [
+              {
+                "texto": "1 vez al año o menos",
+                "puntaje": 5
+              },
+              {
+                "texto": "1 vez cada 2 años",
+                "puntaje": 3
+              },
+              {
+                "texto": "Nunca o cada más de 3 años",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "name": "Riego eficiente",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Manguera o cintilla de riego ",
+                "puntaje": 1
+              },
+              {
+                "texto": "Dosificadores cercanos al suelo",
+                "puntaje": 1
+              },
+              {
+                "texto": "Filtros",
+                "puntaje": 1
+              },
+              {
+                "texto": "Acceso permanente al agua",
+                "puntaje": 1
+              },
+              {
+                "texto": "Fetirrigación",
+                "puntaje": 1
+              },
+              {
+                "texto": "Bomba de agua",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Los dosificadores funcionan correctamente",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Las tuberías principales de distribución se encuentran enterradas",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Limpieza de los filtros",
+            "respuestas": [
+              {
+                "texto": "Diario",
+                "puntaje": 5
+              },
+              {
+                "texto": "Cada semana",
+                "puntaje": 3
+              },
+              {
+                "texto": "Cada mes",
+                "puntaje": 1
+              },
+              {
+                "texto": "Nunca",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "name": "Sombra natural",
+        "preguntas": [
+          {
+            "multiple": true,
+            "titulo": "El sistema cuenta con:",
+            "respuestas": [
+              {
+                "texto": "Árboles y/o arbustos",
+                "puntaje": 1
+              },
+              {
+                "texto": "Animales y/o cultivos asociados bajo sombra",
+                "puntaje": 1
+              },
+              {
+                "texto": "Hojas de los árboles y/o arbustos acumuladoras sobre el suelo (arrope)",
+                "puntaje": 1
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Se realizan podas",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "Las especies utilizadas para generar sombra son nativas",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {
+            "multiple": false,
+            "titulo": "El productor recibió capacitación o asistencia técnica",
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          }
+        ]
+      }
     ]
-}
+  }
