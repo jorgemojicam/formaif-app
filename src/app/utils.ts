@@ -17,3 +17,5 @@ export default class Utils {
 /*    
 var number = Number(currency.replace(/[^0-9.-]+/g, ""));
 */
+
+

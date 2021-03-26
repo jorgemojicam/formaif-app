@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Adaptativa } from 'src/app/model/adaptativa';
 import { Solicitud } from 'src/app/model/solicitud';
 import { CapacidadAdaptativaService } from 'src/app/services/capacidad-adaptativa.service';
+import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
 
 @Component({
@@ -14,13 +15,15 @@ import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
 })
 export class AdaptativaComponent implements OnInit {
 
-  @ViewChild(MatAccordion) accordion: MatAccordion;
+  //Data
+  @ViewChild(MatAccordion) accordion: MatAccordion;  
   dataAdaptativa: any
   adaptativoForm: FormGroup
   aDimensiones: any[]
   sol: string
   dSolicitud: Solicitud = new Solicitud();
   dAdaptativa: Adaptativa[] = [];
+  expandAll = false
 
   constructor(
     private serAdap: CapacidadAdaptativaService,
@@ -29,23 +32,39 @@ export class AdaptativaComponent implements OnInit {
     private route: ActivatedRoute,
   ) {
     this.adaptativoForm = this._formbuild.group({
-      adaptativa: this._formbuild.array([])
+      totalAdaptativa: 0,
+      dimensiones: this._formbuild.array([])
     })
     this.route.queryParamMap.subscribe((params) => {
       this.sol = params.get('solicitud')
     });
-
   }
 
+
+  //Methods
   async ngOnInit() {
 
-    await this.loadPreguntas()
+    //Consulta local storage
+    this.dSolicitud = await this.getSolicitud() as Solicitud
 
-    this.adaptativoForm.get('adaptativa').valueChanges.subscribe(values => {
-      const adaptativa = <FormArray>this.adaptativoForm.controls['adaptativa'];
+    //Consulta BD
+    this.dataAdaptativa = await this.getPreguntas()
+
+    //Si tiene respuestas en el local storage carguelas
+    if (this.dSolicitud.dimensiones) {
+      //Construye el array de preguntas 
+      await this.loadPreguntas(this.dSolicitud.dimensiones, this.dSolicitud.totalAdaptativa)
+    } else {
+      await this.loadPreguntas(this.dataAdaptativa.dimensiones, 0)
+    }
+
+    this.adaptativoForm.get('dimensiones').valueChanges.subscribe(values => {
+      const adaptativa = <FormArray>this.adaptativoForm.controls['dimensiones'];
+      let totaladapta = 0
       adaptativa.controls.forEach(x => {
 
         let preguntas = <FormArray>x.get("preguntas")
+        let pesodim = Utils.formatNumber(x.get("peso").value)
 
         let acumulado = 0
         preguntas.controls.forEach(pre => {
@@ -57,50 +76,71 @@ export class AdaptativaComponent implements OnInit {
             acumulado += porcentaje
           }
         })
-       
+        let valortotal = (pesodim / 100) * acumulado
+        totaladapta += valortotal
         x.patchValue({
-          total:acumulado
+          total: acumulado.toFixed(2)
         }, { emitEvent: false })
       })
 
-      this.dAdaptativa = this.adaptativoForm.value
-      this.dSolicitud.Adaptativa = this.dAdaptativa
-      //this.srvSol.saveSol(this.sol, this.dSolicitud)
+      this.adaptativoForm.patchValue({
+        totalAdaptativa: totaladapta.toFixed(3)
+      }, { emitEvent: false });
+
+      this.dAdaptativa = this.adaptativoForm.value.dimensiones
+      this.dSolicitud.dimensiones = this.dAdaptativa
+      this.dSolicitud.totalAdaptativa = totaladapta.toFixed(3)
+      this.srvSol.saveSol(this.sol, this.dSolicitud)
     })
+
 
   }
 
-  async loadPreguntas() {
-    this.dataAdaptativa = await this.getPreguntas()
+  async loadPreguntas(aPreguntas: any[], totalAdap) {
+
     let arrayForm = this._formbuild.array([])
 
-    this.dataAdaptativa.Dimensiones.forEach(element => {
+    aPreguntas.forEach(element => {
 
       arrayForm.push(
         this._formbuild.group({
           dimension: [element.dimension],
+          peso: [element.peso],
           preguntas: this.loadRespuestas(element.preguntas),
-          total: [0]
+          total: [element.total]
         })
       )
     });
 
     this.adaptativoForm = this._formbuild.group({
-      adaptativa: arrayForm
+      totalAdaptativa: totalAdap,
+      dimensiones: arrayForm
     })
 
   }
 
-
+  /**
+     * Autor: Jorge Enrique Mojica Martinez
+     * Fecha: 2021-03-14
+     * Nombre: loadRespuestas
+     * Descripcion : funcion para construir el array del formulario en el cual se cargan los elementos con
+     * los datos si existen las respuestas con resultado
+     * 
+     * @param {Array} respuestas el arreglo de preguntas que se van a contruir     
+     * 
+     * @returns {FormArray} aRespuestas el array del formulario que se itera en la vista
+     */
   loadRespuestas(respuestas): FormArray {
     let aRespuestas: FormArray = this._formbuild.array([])
+
     respuestas.forEach(pre => {
+
       aRespuestas.push(this._formbuild.group({
         descripcion: [pre.descripcion],
         peso: [pre.peso],
         respuestas: [pre.respuestas],
         multiple: [pre.multiple],
-        resultado: ['']
+        resultado: [pre.resultado]
       }))
     });
     return aRespuestas
@@ -121,12 +161,37 @@ export class AdaptativaComponent implements OnInit {
         })
     })
   }
+  /**
+    * Autor: Jorge Enrique Mojica Martinez
+    * Fecha: 2021-03-26
+    * Nombre: getSolicitud
+    * Descripcion : funcion para consulta por medio del serivicio IdSolicitud los datos de la soliciud almacenados en local storage
+    */
+  getSolicitud() {
+    return new Promise((resolve, reject) => {
+      this.srvSol.getSol(this.sol).subscribe(
+        (d) => {
+          resolve(d)
+        })
+    })
+  }
+
 
   adaptativa() {
-    return this.adaptativoForm.get('adaptativa') as FormArray;
+    return this.adaptativoForm.get('dimensiones') as FormArray;
   }
   preguntas(ti): FormArray {
     return this.adaptativa().at(ti).get("preguntas") as FormArray
+  }
+
+  expand() {
+    if (!this.expandAll) {
+      this.expandAll = true
+      this.accordion.openAll()
+    } else {
+      this.expandAll = false
+      this.accordion.closeAll()
+    }
   }
 
 }

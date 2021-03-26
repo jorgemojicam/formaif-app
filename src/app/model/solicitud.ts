@@ -20,5 +20,6 @@ export class Solicitud {
     Ubicacion:Ubicacion;
     Propuesta:Propuesta;
     Flujo:any[];
-    Adaptativa:Adaptativa[];
+    dimensiones:Adaptativa[];
+    totalAdaptativa:string;
 }

@@ -7,6 +7,8 @@
           {
             "multiple": true,
             "titulo": "El lugar de producción cuenta con:",
+            "peso":20,
+            "total":3,
             "respuestas": [
               {
                 "texto": "Techo o plástico protector",
@@ -22,24 +24,27 @@
               },
               {
                 "texto": "Fácil acceso",
-                "puntaje": 1
+                "puntaje": 2
               },
               {
                 "texto": "Termómetro",
-                "puntaje": 1
+                "puntaje": 2
               },
               {
                 "texto": "Criba",
-                "puntaje": 1
+                "puntaje": 2
               },
               {
                 "texto": "Acceso a agua",
-                "puntaje": 1
+                "puntaje": 2
               }
             ]
           },
           {
             "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
+            "peso":20,
+            "multiple": false,
+            "total":0,
             "respuestas": [
               {
                 "texto": "Si",
@@ -51,8 +56,11 @@
               }
             ]
           },
-          {
+          {           
             "titulo": "Aplicación o venta del abono",
+            "multiple": false,
+            "peso":20,
+            "total":0,
             "respuestas": [
               {
                 "texto": "Se vende",
@@ -70,6 +78,8 @@
           },
           {
             "titulo": "Almacenamiento",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "En costales",
@@ -91,6 +101,8 @@
           },
           {
             "titulo": "El productor recibió capacitación o asistencia técnica",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -108,9 +120,11 @@
         "id": 2,
         "name": "Agricultura orgánica",
         "preguntas": [
-          {
-            "multiple": true,
+          {        
             "titulo": "El área de producción cuenta con:",
+            "multiple": true,
+            "peso":20,
+            "total":2,
             "respuestas": [
               {
                 "texto": "Almácigo",
@@ -134,9 +148,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {            
             "titulo": "Inició la acreditación o cuenta con certificado de agricultura orgánica",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -148,9 +163,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {            
             "titulo": "Insumos para fertilizar el suelo",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Abonos orgánicos (composta, lombricomposta, bocashi)",
@@ -182,9 +198,10 @@
               }
             ]
           }, 
-          {
-            "multiple": true,
+          {        
             "titulo": "El control de plagas se realiza con:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Plantas repelentes y plantas hospederas",
@@ -216,9 +233,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "El productor recibió capacitación o asistencia técnica",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -236,9 +254,10 @@
         "id": 3,
         "name": "Apicultura",
         "preguntas": [
-          {
-            "multiple": true,
+          {         
             "titulo": "La colmena cuenta con:",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Tabla de vuelo",
@@ -267,8 +286,9 @@
             ]
           },
           {
-            "multiple": false,
             "titulo": "Número de colmenas por ha",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Entre 1 y 7 colmenas",
@@ -284,9 +304,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "Existen bebederos de agua limpia cerca",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -298,9 +319,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {      
             "titulo": "Productos del apiario",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Miel",
@@ -328,9 +350,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {          
             "titulo": "El apicultor recibió capacitación o asistencia técnica ",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -348,9 +371,10 @@
         "id": 4,
         "name": "Diversificación de cultivos",
         "preguntas": [
-          {
-            "multiple": true,
+          {       
             "titulo": "El sistema cuenta con:",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Cultivos anuales",
@@ -374,9 +398,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "Se cuenta con un calendario de siembra y cosecha",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -388,9 +413,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "Las asociaciones se hacen en estratos",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -402,9 +428,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          { 
             "titulo": "El productor recibió capacitación o asistencia técnica",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -422,9 +449,10 @@
         "id": 5,
         "name": "Huertos familiares",
         "preguntas": [
-          {
-            "multiple": true,
+          {           
             "titulo": "El sistema cuenta con:",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Suficiente área",
@@ -460,9 +488,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {      
             "titulo": "El huerto familiar está cercano al hogar",
+            "multiple": false,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -474,9 +503,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {     
             "titulo": "Existe una amplia variedad de especies",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Legumbres",
@@ -508,9 +538,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "El sustrato se preparó con tierra fértil, abono y arena",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -522,9 +553,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {            
             "titulo": "El productor recibió capacitación o asistencia técnica ",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -542,9 +574,10 @@
         "id": 6,
         "name": "Invernadero",
         "preguntas": [
-          {
-            "multiple": true,
+          {           
             "titulo": "El sistema cuenta con:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Cobertura de plástico para invernadero",
@@ -576,37 +609,40 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {            
             "titulo": "El sistema de amarre del plástico a la estructura no perfora el plástico",
-            "respuestas": [
-              {
-                "texto": "Si",
-                "puntaje": 5
-              },
-              {
-                "texto": "No",
-                "puntaje": 0
-              }
-            ]
-          },
-          {
-            "multiple": false,
-            "titulo": "El invernadero tiene forma de regular la temperatura interna",
-            "respuestas": [
-              {
-                "texto": "Si",
-                "puntaje": 5
-              },
-              {
-                "texto": "No",
-                "puntaje": 0
-              }
-            ]
-          },
-          {
             "multiple": true,
+            "peso":20,
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {       
+            "titulo": "El invernadero tiene forma de regular la temperatura interna",
+            "multiple": true,
+            "peso":20,
+            "respuestas": [
+              {
+                "texto": "Si",
+                "puntaje": 5
+              },
+              {
+                "texto": "No",
+                "puntaje": 0
+              }
+            ]
+          },
+          {           
             "titulo": "El invernadero cuenta con las siguientes buenas prácticas",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Manejo de suelo o sustrato (uso de abonos, acondicionado de suelo, etc.)",
@@ -630,9 +666,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "El productor recibió capacitación o asistencia técnica ",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -650,9 +687,10 @@
         "id": 7,
         "name": "Piscicultura",
         "preguntas": [
-          {
-            "multiple": true,
+          {            
             "titulo": "El sistema cuenta con:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Filtros",
@@ -684,9 +722,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {            
             "titulo": "Se realizan análisis de agua",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Antes de cada nueva producción",
@@ -702,9 +741,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {          
             "titulo": "La calidad de agua es:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "De cristalina a verde, poca espuma en superficie y comportamiento activo de los peces",
@@ -724,9 +764,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "El sistema de amarre del plástico a la estructura no perfora el plástico",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -738,9 +779,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {   
             "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -758,9 +800,10 @@
         "id": 8,
         "name": "Reservorios de agua de lluvia",
         "preguntas": [
-          {
-            "multiple": true,
+          {            
             "titulo": "El sistema cuenta con:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Capa de material impermeable ",
@@ -792,9 +835,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {         
             "titulo": "La calidad del agua es",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Transparente",
@@ -810,9 +854,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {          
             "titulo": "El reservorio tiene fugas",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -824,9 +869,10 @@
               }
             ]
           },
-          {
-            "multiple": true,
+          {          
             "titulo": "Frecuencia con la que se extraen sedimentos",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "1 vez al año o menos",
@@ -842,9 +888,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -862,9 +909,10 @@
         "id": 9,
         "name": "Riego eficiente",
         "preguntas": [
-          {
-            "multiple": true,
+          {            
             "titulo": "El sistema cuenta con:",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Manguera o cintilla de riego ",
@@ -892,9 +940,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "Los dosificadores funcionan correctamente",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -906,9 +955,10 @@
               }
             ]
           },
-          {
-            "multiple": false,
+          {           
             "titulo": "Las tuberías principales de distribución se encuentran enterradas",
+            "multiple": true,
+            "peso":20,
             "respuestas": [
               {
                 "texto": "Si",
@@ -922,6 +972,7 @@
           },
           {
             "multiple": false,
+            "peso":20,
             "titulo": "Limpieza de los filtros",
             "respuestas": [
               {
@@ -944,6 +995,7 @@
           },
           {
             "multiple": false,
+            "peso":20,
             "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
             "respuestas": [
               {
@@ -964,6 +1016,7 @@
         "preguntas": [
           {
             "multiple": true,
+            "peso":20,
             "titulo": "El sistema cuenta con:",
             "respuestas": [
               {
@@ -982,6 +1035,7 @@
           },
           {
             "multiple": false,
+            "peso":20,
             "titulo": "Se realizan podas",
             "respuestas": [
               {
@@ -996,6 +1050,7 @@
           },
           {
             "multiple": false,
+            "peso":20,
             "titulo": "Las especies utilizadas para generar sombra son nativas",
             "respuestas": [
               {
@@ -1010,6 +1065,7 @@
           },
           {
             "multiple": false,
+            "peso":20,
             "titulo": "El productor recibió capacitación o asistencia técnica",
             "respuestas": [
               {

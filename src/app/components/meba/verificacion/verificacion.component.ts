@@ -20,7 +20,8 @@ export class VerificacionComponent implements OnInit {
     private _formbuild: FormBuilder,
   ) {
     this.verificacionForm = this._formbuild.group({
-      verificacion: this._formbuild.array([])
+      verificacion: this._formbuild.array([]),
+      totalVerificacion: 0
     })
   }
 
@@ -43,23 +44,43 @@ export class VerificacionComponent implements OnInit {
 
       verifica.controls.forEach(x => {
         let preguntas = <FormArray>x.get("preguntas")
-        let acumulado =  0
+        let acumulado = 0
+
         preguntas.controls.forEach(pre => {
+
           let resultado = pre.get("resultado").value
           let multiple = pre.get("multiple").value
-          
-          if(multiple){           
+          let total = pre.get("total").value
+          let peso = pre.get("peso").value / 100
+        
+          if (multiple) {
+            let check1 = 0
+            let check2 = 0
             for (let re = 0; re < resultado.length; re++) {
               const resul = resultado[re];
-              acumulado += Utils.formatNumber(resul.puntaje)              
-            }           
-          }else{
-            acumulado +=Utils.formatNumber(resultado.puntaje)
+              let puntaje = Utils.formatNumber(resul.puntaje)
+              if (puntaje == 1) {
+                check1 += 1
+              } else if (puntaje == 2) {
+                check2 += 1
+              }
+            }
+            let result = 0
+            if (check1 == total) {
+              result += 3
+            }
+            if (check2 == 1) {
+              result += 1
+            } else if (check2 >= 2) {
+              result += 2
+            }
+            acumulado += peso * result
+          } else {
+            acumulado += peso * Utils.formatNumber(resultado.puntaje)
           }
-         
+
         });
-        
-        console.log("acumulado ",acumulado)
+
       })
     })
   }
@@ -89,6 +110,13 @@ export class VerificacionComponent implements OnInit {
       verificacion: arrayForm
     })
   }
+
+  /**
+  * Autor: Jorge Enrique Mojica Martinez
+  * Fecha: 2021-03-08
+  * Nombre: loadRespuestas
+  * Descripcion 
+  */
   loadRespuestas(respuestas): FormArray {
 
     let aRespuestas: FormArray = this._formbuild.array([])
@@ -97,6 +125,8 @@ export class VerificacionComponent implements OnInit {
       aRespuestas.push(this._formbuild.group({
         titulo: [pre.titulo],
         respuestas: [pre.respuestas],
+        peso: [pre.peso],
+        total: [pre.total],
         multiple: [pre.multiple],
         resultado: ['']
       }))
