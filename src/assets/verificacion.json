@@ -41,9 +41,9 @@
             ]
           },
           {
-            "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
-            "peso":20,
             "multiple": false,
+            "titulo": "El abono terminado tiene un color obscuro, textura granular, olor agradable y humedad apropiada",
+            "peso":20,            
             "total":0,
             "respuestas": [
               {
@@ -971,9 +971,9 @@
             ]
           },
           {
-            "multiple": false,
-            "peso":20,
             "titulo": "Limpieza de los filtros",
+            "multiple": false,
+            "peso":20,            
             "respuestas": [
               {
                 "texto": "Diario",
@@ -994,9 +994,9 @@
             ]
           },
           {
-            "multiple": false,
-            "peso":20,
             "titulo": "El productor recibió capacitación o asistencia técnica o recibió servicios de personal capacitado",
+            "multiple": false,
+            "peso":20,            
             "respuestas": [
               {
                 "texto": "Si",
@@ -1015,9 +1015,9 @@
         "name": "Sombra natural",
         "preguntas": [
           {
-            "multiple": true,
-            "peso":20,
             "titulo": "El sistema cuenta con:",
+            "multiple": true,
+            "peso":20,            
             "respuestas": [
               {
                 "texto": "Árboles y/o arbustos",
@@ -1034,9 +1034,9 @@
             ]
           },
           {
-            "multiple": false,
-            "peso":20,
             "titulo": "Se realizan podas",
+            "multiple": false,
+            "peso":20,            
             "respuestas": [
               {
                 "texto": "Si",

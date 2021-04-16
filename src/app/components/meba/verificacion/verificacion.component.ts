@@ -80,7 +80,10 @@ export class VerificacionComponent implements OnInit {
           }
 
         });
-
+        console.log(acumulado)
+        x.patchValue({
+          total: acumulado.toFixed(2)
+        }, { emitEvent: false })
       })
     })
   }
@@ -101,7 +104,9 @@ export class VerificacionComponent implements OnInit {
         this._formbuild.group({
           name: [element.name],
           aplicapregunta: [false],
-          preguntas: this.loadRespuestas(element.preguntas)
+          preguntas: this.loadRespuestas(element.preguntas),
+          total: 0
+
         })
       )
     });
