@@ -30,6 +30,8 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
+import { ProduccionComponent } from './components/produccion/produccion.component';
+import { ProduccionFormComponent } from './components/produccion-form/produccion-form.component';
 
 
 @NgModule({
@@ -49,7 +51,9 @@ import { MebaComponent } from './components/meba/meba.component';
     ResultadoComponent,
     ToolbarComponent,
     LobbyComponent,
-    MebaComponent
+    MebaComponent,
+    ProduccionComponent,
+    ProduccionFormComponent
     
   ],
   imports: [

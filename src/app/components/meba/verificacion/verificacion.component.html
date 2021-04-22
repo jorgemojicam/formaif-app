@@ -5,7 +5,7 @@
                 <mat-card-header>
                     <mat-card-title>
                         {{itemrow.value.name}}
-                        <mat-slide-toggle formControlName="aplicapregunta">
+                        <mat-slide-toggle (change)="clear($event,pre)" formControlName="aplicapregunta">
                         </mat-slide-toggle>
 
                     </mat-card-title>

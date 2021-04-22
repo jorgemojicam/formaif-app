@@ -7,7 +7,7 @@
 
     <mat-tab-group mat-align-tabs="start" [selectedIndex]="selected.value"
         (selectedIndexChange)="selected.setValue($event)">
-        <div formArrayName="act" fxFlex="100%">
+        <div formArrayName="sensibilidad" fxFlex="100%">
 
             <mat-tab *ngFor="let acti of actividades().controls; let ac=index">
                 <ng-template mat-tab-label>
@@ -67,17 +67,24 @@
                                             <mat-icon matSuffix>%</mat-icon>
                                         </mat-form-field>
                                     </div>
+
+                                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                        <mat-chip-list>
+                                            <mat-chip>Global: {{acti.value.nombre.globo}} %</mat-chip>
+                                        </mat-chip-list>
+                                    </div>
+
                                 </div>
                             </mat-card-content>
                         </mat-card>
 
                     </div>
-                    <div echarts [options]="arrayOptions[ac]" class="demo-chart"></div>                    
+                    <div echarts [options]="arrayOptions[ac]" class="demo-chart"></div>
                 </div>
 
             </mat-tab>
         </div>
     </mat-tab-group>
-   
-    
+
+
 </form>

@@ -540,7 +540,7 @@
           },
           {           
             "titulo": "El sustrato se preparó con tierra fértil, abono y arena",
-            "multiple": true,
+            "multiple": false,
             "peso":20,
             "respuestas": [
               {
@@ -668,7 +668,7 @@
           },
           {           
             "titulo": "El productor recibió capacitación o asistencia técnica ",
-            "multiple": true,
+            "multiple": false,
             "peso":20,
             "respuestas": [
               {

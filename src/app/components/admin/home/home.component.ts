@@ -81,6 +81,7 @@ export class HomeComponent implements AfterViewInit {
     const config = {
       data: {
         mensaje: menssage,
+        form: 'home',
         content: ''
       }
     };

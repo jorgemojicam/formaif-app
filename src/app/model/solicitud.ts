@@ -4,7 +4,9 @@ import { Cruces } from './cruces';
 import { CrucesAgro } from './crucesagro';
 import { Gastos } from './gastos';
 import { Propuesta } from './propuesta';
+import { Sensibilidad } from './sensibilidad';
 import { Ubicacion } from './ubicacion';
+import { Verificacion } from './verificacion';
 
 export class Solicitud {
     solicitud: number;
@@ -21,5 +23,8 @@ export class Solicitud {
     Propuesta:Propuesta;
     Flujo:any[];
     dimensiones:Adaptativa[];
+    verificacion:Verificacion[];
     totalAdaptativa:string;
+    Sensibilidad:Sensibilidad[]
+
 }

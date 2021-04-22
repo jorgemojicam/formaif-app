@@ -1,5 +1,15 @@
 <h2>{{data.mensaje}} </h2>
 
 <mat-dialog-content>
-    <app-init></app-init>
+    <ng-container [ngSwitch]="data.form">
+        
+        <ng-container *ngSwitchCase="'home'">
+            <app-init></app-init>
+        </ng-container>
+        <ng-container *ngSwitchCase="'produccion'">
+            <app-produccion-form [datos]="data.content"></app-produccion-form>
+        </ng-container>
+    
+    </ng-container>
+    
 </mat-dialog-content>

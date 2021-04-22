@@ -2,12 +2,18 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { AuthGuard } from './helpers/auth.guard';
+import { ProduccionComponent } from './components/produccion/produccion.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'lobby',
     pathMatch: 'full',
+  },
+  {
+    path: 'produccion',
+    component: ProduccionComponent
+
   },
   {
     path: 'admin',
