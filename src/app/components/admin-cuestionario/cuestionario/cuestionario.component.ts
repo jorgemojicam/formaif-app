@@ -19,8 +19,6 @@ export class TodoItemFlatNode {
   level: number;
   expandable: boolean;
 }
-
-
 @Injectable()
 export class ChecklistDatabase {
   dataChange = new BehaviorSubject<TodoItemNode[]>([]);
@@ -84,6 +82,7 @@ export class ChecklistDatabase {
 export class CuestionarioComponent {
   listCuestionario: Cuestionario[]
   selectCuestionario: Cuestionario
+
   dataChange = new BehaviorSubject<TodoItemNode[]>([]);
   get data(): TodoItemNode[] { return this.dataChange.value; }
 
@@ -109,10 +108,9 @@ export class CuestionarioComponent {
 
   
   async loadRespuestas(e) {
-    console.log(e.value)
-    //this.listRespuestas = await this.getRespuestas(e.value) as Respuestas[]
-    this._database.listRespuestas = await this.getRespuestas(e.value) as Respuestas[]
-    //console.log(this.listRespuestas)
+    console.log(e.value)    
+    const data = this._database.buildFileTree(await this.getRespuestas(e.value) as Respuestas[],0)
+    this.dataChange.next(data);
   }
   async getCuestionarios() {
     new Promise((resolve, reject) => {
