@@ -30,8 +30,10 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
-import { ProduccionComponent } from './components/produccion/produccion.component';
-import { ProduccionFormComponent } from './components/produccion-form/produccion-form.component';
+import { ProduccionComponent } from './components/admin-produccion/produccion/produccion.component';
+import { ProduccionFormComponent } from './components/admin-produccion/produccion-form/produccion-form.component';
+import { CuestionarioComponent } from './components/admin-cuestionario/cuestionario/cuestionario.component';
+import { CuestionarioArbolComponent } from './components/admin-cuestionario/cuestionario-arbol/cuestionario-arbol.component';
 
 
 @NgModule({
@@ -53,7 +55,9 @@ import { ProduccionFormComponent } from './components/produccion-form/produccion
     LobbyComponent,
     MebaComponent,
     ProduccionComponent,
-    ProduccionFormComponent
+    ProduccionFormComponent,
+    CuestionarioComponent,
+    CuestionarioArbolComponent
     
   ],
   imports: [

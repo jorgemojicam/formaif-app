@@ -29,7 +29,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTreeModule} from '@angular/material/tree';
 
 const myCompm = [
   MatCardModule,
@@ -60,7 +61,9 @@ const myCompm = [
   MatTooltipModule,
   MatAutocompleteModule,
   MatSliderModule,
-  MatBottomSheetModule
+  MatBottomSheetModule,
+  MatProgressBarModule,
+  MatTreeModule
 ];
 
 @NgModule({

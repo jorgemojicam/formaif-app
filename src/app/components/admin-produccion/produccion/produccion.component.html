@@ -1,0 +1,55 @@
+<!-- tabla -->
+<div class="container">
+    <div fxLayout="row wrap">
+        <div class="gr" fxFlex="50%" fxFlex.xs="70%" fxFlex.sm="60%">
+            <mat-form-field>
+                <mat-label>Filtrar</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="50%" fxFlex.xs="30%" fxFlex.sm="40%">
+            <button mat-mini-fab type="button" class="addact" color="primary" (click)="abrir(null)">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div class="mat-elevation-z8 table-sol">
+            <mat-progress-bar *ngIf="!dataSource" mode="indeterminate"></mat-progress-bar>
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="Nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Ph">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ph</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Ph}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Precipitacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Precipitacion</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Precipitacion}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Temperatura">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Temperatura</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Temperatura}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="upload">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="accent">
+                            <mat-icon>cloud_upload</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="abrir(row)"></tr>
+
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No se encontraron datos "{{input.value}}"</td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>

@@ -51,7 +51,7 @@ export class ProduccionComponent implements OnInit {
   }
 
   abrir(datos){
-    const msg = 'Crear Produccion';
+    const msg = 'Produccion';
     this.openDialog(msg,datos);
   }
 

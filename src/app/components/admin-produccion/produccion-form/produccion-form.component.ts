@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { dataTool } from 'echarts';
 
 @Component({
   selector: 'app-produccion-form',
@@ -32,22 +31,24 @@ export class ProduccionFormComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
 
-    this.produccionForm.patchValue({
-      Nombre: this.datos.Nombre,
-      NombreCientifico: this.datos.NombreCientifico,
-      Ph: this.datos.Ph,
-      Precipitacion: this.datos.Precipitacion,
-      Temperatura: this.datos.Temperatura,
-      Global: this.datos.Global,
-      TipoProduccion: this.datos.TipoProduccion
-    },{emitEvent:false})
+    if (this.datos) {
+      this.produccionForm.patchValue({
+        Nombre: this.datos.Nombre,
+        NombreCientifico: this.datos.NombreCientifico,
+        Ph: this.datos.Ph,
+        Precipitacion: this.datos.Precipitacion,
+        Temperatura: this.datos.Temperatura,
+        Global: this.datos.Global,
+        TipoProduccion: this.datos.TipoProduccion
+      }, { emitEvent: false })
+    }
   }
 
 
   onSave() {
-    
+
   }
 
 }
