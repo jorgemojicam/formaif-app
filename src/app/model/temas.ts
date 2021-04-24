@@ -1,8 +1,8 @@
-import { Cuestionario } from "./cuestionario";
+import { Pregunta } from "./pregunta";
 
 export class Temas {
     Id: number;
     Nombre: string;
     Peso: number;
-    Cuestionario: Cuestionario;
+    Preguntas: Pregunta[];    
 }

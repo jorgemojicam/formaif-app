@@ -17,7 +17,7 @@ export class PreguntasService {
     return this.http.get(environment.AUTH_API + 'Preguntas');
   }
   getById(id){
-    return this.http.get(`${environment.AUTH_API}Preguntas/?id=${id}`);
+    return this.http.get(`${environment.AUTH_API}Preguntas?id=${id}`);
   }
   create(produccion:Pregunta){    
     return this.http.post(`${environment.AUTH_API}Preguntas`,produccion)

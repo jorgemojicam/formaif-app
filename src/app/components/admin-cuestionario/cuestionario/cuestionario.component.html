@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill">
     <mat-label>Seleccione Cuestionario</mat-label>
-    <mat-select (selectionChange)="loadRespuestas($event)" [(ngModel)]="selectCuestionario">
+    <mat-select (selectionChange)="loadCuestionario($event)" [(ngModel)]="selectCuestionario">
         <mat-option disabled>Seleccione Cuestionario</mat-option>
         <mat-option *ngFor="let item of listCuestionario" [value]="item.Id">
             {{item.Nombre}}
@@ -10,32 +10,44 @@
 </mat-form-field>
 
 
-<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
-        <button mat-icon-button disabled></button>
-        <mat-checkbox class="checklist-leaf-node" [checked]="checklistSelection.isSelected(node)"
-            (change)="todoLeafItemSelectionToggle(node)">{{node.item}}</mat-checkbox>
-    </mat-tree-node>
 
-    <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
-        <button mat-icon-button disabled></button>
-        <mat-form-field>
-            <mat-label>New item...</mat-label>
-            <input matInput #itemValue placeholder="Ex. Lettuce">
-        </mat-form-field>
-        <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
-    </mat-tree-node>
+<form [formGroup]="cuestionarioForm">   
+    <div formArrayName="temasForm">
+        <mat-accordion class="example-headers-align" multi>
 
-    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.item">
-            <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-        </button>
-        <mat-checkbox [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
-            (change)="todoItemSelectionToggle(node)">{{node.item}}</mat-checkbox>
-        <button mat-icon-button (click)="addNewItem(node)">
-            <mat-icon>add</mat-icon>
-        </button>
-    </mat-tree-node>
-</mat-tree>
+            <mat-expansion-panel *ngFor="let adap of cuestionario().controls; let cue=index" [formGroupName]="cue">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{adap.value.Nombre}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div formArrayName="preguntas">
+                    <div fxLayout="row wrap" class="content mat-elevation-z2"
+                        *ngFor="let pregu of preguntas(cue).controls; let pre=index" [formGroupName]="pre">
+
+                        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            {{pregu.value.Nombre}}
+                        </div>
+
+                        <!-- <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <mat-form-field>
+                                <mat-label>Respuesta</mat-label>
+                                <mat-select formControlName="resultado" required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let res of pregu.value.respuestas" [value]="res">
+                                        {{res.texto}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div> -->
+
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</form>

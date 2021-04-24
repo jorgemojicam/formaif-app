@@ -1,3 +1,4 @@
+import { Respuestas } from "./respuestas";
 import { Temas } from "./temas";
 
 export class Pregunta {
@@ -5,7 +6,7 @@ export class Pregunta {
     Titulo:string;
     Peso:number;
     Multiple:boolean;
-    Temas:Temas;
+    Respuestas:Respuestas[];
     resultado: {
         texto: string;
         puntaje: number

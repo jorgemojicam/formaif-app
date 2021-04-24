@@ -17,7 +17,7 @@ export class RespuestasService {
     return this.http.get(environment.AUTH_API + 'Respuestas');
   }
   getById(id){
-    return this.http.get(`${environment.AUTH_API}Respuestas/?id=${id}`);
+    return this.http.get(`${environment.AUTH_API}Respuestas/${id}`);
   }
   getByCuestionario(id){
     return this.http.get(`${environment.AUTH_API}Respuestas/GetByCuestionario?cuestionario=${id}`)
