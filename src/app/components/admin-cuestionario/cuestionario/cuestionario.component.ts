@@ -1,6 +1,9 @@
+import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Cuestionario } from 'src/app/model/cuestionario';
+import { Pregunta } from 'src/app/model/pregunta';
+import { Respuestas } from 'src/app/model/respuestas';
 import { Temas } from 'src/app/model/temas';
 import { CuestionarioService } from 'src/app/services/cuestionario.service';
 import { PreguntasService } from 'src/app/services/preguntas.service';
@@ -17,7 +20,9 @@ export class CuestionarioComponent {
 
   listCuestionario: Cuestionario[]
   selectCuestionario: Cuestionario
+
   cuestionarioForm: FormGroup
+  arbolCuestionario: Temas[] = new Array()
 
   constructor(
     private _srvCuestionario: CuestionarioService,
@@ -33,8 +38,6 @@ export class CuestionarioComponent {
   }
 
 
-  hasChild = (_: number, node: Temas) => !!node.Preguntas && node.Preguntas.length > 0;
-
   async initalize() {
     await this.getCuestionarios()
   }
@@ -44,6 +47,11 @@ export class CuestionarioComponent {
     let temasArray: FormArray = this._formbuild.array([])
     temas.forEach(async tem => {
       let preguntas = await this.getPreguntas(tem.Id)
+
+      let objTemas: Temas = new Temas()
+      objTemas.Nombre = tem.Nombre
+      objTemas.Preguntas = this.loadObjPreguntas(preguntas)
+      this.arbolCuestionario.push(objTemas)
 
       temasArray.push(
         this._formbuild.group({
@@ -55,12 +63,31 @@ export class CuestionarioComponent {
     this.cuestionarioForm = this._formbuild.group({
       temasForm: temasArray
     })
+    console.log(this.arbolCuestionario)
   }
-  cuestionario() {
-    return this.cuestionarioForm.get('temasForm') as FormArray;
+
+  loadObjPreguntas(preguntas) {
+    let preguntasArray: Pregunta[] = new Array()
+    preguntas.forEach(async pre => {
+      let respuestas = await this.getRespuestas(pre.Id)
+
+      let objPreguntas = new Pregunta()
+      objPreguntas.Titulo = pre.Titulo
+      if (respuestas) {
+        objPreguntas.Respuestas = this.loadObjRespuestas(respuestas)
+      }
+      preguntasArray.push(objPreguntas)
+    })
+    return preguntasArray
   }
-  preguntas(num): FormArray {
-    return this.cuestionario().at(num).get("preguntas") as FormArray
+  loadObjRespuestas(respuestas) {
+    let respuestasArray: Respuestas[] = new Array()
+    respuestas.forEach(async res => {
+      let objRespuestas = new Respuestas
+      objRespuestas.Texto = res.Texto
+      respuestasArray.push(objRespuestas)
+    })
+    return respuestasArray
   }
 
   loadPreguntas(preguntas) {
@@ -89,6 +116,8 @@ export class CuestionarioComponent {
     })
     return respuestasArray
   }
+
+
 
   async getCuestionarios() {
     new Promise((resolve, reject) => {
