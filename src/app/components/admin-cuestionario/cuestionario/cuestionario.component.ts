@@ -1,15 +1,18 @@
-import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Injectable, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Cuestionario } from 'src/app/model/cuestionario';
-import { Pregunta } from 'src/app/model/pregunta';
-import { Respuestas } from 'src/app/model/respuestas';
-import { Temas } from 'src/app/model/temas';
+import { CuestionarioNones } from 'src/app/model/cuestionnodes';
 import { CuestionarioService } from 'src/app/services/cuestionario.service';
-import { PreguntasService } from 'src/app/services/preguntas.service';
 import { RespuestasService } from 'src/app/services/respuestas.service';
-import { TemasService } from 'src/app/services/temas.service';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: 'app-cuestionario',
@@ -20,104 +23,75 @@ export class CuestionarioComponent {
 
   listCuestionario: Cuestionario[]
   selectCuestionario: Cuestionario
+  arbolCuestionario: CuestionarioNones[]
 
-  cuestionarioForm: FormGroup
-  arbolCuestionario: Temas[] = new Array()
+  treeControl = new NestedTreeControl<CuestionarioNones>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<CuestionarioNones>();
+
+
+  hasChild = (_: number, node: CuestionarioNones) => !!node.children && node.children.length > 0;
 
   constructor(
     private _srvCuestionario: CuestionarioService,
     private _srvRespuesta: RespuestasService,
-    private _srvPreguntas: PreguntasService,
-    private _srvTemas: TemasService,
-    private _formbuild: FormBuilder
+    public dialog: MatDialog,
   ) {
-    this.cuestionarioForm = this._formbuild.group({
-      temasForm: this._formbuild.array([])
-    })
     this.initalize()
   }
-
 
   async initalize() {
     await this.getCuestionarios()
   }
 
   async loadCuestionario(e) {
-    let temas = await this.getTemas(e.value) as Temas[]
-    let temasArray: FormArray = this._formbuild.array([])
-    temas.forEach(async tem => {
-      let preguntas = await this.getPreguntas(tem.Id)
 
-      let objTemas: Temas = new Temas()
-      objTemas.Nombre = tem.Nombre
-      objTemas.Preguntas = this.loadObjPreguntas(preguntas)
-      this.arbolCuestionario.push(objTemas)
+    let respuestas = await this.getRespuestas(e.value) as any[]
+    let cuestion:CuestionarioNones[] = new Array()
 
-      temasArray.push(
-        this._formbuild.group({
-          Nombre: [tem.Nombre],
-          preguntas: this.loadPreguntas(preguntas),
-        })
-      )
-    });
-    this.cuestionarioForm = this._formbuild.group({
-      temasForm: temasArray
-    })
-    console.log(this.arbolCuestionario)
-  }
+    respuestas.forEach(function (a) {
+      let objtema = new CuestionarioNones()
+      objtema.name = a.Preguntas.Temas.Nombre
+      objtema.id = a.Preguntas.Temas.Id
+      objtema.father = e.value
+      objtema.peso = a.Preguntas.Temas.Peso      
+      objtema.form = 'Temas'
+      objtema.theend = false
+      objtema.children = new Array()
 
-  loadObjPreguntas(preguntas) {
-    let preguntasArray: Pregunta[] = new Array()
-    preguntas.forEach(async pre => {
-      let respuestas = await this.getRespuestas(pre.Id)
+      let objPregunta = new CuestionarioNones()
+      objPregunta.name = a.Preguntas.Titulo
+      objPregunta.id = a.Preguntas.Id
+      objPregunta.peso = a.Preguntas.Peso
+      objPregunta.form = 'Preguntas'
+      objPregunta.theend = false
+      objPregunta.children = new Array()
 
-      let objPreguntas = new Pregunta()
-      objPreguntas.Titulo = pre.Titulo
-      if (respuestas) {
-        objPreguntas.Respuestas = this.loadObjRespuestas(respuestas)
+      let objRespuesta = new CuestionarioNones()
+      objRespuesta.name = a.Texto
+      objRespuesta.form = 'Respuestas'
+      objRespuesta.theend = true
+      objRespuesta.id = a.Id
+      
+      if (cuestion.some(e => e.id === a.Preguntas.Temas.Id)) {
+        let ipr = cuestion.findIndex(c => c.id === a.Preguntas.Temas.Id)
+
+        if (cuestion[ipr].children.some(e => e.id === a.Preguntas.Id)) {
+          let ire = cuestion[ipr].children.findIndex(c => c.id === a.Preguntas.Id)
+          cuestion[ipr].children[ire].children.push(objRespuesta)
+        } else {
+          cuestion[ipr].children.push(objPregunta)
+        }
+      } else {
+        cuestion.push(objtema)
       }
-      preguntasArray.push(objPreguntas)
-    })
-    return preguntasArray
+
+    });
+
+    this.arbolCuestionario = cuestion
+    console.log('agrupado ', this.arbolCuestionario)
+    this.dataSource.data = this.arbolCuestionario;
+
   }
-  loadObjRespuestas(respuestas) {
-    let respuestasArray: Respuestas[] = new Array()
-    respuestas.forEach(async res => {
-      let objRespuestas = new Respuestas
-      objRespuestas.Texto = res.Texto
-      respuestasArray.push(objRespuestas)
-    })
-    return respuestasArray
-  }
-
-  loadPreguntas(preguntas) {
-    let preguntasArray: FormArray = this._formbuild.array([])
-    preguntas.forEach(async pre => {
-      let respuestas = await this.getRespuestas(pre.Id)
-      preguntasArray.push(
-        this._formbuild.group({
-          Nombre: [pre.Nombre],
-          Respuestas: this.loadRespuestas(respuestas),
-        })
-      )
-    })
-    return preguntasArray
-  }
-
-
-  loadRespuestas(respuestas) {
-    let respuestasArray: FormArray = this._formbuild.array([])
-    respuestas.forEach(async res => {
-      respuestasArray.push(
-        this._formbuild.group({
-          Nombre: [res.Nombre],
-        })
-      )
-    })
-    return respuestasArray
-  }
-
-
 
   async getCuestionarios() {
     new Promise((resolve, reject) => {
@@ -136,7 +110,7 @@ export class CuestionarioComponent {
 
   getRespuestas(cuestionario) {
     return new Promise((resolve, reject) => {
-      this._srvRespuesta.getById(cuestionario).subscribe(
+      this._srvRespuesta.getByCuestionario(cuestionario).subscribe(
         (a) => {
           resolve(a)
           return a
@@ -148,33 +122,27 @@ export class CuestionarioComponent {
     });
   }
 
-  getTemas(cuestionario) {
-    return new Promise((resolve, reject) => {
-      this._srvTemas.getById(cuestionario).subscribe(
-        (a) => {
-          resolve(a)
-          return a
-        },
-        (err) => {
-          reject([])
-        }
-      )
-    });
+  gestionCuestionario(node){
+    console.log(node)    
+    this.openDialog(node.form,node,node.form)
+
   }
 
-  getPreguntas(tema) {
-    return new Promise((resolve, reject) => {
-      this._srvPreguntas.getById(tema).subscribe(
-        (a) => {
-          resolve(a)
-          return a
-        },
-        (err) => {
-          reject([])
-        }
-      )
-    });
+  openDialog(menssage: string,datos:any,form:string) {
+    
+    const config = {
+      data: {
+        mensaje: menssage,
+        form: form,
+        content: datos
+      }
+    };
+    const dialogRef = this.dialog.open(ModalComponent, config);
+    dialogRef.afterClosed().subscribe(result => {
+ 
+    })
   }
+
 
 
 }

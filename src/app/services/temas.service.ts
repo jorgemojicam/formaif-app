@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Temas } from '../model/temas';
 
@@ -20,5 +19,11 @@ export class TemasService {
   getById(id){
     return this.http.get<Temas[]>(`${environment.AUTH_API}Temas/${id}`)
     
+  }
+  create(tema:Temas){    
+    return this.http.post(`${environment.AUTH_API}Temas`,tema)
+  }
+  update(tema:any){
+    return this.http.put(`${environment.AUTH_API}Temas`,tema)
   }
 }

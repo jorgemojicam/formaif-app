@@ -23,9 +23,7 @@ export class ProduccionFormComponent implements OnInit {
     TipoProduccion: new FormControl(''),
   });
 
-  constructor(
-    private _snackBar: MatSnackBar,
-    private _route: Router,
+  constructor( 
     public _dialog: MatDialog,
   ) {
 
