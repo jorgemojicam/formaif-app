@@ -3,9 +3,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
+import { Pregunta } from 'src/app/model/pregunta';
+import { Respuestas } from 'src/app/model/respuestas';
+import { Temas } from 'src/app/model/temas';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { IdbService } from 'src/app/services/idb.service';
 import { OficinaService } from 'src/app/services/oficina.service';
+import { ProduccionService } from 'src/app/services/produccion.service';
+import { RespuestasService } from 'src/app/services/respuestas.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { environment } from 'src/environments/environment';
 
@@ -27,6 +33,9 @@ export class AuthComponent implements OnInit {
 
   constructor(
     private authServ: AuthService,
+    private _srvRespuesta: RespuestasService,
+    private _srvProduccion:ProduccionService,
+    private _srvIdb: IdbService,
     private route: Router,
     private tokenStorage: TokenStorageService,
     private _snackBar: MatSnackBar,
@@ -49,7 +58,7 @@ export class AuthComponent implements OnInit {
     if (dom.toLocaleLowerCase() == "soporte") {
       user.Username = use
       this.authServ.login(user).subscribe(
-        (res) => {
+        (res) => {          
           let perfil: Asesor = {
             Nombre: use,
             Iniciales: "N/A",
@@ -78,6 +87,7 @@ export class AuthComponent implements OnInit {
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(perfil);
           this.route.navigate(['home']);
+          this.getRespuestas()
           this.isLogged = false
         },
         (err) => {
@@ -103,7 +113,7 @@ export class AuthComponent implements OnInit {
           this.ofiServ.getOficina(user.Username).subscribe(
             (ofi) => {
               if (ofi) {
-                this.tokenStorage.saveUser(ofi);
+                this.tokenStorage.saveUser(ofi);                
               }
             },
             (err) => {
@@ -114,6 +124,7 @@ export class AuthComponent implements OnInit {
           )
           this.route.navigate(['home']);
           this.isLogged = false
+          this.getRespuestas()
         },
         err => {
           let errMsg = ""
@@ -131,5 +142,78 @@ export class AuthComponent implements OnInit {
         }
       )
     }
+  }
+
+  getRespuestas() {
+    this._srvRespuesta.getByCuestionario(1).subscribe(
+      (a) => {
+        let dim = this.loadCuestionario(a)
+        this._srvIdb.delete('dimenciones')
+        this._srvIdb.save('dimenciones', dim)
+      },
+      (err) => {
+
+      }
+    )
+
+    this._srvRespuesta.getByCuestionario(2).subscribe(
+      (a) => {
+        let dim = this.loadCuestionario(a)
+        this._srvIdb.delete('medidas')
+        this._srvIdb.save('medidas', dim)
+      },
+      (err) => {
+
+      }
+    )
+
+    this._srvProduccion.get().subscribe(
+      (a)=>{
+        this._srvIdb.delete('produccion')
+        this._srvIdb.save('produccion', a)
+      },(err)=>{
+
+      }
+    )
+
+  }
+
+  loadCuestionario(respuestas) {
+
+    let cuestion: Temas[] = new Array()
+
+    respuestas.forEach(function (a) {
+      let objtema = new Temas()
+      objtema.Nombre = a.Preguntas.Temas.Nombre
+      objtema.Id = a.Preguntas.Temas.Id
+      objtema.Peso = a.Preguntas.Temas.Peso
+      objtema.Preguntas = new Array()
+
+      let objPregunta = new Pregunta()
+      objPregunta.Titulo = a.Preguntas.Titulo
+      objPregunta.Id = a.Preguntas.Id
+      objPregunta.Peso = a.Preguntas.Peso
+      objPregunta.Respuestas = new Array()
+
+      let objRespuesta = new Respuestas()
+      objRespuesta.Texto = a.Texto
+      objRespuesta.Punaje = a.Puntaje
+      objRespuesta.Id = a.Id
+
+      if (cuestion.some(e => e.Id === a.Preguntas.Temas.Id)) {
+        let ipr = cuestion.findIndex(c => c.Id === a.Preguntas.Temas.Id)
+
+        if (cuestion[ipr].Preguntas.some(e => e.Id === a.Preguntas.Id)) {
+          let ire = cuestion[ipr].Preguntas.findIndex(c => c.Id === a.Preguntas.Id)
+          cuestion[ipr].Preguntas[ire].Respuestas.push(objRespuesta)
+        } else {
+          cuestion[ipr].Preguntas.push(objPregunta)
+        }
+      } else {
+        cuestion.push(objtema)
+      }
+
+    });
+    return cuestion
   }
 }
