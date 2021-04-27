@@ -1,14 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AnalisisComponent } from '../analisis/analisis.component';
-import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
-import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
-import { PropuestaComponent } from '../propuesta/propuesta.component';
-import { ResultadoComponent } from '../resultado/resultado.component';
-import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
-import { HomeComponent } from './home/home.component';
-import { LobbyComponent } from '../lobby/lobby.component';
+import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestionario.component";
+
 
 const routes: Routes = [
   {
@@ -17,96 +11,21 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'cuestionario',
         pathMatch: 'prefix',
         data: {
-          routerName: 'home'
+          routerName: 'produccion'
         }
       },
       {
-        path: 'lobby',
-        component: LobbyComponent,
+        path: 'cuestionario',
+        component: CuestionarioComponent,
         data: {
-          routerName: 'lobby'
+          routerName: 'cuestionario'
         }
-      },
-      {
-        path: 'home',
-        component: HomeComponent,
-        data: {
-          routerName: 'home'
-        }
-      },
-      {
-        path: 'ubicacion',
-        component: UbicacionComponent,
-        data: {
-          routerName: 'Ubicacion'
-        }
-      },
-      {
-        path: 'balance',
-        data: {
-          routerName: 'balance'
-        },
-        loadChildren: () =>
-          import('../balance/balance.module').then(m => m.BalanceModule)
-      },
-      {
-        path: 'gastos',
-        loadChildren: () =>
-          import('../gastos/gastos.module').then(m => m.GastosModule),
-        data: {
-          routerName: 'gastos'
-        }
-      },
-      {
-        path: 'ventas',
-        loadChildren: () =>
-          import('../cruces/cruces.module').then(m => m.CrucesModule),
-        data: {
-          routerName: 'ventas'
-        }
-
-      },
-      {
-        path: 'analisis',
-        component: AnalisisComponent,
-        data: {
-          routerName: 'analisis'
-        }
-      },
-      {
-        path: 'propuesta',
-        component: PropuestaComponent,
-        data: {
-          routerName: 'propuesta'
-        }
-      },
-      {
-        path: 'flujocaja',
-        component: FlujocajaComponent,
-        data: {
-          routerName: 'flujocaja'
-        }
-      },
-      {
-        path: 'analisisagro',
-        component: AnalisisagroComponent,
-        data: {
-          routerName: 'analisisagro'
-        }
-      },
-      {
-        path: 'resultado',
-        component: ResultadoComponent,
-        data: {
-          routerName: 'resultado'
-        }
-      }
+      }      
     ]
   }
-
 ];
 
 @NgModule({

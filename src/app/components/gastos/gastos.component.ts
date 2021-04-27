@@ -7,7 +7,7 @@ import { OtrosIngresos } from 'src/app/model/otrosingresosfamilia';
 import { Remuneracion } from 'src/app/model/remuneracion';
 import { Solicitud } from 'src/app/model/solicitud';
 import DataSelect from '../../data-select/dataselect.json';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 
 
 @Component({

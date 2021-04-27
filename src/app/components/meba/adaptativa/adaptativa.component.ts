@@ -6,7 +6,7 @@ import { Adaptativa } from 'src/app/model/adaptativa';
 import { Solicitud } from 'src/app/model/solicitud';
 import { CapacidadAdaptativaService } from 'src/app/services/capacidad-adaptativa.service';
 import Utils from 'src/app/utils';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-adaptativa',

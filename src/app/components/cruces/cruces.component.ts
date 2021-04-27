@@ -3,7 +3,7 @@ import {  Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-cruces',

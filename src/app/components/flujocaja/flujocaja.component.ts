@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
 import { LoteAgro } from 'src/app/model/loteAgro';
 import { CrucesAgro } from 'src/app/model/crucesagro';

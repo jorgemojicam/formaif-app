@@ -7,7 +7,7 @@ import { EChartsOption } from 'echarts';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { ActivatedRoute } from '@angular/router';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-sensibilidad',

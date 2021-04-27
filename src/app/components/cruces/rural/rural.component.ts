@@ -11,7 +11,7 @@ import { Solicitud } from 'src/app/model/solicitud';
 import Utils from 'src/app/utils';
 import Swal from 'sweetalert2';
 import DataSelect from '../../../data-select/dataselect.json';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-rural',

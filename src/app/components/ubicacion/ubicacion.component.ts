@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Ubicacion } from 'src/app/model/ubicacion';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-ubicacion',

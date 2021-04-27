@@ -37,6 +37,8 @@ export class TemasFormComponent implements OnInit {
       }, { emitEvent: false })
     }
   }
+
+  
   onSave() {
 
     let tema = {

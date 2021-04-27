@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { AnalisismebaprodService } from 'src/app/services/analisismebaprod.service';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-home-meba',

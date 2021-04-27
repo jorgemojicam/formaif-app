@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Propuesta } from 'src/app/model/propuesta';
 import { Solicitud } from 'src/app/model/solicitud';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import DataSelect from '../../data-select/dataselect.json';
 import Utils from '../../utils'
 

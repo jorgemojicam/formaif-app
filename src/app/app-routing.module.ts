@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { AuthGuard } from './helpers/auth.guard';
-import { ProduccionComponent } from './components/admin-produccion/produccion/produccion.component';
-import { CuestionarioComponent } from './components/admin-cuestionario/cuestionario/cuestionario.component';
+import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
+import { CuestionarioComponent } from './components/admin/admin-cuestionario/cuestionario/cuestionario.component';
 
 const routes: Routes = [
   {
@@ -39,6 +39,7 @@ const routes: Routes = [
     path: '404',
     component: NotfoundComponent
   },
+  { path: 'agil', loadChildren: () => import('./components/agil/agil.module').then(m => m.AgilModule) },
   {
     path: '**',
     redirectTo: '/404'

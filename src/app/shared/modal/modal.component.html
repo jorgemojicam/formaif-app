@@ -12,6 +12,12 @@
         <ng-container *ngSwitchCase="'Temas'">
             <app-temas-form [datos]="data.content"></app-temas-form>
         </ng-container>
+        <ng-container *ngSwitchCase="'Preguntas'">
+            <app-preguntas-form [datos]="data.content"></app-preguntas-form>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Respuestas'">
+            <app-respuestas-form [datos]="data.content"></app-respuestas-form>
+        </ng-container>
     
     </ng-container>
     

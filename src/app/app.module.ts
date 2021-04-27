@@ -15,9 +15,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from './helpers/auth.guard';
 import { AuthInterceptor } from "./helpers/auth.interceptor";
-import { HomeComponent } from './components/admin/home/home.component';
+import { HomeComponent } from './components/agil/home/home.component';
 import { ModalComponent } from './shared/modal/modal.component';
-import { InitComponent } from './components/admin/init/init.component';
+import { InitComponent } from './components/agil/init/init.component';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { PropuestaComponent } from './components/propuesta/propuesta.component';
 import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
@@ -30,12 +30,14 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
-import { ProduccionComponent } from './components/admin-produccion/produccion/produccion.component';
-import { ProduccionFormComponent } from './components/admin-produccion/produccion-form/produccion-form.component';
-import { CuestionarioComponent } from './components/admin-cuestionario/cuestionario/cuestionario.component';
-import { TemasFormComponent } from './components/admin-cuestionario/temas-form/temas-form.component';
-import { PreguntasFormComponent } from './components/admin-cuestionario/preguntas-form/preguntas-form.component';
-import { RespuestasFormComponent } from './components/admin-cuestionario/respuestas-form/respuestas-form.component';
+import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
+import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
+import { CuestionarioComponent } from './components/admin/admin-cuestionario/cuestionario/cuestionario.component';
+import { TemasFormComponent } from './components/admin/admin-cuestionario/temas-form/temas-form.component';
+import { PreguntasFormComponent } from './components/admin/admin-cuestionario/preguntas-form/preguntas-form.component';
+import { RespuestasFormComponent } from './components/admin/admin-cuestionario/respuestas-form/respuestas-form.component';
+import { AgilModule } from './components/agil/agil.module';
+import { AgilComponent } from "./components/agil/agil.component";  
 
 
 @NgModule({
@@ -61,7 +63,8 @@ import { RespuestasFormComponent } from './components/admin-cuestionario/respues
     CuestionarioComponent,
     TemasFormComponent,
     PreguntasFormComponent,
-    RespuestasFormComponent
+    RespuestasFormComponent,
+    AgilComponent
     
   ],
   imports: [
@@ -75,7 +78,8 @@ import { RespuestasFormComponent } from './components/admin-cuestionario/respues
     AdminModule,
     FlexLayoutModule,
     HttpClientModule,
-    MebaModule,    
+    MebaModule,
+    AgilModule,    
   ],
   entryComponents: [
     ModalComponent,

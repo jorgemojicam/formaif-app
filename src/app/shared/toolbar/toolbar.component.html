@@ -12,7 +12,7 @@
     <span class="fill-remaining-space"></span>
     <span class="example-spacer"></span>
 
-    <button *ngIf="rout == 'home' || rout == 'lobby'" mat-icon-button (click)="openProfile()"
+    <button *ngIf="rout == 'home' || rout == 'lobby' || rout =='agil'" mat-icon-button (click)="openProfile()"
         class="example-icon favorite-icon">
         <mat-icon>assignment_ind</mat-icon>
     </button>
@@ -37,7 +37,7 @@
             <mat-divider></mat-divider>
         </mat-list>
         <mat-nav-list (click)="action()">
-            <ng-container *ngIf="modul=='admin'">
+            <ng-container *ngIf="modul=='agil'">
 
                 <mat-list-item *ngIf="tipo==2" routerLinkActive="active-list-item" routerLink="ubicacion"
                     [queryParams]="{solicitud:sol}">
@@ -88,8 +88,8 @@
                     <div mat-line>Flujo de Caja</div>
                 </mat-list-item>
             </ng-container>
-            <ng-container *ngIf="modul=='meba'">
 
+            <ng-container *ngIf="modul=='meba'">
 
                 <mat-list-item [routerLink]="['sensibilidad']" routerLinkActive="active-list-item"
                     [queryParams]="{solicitud:sol}">

@@ -22,13 +22,13 @@ export class RespuestasService {
   getByCuestionario(id){
     return this.http.get(`${environment.AUTH_API}Respuestas/GetByCuestionario?cuestionario=${id}`)
   }
-  create(produccion:Respuestas){    
+  create(produccion:any){    
     return this.http.post(`${environment.AUTH_API}Respuestas`,produccion)
   }
-  update(produccion:Respuestas){
+  update(produccion:any){
     return this.http.put(`${environment.AUTH_API}Respuestas`,produccion)
   }
-  delete(produccion:Respuestas){
+  delete(produccion:any){
     return this.http.delete(`${environment.AUTH_API}Respuestas`)
   }
 }

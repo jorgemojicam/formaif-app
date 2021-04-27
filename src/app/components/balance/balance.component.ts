@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Balance } from 'src/app/model/balance';
 import DataSelect from '../../data-select/dataselect.json';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IdbSolicitudService } from '../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Inventario } from 'src/app/model/inventario';
 import { ActivosFamilia } from 'src/app/model/activosfamilia';

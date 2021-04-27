@@ -4,7 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, ActivationEnd, ActivationStart, NavigationEnd, Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { IdbSolicitudService } from '../../components/admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import { ProfileComponent } from '../../components/admin/profile/profile.component';
 
 @Component({

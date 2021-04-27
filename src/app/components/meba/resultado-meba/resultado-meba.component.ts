@@ -4,7 +4,7 @@ import { EChartsOption, number } from 'echarts';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { Solicitud } from 'src/app/model/solicitud';
 import Utils from 'src/app/utils';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-resultado-meba',

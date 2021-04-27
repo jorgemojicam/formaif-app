@@ -1,18 +1,12 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import {  MatTreeNestedDataSource } from '@angular/material/tree';
 import { Cuestionario } from 'src/app/model/cuestionario';
 import { CuestionarioNones } from 'src/app/model/cuestionnodes';
 import { CuestionarioService } from 'src/app/services/cuestionario.service';
 import { RespuestasService } from 'src/app/services/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
-
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
 
 @Component({
   selector: 'app-cuestionario',
@@ -22,13 +16,11 @@ interface ExampleFlatNode {
 export class CuestionarioComponent {
 
   listCuestionario: Cuestionario[]
-  selectCuestionario: Cuestionario
+  selectCuestionario
   arbolCuestionario: CuestionarioNones[]
 
   treeControl = new NestedTreeControl<CuestionarioNones>(node => node.children);
   dataSource = new MatTreeNestedDataSource<CuestionarioNones>();
-
-
   hasChild = (_: number, node: CuestionarioNones) => !!node.children && node.children.length > 0;
 
   constructor(
@@ -43,17 +35,17 @@ export class CuestionarioComponent {
     await this.getCuestionarios()
   }
 
-  async loadCuestionario(e) {
+  async loadCuestionario(id) {
 
-    let respuestas = await this.getRespuestas(e.value) as any[]
-    let cuestion:CuestionarioNones[] = new Array()
+    let respuestas = await this.getRespuestas(id) as any[]
+    let cuestion: CuestionarioNones[] = new Array()
 
     respuestas.forEach(function (a) {
       let objtema = new CuestionarioNones()
       objtema.name = a.Preguntas.Temas.Nombre
       objtema.id = a.Preguntas.Temas.Id
-      objtema.father = e.value
-      objtema.peso = a.Preguntas.Temas.Peso      
+      objtema.father = id
+      objtema.peso = a.Preguntas.Temas.Peso
       objtema.form = 'Temas'
       objtema.theend = false
       objtema.children = new Array()
@@ -62,19 +54,21 @@ export class CuestionarioComponent {
       objPregunta.name = a.Preguntas.Titulo
       objPregunta.id = a.Preguntas.Id
       objPregunta.peso = a.Preguntas.Peso
+      objPregunta.multiple = a.Preguntas.Multiple
+      objPregunta.father = a.Preguntas.Temas.Id
       objPregunta.form = 'Preguntas'
       objPregunta.theend = false
       objPregunta.children = new Array()
 
       let objRespuesta = new CuestionarioNones()
       objRespuesta.name = a.Texto
+      objRespuesta.id = a.Id
       objRespuesta.form = 'Respuestas'
       objRespuesta.theend = true
-      objRespuesta.id = a.Id
-      
+      objRespuesta.father = a.Preguntas.Id
+
       if (cuestion.some(e => e.id === a.Preguntas.Temas.Id)) {
         let ipr = cuestion.findIndex(c => c.id === a.Preguntas.Temas.Id)
-
         if (cuestion[ipr].children.some(e => e.id === a.Preguntas.Id)) {
           let ire = cuestion[ipr].children.findIndex(c => c.id === a.Preguntas.Id)
           cuestion[ipr].children[ire].children.push(objRespuesta)
@@ -82,15 +76,18 @@ export class CuestionarioComponent {
           cuestion[ipr].children.push(objPregunta)
         }
       } else {
+
+        if (objPregunta.id > 0) { 
+          if (objRespuesta.id > 0) {
+            objPregunta.children.push(objRespuesta)
+          }
+          objtema.children.push(objPregunta)
+        }
         cuestion.push(objtema)
       }
-
     });
-
     this.arbolCuestionario = cuestion
-    console.log('agrupado ', this.arbolCuestionario)
-    this.dataSource.data = this.arbolCuestionario;
-
+    this.dataSource.data = this.arbolCuestionario;    
   }
 
   async getCuestionarios() {
@@ -122,14 +119,26 @@ export class CuestionarioComponent {
     });
   }
 
-  gestionCuestionario(node){
-    console.log(node)    
-    this.openDialog(node.form,node,node.form)
+  onEdit(node) {
+    console.log(node)
+    this.openDialog(node.form, node, node.form)
+  }
+  onCreate(node) {
 
+    let form = ''
+    if (node.form == 'Temas') {
+      form = 'Preguntas'
+    } else if (node.form === 'Preguntas') {
+      form = 'Respuestas'
+    }
+    let datos = {
+      father: node.id
+    }
+    this.openDialog(`Crear ${form}`, datos, form)
   }
 
-  openDialog(menssage: string,datos:any,form:string) {
-    
+  openDialog(menssage: string, datos: any, form: string) {
+
     const config = {
       data: {
         mensaje: menssage,
@@ -139,7 +148,7 @@ export class CuestionarioComponent {
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
- 
+      this.loadCuestionario(this.selectCuestionario)
     })
   }
 

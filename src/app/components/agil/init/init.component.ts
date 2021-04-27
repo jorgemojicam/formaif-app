@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { Solicitud } from 'src/app/model/solicitud';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { IdbSolicitudService } from '../idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-init',

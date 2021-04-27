@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Cruces } from 'src/app/model/cruces';
 import { Solicitud } from 'src/app/model/solicitud';
 import DataSelect from '../../../data-select/dataselect.json';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import Swal from 'sweetalert2'
 import { MateriaPrima } from 'src/app/model/materiaprima';
 import { Compras } from 'src/app/model/compras';

@@ -6,7 +6,7 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { Verificacion } from 'src/app/model/verificacion';
 import { VerificacionService } from 'src/app/services/verificacion.service';
 import Utils from '../../../utils';
-import { IdbSolicitudService } from '../../admin/idb-solicitud.service';
+import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
   selector: 'app-verificacion',
