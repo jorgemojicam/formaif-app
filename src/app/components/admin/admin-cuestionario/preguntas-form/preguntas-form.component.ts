@@ -46,6 +46,7 @@ export class PreguntasFormComponent implements OnInit {
         Id: this.preguntasForm.value.Temas
       }
     }
+    console.log(preguntas)
     this.loading = true
     if (this.preguntasForm.value.Id > 0) {
       this._srvPreguntas.update(preguntas).subscribe(

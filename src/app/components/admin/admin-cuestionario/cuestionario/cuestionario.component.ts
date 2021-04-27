@@ -148,7 +148,8 @@ export class CuestionarioComponent {
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
-      this.loadCuestionario(this.selectCuestionario)
+      console.log(result)
+      //this.loadCuestionario(this.selectCuestionario)
     })
   }
 

@@ -19,13 +19,13 @@ export class ProduccionService {
   getById(id){
     return this.http.get(`${environment.AUTH_API}Produccion/?id=${id}`);
   }
-  create(produccion:TipoProduccion){    
+  create(produccion:any){    
     return this.http.post(`${environment.AUTH_API}Produccion`,produccion)
   }
-  update(produccion:TipoProduccion){
+  update(produccion:any){
     return this.http.put(`${environment.AUTH_API}Produccion`,produccion)
   }
-  delete(produccion:TipoProduccion){
+  delete(produccion:any){
     return this.http.delete(`${environment.AUTH_API}Produccion`)
   }
 

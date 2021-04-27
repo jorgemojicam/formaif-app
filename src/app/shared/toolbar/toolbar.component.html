@@ -113,6 +113,21 @@
                 </mat-list-item>
             </ng-container>
 
+            <ng-container *ngIf="modul=='admin'">
+
+                <mat-list-item [routerLink]="['produccion']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>category</mat-icon>
+                    <div mat-line>Produccion</div>
+                </mat-list-item>
+
+                <mat-list-item [routerLink]="['cuestionario']" routerLinkActive="active-list-item"
+                    [queryParams]="{solicitud:sol}">
+                    <mat-icon mat-list-icon>ballot</mat-icon>
+                    <div mat-line>Cuestionario</div>
+                </mat-list-item>
+            </ng-container>
+
             <mat-divider></mat-divider>
             <mat-list-item (click)="onLogout()">
                 <mat-icon mat-list-icon>power_settings_new</mat-icon>

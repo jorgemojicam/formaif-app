@@ -30,14 +30,15 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
-import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
-import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
+
 import { CuestionarioComponent } from './components/admin/admin-cuestionario/cuestionario/cuestionario.component';
 import { TemasFormComponent } from './components/admin/admin-cuestionario/temas-form/temas-form.component';
 import { PreguntasFormComponent } from './components/admin/admin-cuestionario/preguntas-form/preguntas-form.component';
 import { RespuestasFormComponent } from './components/admin/admin-cuestionario/respuestas-form/respuestas-form.component';
 import { AgilModule } from './components/agil/agil.module';
 import { AgilComponent } from "./components/agil/agil.component";  
+import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
+import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
 
 
 @NgModule({
@@ -58,13 +59,13 @@ import { AgilComponent } from "./components/agil/agil.component";
     ToolbarComponent,
     LobbyComponent,
     MebaComponent,
-    ProduccionComponent,
-    ProduccionFormComponent,
     CuestionarioComponent,
     TemasFormComponent,
     PreguntasFormComponent,
     RespuestasFormComponent,
-    AgilComponent
+    AgilComponent,
+    ProduccionComponent,
+    ProduccionFormComponent
     
   ],
   imports: [
