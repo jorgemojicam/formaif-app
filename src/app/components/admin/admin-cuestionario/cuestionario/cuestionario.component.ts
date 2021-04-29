@@ -39,6 +39,11 @@ export class CuestionarioComponent {
   }
 
   async loadCuestionario(id) {
+    this.arbolCuestionario = await this.buildCuestionario(id)
+    this.dataSource.data = this.arbolCuestionario;
+  }
+
+  async buildCuestionario(id) {
 
     let respuestas = await this.getRespuestas(id) as any[]
     let cuestion: CuestionarioNones[] = new Array()
@@ -67,6 +72,7 @@ export class CuestionarioComponent {
       objRespuesta.name = a.Texto
       objRespuesta.id = a.Id
       objRespuesta.form = 'Respuestas'
+      objPregunta.multiple = a.Multiple
       objRespuesta.theend = true
       objRespuesta.peso = a.Puntaje
       objRespuesta.father = a.Preguntas.Id
@@ -77,6 +83,9 @@ export class CuestionarioComponent {
           let ire = cuestion[ipr].children.findIndex(c => c.id === a.Preguntas.Id)
           cuestion[ipr].children[ire].children.push(objRespuesta)
         } else {
+          if (objRespuesta.id > 0) {
+            objPregunta.children.push(objRespuesta)
+          }
           cuestion[ipr].children.push(objPregunta)
         }
       } else {
@@ -90,8 +99,8 @@ export class CuestionarioComponent {
         cuestion.push(objtema)
       }
     });
-    this.arbolCuestionario = cuestion
-    this.dataSource.data = this.arbolCuestionario;
+    return cuestion
+
   }
 
   async getCuestionarios() {
@@ -127,6 +136,7 @@ export class CuestionarioComponent {
     console.log(node)
     this.openDialog(node.form, node, node.form)
   }
+
   onCreate(node) {
 
     let form = ''
@@ -165,6 +175,7 @@ export class CuestionarioComponent {
             console.log(err)
           })
         } else if (node.form == 'Preguntas') {
+          console.log(node.id)
           this._srvPreguntas.delete(node.id).subscribe((suc) => {
             Swal.fire('Información eliminada!', '', 'success')
           }, (err) => {
@@ -187,9 +198,31 @@ export class CuestionarioComponent {
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
+
       console.log(result)
-      //this.loadCuestionario(this.selectCuestionario)
+      let cuestion = new CuestionarioNones()
+      cuestion.id = result.Id
+      cuestion.name = result.Nombre
+
+      for (let i = 0; i < this.arbolCuestionario.length; i++) {
+        const ele = this.arbolCuestionario[i];
+
+        for (let p = 0; p < ele.children.length; p++) {
+          const element = ele.children[p];
+          if (element.id == result.Preguntas.Id) {
+
+            element.children.push(cuestion)
+            this.arbolCuestionario[i].children.push(element)
+            console.log('cosas -> ', this.arbolCuestionario)
+            break
+          }
+        }
+      }
+
+      //this.dataSource.data = null;
+      //this.dataSource.data = this.arbolCuestionario
+
     })
   }
 

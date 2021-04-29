@@ -11,16 +11,13 @@
             <mat-form-field>
                 <input type="number" matInput placeholder="Peso" formControlName="Peso">
             </mat-form-field>
-        </div>
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-slide-toggle formControlName="Multiple">Multiple</mat-slide-toggle>
-        </div>
+        </div>    
 
         <br>
         <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
         <div style="width: 100%; margin-top: 25px;">
             <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                <button type="submit" mat-raised-button [mat-dialog-close]="datos" [disabled]="!preguntasForm.valid" *ngIf="!loading"
+                <button type="submit" mat-raised-button [disabled]="!preguntasForm.valid" *ngIf="!loading"
                     color="primary">Guardar</button>
             </div>
             <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">

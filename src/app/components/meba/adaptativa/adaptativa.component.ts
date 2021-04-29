@@ -65,15 +65,17 @@ export class AdaptativaComponent implements OnInit {
 
         let preguntas = <FormArray>x.get("Preguntas")
         let pesodim = Utils.formatNumber(x.get("Peso").value)
-
+        
         let acumulado = 0
         preguntas.controls.forEach(pre => {
           let resultado = pre.get("Resultado").value
           let peso = pre.get("Peso").value
           if (resultado) {
-            let puntaje = resultado.Puntaje
+            let puntaje = resultado.Punaje
+
             let porcentaje = (peso / 100) * puntaje
             acumulado += porcentaje
+            
           }
         })
         let valortotal = (pesodim / 100) * acumulado

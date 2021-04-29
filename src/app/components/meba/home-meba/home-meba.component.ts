@@ -6,6 +6,13 @@ import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { AnalisismebaprodService } from 'src/app/services/analisismebaprod.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
+import * as html2pdf from "html2pdf.js";
+import { ResultadoMebaComponent } from '../resultado-meba/resultado-meba.component';
+import { Email } from 'src/app/model/email';
+import { EmailService } from 'src/app/services/email.service';
+import Swal from 'sweetalert2';
+import { Asesor } from 'src/app/model/asesor';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-home-meba',
@@ -16,23 +23,29 @@ export class HomeMebaComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['solicitud', 'gestion', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
+  @ViewChild(ResultadoMebaComponent, { static: false }) resultado: ResultadoMebaComponent;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   procesando = false
+  datasol: Solicitud;
 
   constructor(
     private srvSol: IdbSolicitudService,
     private _router: Router,
-    private _srvAnalisis: AnalisismebaprodService
+    private _srvAnalisis: AnalisismebaprodService,
+    private _srvEmail: EmailService,
+    private _srvToken: TokenStorageService
   ) { }
 
   ngAfterViewInit(): void {
 
     this.srvSol.get().subscribe((sol) => {
-      let solicitud = sol.filter(a => a.asesor == 2)
-      this.dataSource = new MatTableDataSource(solicitud);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      if (sol) {        
+        let solicitud = sol.filter(a => a.asesor == 2)
+        this.dataSource = new MatTableDataSource(solicitud);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
     })
 
   }
@@ -50,43 +63,104 @@ export class HomeMebaComponent implements AfterViewInit {
     if (navigator.onLine) {
 
       const numeroSolicitud: string = element.solicitud.toString();
-      let datasol = await this.getSolicitud(numeroSolicitud) as Solicitud
+      this.datasol = await this.getSolicitud(numeroSolicitud) as Solicitud
+      let datos = this.datasol
       let fechahoy = new Date()
 
-      let data = {
-        Cedula: datasol.cedula,
-        Solicitud: datasol.solicitud,
-        Produccion: {
-          Id: 1
-        },
-        FechaInicio: datasol.fechacreacion,
-        FechaFin: fechahoy,
-        Sucursal: {
-          Codigo: datasol.oficina
-        },
-        Analista: datasol.usuario
-      }
+      let asesores: Asesor = this._srvToken.getUser()
 
-      let idAnalisis = await this.setAnalisis(data)
-      console.log("Se carga el estudio a base de datos o cualquier cosa ", datasol)
+      Swal.fire({
+        title: '¿Desea Enviar el Resultado MEBA?',
+        html: `Se enviara email a:
+      <br><b>`+ asesores.Nombre + `</b>, 
+      <br><small>`+ asesores.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
+      <br><b>Solicitud :</b>` + numeroSolicitud + `
+      <br><b>Oficina :</b> `+ asesores.Sucursales.Nombre,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si, Enviar!',
+        cancelButtonText: 'No, Cancelar!',
+        reverseButtons: true,
+        allowOutsideClick: false
+      }).then(async (result) => {
+        if (result.isConfirmed) {
 
-      if (datasol.Sensibilidad) {
-        datasol.Sensibilidad.forEach(async element => {
-          if (element.nombre) {
-    
-            let dataprod = {
-              Produccion: {
-                Id: element.nombre.id
-              },
-              AnalisisMeba: {
-                Id: idAnalisis
+          Swal.fire({
+            title: 'Enviando analisis de credito!',
+            html: 'Por favor espere mientras se envia el analisis<br><b></b>',
+            allowOutsideClick: false,
+            didOpen: async () => {
+              Swal.showLoading()
+
+              const content = Swal.getContent()
+              if (content) {
+                const b = content.querySelector('b')
+                if (b) { 
+
+                  b.textContent = "Creando pdf..." 
+                  let pdfBase64: string = "";
+                  const resultado = this.resultado.reporte.nativeElement
+                  pdfBase64 = await this.createpdf(resultado, "MEBA_", numeroSolicitud, "p") as string
+                  this.datasol = null
+                    
+                  b.textContent = "Enviando email..."
+                  let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
+                  let envio = await this.send(pdfBase64, "", "Soporte", email)
+                     
+                  b.textContent = "Cargando en base de datos..."
+                  let data = {
+                    Cedula: datos.cedula,
+                    Solicitud: datos.solicitud,
+                    Produccion: {
+                      Id: 1
+                    },
+                    FechaInicio: datos.fechacreacion,
+                    FechaFin: fechahoy,
+                    Sucursal: {
+                      Codigo: datos.oficina
+                    },
+                    Analista: datos.usuario
+                  }
+            
+                  let idAnalisis = await this.setAnalisis(data)
+                  console.log("Se carga el estudio a base de datos o cualquier cosa ", datos)
+            
+                  if (datos.Sensibilidad) {
+                    datos.Sensibilidad.forEach(async element => {
+                      if (element.nombre) {
+            
+                        let dataprod = {
+                          Produccion: {
+                            Id: element.nombre.Id
+                          },
+                          AnalisisMeba: {
+                            Id: idAnalisis
+                          }
+                        }
+                        let anapro = await this.setAnalisisProduccion(dataprod)
+                      }
+                    });
+                  }
+                  
+                  Swal.close()
+                  Swal.fire('Enviado!', 'Se envio correctamente', 'success')
+                  this.procesando = false
+                  //let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
+                  //console.log(existeSolicitud)
+                  //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
+                  //console.log("Insertndo el carpeta digital",insertaCarpeta)
+
+                }
               }
             }
-            let anapro = await this.setAnalisisProduccion(dataprod)
-            console.log(anapro)
-          }
-        });
-      }
+          })
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          this.procesando = false
+          this.datasol = null
+          Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
+        }
+      })
+      
     }
 
   }
@@ -123,6 +197,50 @@ export class HomeMebaComponent implements AfterViewInit {
         (err) => {
           reject(err)
         })
+    })
+  }
+
+  createpdf(content, namefile, numeroSolicitud, orintation) {
+
+    const op = {
+      filename: namefile + numeroSolicitud + '.pdf',
+      image: { type: 'jpeg' },
+      html2canvas: {
+      },
+      margin: 15,
+      jsPDF: { format: 'a3', orientation: orintation }
+    }
+  
+    return new Promise(resolve => {
+      html2pdf().from(content).set(op).outputPdf()
+        .then((pdf) => {       
+          return resolve(btoa(pdf))
+        });
+    })
+  }
+
+  send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
+
+    let email: Email = new Email;
+    email.To = emailDir;
+    email.Subject = "Analisis de credito"
+    email.Body = `<h3>Buen dia, ` + nombreDir + ` </h3>
+              <p>A continuacion adjunto se encuentra el estudio MEBA</p>`
+    email.Base64Pdf = pdfBase64
+    email.Base64PdfAgro = pdfBase64Agro
+
+    return new Promise((resolve, reject) => {
+      this._srvEmail.Send(email).subscribe(
+        (su) => {
+          console.log('res envio email ',su)
+          return resolve(su)
+        },
+        (er) => {
+          console.log('err  ',er)
+          this.procesando = false
+          reject(er)
+        }
+      )
     })
   }
 

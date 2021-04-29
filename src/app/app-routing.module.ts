@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
 import { AuthGuard } from './helpers/auth.guard';
-import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
-import { CuestionarioComponent } from './components/admin/admin-cuestionario/cuestionario/cuestionario.component';
 
 const routes: Routes = [
   {
@@ -12,14 +10,9 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'produccion',
-    component: ProduccionComponent
-
-  },
-  {
-    path: 'cuestion',
-    component: CuestionarioComponent
-
+    path: 'lobby',
+    redirectTo: 'lobby',
+    canActivate: [AuthGuard]
   },
   {
     path: 'admin',

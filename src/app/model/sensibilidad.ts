@@ -1,10 +1,14 @@
 export class Sensibilidad {
-    cientifico: string;
-    name: string;
-    ph: number;
-    precipitacion: number;
-    temperatura: number;
-    globo: number;
-    nombre:{id:number;name:string}
+
+    nombre: {
+        Global: number
+        Id: number
+        Nombre: string
+        NombreCientifico: string
+        Ph: number
+        Precipitacion: number
+        Temperatura: number
+        TipoProduccion: number
+    }
 
 }

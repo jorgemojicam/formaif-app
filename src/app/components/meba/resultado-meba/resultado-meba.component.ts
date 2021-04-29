@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EChartsOption, number } from 'echarts';
+import { EChartsOption } from 'echarts';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { Solicitud } from 'src/app/model/solicitud';
 import Utils from 'src/app/utils';
@@ -13,6 +13,8 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 })
 export class ResultadoMebaComponent implements OnInit {
 
+  @ViewChild('reporte') reporte: ElementRef
+  @Input() datossol: Solicitud
   options: EChartsOption;
   dataSolicitud: Solicitud = new Solicitud();
   sol;
@@ -24,16 +26,24 @@ export class ResultadoMebaComponent implements OnInit {
     public srvSol: IdbSolicitudService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
       this.sol = params.get('solicitud')
     });
 
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
-      if (this.sol) {
-        this.dataSolicitud = datasol as Solicitud
-        this.options = this.optionChar(this.dataSolicitud.Sensibilidad) as EChartsOption
+    if (!this.datossol) {
+      this.dataSolicitud = await this.getSolicitud() as Solicitud
+    } else {
+      console.log("entro datos sol resultado ",this.datossol)
+      this.dataSolicitud = this.datossol
+    }
 
+    if (this.dataSolicitud) {
+      
+      this.options = this.optionChar(this.dataSolicitud.Sensibilidad) as EChartsOption
+
+      if (this.dataSolicitud.dimensiones) {
+        
         for (let a = 0; a < this.dataSolicitud.dimensiones.length; a++) {
           let adapta = this.dataSolicitud.dimensiones[a];
 
@@ -50,34 +60,42 @@ export class ResultadoMebaComponent implements OnInit {
               }
             }
           }
-
           if (min == Number.POSITIVE_INFINITY)
             min = 0
 
           adapta.preguntas = pre
           this.adaptativa.push(adapta)
         }
+      }
 
-        for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
-          let verifica = this.dataSolicitud.verificacion[a];
-
+      for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
+        let verifica = this.dataSolicitud.verificacion[a];
+        if (verifica.preguntas) {
           for (let ve = 0; ve < verifica.preguntas.length; ve++) {
-            
-            const preguntas = verifica.preguntas[ve];            
+
+            const preguntas = verifica.preguntas[ve];
             let total = Utils.formatFloat(preguntas.total)
-            
+
             if (total < 3) {
-              this.verificacion.push(preguntas)
-              console.log(preguntas)
+              this.verificacion.push(preguntas)           
             }
 
           }
-
-
         }
-      }
-    })
 
+
+      }
+    }
+
+
+  }
+  getSolicitud() {
+    return new Promise((resolve, reject) => {
+      this.srvSol.getSol(this.sol).subscribe(
+        (d) => {
+          resolve(d)
+        })
+    })
   }
 
   optionChar(sensibilidad: Sensibilidad[]): EChartsOption {
@@ -87,8 +105,8 @@ export class ResultadoMebaComponent implements OnInit {
     let globos = new Array()
     for (let i = 0; i < sensibilidad.length; i++) {
       const se = sensibilidad[i];
-      globos.push(se.globo)
-      let name = se.nombre.name
+      globos.push(se.nombre.Global)
+      let name = se.nombre.Nombre
       dataA.push(name)
     }
 

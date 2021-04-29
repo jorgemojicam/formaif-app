@@ -86,7 +86,7 @@ export class AuthComponent implements OnInit {
           }
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(perfil);
-          this.route.navigate(['home']);
+          this.route.navigate(['lobby']);
           this.getRespuestas()
           this.isLogged = false
         },
@@ -122,7 +122,7 @@ export class AuthComponent implements OnInit {
               });
             }
           )
-          this.route.navigate(['home']);
+          this.route.navigate(['lobby']);
           this.isLogged = false
           this.getRespuestas()
         },
@@ -207,6 +207,9 @@ export class AuthComponent implements OnInit {
           let ire = cuestion[ipr].Preguntas.findIndex(c => c.Id === a.Preguntas.Id)
           cuestion[ipr].Preguntas[ire].Respuestas.push(objRespuesta)
         } else {
+          if (objRespuesta.Id > 0) {
+            objPregunta.Respuestas.push(objRespuesta)
+          }
           cuestion[ipr].Preguntas.push(objPregunta)
         }
       } else {
