@@ -5,6 +5,6 @@ export class Sensibilidad {
     precipitacion: number;
     temperatura: number;
     globo: number;
-    nombre:{id:number}
+    nombre:{id:number;name:string}
 
 }

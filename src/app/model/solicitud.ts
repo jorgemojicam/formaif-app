@@ -24,7 +24,7 @@ export class Solicitud {
     Flujo:any[];
     dimensiones:Adaptativa[];
     verificacion:Verificacion[];
-    totalAdaptativa:string;
+    totalAdaptativa:any;
     Sensibilidad:Sensibilidad[]
 
 }

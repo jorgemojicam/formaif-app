@@ -38,14 +38,16 @@ export class ResultadoMebaComponent implements OnInit {
           let adapta = this.dataSolicitud.dimensiones[a];
 
           var min = Number.POSITIVE_INFINITY
-          var pre: any
-          var tmp;
+          var pre: any = {}
+          var tmp = 0;
 
           for (let mi = 0; mi < adapta.preguntas.length; mi++) {
-            tmp = adapta.preguntas[mi].resultado.puntaje;
-            if (tmp < min) {
-              min = tmp
-              pre = adapta.preguntas[mi].resultado;
+            if (adapta.preguntas[mi].resultado) {
+              tmp = adapta.preguntas[mi].resultado.puntaje;
+              if (tmp < min) {
+                min = tmp
+                pre = adapta.preguntas[mi].resultado;
+              }
             }
           }
 
@@ -58,11 +60,19 @@ export class ResultadoMebaComponent implements OnInit {
 
         for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
           let verifica = this.dataSolicitud.verificacion[a];
-          let total = Utils.formatFloat(verifica.total)
 
-          if (total < 3) {
-            this.verificacion.push(verifica)
+          for (let ve = 0; ve < verifica.preguntas.length; ve++) {
+            
+            const preguntas = verifica.preguntas[ve];            
+            let total = Utils.formatFloat(preguntas.total)
+            
+            if (total < 3) {
+              this.verificacion.push(preguntas)
+              console.log(preguntas)
+            }
+
           }
+
 
         }
       }
@@ -78,8 +88,7 @@ export class ResultadoMebaComponent implements OnInit {
     for (let i = 0; i < sensibilidad.length; i++) {
       const se = sensibilidad[i];
       globos.push(se.globo)
-      let cont = i + 1
-      let name = i == 0 ? 'Principal' : 'Actividad ' + cont
+      let name = se.nombre.name
       dataA.push(name)
     }
 
@@ -110,7 +119,7 @@ export class ResultadoMebaComponent implements OnInit {
           type: 'category',
           data: dataA
         },
-        series: {         
+        series: {
           type: 'bar',
           color: 'grey',
           data: globos

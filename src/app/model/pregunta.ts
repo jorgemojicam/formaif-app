@@ -7,6 +7,7 @@ export class Pregunta {
     Peso:number;
     Multiple:boolean;
     Respuestas:Respuestas[];
+    total:number;
     resultado: {
         texto: string;
         puntaje: number

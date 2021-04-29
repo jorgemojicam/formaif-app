@@ -34,7 +34,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private authServ: AuthService,
     private _srvRespuesta: RespuestasService,
-    private _srvProduccion:ProduccionService,
+    private _srvProduccion: ProduccionService,
     private _srvIdb: IdbService,
     private route: Router,
     private tokenStorage: TokenStorageService,
@@ -58,7 +58,7 @@ export class AuthComponent implements OnInit {
     if (dom.toLocaleLowerCase() == "soporte") {
       user.Username = use
       this.authServ.login(user).subscribe(
-        (res) => {          
+        (res) => {
           let perfil: Asesor = {
             Nombre: use,
             Iniciales: "N/A",
@@ -113,7 +113,7 @@ export class AuthComponent implements OnInit {
           this.ofiServ.getOficina(user.Username).subscribe(
             (ofi) => {
               if (ofi) {
-                this.tokenStorage.saveUser(ofi);                
+                this.tokenStorage.saveUser(ofi);
               }
             },
             (err) => {
@@ -158,9 +158,9 @@ export class AuthComponent implements OnInit {
 
     this._srvRespuesta.getByCuestionario(2).subscribe(
       (a) => {
-        let dim = this.loadCuestionario(a)
+        let med = this.loadCuestionario(a)
         this._srvIdb.delete('medidas')
-        this._srvIdb.save('medidas', dim)
+        this._srvIdb.save('medidas', med)
       },
       (err) => {
 
@@ -168,10 +168,10 @@ export class AuthComponent implements OnInit {
     )
 
     this._srvProduccion.get().subscribe(
-      (a)=>{
+      (a) => {
         this._srvIdb.delete('produccion')
         this._srvIdb.save('produccion', a)
-      },(err)=>{
+      }, (err) => {
 
       }
     )
@@ -210,6 +210,12 @@ export class AuthComponent implements OnInit {
           cuestion[ipr].Preguntas.push(objPregunta)
         }
       } else {
+        if (objPregunta.Id > 0) {
+          if (objRespuesta.Id > 0) {
+            objPregunta.Respuestas.push(objRespuesta)
+          }
+          objtema.Preguntas.push(objPregunta)
+        }
         cuestion.push(objtema)
       }
 

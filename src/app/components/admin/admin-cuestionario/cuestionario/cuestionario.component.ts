@@ -1,12 +1,14 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {  MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Cuestionario } from 'src/app/model/cuestionario';
 import { CuestionarioNones } from 'src/app/model/cuestionnodes';
 import { CuestionarioService } from 'src/app/services/cuestionario.service';
+import { PreguntasService } from 'src/app/services/preguntas.service';
 import { RespuestasService } from 'src/app/services/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cuestionario',
@@ -26,6 +28,7 @@ export class CuestionarioComponent {
   constructor(
     private _srvCuestionario: CuestionarioService,
     private _srvRespuesta: RespuestasService,
+    private _srvPreguntas: PreguntasService,
     public dialog: MatDialog,
   ) {
     this.initalize()
@@ -65,6 +68,7 @@ export class CuestionarioComponent {
       objRespuesta.id = a.Id
       objRespuesta.form = 'Respuestas'
       objRespuesta.theend = true
+      objRespuesta.peso = a.Puntaje
       objRespuesta.father = a.Preguntas.Id
 
       if (cuestion.some(e => e.id === a.Preguntas.Temas.Id)) {
@@ -77,7 +81,7 @@ export class CuestionarioComponent {
         }
       } else {
 
-        if (objPregunta.id > 0) { 
+        if (objPregunta.id > 0) {
           if (objRespuesta.id > 0) {
             objPregunta.children.push(objRespuesta)
           }
@@ -87,7 +91,7 @@ export class CuestionarioComponent {
       }
     });
     this.arbolCuestionario = cuestion
-    this.dataSource.data = this.arbolCuestionario;    
+    this.dataSource.data = this.arbolCuestionario;
   }
 
   async getCuestionarios() {
@@ -135,6 +139,42 @@ export class CuestionarioComponent {
       father: node.id
     }
     this.openDialog(`Crear ${form}`, datos, form)
+  }
+
+  onDelete(node) {
+
+    if (node.children) {
+      if (node.children.length > 0) {
+        Swal.fire(`No es posible eliminar, contiene ${node.children.length} ${node.children[0].form}`, '', 'error')
+        return
+      }
+    }
+
+    Swal.fire({
+      title: 'Se eliminara permanentemente la informacion ¿Esta seguro de eliminarla?',
+      showDenyButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (node.form == 'Respuestas') {
+          this._srvRespuesta.delete(node.id).subscribe((suc) => {
+            Swal.fire('Información eliminada!', '', 'success')
+          }, (err) => {
+            Swal.fire('No se pudo eliminar registro', '', 'error')
+            console.log(err)
+          })
+        } else if (node.form == 'Preguntas') {
+          this._srvPreguntas.delete(node.id).subscribe((suc) => {
+            Swal.fire('Información eliminada!', '', 'success')
+          }, (err) => {
+            Swal.fire('No se pudo eliminar registro', '', 'error')
+            console.log(err)
+          })
+        }
+
+      }
+    })
   }
 
   openDialog(menssage: string, datos: any, form: string) {

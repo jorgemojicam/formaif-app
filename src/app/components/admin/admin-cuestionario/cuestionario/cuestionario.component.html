@@ -21,13 +21,18 @@
                 {{ (node.name.length>25)? (node.name | slice:0:25)+'..':(node.name) }}
             </div>
             <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                <button mat-icon-button (click)="onEdit(node)">
+                <button mat-icon-button color="primary" *ngIf="!node.theend" (click)="onCreate(node)">
+                    <mat-icon>add_circle_outline</mat-icon>
+                </button>
+            </div>
+            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                <button mat-icon-button color="accent" (click)="onEdit(node)">
                     <mat-icon>edit</mat-icon>
                 </button>
             </div>
             <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                <button mat-icon-button *ngIf="!node.theend" (click)="onCreate(node)">
-                    <mat-icon>add_circle</mat-icon>
+                <button color="warn" (click)="onDelete(node)" mat-icon-button>
+                    <mat-icon>delete</mat-icon>
                 </button>
             </div>
         </li>
@@ -44,13 +49,19 @@
                     {{ (node.name.length>25)? (node.name | slice:0:25)+'..':(node.name) }}
                 </div>
                 <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                    <button mat-icon-button (click)="onEdit(node)">
-                        <mat-icon>edit</mat-icon>
+                    <button mat-icon-button color="primary" *ngIf="!node.theend" (click)="onCreate(node)">
+                        <mat-icon>add_circle_outline</mat-icon>
                     </button>
                 </div>
                 <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                    <button mat-icon-button *ngIf="!node.theend" (click)="onCreate(node)">
-                        <mat-icon>add_circle</mat-icon>
+                    <button color="accent" mat-icon-button (click)="onEdit(node)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </div>
+
+                <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                    <button color="warn" (click)="onDelete(node)" mat-icon-button>
+                        <mat-icon>delete</mat-icon>
                     </button>
                 </div>
             </div>

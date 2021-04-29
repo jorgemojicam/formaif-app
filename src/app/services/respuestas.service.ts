@@ -28,7 +28,7 @@ export class RespuestasService {
   update(produccion:any){
     return this.http.put(`${environment.AUTH_API}Respuestas`,produccion)
   }
-  delete(produccion:any){
-    return this.http.delete(`${environment.AUTH_API}Respuestas`)
+  delete(id){
+    return this.http.delete(`${environment.AUTH_API}Respuestas?id=${id}`)
   }
 }

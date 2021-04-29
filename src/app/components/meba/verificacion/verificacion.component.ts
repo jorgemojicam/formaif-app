@@ -7,6 +7,7 @@ import { Verificacion } from 'src/app/model/verificacion';
 import { VerificacionService } from 'src/app/services/verificacion.service';
 import Utils from '../../../utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
+import { IdbService } from 'src/app/services/idb.service';
 
 @Component({
   selector: 'app-verificacion',
@@ -23,7 +24,7 @@ export class VerificacionComponent implements OnInit {
   dVerificacion: Verificacion[] = [];
 
   constructor(
-    private serVer: VerificacionService,
+    private _srvIdb: IdbService,
     private _formbuild: FormBuilder,
     public srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
@@ -62,22 +63,22 @@ export class VerificacionComponent implements OnInit {
       //Construye el array de preguntas 
       await this.loadPreguntas(this.dSolicitud.verificacion, 0)
     } else {
-      await this.loadPreguntas(this.dataVerificacion.Medidas, 0)
+      await this.loadPreguntas(this.dataVerificacion, 0)
     }
 
     this.verificacionForm.get('verificacion').valueChanges.subscribe(values => {
       const verifica = <FormArray>this.verificacionForm.controls['verificacion'];
 
       verifica.controls.forEach(x => {
-        let preguntas = <FormArray>x.get("preguntas")
+        let preguntas = <FormArray>x.get("Preguntas")
         let acumulado = 0
 
         preguntas.controls.forEach(pre => {
 
-          let resultado = pre.get("resultado").value
-          let multiple = pre.get("multiple").value
+          let resultado = pre.get("Resultado").value
+          let multiple = pre.get("Multiple").value
           let total = pre.get("total").value
-          let peso = pre.get("peso").value / 100
+          let peso = pre.get("Peso").value / 100
           if (resultado) {
             if (multiple) {
               let check1 = 0
@@ -132,16 +133,15 @@ export class VerificacionComponent implements OnInit {
   async loadPreguntas(aPreguntas: any[], total) {
 
     let arrayForm = this._formbuild.array([])
-
+ 
     aPreguntas.forEach(element => {
 
       arrayForm.push(
         this._formbuild.group({
-          name: [element.name],
+          Nombre: [element.Nombre],
           aplicapregunta: [element.aplicapregunta],
-          preguntas: this.loadRespuestas(element.preguntas),
+          Preguntas: this.loadRespuestas(element.Preguntas),
           total: [element.total]
-
         })
       )
     });
@@ -163,12 +163,12 @@ export class VerificacionComponent implements OnInit {
 
     respuestas.forEach(pre => {
       aRespuestas.push(this._formbuild.group({
-        titulo: [pre.titulo],
-        respuestas: [pre.respuestas],
-        peso: [pre.peso],
+        Titulo: [pre.titulo],
+        Respuestas: [pre.Respuestas],
+        Peso: [pre.Peso],
         total: [pre.total],
-        multiple: [pre.multiple],
-        resultado: [pre.resultado]
+        Multiple: [pre.Multiple],
+        Resultado: [pre.Resultado]
       }))
     });
     return aRespuestas
@@ -183,7 +183,7 @@ export class VerificacionComponent implements OnInit {
    */
   getPreguntas() {
     return new Promise((resolve, reject) => {
-      this.serVer.Get().subscribe(
+      this._srvIdb.get('medidas').subscribe(
         (data) => {
           resolve(data)
         })
@@ -209,13 +209,13 @@ export class VerificacionComponent implements OnInit {
     return this.verificacionForm.get('verificacion') as FormArray;
   }
   preguntas(ti): FormArray {
-    return this.verificacion().at(ti).get("preguntas") as FormArray
+    return this.verificacion().at(ti).get("Preguntas") as FormArray
   }
 
   clear(event, pre) {
 
     if (!event.checked) {
-      let preguntas = this.verificacion().at(pre).get("preguntas") as FormArray
+      let preguntas = this.verificacion().at(pre).get("Preguntas") as FormArray
       preguntas.controls.forEach(element => {
         element.patchValue({
           resultado: ""

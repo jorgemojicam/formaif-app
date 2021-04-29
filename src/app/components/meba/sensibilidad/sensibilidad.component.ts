@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
-import DataSelect from '../../../data-select/dataselect.json';
 import { EChartsOption } from 'echarts';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { ActivatedRoute } from '@angular/router';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
+import { IdbService } from 'src/app/services/idb.service';
 
 @Component({
   selector: 'app-sensibilidad',
@@ -19,7 +19,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 export class SensibilidadComponent implements OnInit {
 
   actividadesForm: FormGroup
-  DataSensibilidad = DataSelect.Sensibilidad
+  DataSensibilidad: any = new Array()
   dataSolicitud: Solicitud = new Solicitud();
   dataSen: [] = [];
   selected = new FormControl(0);
@@ -30,7 +30,8 @@ export class SensibilidadComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    public srvSol: IdbSolicitudService
+    public srvSol: IdbSolicitudService,
+    private _srvIdb: IdbService,
   ) {
 
     this.actividadesForm = this._formBuilder.group({
@@ -44,10 +45,8 @@ export class SensibilidadComponent implements OnInit {
       if (this.sol) {
 
         this.dataSolicitud = datasol as Solicitud
-        console.log(this.dataSolicitud)
         if (this.dataSolicitud.Sensibilidad) {
-          console.log("tiene data pues")
-          this.loadActividad(this.dataSolicitud.Sensibilidad)          
+          this.loadActividad(this.dataSolicitud.Sensibilidad)
         }
       }
 
@@ -60,20 +59,8 @@ export class SensibilidadComponent implements OnInit {
           if (element) {
             this.arrayOptions[index] = this.optionChar(element) as EChartsOption
           }
-          let name = element.name
-          let cientifico = element.cientifico
-          let temperatura = element.temperatura
-          let precipitacion = element.precipitacion
-          let ph = element.ph
-          let globo = element.globo
-
           x.patchValue({
-            name: name,
-            cientifico: cientifico,
-            temperatura: temperatura,
-            precipitacion: precipitacion,
-            ph: ph,
-            globo: globo
+            name: element.name     
           }, { emitEvent: false })
 
         })
@@ -87,9 +74,21 @@ export class SensibilidadComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.DataSensibilidad = await this.getProduccion() 
+  }
 
-
+  getProduccion() {
+    return new Promise((resolve, reject) => {
+      this._srvIdb.get('produccion').subscribe(
+        (a) => {
+          return resolve(a)
+        },
+        (err) => {
+          reject([])
+        }
+      )
+    });
   }
 
   optionChar(form: any): EChartsOption {
@@ -97,9 +96,9 @@ export class SensibilidadComponent implements OnInit {
     let options: EChartsOption
 
     if (form) {
-      let temperatura = form.temperatura
-      let precipitacion = form.precipitacion
-      let ph = form.ph
+      let temperatura = form.Temperatura
+      let precipitacion = form.Precipitacion
+      let ph = form.Ph
 
       options = {
         tooltip: {
@@ -151,20 +150,15 @@ export class SensibilidadComponent implements OnInit {
   }
 
   displayFn(user: any): string {
-    return user && user.name ? user.name : '';
+    return user && user.Nombre ? user.Nombre : '';
   }
   _filter(name: any): Observable<any[]> {
-    const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.name.toLowerCase())
-    return this.DataSensibilidad.filter(option => option.name.toLowerCase().indexOf(filterValue) >= 0);
+      const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.Nombre.toLowerCase())
+      return this.DataSensibilidad.filter(option => option.Nombre.toLowerCase().indexOf(filterValue) >= 0);    
   }
   itemActividad() {
     return this._formBuilder.group({
-      nombre: [''],
-      cientifico: [''],
-      temperatura: [''],
-      precipitacion: [''],
-      ph: [''],
-      globo: ['']
+      nombre: ['']    
     })
 
   }
@@ -179,14 +173,8 @@ export class SensibilidadComponent implements OnInit {
 
       this.arrayOptions[se] = this.optionChar(sens.nombre) as EChartsOption
       sensibilidadArray.push(
-        
         this._formBuilder.group({
-          nombre: [sens.nombre],
-          cientifico: [sens.cientifico],
-          temperatura: [sens.temperatura],
-          precipitacion: [sens.precipitacion],
-          ph: [sens.ph],
-          globo: [sens.globo]
+          nombre: [sens.nombre]     
         })
       )
     }

@@ -4,7 +4,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute } from '@angular/router';
 import { Adaptativa } from 'src/app/model/adaptativa';
 import { Solicitud } from 'src/app/model/solicitud';
-import { CapacidadAdaptativaService } from 'src/app/services/capacidad-adaptativa.service';
+import { IdbService } from 'src/app/services/idb.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -16,7 +16,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 export class AdaptativaComponent implements OnInit {
 
   //Data
-  @ViewChild(MatAccordion) accordion: MatAccordion;  
+  @ViewChild(MatAccordion) accordion: MatAccordion;
   dataAdaptativa: any
   adaptativoForm: FormGroup
   aDimensiones: any[]
@@ -26,7 +26,7 @@ export class AdaptativaComponent implements OnInit {
   expandAll = false
 
   constructor(
-    private serAdap: CapacidadAdaptativaService,
+    private _srvIdb: IdbService,
     private _formbuild: FormBuilder,
     public srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
@@ -55,7 +55,7 @@ export class AdaptativaComponent implements OnInit {
       //Construye el array de preguntas 
       await this.loadPreguntas(this.dSolicitud.dimensiones, this.dSolicitud.totalAdaptativa)
     } else {
-      await this.loadPreguntas(this.dataAdaptativa.dimensiones, 0)
+      await this.loadPreguntas(this.dataAdaptativa, 0)
     }
 
     this.adaptativoForm.get('dimensiones').valueChanges.subscribe(values => {
@@ -63,15 +63,15 @@ export class AdaptativaComponent implements OnInit {
       let totaladapta = 0
       adaptativa.controls.forEach(x => {
 
-        let preguntas = <FormArray>x.get("preguntas")
-        let pesodim = Utils.formatNumber(x.get("peso").value)
+        let preguntas = <FormArray>x.get("Preguntas")
+        let pesodim = Utils.formatNumber(x.get("Peso").value)
 
         let acumulado = 0
         preguntas.controls.forEach(pre => {
-          let resultado = pre.get("resultado").value
-          let peso = pre.get("peso").value
+          let resultado = pre.get("Resultado").value
+          let peso = pre.get("Peso").value
           if (resultado) {
-            let puntaje = resultado.puntaje
+            let puntaje = resultado.Puntaje
             let porcentaje = (peso / 100) * puntaje
             acumulado += porcentaje
           }
@@ -79,34 +79,29 @@ export class AdaptativaComponent implements OnInit {
         let valortotal = (pesodim / 100) * acumulado
         totaladapta += valortotal
         x.patchValue({
-          total: acumulado.toFixed(2)
+          total: isFinite(acumulado) ? acumulado.toFixed(2) : 0
         }, { emitEvent: false })
       })
-
+ 
       this.adaptativoForm.patchValue({
-        totalAdaptativa: totaladapta.toFixed(3)
+        totalAdaptativa: isFinite(totaladapta) ? totaladapta.toFixed(3) : 0
       }, { emitEvent: false });
 
       this.dAdaptativa = this.adaptativoForm.value.dimensiones
       this.dSolicitud.dimensiones = this.dAdaptativa
-      this.dSolicitud.totalAdaptativa = totaladapta.toFixed(3)
+      this.dSolicitud.totalAdaptativa = isFinite(totaladapta) ? totaladapta.toFixed(3) : 0
       this.srvSol.saveSol(this.sol, this.dSolicitud)
     })
-
-
   }
 
   async loadPreguntas(aPreguntas: any[], totalAdap) {
-
     let arrayForm = this._formbuild.array([])
-
     aPreguntas.forEach(element => {
-
       arrayForm.push(
         this._formbuild.group({
-          dimension: [element.dimension],
-          peso: [element.peso],
-          preguntas: this.loadRespuestas(element.preguntas),
+          Nombre: [element.Nombre],
+          Peso: [element.Peso],
+          Preguntas: this.loadRespuestas(element.Preguntas),
           total: [element.total]
         })
       )
@@ -120,27 +115,27 @@ export class AdaptativaComponent implements OnInit {
   }
 
   /**
-     * Autor: Jorge Enrique Mojica Martinez
-     * Fecha: 2021-03-14
-     * Nombre: loadRespuestas
-     * Descripcion : funcion para construir el array del formulario en el cual se cargan los elementos con
-     * los datos si existen las respuestas con resultado
-     * 
-     * @param {Array} respuestas el arreglo de preguntas que se van a contruir     
-     * 
-     * @returns {FormArray} aRespuestas el array del formulario que se itera en la vista
-     */
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-03-14
+   * Nombre: loadRespuestas
+   * Descripcion : funcion para construir el array del formulario en el cual se cargan los elementos con
+   * los datos si existen las respuestas con resultado
+   * 
+   * @param {Array} respuestas el arreglo de preguntas que se van a contruir     
+   * 
+   * @returns {FormArray} aRespuestas el array del formulario que se itera en la vista
+   */
   loadRespuestas(respuestas): FormArray {
     let aRespuestas: FormArray = this._formbuild.array([])
 
     respuestas.forEach(pre => {
 
       aRespuestas.push(this._formbuild.group({
-        descripcion: [pre.descripcion],
-        peso: [pre.peso],
-        respuestas: [pre.respuestas],
-        multiple: [pre.multiple],
-        resultado: [pre.resultado]
+        Titulo: [pre.Titulo],
+        Peso: [pre.Peso],
+        Respuestas: [pre.Respuestas],
+        Multiple: [pre.Multiple],
+        Resultado: [pre.Resultado]
       }))
     });
     return aRespuestas
@@ -155,8 +150,9 @@ export class AdaptativaComponent implements OnInit {
    */
   getPreguntas() {
     return new Promise((resolve, reject) => {
-      this.serAdap.getCapacidadAdap().subscribe(
+      this._srvIdb.get('dimenciones').subscribe(
         (data) => {
+          console.log(data)
           resolve(data)
         })
     })
@@ -176,12 +172,11 @@ export class AdaptativaComponent implements OnInit {
     })
   }
 
-
   adaptativa() {
     return this.adaptativoForm.get('dimensiones') as FormArray;
   }
   preguntas(ti): FormArray {
-    return this.adaptativa().at(ti).get("preguntas") as FormArray
+    return this.adaptativa().at(ti).get("Preguntas") as FormArray
   }
 
   expand() {
