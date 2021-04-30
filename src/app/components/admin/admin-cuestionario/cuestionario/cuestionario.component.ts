@@ -199,29 +199,32 @@ export class CuestionarioComponent {
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
+      if (result) {
+        if (form == "Respuestas") {
+          console.log('lo que returno ', form)
+          let cuestion = new CuestionarioNones()
+          cuestion.id = result.Id
+          cuestion.name = result.Texto
+          cuestion.form = form
+          cuestion.peso = result.Puntaje
+          cuestion.theend = true
+          cuestion.father = result.Preguntas.Id
 
-      console.log(result)
-      let cuestion = new CuestionarioNones()
-      cuestion.id = result.Id
-      cuestion.name = result.Nombre
-
-      for (let i = 0; i < this.arbolCuestionario.length; i++) {
-        const ele = this.arbolCuestionario[i];
-
-        for (let p = 0; p < ele.children.length; p++) {
-          const element = ele.children[p];
-          if (element.id == result.Preguntas.Id) {
-
-            element.children.push(cuestion)
-            this.arbolCuestionario[i].children.push(element)
-            console.log('cosas -> ', this.arbolCuestionario)
-            break
+          for (let i = 0; i < this.arbolCuestionario.length; i++) {
+            const ele = this.arbolCuestionario[i];
+            for (let p = 0; p < ele.children.length; p++) {
+              const element = ele.children[p];
+              if (element.id == result.Preguntas.Id) {
+                this.arbolCuestionario[i].children[p].children.push(cuestion)
+                break
+              }
+            }
           }
+
+          this.dataSource.data = null;
+          this.dataSource.data = this.arbolCuestionario
         }
       }
-
-      //this.dataSource.data = null;
-      //this.dataSource.data = this.arbolCuestionario
 
     })
   }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Respuestas } from 'src/app/model/respuestas';
 import { RespuestasService } from 'src/app/services/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
@@ -17,7 +18,7 @@ export class RespuestasFormComponent implements OnInit {
   public respuestasForm = new FormGroup({
     Id: new FormControl(0),
     Texto: new FormControl(''),
-    Puntaje: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
+    Puntaje: new FormControl('', [Validators.required, Validators.min(-99), Validators.max(100)]),
     Preguntas: new FormControl('')
   });
   loading: boolean = false
@@ -55,8 +56,8 @@ export class RespuestasFormComponent implements OnInit {
       this._srvRespuestas.update(respuestas).subscribe(
         (suss) => {
 
-          if (suss) {      
-            this._snackBar.open('Se inserto correctamente', "Ok!", { duration: 3000, });           
+          if (suss) {
+            this._snackBar.open('Se inserto Correctamente', "Ok!", { duration: 3000, });
           } else {
             this._snackBar.open('!Error! no se inserto', "Ok!", { duration: 3000, });
           }
@@ -70,16 +71,18 @@ export class RespuestasFormComponent implements OnInit {
     } else {
       this._srvRespuestas.create(respuestas).subscribe(
         (suss) => {
-     
-          if (suss) {     
-            this._snackBar.open('Se inserto correctamente', "Ok!", { duration: 3000, });  
-            this.dialogRef.close(respuestas)
-          } else {
-            this._snackBar.open('!Error! no se inserto', "Ok!", { duration: 3000, });
+          if (suss) {
+            let res = suss as Respuestas
+            if (res.Id > 0) {
+              this._snackBar.open('Se inserto Correctamente', "Ok!", { duration: 3000, });
+              this.dialogRef.close(res)
+            } else {
+              this._snackBar.open('!Error! no se inserto', "Ok!", { duration: 3000, });
+            }
           }
           this.loading = false
         }, (err) => {
-          console.log(err)
+         
           this.loading = false
         }
       )
