@@ -72,7 +72,6 @@ export class CuestionarioComponent {
       objRespuesta.name = a.Texto
       objRespuesta.id = a.Id
       objRespuesta.form = 'Respuestas'
-      objPregunta.multiple = a.Multiple
       objRespuesta.theend = true
       objRespuesta.peso = a.Puntaje
       objRespuesta.father = a.Preguntas.Id
@@ -200,8 +199,9 @@ export class CuestionarioComponent {
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
+        console.log('lo que returno Respuestas', result)
         if (form == "Respuestas") {
-          console.log('lo que returno ', form)
+          console.log('respuestas form -> ', form)
           let cuestion = new CuestionarioNones()
           cuestion.id = result.Id
           cuestion.name = result.Texto
@@ -218,6 +218,27 @@ export class CuestionarioComponent {
                 this.arbolCuestionario[i].children[p].children.push(cuestion)
                 break
               }
+            }
+          }
+
+          this.dataSource.data = null;
+          this.dataSource.data = this.arbolCuestionario
+        } else if (form == 'Preguntas') {
+          console.log('respuestas form -> ', form)
+          let cuestion = new CuestionarioNones()
+          cuestion.id = result.Id
+          cuestion.name = result.Titulo
+          cuestion.form = form
+          cuestion.peso = result.Puntaje
+          cuestion.multiple = result.Multiple
+          cuestion.theend = false
+          cuestion.father = result.Temas.Id
+
+          for (let i = 0; i < this.arbolCuestionario.length; i++) {
+            const ele = this.arbolCuestionario[i];
+            if (ele.id == result.Temas.Id) {
+              this.arbolCuestionario[i].children.push(cuestion)
+              break
             }
           }
 

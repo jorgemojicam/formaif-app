@@ -72,6 +72,7 @@ export class HomeComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
   onInitSol() {
     const msg = 'Crear Solicitud';
     this.openDialog(msg);
@@ -95,6 +96,7 @@ export class HomeComponent implements AfterViewInit {
       })
     })
   }
+
   onLoad() {
     this.srvSol.get().subscribe((sol) => {
       this.dataSource = new MatTableDataSource(sol);
@@ -102,14 +104,16 @@ export class HomeComponent implements AfterViewInit {
       this.dataSource.sort = this.sort;
     })
   }
+
   onLogout() {
     this.tokenStorage.signOut()
     this.route.navigate(['auth'])
   }
 
   onGestion(element) {
-    this.route.navigate(['admin/balance'], { queryParams: { solicitud: element.solicitud } })
+    this.route.navigate(['agil/balance'], { queryParams: { solicitud: element.solicitud } })
   }
+  
   onDelete(element) {
     let solicitud = element.solicitud
     Swal.fire({
@@ -135,7 +139,6 @@ export class HomeComponent implements AfterViewInit {
       }
     })
   }
-
 
   async onSend(element) {
 
@@ -241,6 +244,7 @@ export class HomeComponent implements AfterViewInit {
 
     }
   }
+
   openProfile(): void {
     this._bottomSheet.open(ProfileComponent);
   }
@@ -284,6 +288,7 @@ export class HomeComponent implements AfterViewInit {
         });
     })
   }
+
   send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
 
     let email: Email = new Email;
@@ -318,6 +323,7 @@ export class HomeComponent implements AfterViewInit {
     })
 
   }
+
   inserCarpetaDigital(solicitud: Solicitud, pfd: string) {
     return new Promise(resolve => {
       this.carpetaServ.insert(solicitud, pfd)

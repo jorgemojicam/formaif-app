@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Pregunta } from 'src/app/model/pregunta';
 import { PreguntasService } from 'src/app/services/preguntas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
@@ -17,6 +18,7 @@ export class PreguntasFormComponent implements OnInit {
   public preguntasForm = new FormGroup({
     Id: new FormControl(0),
     Titulo: new FormControl(''),
+    Multiple: new FormControl(false),
     Peso: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
     Temas: new FormControl('')
   });
@@ -34,6 +36,7 @@ export class PreguntasFormComponent implements OnInit {
         Id: this.datos.id,
         Titulo: this.datos.name,
         Peso: this.datos.peso,
+        Multiple: this.datos.multiple,
         Temas: this.datos.father
       }, { emitEvent: false })
     }
@@ -44,6 +47,7 @@ export class PreguntasFormComponent implements OnInit {
       Id: this.preguntasForm.value.Id,
       Titulo: this.preguntasForm.value.Titulo,
       Peso: this.preguntasForm.value.Peso,
+      Multiple: this.preguntasForm.value.Multiple,
       Temas: {
         Id: this.preguntasForm.value.Temas
       }
@@ -64,8 +68,14 @@ export class PreguntasFormComponent implements OnInit {
       this._srvPreguntas.create(preguntas).subscribe(
         (suss) => {
           if (suss) {
-            this._snackBar.open('Se inserto correctamente', "Ok!", { duration: 3000, });
-            this.dialogRef.close(this.datos)
+            console.log(suss)
+            let res = suss as Pregunta
+            if (res.Id > 0) {
+              this._snackBar.open('Se inserto correctamente', "Ok!", { duration: 3000, });
+              this.dialogRef.close(suss)
+            }else{
+              this._snackBar.open('!Error¡ se presento error insertando', "Ok!", { duration: 3000, });
+            }
           }
           this.loading = false
 

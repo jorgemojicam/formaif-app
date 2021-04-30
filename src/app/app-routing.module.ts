@@ -8,6 +8,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'lobby',
     pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   {
     path: 'lobby',
@@ -18,7 +19,7 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule),
     canActivate: [AuthGuard]
-  },  
+  },
   {
     path: 'meba',
     loadChildren: () => import('./components/meba/meba.module').then(m => m.MebaModule),
@@ -32,7 +33,12 @@ const routes: Routes = [
     path: '404',
     component: NotfoundComponent
   },
-  { path: 'agil', loadChildren: () => import('./components/agil/agil.module').then(m => m.AgilModule) },
+  {
+    path: 'agil',
+    loadChildren: () => import('./components/agil/agil.module').then(m => m.AgilModule),
+    canActivate: [AuthGuard]
+  },
+  
   {
     path: '**',
     redirectTo: '/404'
