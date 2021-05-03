@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Temas } from 'src/app/model/temas';
 import { TemasService } from 'src/app/services/temas.service';
 
 @Component({
@@ -15,7 +14,7 @@ export class TemasFormComponent implements OnInit {
   public temasForm = new FormGroup({
     Id: new FormControl(0),
     Nombre: new FormControl(''),
-    Peso: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
+    Peso: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
     Cuestionario: new FormControl('')
   });
 

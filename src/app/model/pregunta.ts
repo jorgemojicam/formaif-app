@@ -1,5 +1,5 @@
 import { Respuestas } from "./respuestas";
-import { Temas } from "./temas";
+import { Resultado } from "./resultado";
 
 export class Pregunta {
     Id:number;
@@ -7,9 +7,6 @@ export class Pregunta {
     Peso:number;
     Multiple:boolean;
     Respuestas:Respuestas[];
-    total:number;
-    resultado: {
-        texto: string;
-        puntaje: number
-    };
+    Resultado:Resultado;
+    total:number;  
 }

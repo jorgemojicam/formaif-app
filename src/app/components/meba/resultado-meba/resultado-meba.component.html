@@ -89,10 +89,14 @@
             </thead>
             <tbody *ngFor="let dim of adaptativa">
                 <tr>
-                    <td>{{dim.dimension}}</td>
+                    <td>{{dim.Nombre}}</td>
                     <td>{{dim.total}}</td>
-                    <td>{{dim.preguntas.puntaje}} - {{dim.preguntas.texto}}</td>
-                </tr>             
+                    <td>
+                        <ng-container *ngIf="dim.Preguntas.Resultado">
+                            {{dim.Preguntas.Resultado.Punaje}} - {{dim.Preguntas.Resultado.Texto}}
+                        </ng-container>
+                    </td>
+                </tr>
             </tbody>
             <tr>
                 <td>Total:</td>

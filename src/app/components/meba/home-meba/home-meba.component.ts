@@ -13,6 +13,9 @@ import { EmailService } from 'src/app/services/email.service';
 import Swal from 'sweetalert2';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { ResultadoService } from 'src/app/services/resultado.service';
+import { Resultado } from 'src/app/model/resultado';
+
 
 @Component({
   selector: 'app-home-meba',
@@ -34,13 +37,14 @@ export class HomeMebaComponent implements AfterViewInit {
     private _router: Router,
     private _srvAnalisis: AnalisismebaprodService,
     private _srvEmail: EmailService,
+    private _srvResultado: ResultadoService,
     private _srvToken: TokenStorageService
   ) { }
 
   ngAfterViewInit(): void {
 
     this.srvSol.get().subscribe((sol) => {
-      if (sol) {        
+      if (sol) {
         let solicitud = sol.filter(a => a.asesor == 2)
         this.dataSource = new MatTableDataSource(solicitud);
         this.dataSource.paginator = this.paginator;
@@ -95,25 +99,22 @@ export class HomeMebaComponent implements AfterViewInit {
               const content = Swal.getContent()
               if (content) {
                 const b = content.querySelector('b')
-                if (b) { 
+                if (b) {
 
-                  b.textContent = "Creando pdf..." 
+                  b.textContent = "Creando pdf..."
                   let pdfBase64: string = "";
                   const resultado = this.resultado.reporte.nativeElement
                   pdfBase64 = await this.createpdf(resultado, "MEBA_", numeroSolicitud, "p") as string
                   this.datasol = null
-                    
+
                   b.textContent = "Enviando email..."
                   let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
                   let envio = await this.send(pdfBase64, "", "Soporte", email)
-                     
+
                   b.textContent = "Cargando en base de datos..."
                   let data = {
                     Cedula: datos.cedula,
                     Solicitud: datos.solicitud,
-                    Produccion: {
-                      Id: 1
-                    },
                     FechaInicio: datos.fechacreacion,
                     FechaFin: fechahoy,
                     Sucursal: {
@@ -121,27 +122,62 @@ export class HomeMebaComponent implements AfterViewInit {
                     },
                     Analista: datos.usuario
                   }
-            
-                  let idAnalisis = await this.setAnalisis(data)
-                  console.log("Se carga el estudio a base de datos o cualquier cosa ", datos)
-            
-                  if (datos.Sensibilidad) {
-                    datos.Sensibilidad.forEach(async element => {
-                      if (element.nombre) {
-            
-                        let dataprod = {
-                          Produccion: {
-                            Id: element.nombre.Id
-                          },
-                          AnalisisMeba: {
-                            Id: idAnalisis
+
+                  let idAnalisis: any = await this.setAnalisis(data)
+                  console.log("Se carga el estudio a base de datos o cualquier cosa ", idAnalisis)
+
+                  if (idAnalisis > 0) {
+                    if (datos.Sensibilidad) {
+                      datos.Sensibilidad.forEach(async element => {
+                        if (element.nombre) {
+
+                          let dataprod = {
+                            Produccion: {
+                              Id: element.nombre.Id
+                            },
+                            AnalisisMeba: {
+                              Id: idAnalisis
+                            }
                           }
+                          let anapro = await this.setAnalisisProduccion(dataprod)
+                          console.log('analisis produccion ->', anapro)
                         }
-                        let anapro = await this.setAnalisisProduccion(dataprod)
-                      }
-                    });
+                      });
+                    }
                   }
-                  
+                  let listRespuestas = new Array()
+                  if (datos.dimensiones) {
+                    datos.dimensiones.forEach(ele => {                    
+                      if (ele.Preguntas.length > 0) {
+                        ele.Preguntas.forEach(pre => {
+                          listRespuestas.push({
+                            Id: pre.Resultado.Id
+                          })
+                        });
+                      }
+                    })
+                  }
+                  if (datos.verificacion) {
+                    datos.verificacion.forEach(async ele => {
+                      ele.Preguntas.forEach(pre => {
+                        listRespuestas.push({
+                          Id: pre.Resultado.Id
+                        })
+                      });
+                    })
+                  }
+
+                  if (listRespuestas.length > 0 && idAnalisis > 0) {
+                    let datoresultados = {
+                      Analisis: {
+                        Id: idAnalisis
+                      },
+                      listRespuestas: listRespuestas
+                    }
+                    let resul = this._srvResultado.create(datoresultados);
+                    console.log('resultado analisis ->', resul)
+                  }
+
                   Swal.close()
                   Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                   this.procesando = false
@@ -160,7 +196,7 @@ export class HomeMebaComponent implements AfterViewInit {
           Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
         }
       })
-      
+
     }
 
   }
@@ -210,10 +246,10 @@ export class HomeMebaComponent implements AfterViewInit {
       margin: 15,
       jsPDF: { format: 'a3', orientation: orintation }
     }
-  
+
     return new Promise(resolve => {
       html2pdf().from(content).set(op).outputPdf()
-        .then((pdf) => {       
+        .then((pdf) => {
           return resolve(btoa(pdf))
         });
     })
@@ -232,11 +268,11 @@ export class HomeMebaComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this._srvEmail.Send(email).subscribe(
         (su) => {
-          console.log('res envio email ',su)
+          console.log('res envio email ', su)
           return resolve(su)
         },
         (er) => {
-          console.log('err  ',er)
+          console.log('err  ', er)
           this.procesando = false
           reject(er)
         }

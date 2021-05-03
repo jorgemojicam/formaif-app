@@ -7,7 +7,6 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { IdbService } from 'src/app/services/idb.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
-
 @Component({
   selector: 'app-adaptativa',
   templateUrl: './adaptativa.component.html',
@@ -39,7 +38,6 @@ export class AdaptativaComponent implements OnInit {
       this.sol = params.get('solicitud')
     });
   }
-
 
   //Methods
   async ngOnInit() {
@@ -81,12 +79,12 @@ export class AdaptativaComponent implements OnInit {
         let valortotal = (pesodim / 100) * acumulado
         totaladapta += valortotal
         x.patchValue({
-          total: isFinite(acumulado) ? acumulado.toFixed(2) : 0
+          total: isFinite(acumulado) ? acumulado.toFixed(1) : 0
         }, { emitEvent: false })
       })
  
       this.adaptativoForm.patchValue({
-        totalAdaptativa: isFinite(totaladapta) ? totaladapta.toFixed(3) : 0
+        totalAdaptativa: isFinite(totaladapta) ? totaladapta.toFixed(1) : 0
       }, { emitEvent: false });
 
       this.dAdaptativa = this.adaptativoForm.value.dimensiones

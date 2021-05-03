@@ -34,16 +34,16 @@ export class ResultadoMebaComponent implements OnInit {
     if (!this.datossol) {
       this.dataSolicitud = await this.getSolicitud() as Solicitud
     } else {
-      console.log("entro datos sol resultado ",this.datossol)
+      console.log("entro datos sol resultado ", this.datossol)
       this.dataSolicitud = this.datossol
     }
 
     if (this.dataSolicitud) {
-      
+
       this.options = this.optionChar(this.dataSolicitud.Sensibilidad) as EChartsOption
 
       if (this.dataSolicitud.dimensiones) {
-        
+
         for (let a = 0; a < this.dataSolicitud.dimensiones.length; a++) {
           let adapta = this.dataSolicitud.dimensiones[a];
 
@@ -51,39 +51,41 @@ export class ResultadoMebaComponent implements OnInit {
           var pre: any = {}
           var tmp = 0;
 
-          for (let mi = 0; mi < adapta.preguntas.length; mi++) {
-            if (adapta.preguntas[mi].resultado) {
-              tmp = adapta.preguntas[mi].resultado.puntaje;
+          for (let mi = 0; mi < adapta.Preguntas.length; mi++) {
+            if (adapta.Preguntas[mi].Resultado) {
+              tmp = adapta.Preguntas[mi].Resultado.Punaje;
               if (tmp < min) {
                 min = tmp
-                pre = adapta.preguntas[mi].resultado;
+                pre = adapta.Preguntas[mi];
               }
             }
           }
           if (min == Number.POSITIVE_INFINITY)
             min = 0
 
-          adapta.preguntas = pre
+          adapta.Preguntas = pre
+
           this.adaptativa.push(adapta)
         }
       }
+      if (this.dataSolicitud.verificacion) {
+        for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
+          let verifica = this.dataSolicitud.verificacion[a];
+          if (verifica.Preguntas) {
+            for (let ve = 0; ve < verifica.Preguntas.length; ve++) {
 
-      for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
-        let verifica = this.dataSolicitud.verificacion[a];
-        if (verifica.preguntas) {
-          for (let ve = 0; ve < verifica.preguntas.length; ve++) {
+              const preguntas = verifica.Preguntas[ve];
+              let total = Utils.formatFloat(preguntas.total)
 
-            const preguntas = verifica.preguntas[ve];
-            let total = Utils.formatFloat(preguntas.total)
+              if (total < 3) {
+                this.verificacion.push(preguntas)
+              }
 
-            if (total < 3) {
-              this.verificacion.push(preguntas)           
             }
-
           }
+
+
         }
-
-
       }
     }
 
@@ -103,14 +105,14 @@ export class ResultadoMebaComponent implements OnInit {
     let options: EChartsOption
     let dataA = new Array()
     let globos = new Array()
-    for (let i = 0; i < sensibilidad.length; i++) {
-      const se = sensibilidad[i];
-      globos.push(se.nombre.Global)
-      let name = se.nombre.Nombre
-      dataA.push(name)
-    }
-
     if (sensibilidad) {
+
+      for (let i = 0; i < sensibilidad.length; i++) {
+        const se = sensibilidad[i];
+        globos.push(se.nombre.Global)
+        let name = se.nombre.Nombre
+        dataA.push(name)
+      }
 
       options = {
         tooltip: {

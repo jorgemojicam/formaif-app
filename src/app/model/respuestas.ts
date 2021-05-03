@@ -1,4 +1,4 @@
-import { Pregunta } from "./pregunta";
+import { Resultado } from "./resultado";
 
 export class Respuestas{
     Id:number;
