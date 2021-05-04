@@ -20,6 +20,7 @@ export class CuestionarioComponent {
   listCuestionario: Cuestionario[]
   selectCuestionario
   arbolCuestionario: CuestionarioNones[]
+  loading:boolean = true
 
   treeControl = new NestedTreeControl<CuestionarioNones>(node => node.children);
   dataSource = new MatTreeNestedDataSource<CuestionarioNones>();
@@ -35,6 +36,7 @@ export class CuestionarioComponent {
   }
 
   async initalize() {
+    this.loading = true
     await this.getCuestionarios()
   }
 
@@ -63,6 +65,7 @@ export class CuestionarioComponent {
       objPregunta.id = a.Preguntas.Id
       objPregunta.peso = a.Preguntas.Peso
       objPregunta.multiple = a.Preguntas.Multiple
+      objPregunta.total = a.Preguntas.Total
       objPregunta.father = a.Preguntas.Temas.Id
       objPregunta.form = 'Preguntas'
       objPregunta.theend = false
@@ -98,6 +101,7 @@ export class CuestionarioComponent {
         cuestion.push(objtema)
       }
     });
+    this.loading = false
     return cuestion
 
   }
@@ -107,6 +111,7 @@ export class CuestionarioComponent {
       this._srvCuestionario.get().subscribe(
         (a) => {
           resolve(a)
+          this.loading = false
           this.listCuestionario = a as Cuestionario[]
           return a as Cuestionario
         },
@@ -199,7 +204,9 @@ export class CuestionarioComponent {
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
+        
         console.log('lo que returno Respuestas', result)
+
         if (form == "Respuestas") {
           console.log('respuestas form -> ', form)
           let cuestion = new CuestionarioNones()
@@ -223,13 +230,16 @@ export class CuestionarioComponent {
 
           this.dataSource.data = null;
           this.dataSource.data = this.arbolCuestionario
+          
         } else if (form == 'Preguntas') {
+
           console.log('respuestas form -> ', form)
           let cuestion = new CuestionarioNones()
           cuestion.id = result.Id
           cuestion.name = result.Titulo
           cuestion.form = form
-          cuestion.peso = result.Puntaje
+          cuestion.peso = result.Peso
+          cuestion.total = result.Total
           cuestion.multiple = result.Multiple
           cuestion.theend = false
           cuestion.father = result.Temas.Id

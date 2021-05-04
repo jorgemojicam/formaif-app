@@ -82,7 +82,8 @@ export class SensibilidadComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this._srvIdb.get('produccion').subscribe(
         (a) => {
-          return resolve(a)
+          let agro = a.filter(a => a.TipoProduccion == 1)
+          return resolve(agro)
         },
         (err) => {
           reject([])

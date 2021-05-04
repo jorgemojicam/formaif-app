@@ -193,6 +193,8 @@ export class AuthComponent implements OnInit {
       objPregunta.Titulo = a.Preguntas.Titulo
       objPregunta.Id = a.Preguntas.Id
       objPregunta.Peso = a.Preguntas.Peso
+      objPregunta.Total = a.Preguntas.Total
+      objPregunta.Multiple = a.Preguntas.Multiple
       objPregunta.Respuestas = new Array()
 
       let objRespuesta = new Respuestas()

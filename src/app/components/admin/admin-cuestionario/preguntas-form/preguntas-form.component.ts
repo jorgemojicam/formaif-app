@@ -19,7 +19,8 @@ export class PreguntasFormComponent implements OnInit {
     Id: new FormControl(0),
     Titulo: new FormControl(''),
     Multiple: new FormControl(false),
-    Peso: new FormControl('', [Validators.required, Validators.min(0), Validators.max(99)]),
+    Total: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
+    Peso: new FormControl('', [Validators.required, Validators.min(0), Validators.max(100)]),
     Temas: new FormControl('')
   });
   loading: boolean = false
@@ -36,6 +37,7 @@ export class PreguntasFormComponent implements OnInit {
         Id: this.datos.id,
         Titulo: this.datos.name,
         Peso: this.datos.peso,
+        Total: this.datos.total,
         Multiple: this.datos.multiple,
         Temas: this.datos.father
       }, { emitEvent: false })
@@ -47,6 +49,7 @@ export class PreguntasFormComponent implements OnInit {
       Id: this.preguntasForm.value.Id,
       Titulo: this.preguntasForm.value.Titulo,
       Peso: this.preguntasForm.value.Peso,
+      Total: this.preguntasForm.value.Total,
       Multiple: this.preguntasForm.value.Multiple,
       Temas: {
         Id: this.preguntasForm.value.Temas
@@ -57,10 +60,13 @@ export class PreguntasFormComponent implements OnInit {
     if (this.preguntasForm.value.Id > 0) {
       this._srvPreguntas.update(preguntas).subscribe(
         (suss) => {
-          console.log(suss)
+         
+          this._snackBar.open('Se modifico correctamente', "Ok!", { duration: 3000, });
+          this.dialogRef.close(preguntas)
           this.loading = false
         }, (err) => {
           console.log(err)
+          this._snackBar.open('!Error¡ se presento error', "Ok!", { duration: 3000, });
           this.loading = false
         }
       )

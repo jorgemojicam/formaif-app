@@ -8,5 +8,5 @@ export class Pregunta {
     Multiple:boolean;
     Respuestas:Respuestas[];
     Resultado:Resultado;
-    total:number;  
+    Total:number;  
 }

@@ -1,51 +1,26 @@
-<div fxLayout="row wrap">
-    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-        <mat-form-field appearance="fill">
-            <mat-label>Seleccione Cuestionario</mat-label>
-            <mat-select (selectionChange)="loadCuestionario($event.value)" [(ngModel)]="selectCuestionario">
-                <mat-option disabled>Seleccione Cuestionario</mat-option>
-                <mat-option *ngFor="let item of listCuestionario" [value]="item.Id">
-                    {{item.Nombre}}
-                </mat-option>
+<mat-spinner *ngIf="loading"></mat-spinner>
+<ng-container *ngIf="!loading">
 
-            </mat-select>
-        </mat-form-field>
+    <div fxLayout="row wrap">
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field appearance="fill">
+                <mat-label>Seleccione Cuestionario</mat-label>
+                <mat-select (selectionChange)="loadCuestionario($event.value)" [(ngModel)]="selectCuestionario">
+                    <mat-option disabled>Seleccione Cuestionario</mat-option>
+                    <mat-option *ngFor="let item of listCuestionario" [value]="item.Id">
+                        {{item.Nombre}}
+                    </mat-option>
+
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
-</div>
 
-<mat-tree [dataSource]="dataSource" #treeSelector [treeControl]="treeControl" class="example-tree">
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-        <li class="mat-tree-node" fxLayout="row wrap">
-            <div fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
-                <button mat-icon-button disabled></button>
-                {{ (node.name.length>25)? (node.name | slice:0:25)+'..':(node.name) }}
-            </div>
-            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                <button mat-icon-button color="primary" *ngIf="!node.theend" (click)="onCreate(node)">
-                    <mat-icon>add_circle_outline</mat-icon>
-                </button>
-            </div>
-            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                <button mat-icon-button color="accent" (click)="onEdit(node)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </div>
-            <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                <button color="warn" (click)="onDelete(node)" mat-icon-button>
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </li>
-    </mat-tree-node>
-    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-        <li>
-            <div class="mat-tree-node" fxLayout="row wrap">
+    <mat-tree [dataSource]="dataSource" #treeSelector [treeControl]="treeControl" class="example-tree">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+            <li class="mat-tree-node" fxLayout="row wrap">
                 <div fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
-                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
-                        <mat-icon class="mat-icon-rtl-mirror">
-                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                        </mat-icon>
-                    </button>
+                    <button mat-icon-button disabled></button>
                     {{ (node.name.length>25)? (node.name | slice:0:25)+'..':(node.name) }}
                 </div>
                 <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
@@ -54,20 +29,49 @@
                     </button>
                 </div>
                 <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                    <button color="accent" mat-icon-button (click)="onEdit(node)">
+                    <button mat-icon-button color="accent" (click)="onEdit(node)">
                         <mat-icon>edit</mat-icon>
                     </button>
                 </div>
-
                 <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
                     <button color="warn" (click)="onDelete(node)" mat-icon-button>
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
-            </div>
-            <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
-                <ng-container matTreeNodeOutlet></ng-container>
-            </ul>
-        </li>
-    </mat-nested-tree-node>
-</mat-tree>
+            </li>
+        </mat-tree-node>
+        <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <li>
+                <div class="mat-tree-node" fxLayout="row wrap">
+                    <div fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
+                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                        </button>
+                        {{ (node.name.length>25)? (node.name | slice:0:25)+'..':(node.name) }}
+                    </div>
+                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <button mat-icon-button color="primary" *ngIf="!node.theend" (click)="onCreate(node)">
+                            <mat-icon>add_circle_outline</mat-icon>
+                        </button>
+                    </div>
+                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <button color="accent" mat-icon-button (click)="onEdit(node)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+
+                    <div fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+                        <button color="warn" (click)="onDelete(node)" mat-icon-button>
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                    <ng-container matTreeNodeOutlet></ng-container>
+                </ul>
+            </li>
+        </mat-nested-tree-node>
+    </mat-tree>
+</ng-container>

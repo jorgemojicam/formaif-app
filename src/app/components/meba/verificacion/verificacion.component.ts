@@ -57,7 +57,7 @@ export class VerificacionComponent implements OnInit {
 
     //Consulta BD
     this.dataVerificacion = await this.getPreguntas()
-
+    console.log(this.dSolicitud)
     //Si tiene respuestas en el local storage carguelas
     if (this.dSolicitud.verificacion) {
       //Construye el array de preguntas 
@@ -74,11 +74,12 @@ export class VerificacionComponent implements OnInit {
         let acumulado = 0
 
         preguntas.controls.forEach(pre => {
-
+          
           let resultado = pre.get("Resultado").value
           let multiple = pre.get("Multiple").value
-          let total = pre.get("total").value
+          let total = pre.get("Total").value
           let peso = pre.get("Peso").value / 100
+      
           if (resultado) {
             if (multiple) {
               let check1 = 0
@@ -86,7 +87,8 @@ export class VerificacionComponent implements OnInit {
 
               for (let re = 0; re < resultado.length; re++) {
                 const resul = resultado[re];
-                let puntaje = Utils.formatNumber(resul.puntaje)
+                
+                let puntaje = Utils.formatNumber(resul.Punaje)
                 if (puntaje == 1) {
                   check1 += 1
                 } else if (puntaje == 2) {
@@ -105,14 +107,15 @@ export class VerificacionComponent implements OnInit {
               }
               acumulado += peso * result
             } else {
-              acumulado += peso * Utils.formatNumber(resultado.puntaje)
+              acumulado += peso * Utils.formatNumber(resultado.Punaje)
             }
+            
           }
 
         });
-
+   
         x.patchValue({
-          total: acumulado.toFixed(2)
+          totalacumo: acumulado.toFixed(2)
         }, { emitEvent: false })
       })
 
@@ -141,7 +144,8 @@ export class VerificacionComponent implements OnInit {
           Nombre: [element.Nombre],
           aplicapregunta: [element.aplicapregunta],
           Preguntas: this.loadRespuestas(element.Preguntas),
-          total: [element.total]
+          Total: [element.Total],
+          totalacumo: [total]
         })
       )
     });
@@ -163,10 +167,10 @@ export class VerificacionComponent implements OnInit {
 
     respuestas.forEach(pre => {
       aRespuestas.push(this._formbuild.group({
-        Titulo: [pre.titulo],
+        Titulo: [pre.Titulo],
         Respuestas: [pre.Respuestas],
         Peso: [pre.Peso],
-        total: [pre.total],
+        Total: [pre.Total],
         Multiple: [pre.Multiple],
         Resultado: [pre.Resultado]
       }))

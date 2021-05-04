@@ -36,7 +36,6 @@ export class IdbSolicitudService {
   get(): any {
     const asesores: Asesor = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
-    console.log(user.toString())
     return this.storage.get(user.toString());
   }
 }

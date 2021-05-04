@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EChartsOption } from 'echarts';
+import { Pregunta } from 'src/app/model/pregunta';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { Solicitud } from 'src/app/model/solicitud';
 import Utils from 'src/app/utils';
@@ -75,7 +76,7 @@ export class ResultadoMebaComponent implements OnInit {
             for (let ve = 0; ve < verifica.Preguntas.length; ve++) {
 
               const preguntas = verifica.Preguntas[ve];
-              let total = Utils.formatFloat(preguntas.total)
+              let total = Utils.formatFloat(preguntas.Total)
 
               if (total < 3) {
                 this.verificacion.push(preguntas)

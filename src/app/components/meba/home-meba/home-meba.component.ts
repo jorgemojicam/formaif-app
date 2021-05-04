@@ -69,9 +69,40 @@ export class HomeMebaComponent implements AfterViewInit {
       const numeroSolicitud: string = element.solicitud.toString();
       this.datasol = await this.getSolicitud(numeroSolicitud) as Solicitud
       let datos = this.datasol
+
       let fechahoy = new Date()
 
       let asesores: Asesor = this._srvToken.getUser()
+
+
+      let listRespuestas = new Array()
+      //Recorre las respuestas 
+      if (datos.dimensiones) {
+        datos.dimensiones.forEach(dim => {
+          if (dim.Preguntas.length > 0) {
+            dim.Preguntas.forEach(pre => {
+              if (pre.Resultado) {
+                listRespuestas.push({
+                  Id: pre.Resultado.Id
+                })
+              }
+            });
+          }
+        });
+      }
+      //Recorre las espuestas de verificacion
+      if (datos.verificacion) {
+        datos.verificacion.forEach(ver => {
+          if (ver.Preguntas.length > 0) {
+            ver.Preguntas.forEach(pre => {
+              console.log(pre)
+              listRespuestas.push({
+                Id: pre.Resultado.Id
+              })
+            });
+          }
+        })
+      }
 
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
@@ -128,43 +159,24 @@ export class HomeMebaComponent implements AfterViewInit {
 
                   if (idAnalisis > 0) {
                     if (datos.Sensibilidad) {
+                      let analisisArr = new Array()
                       datos.Sensibilidad.forEach(async element => {
                         if (element.nombre) {
-
-                          let dataprod = {
-                            Produccion: {
-                              Id: element.nombre.Id
-                            },
-                            AnalisisMeba: {
-                              Id: idAnalisis
-                            }
-                          }
-                          let anapro = await this.setAnalisisProduccion(dataprod)
-                          console.log('analisis produccion ->', anapro)
+                          analisisArr.push({
+                            Id: element.nombre.Id
+                          })
                         }
                       });
-                    }
-                  }
-                  let listRespuestas = new Array()
-                  if (datos.dimensiones) {
-                    datos.dimensiones.forEach(ele => {                    
-                      if (ele.Preguntas.length > 0) {
-                        ele.Preguntas.forEach(pre => {
-                          listRespuestas.push({
-                            Id: pre.Resultado.Id
-                          })
-                        });
+
+                      let dataprod = {
+                        listProduccion: analisisArr,
+                        AnalisisMeba: {
+                          Id: idAnalisis
+                        }
                       }
-                    })
-                  }
-                  if (datos.verificacion) {
-                    datos.verificacion.forEach(async ele => {
-                      ele.Preguntas.forEach(pre => {
-                        listRespuestas.push({
-                          Id: pre.Resultado.Id
-                        })
-                      });
-                    })
+                      let anapro = await this.setAnalisisProduccion(dataprod)
+                      console.log('analisis produccion ->', anapro)
+                    }
                   }
 
                   if (listRespuestas.length > 0 && idAnalisis > 0) {
@@ -174,8 +186,8 @@ export class HomeMebaComponent implements AfterViewInit {
                       },
                       listRespuestas: listRespuestas
                     }
-                    let resul = this._srvResultado.create(datoresultados);
-                    console.log('resultado analisis ->', resul)
+                    //let resul = this._srvResultado.create(datoresultados);
+                    //console.log('resultado analisis ->', resul)
                   }
 
                   Swal.close()
