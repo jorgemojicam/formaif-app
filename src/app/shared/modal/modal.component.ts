@@ -4,6 +4,7 @@ import { MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
 export interface DialogData {
   mensaje: string;
   content: string;
+  form: string;  
 }
 @Component({
   selector: 'app-modal',

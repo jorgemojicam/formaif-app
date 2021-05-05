@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AnalisisComponent } from '../analisis/analisis.component';
-import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
-import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
-import { PropuestaComponent } from '../propuesta/propuesta.component';
-import { ResultadoComponent } from '../resultado/resultado.component';
-import { UbicacionComponent } from '../ubicacion/ubicacion.component';
 import { AdminComponent } from './admin.component';
+import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestionario.component";
+import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
+import { LobbyComponent } from '../lobby/lobby.component';
 
 const routes: Routes = [
   {
@@ -15,49 +12,33 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () =>
-          import('../balance/balance.module').then(m => m.BalanceModule)
+        redirectTo: 'cuestionario',
+        pathMatch: 'prefix',
+        data: {
+          routerName: 'cuestionario'
+        }
       },
       {
-        path: 'ubicacion',
-        component: UbicacionComponent,
+        path: 'cuestionario',
+        component: CuestionarioComponent,
+        data: {
+          routerName: 'cuestionario'
+        }
       },
       {
-        path: 'balance',
-        loadChildren: () =>
-          import('../balance/balance.module').then(m => m.BalanceModule)
+        path: 'produccion',
+        component: ProduccionComponent,
+        data: {
+          routerName: 'produccion'
+        }
       },
       {
-        path: 'gastos',
-        loadChildren: () =>
-          import('../gastos/gastos.module').then(m => m.GastosModule)
+        path: 'home',
+        component: LobbyComponent,
+        data: {
+          routerName: 'lobby'
+        }
       },
-      {
-        path: 'ventas',
-        loadChildren: () =>
-          import('../cruces/cruces.module').then(m => m.CrucesModule)
-      },
-      {
-        path: 'analisis',
-       component:AnalisisComponent
-      },
-      {
-        path: 'propuesta',
-        component: PropuestaComponent,
-      },
-      {
-        path: 'flujocaja',
-        component: FlujocajaComponent,
-      },
-      {
-        path: 'analisisagro',
-        component: AnalisisagroComponent,
-      }
-      ,
-      {
-        path: 'resultado',
-        component: ResultadoComponent,
-      }
     ]
   }
 ];

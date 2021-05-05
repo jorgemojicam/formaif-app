@@ -111,7 +111,7 @@
     {
       "id": 1,
       "name": "Entidades Financieras",
-      "template": "entfinan"      
+      "template": "entfinan"
     },
     {
       "id": 2,
@@ -1360,5 +1360,304 @@
       "id": 11,
       "name": "Inseminación"
     }
-  ]
+  ],
+  "Sensibilidad": [
+    {
+      "id": 1,
+      "name": "ACHIOTE ",
+      "cientifico": "Bixa orellana ",
+      "temperatura": 76,
+      "precipitacion": 57,
+      "ph": 10,
+      "globo": 48
+    },
+    {
+      "id": 2,
+      "name": "Aguacate",
+      "cientifico": "Persea americana",
+      "temperatura": 5,
+      "precipitacion": 22,
+      "ph": 75,
+      "globo": 34
+    },
+    {
+      "id": 3,
+      "name": "AHUYAMA ",
+      "cientifico": "Cucurbita maxima",
+      "temperatura": 43,
+      "precipitacion": 51,
+      "ph": 16,
+      "globo": 37
+    },
+    {
+      "id": 4,
+      "name": "AJO ",
+      "cientifico": "Allium sativum",
+      "temperatura": 34,
+      "precipitacion": 31,
+      "ph": 54,
+      "globo": 39
+    },
+    {
+      "id": 5,
+      "name": "Ajonjoli",
+      "cientifico": "Sesamum indicum ",
+      "temperatura": 42,
+      "precipitacion": 59,
+      "ph": 16,
+      "globo": 39
+    },
+    {
+      "id": 6,
+      "name": "albahaca",
+      "cientifico": "Ocimum americanum ",
+      "temperatura": 66,
+      "precipitacion": 20,
+      "ph": 62,
+      "globo": 49
+    },
+    {
+      "id": 7,
+      "name": "APIO",
+      "cientifico": "Apium graveolens var. dulce ",
+      "temperatura": 72,
+      "precipitacion": 54,
+      "ph": 47,
+      "globo": 58
+    },
+    {
+      "id": 8,
+      "name": "Arroz ",
+      "cientifico": "Oryza sativa",
+      "temperatura": 52,
+      "precipitacion": 38,
+      "ph": 17,
+      "globo": 36
+    },
+    {
+      "id": 9,
+      "name": "Cacao ",
+      "cientifico": "Theobroma cacao ",
+      "temperatura": 36,
+      "precipitacion": 3,
+      "ph": 21,
+      "globo": 20
+    },
+    {
+      "id": 10,
+      "name": "Caucho",
+      "cientifico": "Hevea brasiliensis",
+      "temperatura": 35,
+      "precipitacion": 3,
+      "ph": 17,
+      "globo": 19
+    },
+    {
+      "id": 11,
+      "name": "CILANTRO",
+      "cientifico": "Coriandrum sativum",
+      "temperatura": 47,
+      "precipitacion": 29,
+      "ph": 10,
+      "globo": 29
+    },
+    {
+      "id": 12,
+      "name": "COLIFLOR",
+      "cientifico": "Brassica oleracea var. botrytis ",
+      "temperatura": 35,
+      "precipitacion": 54,
+      "ph": 62,
+      "globo": 50
+    },
+    {
+      "id": 13,
+      "name": "Espinaca",
+      "cientifico": "Spinacia oleracea ",
+      "temperatura": 69,
+      "precipitacion": 62,
+      "ph": 29,
+      "globo": 53
+    },
+    {
+      "id": 14,
+      "name": "FRESA ",
+      "cientifico": "Fragaria x ananassa ",
+      "temperatura": 47,
+      "precipitacion": 67,
+      "ph": 50,
+      "globo": 55
+    },
+    {
+      "id": 15,
+      "name": "Frijol",
+      "cientifico": "Vigna angularis ",
+      "temperatura": 17,
+      "precipitacion": 63,
+      "ph": 74,
+      "globo": 51
+    },
+    {
+      "id": 16,
+      "name": "Girasol ",
+      "cientifico": "Helianthus annuus ",
+      "temperatura": 5,
+      "precipitacion": 63,
+      "ph": 48,
+      "globo": 39
+    },
+    {
+      "id": 17,
+      "name": "Guayaba ",
+      "cientifico": "Psidium guajava ",
+      "temperatura": 15,
+      "precipitacion": 4,
+      "ph": 7,
+      "globo": 9
+    },
+    {
+      "id": 18,
+      "name": "Gulupa",
+      "cientifico": "Passiflora edulis var. Edulis ",
+      "temperatura": 96,
+      "precipitacion": 44,
+      "ph": 26,
+      "globo": 55
+    },
+    {
+      "id": 19,
+      "name": "Maiz",
+      "cientifico": "Zea mays",
+      "temperatura": 9,
+      "precipitacion": 49,
+      "ph": 10,
+      "globo": 23
+    },
+    {
+      "id": 20,
+      "name": "MANDARINA ",
+      "cientifico": "Citrus reticulata ",
+      "temperatura": 41,
+      "precipitacion": 27,
+      "ph": 63,
+      "globo": 44
+    },
+    {
+      "id": 21,
+      "name": "mango ",
+      "cientifico": "Irvingia gabonensis ",
+      "temperatura": 86,
+      "precipitacion": 22,
+      "ph": 26,
+      "globo": 45
+    },
+    {
+      "id": 22,
+      "name": "manzana ",
+      "cientifico": "Malus domestica ",
+      "temperatura": 39,
+      "precipitacion": 15,
+      "ph": 52,
+      "globo": 35
+    },
+    {
+      "id": 23,
+      "name": "Papa",
+      "cientifico": "Solanum tuberosum ",
+      "temperatura": 61,
+      "precipitacion": 62,
+      "ph": 18,
+      "globo": 47
+    },
+    {
+      "id": 24,
+      "name": "PAPAYA",
+      "cientifico": "Carica papaya ",
+      "temperatura": 39,
+      "precipitacion": 32,
+      "ph": 26,
+      "globo": 33
+    },
+    {
+      "id": 25,
+      "name": "PEPINO",
+      "cientifico": "Cucumis sativus ",
+      "temperatura": 18,
+      "precipitacion": 49,
+      "ph": 18,
+      "globo": 28
+    },
+    {
+      "id": 26,
+      "name": "Pera",
+      "cientifico": "Pyrus communis",
+      "temperatura": 27,
+      "precipitacion": 63,
+      "ph": 47,
+      "globo": 46
+    },
+    {
+      "id": 27,
+      "name": "Perejil ",
+      "cientifico": "Petroselinum crispum",
+      "temperatura": 69,
+      "precipitacion": 36,
+      "ph": 29,
+      "globo": 44
+    },
+    {
+      "id": 28,
+      "name": "Pitahaya",
+      "cientifico": "Hylocereus undatus",
+      "temperatura": 64,
+      "precipitacion": 9,
+      "ph": 48,
+      "globo": 40
+    },
+    {
+      "id": 29,
+      "name": "tabaco",
+      "cientifico": "Nicotiana tabacum ",
+      "temperatura": 25,
+      "precipitacion": 53,
+      "ph": 36,
+      "globo": 38
+    },
+    {
+      "id": 30,
+      "name": "tomate",
+      "cientifico": "Lycopersicon esculentum ",
+      "temperatura": 60,
+      "precipitacion": 46,
+      "ph": 48,
+      "globo": 51
+    },
+    {
+      "id": 31,
+      "name": "Tomillo ",
+      "cientifico": "Thymus serpyllum",
+      "temperatura": 54,
+      "precipitacion": 87,
+      "ph": 53,
+      "globo": 65
+    },
+    {
+      "id": 32,
+      "name": "Trigo ",
+      "cientifico": "Triticum aestivum ",
+      "temperatura": 74,
+      "precipitacion": 76,
+      "ph": 62,
+      "globo": 71
+    },
+    {
+      "id": 33,
+      "name": "Uva ",
+      "cientifico": "Vitis vinifera",
+      "temperatura": 34,
+      "precipitacion": 86,
+      "ph": 10,
+      "globo": 44
+    }
+  ]  
 }

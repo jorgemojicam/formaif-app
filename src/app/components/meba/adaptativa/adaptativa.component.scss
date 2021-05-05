@@ -1,0 +1,30 @@
+mat-form-field {
+  width: 100%;
+}
+
+.gr {
+  padding-right: 10px;
+}
+
+.action-buttons {
+  padding-bottom: 10px;
+  position: sticky;
+  z-index: 1000;
+  top: -5px;
+  width: 100%;
+}
+.chip-total{
+  position: absolute;
+  top: 15px;
+  right: 5%;
+}
+
+mat-panel-title {
+  width: 80%;
+}
+
+.content {
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}

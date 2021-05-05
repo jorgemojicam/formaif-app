@@ -11,7 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AdminRoutingModule,
     MaterialModule,
     FlexLayoutModule
-    
+
   ]
 })
 export class AdminModule { }

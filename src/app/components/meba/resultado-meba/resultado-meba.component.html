@@ -1,0 +1,151 @@
+<div #reporte class="content" id="contentPDF">
+    <!-- Encabezado -->
+    <table>
+        <tr>
+            <td rowspan="3" style="text-align:center;width: 200px;">
+                <img src="assets/pictures/Logo.png">
+            </td>
+            <td rowspan="3" style="text-align:center">RESULTADO MEDICIÓN EBA</td>
+            <td style="text-align:center">COL-FO-006</td>
+        </tr>
+        <tr>
+            <td style="text-align:center">Versión 11</td>
+        </tr>
+        <tr>
+            <td style="text-align:center">Fecha</td>
+        </tr>
+    </table>
+
+    <!-- Documento y solicitud -->
+    <table>
+        <tr>
+            <td>Documento de identidad del cliente</td>
+            <td>cedula</td>
+            <td>solicitud</td>
+            <td>solicitud</td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sensibilidad de cultivos</th>
+            </tr>
+        </thead>
+    </table>
+    <div>
+        1.Indicadores que evalúan la sensibilidad relativa de un cultivo a cambio climáticos en comparación con otros
+        cultivos. Se evalúa la sensibilidad de un cultivo a la oscilación en temperatura, lluvia y pH del suelo.
+    </div>
+    <div class="medioi">
+        <div echarts [options]="options" class="sensibilidad-chart"></div>
+    </div>
+
+    <div class="mediod">
+
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Temperatura</th>
+                    <th>Precipitacion</th>
+                    <th>PH</th>
+                    <th>Global</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let ses of dataSolicitud.Sensibilidad; let cont = index">
+                <tr>
+                    <td style="text-align: center;"> {{ses.nombre.Nombre}}
+                    </td>
+                    <td style="text-align: center;">{{ses.nombre.Temperatura}} %</td>
+                    <td style="text-align: center;">{{ses.nombre.Precipitacion}} %</td>
+                    <td style="text-align: center;">{{ses.nombre.Ph}} %</td>
+                    <td style="text-align: center;">{{ses.nombre.Global}} %</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Capacidad adaptativa</th>
+            </tr>
+        </thead>
+    </table>
+    <div>
+        2.La capacidad adaptiva se define como la capacidad del cliente de adaptarse a cambios climáticos gracias a el
+        uso de practicas y tecnologías apropiadas. Los indicadores presentados miden el nivel de capacidad adaptiva en
+        14 dimensiones
+    </div>
+    <div style="padding-left: 90px;padding-right: 90px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Indice de capacidad</th>
+                    <th>Valor</th>
+                    <th>Puntos claves a mejorar</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let dim of adaptativa">
+                <tr>
+                    <td>{{dim.Nombre}}</td>
+                    <td>{{dim.total}}</td>
+                    <td>
+                        <ng-container *ngIf="dim.Preguntas.Resultado">
+                            {{dim.Preguntas.Resultado.Punaje}} - {{dim.Preguntas.Resultado.Texto}}
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+            <tr>
+                <td>Total:</td>
+                <td>{{dataSolicitud.totalAdaptativa}}</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Verificación EBA</th>
+            </tr>
+        </thead>
+    </table>
+    <div>
+        3.Índice de verificación verde se basa en calificaciones de 1 a 5 en la cual se espera evaluar el proceso de
+        implementación de las soluciones climaticas e identificar las posibles necesidades con las que cuenta el pequeño
+        productor
+    </div>
+
+    <div style="padding-left: 90px;padding-right: 90px;">
+        <div class="medioi" style="width: 40%;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indice de verificacion</th>
+                        <th>Valor</th>
+
+                    </tr>
+                </thead>
+                <tbody *ngFor="let ver of dataSolicitud.verificacion">
+                    <tr>
+                        <td>{{ver.Nombre}}</td>
+                        <td>{{ver.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mediod">
+            Oportunidades de mejora (puntos claves a fortalecer en las medidas)
+            <ul *ngFor="let item of verificacion">
+                <li>
+                    {{item.titulo}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+</div>
