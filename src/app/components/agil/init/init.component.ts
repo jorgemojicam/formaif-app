@@ -15,8 +15,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 })
 export class InitComponent implements OnInit {
 
-  @Input() datos
-  
+  @Input() datos  
 
   initForm = new FormGroup({
     solicitud: new FormControl('', [Validators.min(999999999), Validators.max(9999999999)]),
@@ -86,7 +85,7 @@ export class InitComponent implements OnInit {
               this._snackBar.open("Se inicio la solicitud, para el cliente con cedula" + cedula, "Ok!", {
                 duration: 9000,
               });
-              this.route.navigate(['admin'], { queryParams: { cedula: cedula } })
+              this.route.navigate(['agil'], { queryParams: { cedula: cedula } })
             })
           }
         });
