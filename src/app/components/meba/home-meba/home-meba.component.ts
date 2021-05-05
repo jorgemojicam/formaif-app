@@ -14,7 +14,6 @@ import Swal from 'sweetalert2';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { ResultadoService } from 'src/app/services/resultado.service';
-import { Resultado } from 'src/app/model/resultado';
 
 
 @Component({
@@ -24,7 +23,7 @@ import { Resultado } from 'src/app/model/resultado';
 })
 export class HomeMebaComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['solicitud', 'gestion', 'upload'];
+  displayedColumns: string[] = ['cedula', 'gestion', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
   @ViewChild(ResultadoMebaComponent, { static: false }) resultado: ResultadoMebaComponent;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -59,7 +58,7 @@ export class HomeMebaComponent implements AfterViewInit {
   }
 
   onGestion(element) {
-    this._router.navigate(['meba/sensibilidad'], { queryParams: { solicitud: element.solicitud } })
+    this._router.navigate(['meba/sensibilidad'], { queryParams: { cedula: element.cedula } })
 
   }
   async onSend(element) {

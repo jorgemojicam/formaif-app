@@ -4,6 +4,7 @@ import { AdminComponent } from './admin.component';
 import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestionario.component";
 import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
 import { LobbyComponent } from '../lobby/lobby.component';
+import { AuthGuard } from 'src/app/helpers/auth.guard';
 
 const routes: Routes = [
   {
@@ -37,7 +38,8 @@ const routes: Routes = [
         component: LobbyComponent,
         data: {
           routerName: 'lobby'
-        }
+        },
+        canActivate: [AuthGuard]
       },
     ]
   }

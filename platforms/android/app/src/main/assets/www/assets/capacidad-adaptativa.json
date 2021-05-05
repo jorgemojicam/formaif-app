@@ -1,0 +1,1066 @@
+{
+    "dimensiones": [
+        {
+            "id": 1,
+            "peso": 5,
+            "dimension": "FINANZAS",
+            "preguntas": [
+                {
+                    "peso": 50,
+                    "descripcion": "Relación % entre gastos e ingresos familiares",
+                    "respuestas": [
+                        {
+                            "texto": "<50%",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "50%-59.99%",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "60%-69.99%",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "70%-80%",
+                            "puntaje": 2
+                        },
+                        {
+                            "texto": ">80%",
+                            "puntaje": 1
+                        }
+                    ]
+                },
+                {
+                    "peso": 50,
+                    "descripcion": "¿Cual es la fuente de ingreso principal en su finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Agrosilvopastoril",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Agroforestales",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Apicultura",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Piscicultura",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Monocultivo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "2 o más cultivos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Ganadería convencional",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Combina 3 o más sistemas",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "peso": 6,
+            "dimension": "INFRAESTRUCTURA",
+            "preguntas": [
+                {
+                    "peso": 100,
+                    "descripcion": "¿Cuál es el principal material en que está construida la infraestructura de almacenamiento?",
+                    "respuestas": [
+                        {
+                            "texto": "Madera",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Lámina",
+                            "puntaje": 2
+                        },
+                        {
+                            "texto": "Cartón",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Piedra",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Tabique/ladrillo",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Adobe/tierra/cob/tapia",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Block de cemento",
+                            "puntaje": 2
+                        },
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "peso": 5,
+            "dimension": "SERVICIOS EN LA FINCA",
+            "preguntas": [
+                {
+                    "peso": 50,
+                    "descripcion": "¿Cuál es la fuente de energía eléctrica que se utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Generada in situ combustibles fósiles",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Red pública",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Energía renovable comunitaria",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Energía renovable in situ",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 50,
+                    "descripcion": "¿Qué tipo de telefonía usa en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Fija en casa",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Fija fuera de casa",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Celular",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "peso": 5,
+            "dimension": "CADENA PRODUCTIVA (Poscosecha)",
+            "preguntas": [
+                {
+                    "peso": 25,
+                    "descripcion": "¿Qué nivel de procesamiento tiene el principal producto que explota en su finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Materia prima/producto sin procesar",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Producto con procesamiento intermedio",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Producto con procesamiento final",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 25,
+                    "descripcion": "¿Cuál es el modelo de venta de los productos?",
+                    "respuestas": [
+                        {
+                            "texto": "Venta directa a consumidor",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Contrato",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Asociación de productores",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Intermediario",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Sin acceso a mercado estable",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 25,
+                    "descripcion": "¿Qué medio de transporte utiliza para comercializar los productos de la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "A pie",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "En animal de tracción",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "En vehículo",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Venta en puerta de finca",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 25,
+                    "descripcion": "¿Cuánto tiempo toma en sacar su producto hasta el sitio de venta?",
+                    "respuestas": [
+                        {
+                            "texto": "Menos de media hora",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Más de media hora",
+                            "puntaje": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "peso": 1,
+            "dimension": "ASOCIATIVIDAD",
+            "preguntas": [
+                {
+                    "peso": 100,
+                    "descripcion": "¿Forma parte de una asociación agrícola, ganadera o social?",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "peso": 10,
+            "dimension": "CALIDAD DEL SUELO",
+            "preguntas": [
+                {
+                    "peso": 50,
+                    "descripcion": "¿Cómo percibe la Erosión del suelo? ",
+                    "respuestas": [
+                        {
+                            "texto": "Baja",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Media",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "alta",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 30,
+                    "descripcion": "¿Cómo percibe la compactación del suelo?",
+                    "respuestas": [
+                        {
+                            "texto": "baja",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "media",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "alta",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Con qué periodicidad hace estudio de suelos?",
+                    "respuestas": [
+                        {
+                            "texto": "si, una vez",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "nunca",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "regularmente",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "peso": 10,
+            "dimension": "MANEJO DE NUTRIENTES",
+            "preguntas": [
+                {
+                    "peso": 50,
+                    "descripcion": "¿Qué tipo de abonos utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Químico",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Químico y orgánico",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Orgánico",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 25,
+                    "descripcion": "¿De dónde obtiene los abonos que utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Comprado",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Producido en sitio",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No usa",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 25,
+                    "descripcion": "¿Qué tipo de abonos orgánicos aplica en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Estiércol sin procesar",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Compost",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Abonos verdes",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Bioles",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Lombricomposta",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Residuos de cosecha",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Orina animal",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "2 o más tipos de abonos orgánicos",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Fertirrigación orgánica",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "No usa",
+                            "puntaje": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "peso": 10,
+            "dimension": "MANEJO DE PLAGAS Y ENFERMEDADES",
+            "preguntas": [
+                {
+                    "peso": 30,
+                    "descripcion": "¿Qué método de control de plagas utiliza?",
+                    "respuestas": [
+                        {
+                            "texto": "Preparados biológicos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Asociación de cultivos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Plantas repelentes y hospedarias",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Biopesticidas de laboratorio",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Medios mecánicos o trampas",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Control agroquímico (fungicidas y pesticidas)",
+                            "puntaje": -1
+                        },
+                        {
+                            "texto": "2 o más tipos de biopesticidas",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Nada",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Qué color de etiqueta tienen los pesticidas o fungicidas que utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Etiqueta verde",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Etiqueta azul",
+                            "puntaje": -1
+                        },
+                        {
+                            "texto": "Etiqueta amarilla",
+                            "puntaje": -3
+                        },
+                        {
+                            "texto": "Etiqueta roja",
+                            "puntaje": -5
+                        },
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 30,
+                    "descripcion": "¿Qué método de control de malezas utiliza?",
+                    "respuestas": [
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Manual",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Asociación o rotación de cultivos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Control ecológico",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Herbicidas agroquímicos",
+                            "puntaje": -1
+                        },
+                        {
+                            "texto": "2 o más tipos de control ecológico",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Qué color de etiqueta tienen los herbicidas que utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Etiqueta verde",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Etiqueta azul",
+                            "puntaje": -1
+                        },
+                        {
+                            "texto": "Etiqueta amarilla",
+                            "puntaje": -3
+                        },
+                        {
+                            "texto": "Etiqueta roja",
+                            "puntaje": -5
+                        },
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "peso": 10,
+            "dimension": "GESTIÓN DEL AGUA",
+            "preguntas": [
+                {
+                    "peso": 50,
+                    "descripcion": "¿Cuál es la principal fuente de agua que utiliza para la producción en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Lluvia (Precipitación directa sobre cultivo)",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Río efímero",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": " Río permanente",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Manantial efímero",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Manantial permanente",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Canal de irrigación",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Pozo profundo",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Acequias",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Red pública",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Fuente efimera (incluida lluvia) + Reservorio agua",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Pozo poco profundo",
+                            "puntaje": 2
+                        }
+                    ]
+                },
+                {
+                    "peso": 30,
+                    "descripcion": "¿Qué tipo de riego utiliza para la producción?",
+                    "respuestas": [
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Goteo",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Micro-aspersión",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Aspersión",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Abierta/canales/gravedad",
+                            "puntaje": 1
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Qué método usa para controlar las escorrentías y evitar los encharcamientos en el suelo por lluvias intensas?",
+                    "respuestas": [
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Canales de concreto",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Zanjas bordo",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Drenaje agrícola",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Terrazas",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Dos o más?",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "peso": 10,
+            "dimension": "GESTIÓN DE ECOSISTEMAS",
+            "preguntas": [
+                {
+                    "peso": 40,
+                    "descripcion": "¿Qué tipo de semilla siembra en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Re-siembra de semillas nativas/criollas propias ",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Compra de semillas criollas, híbridas o mejoradas",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Compra de plántulas",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Uso de semillas variedades resistentes a sequía/inundación/temperatura",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 50,
+                    "descripcion": "¿La finca cuenta con áreas de reserva forestal?",
+                    "respuestas": [
+                        {
+                            "texto": "Ninguno",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Árboles dispersos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Cercas vivas",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Área para conservación",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Dos o más",
+                            "puntaje": 5
+                        }
+                    ]
+                },
+                {
+                    "peso": 10,
+                    "descripcion": "¿Realiza quema de hierba o residuos de cosecha?",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": -5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "peso": 3,
+            "dimension": "GESTIÓN DE RESIDUOS",
+            "preguntas": [
+                {
+                    "peso": 33.3,
+                    "descripcion": "¿Qué tipo de uso da a los residuos orgánicos (vegetales o animales)?",
+                    "respuestas": [
+                        {
+                            "texto": "Reciclaje/composta",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Volqueta/basura",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Para consumo de animales (vegetales)",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Esparcidos en finca",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Biodigestor (animales)",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Venta",
+                            "puntaje": 2
+                        },
+                        {
+                            "texto": "Aplicación directa",
+                            "puntaje": 3
+                        }
+                    ]
+                },
+                {
+                    "peso": 33.3,
+                    "descripcion": "¿Qué tipo de uso da a los residuos inorgánicos generados en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Reciclaje",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Quema",
+                            "puntaje": -5
+                        },
+                        {
+                            "texto": "Esparcidos en la finca",
+                            "puntaje": -1
+                        },
+                        {
+                            "texto": "Volqueta",
+                            "puntaje": 3
+                        }
+                    ]
+                },
+                {
+                    "peso": 33.3,
+                    "descripcion": "¿Qué disposición le da a los residuos peligrosos generados en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Recolección especializada",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Quema",
+                            "puntaje": -5
+                        },
+                        {
+                            "texto": "Esparcidos en la finca",
+                            "puntaje": -3
+                        },
+                        {
+                            "texto": "Volqueta/basura",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "No produce",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "peso": 10,
+            "dimension": "MANEJO DE CULTIVOS",
+            "preguntas": [
+                {
+                    "peso": 45,
+                    "descripcion": "¿Qué método de labranza utiliza en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Herramientas manuales",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Animales",
+                            "puntaje": 4
+                        },
+                        {
+                            "texto": "Labranza mecanizada  (tractor):Volteo y roturación superficial",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Labranza mínima/Labranza 0/siembra directa",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Labranza mecanizada (cincel rígido y cincel vibratorio): rotura vertical",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                },
+                {
+                    "peso": 15,
+                    "descripcion": "¿Utiliza calendario de cultivos para planificar sus siembras?",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                },
+                {
+                    "peso": 45,
+                    "descripcion": "¿Cuál es la forma de cultivo predominante en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Monocultivo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Rotación de cultivos",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Policultivos/cultivos asociados",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "peso": 10,
+            "dimension": "MANEJO DE ANIMALES",
+            "preguntas": [
+                {
+                    "peso": 40,
+                    "descripcion": "¿Qué tipo de manejo le da a los animales menores?",
+                    "respuestas": [
+                        {
+                            "texto": "Libres con manejo",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Libres sin manejo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "Estabulados con manejo",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Estabulados sin manejo",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                },
+                {
+                    "peso": 40,
+                    "descripcion": "¿Qué tipo de manejo le da a los animales mayores?",
+                    "respuestas": [
+                        {
+                            "texto": "Pastaje libre sin manejo",
+                            "puntaje": -3
+                        },
+                        {
+                            "texto": "Pastoreo con manejo",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Estabulado o semiestabulado con manejo",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Estabulado o semiestabulado sin manejo",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Sistema silvopastoril / agrosilvopastoril",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Qué prácticas de sanidad animal implementa?",
+                    "respuestas": [
+                        {
+                            "texto": "Ecológica",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "Química",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "Nada",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "N/A"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "peso": 5,
+            "dimension": "CONOCIMIENTO EBA",
+            "preguntas": [
+                {
+                    "peso": 20,
+                    "descripcion": "¿Ha recibido capacitación (taller, charla, seminario) sobre cambio climático?",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 20,
+                    "descripcion": "¿Consulta boletines o información agroclimática (pronósticos) para programar sus actividades en la finca?",
+                    "respuestas": [
+                        {
+                            "texto": "Si",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 50,
+                    "descripcion": "¿Cuenta con medidas de adaptación EbA en su finca?",
+                    "respuestas": [
+                        {
+                            "texto": "6 o más",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "3 a 5",
+                            "puntaje": 3
+                        },
+                        {
+                            "texto": "1 a 2",
+                            "puntaje": 1
+                        },
+                        {
+                            "texto": "0",
+                            "puntaje": 0
+                        }
+                    ]
+                },
+                {
+                    "peso": 10,
+                    "descripcion": "¿Ha accedido a un producto/crédito para la adaptación al cambio climático?",
+                    "respuestas": [
+                        {
+                            "texto": "No pero tiene medidas EbA implementadas",
+                            "puntaje": 5
+                        },
+                        {
+                            "texto": "No y no tiene medidas EbA implementadas",
+                            "puntaje": 0
+                        },
+                        {
+                            "texto": "Sí",
+                            "puntaje": 5
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

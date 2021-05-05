@@ -4,7 +4,6 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Verificacion } from 'src/app/model/verificacion';
-import { VerificacionService } from 'src/app/services/verificacion.service';
 import Utils from '../../../utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import { IdbService } from 'src/app/services/idb.service';
@@ -19,7 +18,7 @@ export class VerificacionComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
   verificacionForm: FormGroup
   dataVerificacion: any
-  sol: string
+  ced: string
   dSolicitud: Solicitud = new Solicitud();
   dVerificacion: Verificacion[] = [];
 
@@ -35,7 +34,7 @@ export class VerificacionComponent implements OnInit {
     })
 
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
   }
 
@@ -122,7 +121,7 @@ export class VerificacionComponent implements OnInit {
       this.dVerificacion = this.verificacionForm.value.verificacion
       this.dSolicitud.verificacion = this.dVerificacion
       //this.dSolicitud.totalAdaptativa = totaladapta.toFixed(3)
-      this.srvSol.saveSol(this.sol, this.dSolicitud)
+      this.srvSol.saveSol(this.ced, this.dSolicitud)
 
     })
   }
@@ -202,7 +201,7 @@ export class VerificacionComponent implements OnInit {
    */
   getSolicitud() {
     return new Promise((resolve, reject) => {
-      this.srvSol.getSol(this.sol).subscribe(
+      this.srvSol.getSol(this.ced).subscribe(
         (d) => {
           resolve(d)
         })

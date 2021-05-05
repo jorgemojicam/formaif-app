@@ -59,8 +59,7 @@ export class AuthComponent implements OnInit {
       user.Username = use
       this.authServ.login(user).subscribe(
         
-        (res) => {
-          
+        (res) => {          
           let perfil: Asesor = {
             Nombre: use,
             Iniciales: "N/A",
@@ -88,9 +87,9 @@ export class AuthComponent implements OnInit {
           }
           this.tokenStorage.saveToken(res);
           this.tokenStorage.saveUser(perfil);
-          this.route.navigate(['lobby']);
-          this.getRespuestas()
+          this.route.navigate(['lobby']);       
           this.isLogged = false
+          this.getRespuestas()
         },
         (err) => {
          
@@ -102,9 +101,7 @@ export class AuthComponent implements OnInit {
           } else {
             errMsg = "Se presento error con la conexion con el servidor. " + err.message
           }
-          this._snackBar.open(errMsg, "Ok!", {
-            duration: 3000,
-          });
+          this._snackBar.open(errMsg, "Ok!", {duration: 3000,});
           this.isLogged = false
         }
       )
@@ -118,6 +115,7 @@ export class AuthComponent implements OnInit {
               if (ofi) {
                 this.tokenStorage.saveUser(ofi);
                 this.isLogged = false
+                this.getRespuestas()
               }
             },
             (err) => {
@@ -128,8 +126,7 @@ export class AuthComponent implements OnInit {
             }
           )
           this.route.navigate(['lobby']);
-          this.isLogged = false
-          this.getRespuestas()
+          this.isLogged = false          
         },
         err => {
           let errMsg = ""
@@ -140,9 +137,7 @@ export class AuthComponent implements OnInit {
           } else {
             errMsg = "Se presento error en la conexion con el servidor. " + err.message
           }
-          this._snackBar.open(errMsg, "Ok!", {
-            duration: 3000,
-          });
+          this._snackBar.open(errMsg, "Ok!", {duration: 3000,});
           this.isLogged = false
         }
       )
@@ -153,7 +148,7 @@ export class AuthComponent implements OnInit {
     this._srvRespuesta.getByCuestionario(1).subscribe(
       (a) => {
         let dim = this.loadCuestionario(a)
-        this._srvIdb.delete('dimenciones')
+        //this._srvIdb.delete('dimenciones')
         this._srvIdb.save('dimenciones', dim)
       },
       (err) => {
@@ -164,7 +159,7 @@ export class AuthComponent implements OnInit {
     this._srvRespuesta.getByCuestionario(2).subscribe(
       (a) => {
         let med = this.loadCuestionario(a)
-        this._srvIdb.delete('medidas')
+        //this._srvIdb.delete('medidas')
         this._srvIdb.save('medidas', med)
       },
       (err) => {
@@ -174,7 +169,7 @@ export class AuthComponent implements OnInit {
 
     this._srvProduccion.get().subscribe(
       (a) => {
-        this._srvIdb.delete('produccion')
+        //this._srvIdb.delete('produccion')
         this._srvIdb.save('produccion', a)
       }, (err) => {
 

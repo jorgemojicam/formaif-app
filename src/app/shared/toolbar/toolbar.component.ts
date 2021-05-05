@@ -17,12 +17,12 @@ export class ToolbarComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  sol: string;
+  ced: string;
   perfil: Asesor = this.tokenStorage.getUser();
   tipo: number = 0;
   titulo: string;
   rout: string;
-  modul:string;
+  modul: string;
 
   constructor(
     private router: Router,
@@ -33,23 +33,34 @@ export class ToolbarComponent implements OnInit {
   ) {
 
     this.activateRoute.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
     router.events.subscribe((val) => {
 
       if (val instanceof NavigationEnd) {
-        this.modul = val.url.split('/')[1] 
-      } 
-      
+        this.modul = val.url.split('/')[1]
+      }
+
       if (val instanceof ActivationStart) {
         if (val.snapshot.data.routerName) {
-          this.rout = val.snapshot.data.routerName         
+          this.rout = val.snapshot.data.routerName
         }
       } else if (val instanceof ActivationEnd) {
         if (val.snapshot.data.routerName) {
-          this.rout = val.snapshot.data.routerName         
-        }   
+          this.rout = val.snapshot.data.routerName
+        }
+      }
+      if (this.modul) {
+        if (this.modul === 'meba') {
+          this.titulo = 'MEBA'
+        } else if (this.modul === 'agil') {
+          this.titulo = 'Asesor Agil'
+        }else{
+          this.titulo = 'Asesor Agil'
+        }
+      }else{
+        this.titulo = 'Asesor Agil'
       }
     });
 
@@ -69,8 +80,8 @@ export class ToolbarComponent implements OnInit {
       this.sidenav.open()
     }
 
-    if (this.sol) {
-      this.srvSol.getSol(this.sol).subscribe((datasol) => {
+    if (this.ced) {
+      this.srvSol.getSol(this.ced).subscribe((datasol) => {
         this.tipo = datasol.asesor
       })
     }

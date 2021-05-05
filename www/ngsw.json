@@ -1,0 +1,108 @@
+{
+  "configVersion": 1,
+  "timestamp": 1620191721290,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/10.0ab44b7262cc755c65d4.js",
+        "/5.3ff0888ba672110b1fcf.js",
+        "/6.38a7d11435c03d831d69.js",
+        "/7.666441c8d526be32cd15.js",
+        "/8.8a752f424534b28ded41.js",
+        "/9.94dbd07984a332a8f7bf.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.a414ebf5e16e93eba3f9.js",
+        "/manifest.webmanifest",
+        "/polyfills-es5.521d0992408f591a7296.js",
+        "/polyfills.61acaf97a950ac27c6ba.js",
+        "/runtime.4f8fc9a4dd154668e776.js",
+        "/styles.bfca51b5b22025b35e25.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/assets/capacidad-adaptativa.json",
+        "/assets/icons/fidelina.png",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x721.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/pictures/Logo.png",
+        "/assets/pictures/back_fidelina.png",
+        "/assets/pictures/dollar.png",
+        "/assets/pictures/el-planeta-tierra.png",
+        "/assets/pictures/fdlmlog.png",
+        "/assets/pictures/profile.png",
+        "/assets/pictures/web-management.png",
+        "/assets/verificacion.json"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/10.0ab44b7262cc755c65d4.js": "8c46c08633ba9a6aebb6b7c4e0128dc3202bd36c",
+    "/5.3ff0888ba672110b1fcf.js": "d081361fa8abe78c5b7225c369f91484b823e23c",
+    "/6.38a7d11435c03d831d69.js": "923203cb2e0f8e85e43840446c5fa1d3d29c7a73",
+    "/7.666441c8d526be32cd15.js": "d6cc0ee4e443c2006a1bf364e8d2531f4b78cbf1",
+    "/8.8a752f424534b28ded41.js": "ccb23da6e1a0342c27a6b2b4a973acbf27b428ff",
+    "/9.94dbd07984a332a8f7bf.js": "0ff850f11b6bac36cef58912e04071d10a15dc5c",
+    "/assets/capacidad-adaptativa.json": "4e7c96ff2d2e0122720b02d99988db33b7d28b3f",
+    "/assets/icons/fidelina.png": "b4a1387749c4eaf73a3f32276d61ba67f81187ef",
+    "/assets/icons/icon-128x128.png": "82ad63769a098d6659f509db8079a80db1efb0ff",
+    "/assets/icons/icon-144x144.png": "cc5f63acfe510237b113f809bada01d696ab3145",
+    "/assets/icons/icon-152x152.png": "74cad9c43ebf12f412460b120ddc249f637f6e4e",
+    "/assets/icons/icon-192x192.png": "58a4d6ad0cacabb8a7f018bcb9c29471aa81e430",
+    "/assets/icons/icon-384x384.png": "60acb9c0997357b9c2a869dc44bac294833ccdb3",
+    "/assets/icons/icon-512x512.png": "cc1bc87ad9e3809f1709ef53daec787633da27da",
+    "/assets/icons/icon-72x721.png": "eb863421fefba2d3be39692add2822226ed13497",
+    "/assets/icons/icon-96x96.png": "0167d8b2c9b33f54b06563c6c5f45a12e25f1855",
+    "/assets/pictures/Logo.png": "b4766f930d60a01081f9dd5e39f8927ee73678e1",
+    "/assets/pictures/back_fidelina.png": "724a9c8aee164791c5e5cdd5f89f5aff73da3cc9",
+    "/assets/pictures/dollar.png": "0bcf05d9f29d7a63c211223a40840b2811e747b5",
+    "/assets/pictures/el-planeta-tierra.png": "66678b0d1176b1941349f3baaee8f56e8e99f01d",
+    "/assets/pictures/fdlmlog.png": "9f4787f094c49a1ffeb4e9110ad1260d92737e5a",
+    "/assets/pictures/profile.png": "f5db531facfe09b5036d1b27aa22944f032f5ff0",
+    "/assets/pictures/web-management.png": "ab32a16d78db9474c1e76aa65683001c59b9eea6",
+    "/assets/verificacion.json": "6ba0f4d54f3bfc3643921708aa0dfa6a28649107",
+    "/favicon.ico": "a199ba779158e54ac4acc5a78d23158429dad3a9",
+    "/index.html": "0596a08b4f472fa5a8cde484588931f72a0f5c95",
+    "/main.a414ebf5e16e93eba3f9.js": "e3ecdf4ff1b97bf8dd509846fb8b554d65386300",
+    "/manifest.webmanifest": "e0f942be27fca2cca2fd2252838e73457cca0fe6",
+    "/polyfills-es5.521d0992408f591a7296.js": "16ece70413ccd08f18e1c4636514b14558b4eaa1",
+    "/polyfills.61acaf97a950ac27c6ba.js": "00d68f6bec8622ed1a323563d0a30dd7a541895c",
+    "/runtime.4f8fc9a4dd154668e776.js": "c4db461c1034851d85ad75aaf3f7ebb7e090b4c0",
+    "/styles.bfca51b5b22025b35e25.css": "5ab584d269840a7f7207fdedb03e1d0a3119e90d"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}

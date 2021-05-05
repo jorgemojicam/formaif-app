@@ -9,7 +9,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import { Router } from '@angular/router';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import Swal from 'sweetalert2';
-import { AnalisisComponent } from '../../analisis/analisis.component';
+import { AnalisisComponent } from '../analisis/analisis.component';
 import * as html2pdf from "html2pdf.js";
 import { OficinaService } from 'src/app/services/oficina.service';
 import { Asesor } from 'src/app/model/asesor';
@@ -17,8 +17,8 @@ import { EmailService } from 'src/app/services/email.service';
 import { Email } from 'src/app/model/email';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ProfileComponent } from '../../admin/profile/profile.component';
-import { AnalisisagroComponent } from '../../analisisagro/analisisagro.component';
-import { FlujocajaComponent } from '../../flujocaja/flujocaja.component';
+import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
+import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 import Utils from 'src/app/utils';
@@ -75,16 +75,17 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onInitSol() {
-    const msg = 'Crear Solicitud';
-    this.openDialog(msg,"");
+    const title = 'Crear Solicitud';
+    const datos = new Solicitud
+    this.openDialog(title,"home",datos);
   }
 
-  openDialog(menssage: string,datos:any) {
+  openDialog(title,form,datos) {
     const config = {
       data: {
-        mensaje: menssage,
-        form: 'home',
-        content: ''
+        mensaje: title,
+        form: form,
+        content: datos
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
@@ -112,7 +113,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onGestion(element) {
-    this.route.navigate(['agil/balance'], { queryParams: { solicitud: element.solicitud } })
+    this.route.navigate(['agil/balance'], { queryParams: { cedula: element.cedula } })
   }
   
   onDelete(element) {
@@ -392,8 +393,8 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onEdit(row) {   
-    const msg = 'Editar Solicitud';
-    this.openDialog(msg,row);
+    const title = 'Editar Solicitud';
+    this.openDialog(title,"home",row);
   }
 
   validateSol(): string {

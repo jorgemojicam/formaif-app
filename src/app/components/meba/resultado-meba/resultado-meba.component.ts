@@ -18,7 +18,7 @@ export class ResultadoMebaComponent implements OnInit {
   @Input() datossol: Solicitud
   options: EChartsOption;
   dataSolicitud: Solicitud = new Solicitud();
-  sol;
+  ced;
   verificacion: any[] = [];
   adaptativa: any[] = [];
 
@@ -29,7 +29,7 @@ export class ResultadoMebaComponent implements OnInit {
 
   async ngOnInit() {
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
 
     if (!this.datossol) {
@@ -94,7 +94,7 @@ export class ResultadoMebaComponent implements OnInit {
   }
   getSolicitud() {
     return new Promise((resolve, reject) => {
-      this.srvSol.getSol(this.sol).subscribe(
+      this.srvSol.getSol(this.ced).subscribe(
         (d) => {
           resolve(d)
         })

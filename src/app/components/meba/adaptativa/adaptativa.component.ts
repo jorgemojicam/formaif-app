@@ -19,7 +19,7 @@ export class AdaptativaComponent implements OnInit {
   dataAdaptativa: any
   adaptativoForm: FormGroup
   aDimensiones: any[]
-  sol: string
+  ced: string
   dSolicitud: Solicitud = new Solicitud();
   dAdaptativa: Adaptativa[] = [];
   expandAll = false
@@ -35,7 +35,7 @@ export class AdaptativaComponent implements OnInit {
       dimensiones: this._formbuild.array([])
     })
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
   }
 
@@ -90,7 +90,7 @@ export class AdaptativaComponent implements OnInit {
       this.dAdaptativa = this.adaptativoForm.value.dimensiones
       this.dSolicitud.dimensiones = this.dAdaptativa
       this.dSolicitud.totalAdaptativa = isFinite(totaladapta) ? totaladapta.toFixed(3) : 0
-      this.srvSol.saveSol(this.sol, this.dSolicitud)
+      this.srvSol.saveSol(this.ced, this.dSolicitud)
     })
   }
 
@@ -165,7 +165,7 @@ export class AdaptativaComponent implements OnInit {
     */
   getSolicitud() {
     return new Promise((resolve, reject) => {
-      this.srvSol.getSol(this.sol).subscribe(
+      this.srvSol.getSol(this.ced).subscribe(
         (d) => {
           resolve(d)
         })

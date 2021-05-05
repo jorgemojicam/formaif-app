@@ -25,7 +25,7 @@ export class SensibilidadComponent implements OnInit {
   selected = new FormControl(0);
   options: EChartsOption;
   arrayOptions: EChartsOption[] = new Array(1);
-  sol;
+  ced;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -38,11 +38,10 @@ export class SensibilidadComponent implements OnInit {
       sensibilidad: this._formBuilder.array([this.itemActividad()])
     })
     this.route.queryParamMap.subscribe((params) => {
-      this.sol = params.get('solicitud')
+      this.ced = params.get('cedula')
     });
-
-    this.srvSol.getSol(this.sol).subscribe((datasol) => {
-      if (this.sol) {
+    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+      if (this.ced) {
 
         this.dataSolicitud = datasol as Solicitud
         if (this.dataSolicitud.Sensibilidad) {
@@ -66,7 +65,7 @@ export class SensibilidadComponent implements OnInit {
         })
         this.dataSen = this.actividadesForm.value.sensibilidad
         this.dataSolicitud.Sensibilidad = this.dataSen
-        this.srvSol.saveSol(this.sol, this.dataSolicitud)
+        this.srvSol.saveSol(this.ced, this.dataSolicitud)
 
       })
 

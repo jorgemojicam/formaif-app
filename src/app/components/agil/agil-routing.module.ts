@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AnalisisComponent } from '../analisis/analisis.component';
-import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
-import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
+import { AnalisisComponent } from './analisis/analisis.component';
+import { AnalisisagroComponent } from './analisisagro/analisisagro.component';
+import { FlujocajaComponent } from './flujocaja/flujocaja.component';
 import { LobbyComponent } from '../lobby/lobby.component';
-import { PropuestaComponent } from '../propuesta/propuesta.component';
-import { ResultadoComponent } from '../resultado/resultado.component';
-import { UbicacionComponent } from '../ubicacion/ubicacion.component';
+import { PropuestaComponent } from './propuesta/propuesta.component';
+import { ResultadoComponent } from './resultado/resultado.component';
+import { UbicacionComponent } from './ubicacion/ubicacion.component';
 import { AgilComponent } from './agil.component';
+import { BalanceComponent } from './balance/balance.component';
 import { HomeComponent } from './home/home.component';
+import { GastosComponent } from './gastos/gastos.component';
+import { AuthGuard } from 'src/app/helpers/auth.guard';
 
 const routes: Routes = [
   {
@@ -35,7 +38,8 @@ const routes: Routes = [
         component: HomeComponent,
         data: {
           routerName: 'home'
-        }
+        },
+        canActivate: [AuthGuard]
       },
       {
         path: 'ubicacion',
@@ -49,13 +53,11 @@ const routes: Routes = [
         data: {
           routerName: 'balance'
         },
-        loadChildren: () =>
-          import('../balance/balance.module').then(m => m.BalanceModule)
+        component: BalanceComponent
       },
       {
         path: 'gastos',
-        loadChildren: () =>
-          import('../gastos/gastos.module').then(m => m.GastosModule),
+        component: GastosComponent,
         data: {
           routerName: 'gastos'
         }
@@ -63,7 +65,7 @@ const routes: Routes = [
       {
         path: 'ventas',
         loadChildren: () =>
-          import('../cruces/cruces.module').then(m => m.CrucesModule),
+          import('./cruces/cruces.module').then(m => m.CrucesModule),
         data: {
           routerName: 'ventas'
         }

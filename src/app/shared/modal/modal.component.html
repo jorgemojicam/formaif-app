@@ -4,7 +4,7 @@
     <ng-container [ngSwitch]="data.form">
         
         <ng-container *ngSwitchCase="'home'">
-            <app-init></app-init>
+            <app-init [datos]="data.content"></app-init>
         </ng-container>
         <ng-container *ngSwitchCase="'produccion'">
             <app-produccion-form [datos]="data.content"></app-produccion-form>

@@ -1,9 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
@@ -19,13 +16,13 @@ import { HomeComponent } from './components/agil/home/home.component';
 import { ModalComponent } from './shared/modal/modal.component';
 import { InitComponent } from './components/agil/init/init.component';
 import { NotfoundComponent } from './shared/notfound/notfound.component';
-import { PropuestaComponent } from './components/propuesta/propuesta.component';
-import { UbicacionComponent } from './components/ubicacion/ubicacion.component';
-import { AnalisisComponent } from './components/analisis/analisis.component';
-import { FlujocajaComponent } from './components/flujocaja/flujocaja.component';
-import { AnalisisagroComponent} from './components/analisisagro/analisisagro.component';
+import { PropuestaComponent } from './components/agil/propuesta/propuesta.component';
+import { UbicacionComponent } from './components/agil/ubicacion/ubicacion.component';
+import { AnalisisComponent } from './components/agil/analisis/analisis.component';
+import { FlujocajaComponent } from './components/agil/flujocaja/flujocaja.component';
+import { AnalisisagroComponent} from './components/agil/analisisagro/analisisagro.component';
 import { ProfileComponent } from './components/admin/profile/profile.component';
-import { ResultadoComponent } from './components/resultado/resultado.component';
+import { ResultadoComponent } from './components/agil/resultado/resultado.component';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
@@ -39,6 +36,8 @@ import { AgilModule } from './components/agil/agil.module';
 import { AgilComponent } from "./components/agil/agil.component";  
 import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
 import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
+import { BalanceComponent } from './components/agil/balance/balance.component';
+import { GastosComponent } from './components/agil/gastos/gastos.component';
 
 
 @NgModule({
@@ -65,7 +64,9 @@ import { ProduccionFormComponent } from './components/admin/admin-produccion/pro
     RespuestasFormComponent,
     AgilComponent,
     ProduccionComponent,
-    ProduccionFormComponent
+    ProduccionFormComponent,
+    BalanceComponent,
+    GastosComponent
     
   ],
   imports: [
@@ -80,7 +81,8 @@ import { ProduccionFormComponent } from './components/admin/admin-produccion/pro
     FlexLayoutModule,
     HttpClientModule,
     MebaModule,
-    AgilModule,    
+    AgilModule
+      
   ],
   entryComponents: [
     ModalComponent,

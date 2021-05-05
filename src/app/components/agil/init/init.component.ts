@@ -16,6 +16,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 export class InitComponent implements OnInit {
 
   @Input() datos
+  
 
   initForm = new FormGroup({
     solicitud: new FormControl('', [Validators.min(999999999), Validators.max(9999999999)]),
@@ -35,10 +36,10 @@ export class InitComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.datos.cedula) {
+    if (this.datos) {
       
       this.initForm = new FormGroup({
-        solicitud: new FormControl(this.datos.solicitud, [Validators.required, Validators.min(999999999), Validators.max(9999999999)]),
+        solicitud: new FormControl(this.datos.solicitud, [Validators.min(999999999), Validators.max(9999999999)]),
         cedula: new FormControl(this.datos.cedula, [Validators.required, Validators.min(99999), Validators.max(9999999999)]),
         asesor: new FormControl(this.datos.asesor, Validators.required)
       });
