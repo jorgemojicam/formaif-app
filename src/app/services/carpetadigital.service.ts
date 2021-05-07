@@ -50,7 +50,7 @@ export class CarpetadigitalService {
         break;
     }
 
-    return this.http.post(environment.AUTH_API + 'Carpetadig/InsertFile', {
+    let data = {
       NumDocCli: solicitud.cedula,
       NumSolicitud: solicitud.solicitud,
       Usuario: "imglatam@fundaciondelamujer.com",
@@ -63,8 +63,11 @@ export class CarpetadigitalService {
           FileBase64: fileBase64
         }
       ]
-    }, httpOptions);
+    }
+    console.log('lo que se envia ->', data)
+    return this.http.post(environment.AUTH_API + 'Carpetadig/InsertFile', data, httpOptions);
 
   }
 
 }
+

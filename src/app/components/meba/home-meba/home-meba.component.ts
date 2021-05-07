@@ -15,6 +15,10 @@ import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 import { ResultadoService } from 'src/app/services/resultado.service';
+import { SolicitudService } from 'src/app/services/solicitud.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'app-home-meba',
@@ -30,6 +34,11 @@ export class HomeMebaComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   procesando = false
   datasol: Solicitud;
+  loading: boolean = true
+
+  consultaForm = new FormGroup({
+    numeroSol: new FormControl('', [Validators.required, Validators.min(999999999), Validators.max(9999999999)])
+  })
 
   constructor(
     private srvSol: IdbSolicitudService,
@@ -37,8 +46,10 @@ export class HomeMebaComponent implements AfterViewInit {
     private _srvAnalisis: AnalisismebaprodService,
     private _srvEmail: EmailService,
     private _srvCarpeta: CarpetadigitalService,
-    private _srvResultado:ResultadoService,
-    private _srvToken: TokenStorageService
+    private _srvResultado: ResultadoService,
+    private _srvToken: TokenStorageService,
+    private _srvSolicitud: SolicitudService,
+    public dialog: MatDialog,
   ) { }
 
   ngAfterViewInit(): void {
@@ -49,13 +60,43 @@ export class HomeMebaComponent implements AfterViewInit {
         this.dataSource = new MatTableDataSource(solicitud);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.loading = false
       }
     })
-
   }
 
-  onGetSol() {
-    alert("Aqui consulta")
+  async onGetSol() {
+    this.loading = true
+    if (this.consultaForm.valid) {
+      let numero = this.consultaForm.value.numeroSol      
+      let sol = await this.getSolByNum(numero) as any
+      this.loading = false
+      
+      if (sol.length > 0) {
+        let data = {
+          solicitud: sol[0].Solicitud,
+          cedula: sol[0].Cedula,
+          fechades:sol[0].FechaDesembolso,
+          asesor: "2",
+        }
+        this.openDialog('Consulta Solicitud', 'home-meba', data)
+      }
+    }
+  }
+
+  openDialog(title, form, datos) {
+    const config = {
+      data: {
+        mensaje: title,
+        form: form,
+        content: datos
+      }
+    };
+    const dialogRef = this.dialog.open(ModalComponent, config);
+    dialogRef.afterClosed().subscribe(result => {
+
+
+    })
   }
 
   onGestion(element) {
@@ -140,7 +181,7 @@ export class HomeMebaComponent implements AfterViewInit {
         Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Verificacion EBA', 'info')
         return
       }
-      
+
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
         html: `Se enviara email a:
@@ -187,34 +228,23 @@ export class HomeMebaComponent implements AfterViewInit {
 
                   if (idAnalisis > 0) {
 
-                    let dataprod = {
-                      listProduccion: analisisArr,
-                      AnalisisMeba: {
-                        Id: idAnalisis
-                      }
-                    }
-                    let anapro = await this.setAnalisisProduccion(dataprod)
+                    let anapro = await this.setAnalisisProduccion(idAnalisis, analisisArr)
                     console.log('analisis produccion ->', anapro)
-                  }
 
-                  if (listRespuestas.length > 0 && idAnalisis > 0) {
-                    let datoresultados = {
-                      Analisis: {
-                        Id: idAnalisis
-                      },
-                      listRespuestas: listRespuestas
+                    if (listRespuestas.length > 0) {
+                      let resul = await this.setResultado(idAnalisis, listRespuestas);
+                      console.log('resultado analisis ->', resul)
                     }
-                    let resul = this._srvResultado.create(datoresultados);
-                    console.log('resultado analisis ->', resul)
                   }
+                  b.textContent = "Insertando en carpeta digital..."
+                  //let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
+                  //console.log(existeSolicitud)
+                  let insertaCarpeta = await this.inserCarpetaDigital(datos, pdfBase64, 4)
+                  console.log("Insertndo el carpeta digital ", insertaCarpeta)
 
                   Swal.close()
                   Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                   this.procesando = false
-                  //let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
-                  //console.log(existeSolicitud)
-                  //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
-                  //console.log("Insertndo el carpeta digital",insertaCarpeta)
 
                 }
               }
@@ -241,6 +271,27 @@ export class HomeMebaComponent implements AfterViewInit {
           reject(err)
         })
     })
+  }
+
+  setResultado(idAnalisis: number, listRespuestas) {
+
+    let datoresultados = {
+      Analisis: {
+        Id: idAnalisis
+      },
+      listRespuestas: listRespuestas
+    }
+
+    return new Promise((resolve, reject) => {
+      this._srvResultado.create(datoresultados).subscribe(
+        (suss) => {
+          return resolve(suss)
+        },
+        (err) => {
+          reject(err)
+        })
+    })
+
   }
 
   /**
@@ -279,9 +330,27 @@ export class HomeMebaComponent implements AfterViewInit {
     })
   }
 
-  setAnalisisProduccion(data) {
+  /**
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-03-26
+   * Nombre: setAnalisisProduccion
+   * Descripcion : Insertar en la tabla que relaciona el analisis con el producto de produccion 
+   * 
+   * @param {number} idAnalisis 
+   * @param {Array} analisisArr
+   *
+   * @return {string} archivo pdf en base64
+   */
+  setAnalisisProduccion(idAnalisis: number, analisisArr) {
+
+    let dataprod = {
+      listProduccion: analisisArr,
+      AnalisisMeba: {
+        Id: idAnalisis
+      }
+    }
     return new Promise((resolve, reject) => {
-      this._srvAnalisis.createAnaProd(data).subscribe(
+      this._srvAnalisis.createAnaProd(dataprod).subscribe(
         (a) => {
           return resolve(a)
         },
@@ -391,6 +460,26 @@ export class HomeMebaComponent implements AfterViewInit {
           return resolve(res)
         });
     })
+  }
+
+  /**
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-05-07
+   * Nombre: getSolByNum
+   * Descripcion : consultar en topaz la solicitud retorna si esta en estado DE desembolsado 
+   * 
+   * @param {Solicitud} solicitud
+   */
+  getSolByNum(solicitud) {
+    return new Promise((resolve, reject) => {
+      this._srvSolicitud.getByNum(solicitud).subscribe(
+        (sus) => {
+          return resolve(sus)
+        }, (err) => {
+          return []
+        })
+    })
+
   }
 
 }

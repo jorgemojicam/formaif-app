@@ -69,13 +69,13 @@ export class AdaptativaComponent implements OnInit {
           let resultado = pre.get("Resultado").value
           let peso = pre.get("Peso").value
           if (resultado) {
-            let puntaje = resultado.Punaje
-
-            let porcentaje = (peso / 100) * puntaje
-            acumulado += porcentaje
-            
+            let puntaje = resultado.Punaje            
+            let porcentaje = (peso / 100) * puntaje            
+            console.log('porcentaje ',porcentaje)
+            acumulado += porcentaje            
           }
         })
+        console.log('acumulado ',acumulado)
         let valortotal = (pesodim / 100) * acumulado
         totaladapta += valortotal
         x.patchValue({

@@ -33,10 +33,8 @@ export class InitComponent implements OnInit {
     private tokenStorage: TokenStorageService,
   ) { }
 
-  ngOnInit(): void {
-
-    if (this.datos) {
-      
+  ngOnInit(): void {    
+    if (this.datos) {      
       this.initForm = new FormGroup({
         solicitud: new FormControl(this.datos.solicitud, [Validators.min(999999999), Validators.max(9999999999)]),
         cedula: new FormControl(this.datos.cedula, [Validators.required, Validators.min(99999), Validators.max(9999999999)]),

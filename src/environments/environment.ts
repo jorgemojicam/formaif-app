@@ -9,7 +9,7 @@ export const environment = {
   analisi: 'COL-FO-001 Análisis de crédito (PDF Generado Asesor Agil)',
   agro: 'COL-FO-006 Análisis de crédito Agropecuario (PDF Generado Asesor Agil)',
   flujo: 'COL-FO-017 Flujo de Caja Agropecuario (PDF Generado Asesor Agil)',
-  meba: 'Resultado de medición EBA COL-FO-020',
+  meba: 'Resultado de medición EBA  COL-FO-020',
 };
 
 /*
@@ -20,3 +20,11 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+/**
+ * 
+Resultado de medición EBA  COL-FO-020
+Análisis de crédito (PDF Generado Asesor Agil) COL-FO-001
+Análisis de crédito Agropecuario (PDF Generado Asesor Agil) COL-FO-006
+Flujo de Caja Agropecuario (PDF Generado Asesor Agil) COL-FO-017
+ */
