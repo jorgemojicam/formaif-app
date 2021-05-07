@@ -31,7 +31,7 @@ export class ToolbarComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     public srvSol: IdbSolicitudService,
   ) {
-
+     
     this.activateRoute.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });

@@ -27,7 +27,28 @@ export class CarpetadigitalService {
     }, httpOptions);
   }
 
-  insert(solicitud:Solicitud,fileBase64:string) {
+  insert(solicitud: Solicitud, fileBase64: string, tipo) {
+
+    let tipoDoc = ''
+    let nameFile = ''
+    switch (tipo) {
+      case 1:
+        tipoDoc = environment.analisi
+        nameFile = 'Analisis de credito.pdf'
+        break;
+      case 2:
+        tipoDoc = environment.agro
+        nameFile = 'Analisis de credito Agropecuario.pdf'
+        break;
+      case 3:
+        tipoDoc = environment.flujo
+        nameFile = 'Flujo de caja.pdf'
+        break;
+      case 4:
+        tipoDoc = environment.meba
+        nameFile = 'MEBA.pdf'
+        break;
+    }
 
     return this.http.post(environment.AUTH_API + 'Carpetadig/InsertFile', {
       NumDocCli: solicitud.cedula,
@@ -36,8 +57,8 @@ export class CarpetadigitalService {
       lstMetadata: [],
       lstSoporte: [
         {
-          TipoDocumento: "COL-FO-001 Análisis de crédito (PDF Generado Asesor Agil)",
-          NombreArchivo: "Analisis de credito.pdf",
+          TipoDocumento: tipoDoc,
+          NombreArchivo: nameFile,
           UrlArchivo: "",
           FileBase64: fileBase64
         }

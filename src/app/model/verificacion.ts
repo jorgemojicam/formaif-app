@@ -4,6 +4,6 @@ export class Verificacion {
     Nombre: string
     aplicapregunta: boolean
     Preguntas: Pregunta[]
-    total: number
-
+    total: number    
+    totalAcumulado:number
 }

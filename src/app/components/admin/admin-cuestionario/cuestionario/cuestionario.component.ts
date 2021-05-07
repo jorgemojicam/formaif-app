@@ -20,7 +20,7 @@ export class CuestionarioComponent {
   listCuestionario: Cuestionario[]
   selectCuestionario
   arbolCuestionario: CuestionarioNones[]
-  loading:boolean = true
+  loading: boolean = false
 
   treeControl = new NestedTreeControl<CuestionarioNones>(node => node.children);
   dataSource = new MatTreeNestedDataSource<CuestionarioNones>();
@@ -41,6 +41,7 @@ export class CuestionarioComponent {
   }
 
   async loadCuestionario(id) {
+    this.loading = true
     this.arbolCuestionario = await this.buildCuestionario(id)
     this.dataSource.data = this.arbolCuestionario;
   }
@@ -204,36 +205,54 @@ export class CuestionarioComponent {
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-        
+
         console.log('lo que returno Respuestas', result)
 
         if (form == "Respuestas") {
-          console.log('respuestas form -> ', form)
+
           let cuestion = new CuestionarioNones()
-          cuestion.id = result.Id
-          cuestion.name = result.Texto
+          cuestion.id = result.data.Id
+          cuestion.name = result.data.Texto
           cuestion.form = form
-          cuestion.peso = result.Puntaje
+          cuestion.peso = result.data.Puntaje
           cuestion.theend = true
-          cuestion.father = result.Preguntas.Id
+          cuestion.father = result.data.Preguntas.Id
 
           for (let i = 0; i < this.arbolCuestionario.length; i++) {
             const ele = this.arbolCuestionario[i];
+
             for (let p = 0; p < ele.children.length; p++) {
-              const element = ele.children[p];
-              if (element.id == result.Preguntas.Id) {
-                this.arbolCuestionario[i].children[p].children.push(cuestion)
-                break
+              const pre = ele.children[p];
+
+              if (pre.id == result.data.Preguntas.Id) {
+
+                if (result.type == 'create') {
+                  this.arbolCuestionario[i].children[p].children.push(cuestion)
+                  break
+                } else if (result.type == 'update') {
+
+                  for (let r = 0; r < pre.children.length; r++) {
+                    const resp = pre.children[r]
+                    
+                    if (resp.id == result.data.Id) {
+                      this.arbolCuestionario[i].children[p].children[r] = cuestion
+                      break
+                    }
+                  }
+
+                }
+
               }
             }
           }
 
           this.dataSource.data = null;
           this.dataSource.data = this.arbolCuestionario
-          
+
         } else if (form == 'Preguntas') {
 
           console.log('respuestas form -> ', form)
+
           let cuestion = new CuestionarioNones()
           cuestion.id = result.Id
           cuestion.name = result.Titulo
@@ -243,6 +262,7 @@ export class CuestionarioComponent {
           cuestion.multiple = result.Multiple
           cuestion.theend = false
           cuestion.father = result.Temas.Id
+          cuestion.children = new Array()
 
           for (let i = 0; i < this.arbolCuestionario.length; i++) {
             const ele = this.arbolCuestionario[i];
@@ -254,6 +274,29 @@ export class CuestionarioComponent {
 
           this.dataSource.data = null;
           this.dataSource.data = this.arbolCuestionario
+
+        } else if (form == 'Temas') {
+
+          let cuestion = new CuestionarioNones()
+          cuestion.id = result.data.Id
+          cuestion.name = result.data.Nombre
+          cuestion.form = form
+          cuestion.peso = result.data.Peso
+          cuestion.theend = false
+          cuestion.father = result.data.Cuestionario.Id
+          cuestion.children = new Array()
+
+          for (let i = 0; i < this.arbolCuestionario.length; i++) {
+            const ele = this.arbolCuestionario[i];
+            if (ele.id == result.data.Id) {
+              cuestion.children = this.arbolCuestionario[i].children
+              this.arbolCuestionario[i] = cuestion
+              break
+            }
+          }
+          this.dataSource.data = null;
+          this.dataSource.data = this.arbolCuestionario
+
         }
       }
 

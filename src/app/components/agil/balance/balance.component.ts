@@ -304,7 +304,7 @@ export class BalanceComponent implements OnInit {
           let plazo = Utils.formatNumber(x.get('plazo').value)
           let monto = Utils.formatNumber(x.get('monto').value)
           let numcuota = Utils.formatNumber(x.get('cuota').value)
-          let valor = Utils.formatNumber(x.get('valor').value)         
+          let valor = Utils.formatNumber(x.get('valor').value)
 
           let netocuota = plazo - numcuota
 
@@ -373,7 +373,7 @@ export class BalanceComponent implements OnInit {
             }
             // Hipotecario
             else if (tipo.id == "2") {
-              let porcentajeneg = x.get('porcentajeneg').value
+              let porcentajeneg = x.get('porcentajeneg').value ? x.get('porcentajeneg').value : 0
               if (porcentajeneg > 100) {
                 x.get("porcentajeneg").setValue("", { emitEvent: false });
                 this._snackBar.open("No puede superar el 100%", "Ok!", {

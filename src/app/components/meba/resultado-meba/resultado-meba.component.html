@@ -131,7 +131,7 @@
                 <tbody *ngFor="let ver of dataSolicitud.verificacion">
                     <tr>
                         <td>{{ver.Nombre}}</td>
-                        <td>{{ver.total}}</td>
+                        <td>{{ver.totalAcumulado}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -140,7 +140,7 @@
             Oportunidades de mejora (puntos claves a fortalecer en las medidas)
             <ul *ngFor="let item of verificacion">
                 <li>
-                    {{item.titulo}}
+                    {{item.Titulo}}
                 </li>
             </ul>
         </div>

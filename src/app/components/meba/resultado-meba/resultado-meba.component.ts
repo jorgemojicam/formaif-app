@@ -1,7 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EChartsOption } from 'echarts';
-import { Pregunta } from 'src/app/model/pregunta';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { Solicitud } from 'src/app/model/solicitud';
 import Utils from 'src/app/utils';
@@ -65,7 +64,6 @@ export class ResultadoMebaComponent implements OnInit {
             min = 0
 
           adapta.Preguntas = pre
-
           this.adaptativa.push(adapta)
         }
       }

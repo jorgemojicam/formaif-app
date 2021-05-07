@@ -1,21 +1,27 @@
 <div fxLayout="row wrap">
+    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-card class="card-bien" fxLayout="column center wrap">
+            <h2>BIENVENIDOS</h2>
+            <p>Herramienta para desarrollar el estudio de credito</p>
+        </mat-card>
+    </div>
 
     <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card (click)="onRouter('agil')">
-            <h2>Asesores</h2>
-            <img matCardImage src="assets/pictures/dollar.png">
+        <mat-card fxLayout="column center wrap" (click)="onRouter('agil')">
+            <h2>ASESOR</h2>
+            <img  src="assets/pictures/dollar.png">
         </mat-card>
     </div>
     <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card (click)="onRouter('meba')">
+        <mat-card fxLayout="column center wrap" (click)="onRouter('meba')">
             <h2>MEBA</h2>
-            <img matCardImage src="assets/pictures/el-planeta-tierra.png">
+            <img src="assets/pictures/el-planeta-tierra.png">
         </mat-card>
     </div>
     <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card (click)="onRouter('admin')">
+        <mat-card fxLayout="column center wrap" (click)="onRouter('admin')">
             <h2>ADMIN</h2>
-            <img matCardImage src="assets/pictures/web-management.png">
+            <img src="assets/pictures/web-management.png">
         </mat-card>
     </div>
 </div>

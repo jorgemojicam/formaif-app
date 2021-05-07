@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,31 +13,34 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
   styleUrls: ['./produccion.component.scss']
 })
 export class ProduccionComponent implements OnInit {
-  /**
-   * Global: 48
-  Id: 1
-  Nombre: "Achiote"
-  NombreCientifico: "Bixa orellana"
-  Ph: 10
-  Precipitacion: 57
-  Temperatura: 76
-  TipoProduccion: 1
-   */
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['Nombre', 'Ph', 'Precipitacion', 'Temperatura'];
+  displayedColumns: string[] = ['Nombre', 'Ph', 'Precipitacion', 'Temperatura', 'edit', 'delete'];
   dataSource: MatTableDataSource<TipoProduccion>;
   @ViewChild(MatSort) sort: MatSort;
+  datosPorud: any = []
 
   constructor(
     private serv: ProduccionService,
     public dialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { }
 
-  ngOnInit(): void {
-    this.serv.get().subscribe(a => {      
-      this.dataSource = new MatTableDataSource(a);    
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;    
+  async ngOnInit() {
+    this.datosPorud = await this.getProduccion()
+    this.dataSource = new MatTableDataSource(this.datosPorud);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  getProduccion() {
+    return new Promise((resolve, reject) => {
+      this.serv.get().subscribe(
+        (sus) => {
+          resolve(sus)
+        }, (err) => {
+          reject([])
+        })
     })
   }
 
@@ -50,14 +53,23 @@ export class ProduccionComponent implements OnInit {
     }
   }
 
-  abrir(datos){
+  onEdit(datos) {
     const msg = 'Produccion';
-    this.openDialog(msg,datos);
+    this.openDialog(msg, datos);
+  }
+
+  onDelete(datos) {
+    console.log(datos)
+  }
+
+  onCreate() {
+    const msg = 'Crear Produccion';
+    this.openDialog(msg, null);
   }
 
 
-  openDialog(menssage: string,datos:any) {
-    
+  openDialog(menssage: string, datos: any) {
+
     const config = {
       data: {
         mensaje: menssage,
@@ -66,8 +78,9 @@ export class ProduccionComponent implements OnInit {
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
-    dialogRef.afterClosed().subscribe(result => {
- 
+    dialogRef.afterClosed().subscribe(async result => {
+      this.datosPorud = await this.getProduccion()
+
     })
   }
 }

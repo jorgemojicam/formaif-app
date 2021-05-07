@@ -77,10 +77,10 @@ export class HomeComponent implements AfterViewInit {
   onInitSol() {
     const title = 'Crear Solicitud';
     const datos = new Solicitud
-    this.openDialog(title,"home",datos);
+    this.openDialog(title, "home", datos);
   }
 
-  openDialog(title,form,datos) {
+  openDialog(title, form, datos) {
     const config = {
       data: {
         mensaje: title,
@@ -91,7 +91,7 @@ export class HomeComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(result => {
 
-      this.srvSol.get().subscribe((sol) => {        
+      this.srvSol.get().subscribe((sol) => {
         this.dataSource = new MatTableDataSource(sol);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -115,7 +115,7 @@ export class HomeComponent implements AfterViewInit {
   onGestion(element) {
     this.route.navigate(['agil/balance'], { queryParams: { cedula: element.cedula } })
   }
-  
+
   onDelete(element) {
     let cedula = element.cedula
     Swal.fire({
@@ -144,7 +144,7 @@ export class HomeComponent implements AfterViewInit {
   async onSend(element) {
 
     this.procesando = true
-    if(element.solicitud == ""){
+    if (element.solicitud == "") {
       Swal.fire({
         icon: 'info',
         title: 'Información Incompleta',
@@ -221,7 +221,7 @@ export class HomeComponent implements AfterViewInit {
                       pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
                     }
 
-                    b.textContent = "Enviando email..."                  
+                    b.textContent = "Enviando email..."
                     let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
                     //let email = "jorge.mojica@fundaciondelamujer.com"
                     await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
@@ -348,9 +348,9 @@ export class HomeComponent implements AfterViewInit {
 
   }
 
-  inserCarpetaDigital(solicitud: Solicitud, pfd: string) {
+  inserCarpetaDigital(solicitud: Solicitud, pfd: string, tipo:number) {
     return new Promise(resolve => {
-      this.carpetaServ.insert(solicitud, pfd)
+      this.carpetaServ.insert(solicitud, pfd, tipo)
         .subscribe((res) => {
           return resolve(res)
         });
@@ -392,9 +392,9 @@ export class HomeComponent implements AfterViewInit {
 
   }
 
-  onEdit(row) {   
+  onEdit(row) {
     const title = 'Editar Solicitud';
-    this.openDialog(title,"home",row);
+    this.openDialog(title, "home", row);
   }
 
   validateSol(): string {

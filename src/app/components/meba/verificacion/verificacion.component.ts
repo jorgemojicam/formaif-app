@@ -114,13 +114,12 @@ export class VerificacionComponent implements OnInit {
         });
    
         x.patchValue({
-          totalacumo: acumulado.toFixed(2)
+          totalAcumulado: acumulado.toFixed(2)
         }, { emitEvent: false })
       })
-
+      console.log(this.verificacionForm)
       this.dVerificacion = this.verificacionForm.value.verificacion
-      this.dSolicitud.verificacion = this.dVerificacion
-      //this.dSolicitud.totalAdaptativa = totaladapta.toFixed(3)
+      this.dSolicitud.verificacion = this.dVerificacion   
       this.srvSol.saveSol(this.ced, this.dSolicitud)
 
     })
@@ -130,7 +129,7 @@ export class VerificacionComponent implements OnInit {
    * Autor: Jorge Enrique Mojica Martinez
    * Fecha: 2021-03-08
    * Nombre: loadPreguntas
-   * Descripcion 
+   * Descripcion se construye el Tema los encabezados
    */
   async loadPreguntas(aPreguntas: any[], total) {
 
@@ -144,7 +143,7 @@ export class VerificacionComponent implements OnInit {
           aplicapregunta: [element.aplicapregunta],
           Preguntas: this.loadRespuestas(element.Preguntas),
           Total: [element.Total],
-          totalacumo: [total]
+          totalAcumulado: [total]
         })
       )
     });
@@ -214,7 +213,6 @@ export class VerificacionComponent implements OnInit {
   preguntas(ti): FormArray {
     return this.verificacion().at(ti).get("Preguntas") as FormArray
   }
-
   clear(event, pre) {
 
     if (!event.checked) {

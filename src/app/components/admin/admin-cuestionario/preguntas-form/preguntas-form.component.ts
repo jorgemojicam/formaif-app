@@ -60,7 +60,7 @@ export class PreguntasFormComponent implements OnInit {
     if (this.preguntasForm.value.Id > 0) {
       this._srvPreguntas.update(preguntas).subscribe(
         (suss) => {
-         
+          
           this._snackBar.open('Se modifico correctamente', "Ok!", { duration: 3000, });
           this.dialogRef.close(preguntas)
           this.loading = false
@@ -73,8 +73,7 @@ export class PreguntasFormComponent implements OnInit {
     } else {
       this._srvPreguntas.create(preguntas).subscribe(
         (suss) => {
-          if (suss) {
-            console.log(suss)
+          if (suss) {      
             let res = suss as Pregunta
             if (res.Id > 0) {
               this._snackBar.open('Se inserto correctamente', "Ok!", { duration: 3000, });

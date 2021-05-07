@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Temas } from 'src/app/model/temas';
 import { TemasService } from 'src/app/services/temas.service';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'app-temas-form',
@@ -21,7 +25,9 @@ export class TemasFormComponent implements OnInit {
   loading: boolean = false
 
   constructor(
-    private _srvTemas: TemasService
+    private _srvTemas: TemasService,
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<ModalComponent>,
   ) { }
 
   ngOnInit(): void {
@@ -37,7 +43,7 @@ export class TemasFormComponent implements OnInit {
     }
   }
 
-  
+
   onSave() {
 
     let tema = {
@@ -54,13 +60,22 @@ export class TemasFormComponent implements OnInit {
 
       this._srvTemas.update(tema).subscribe(
         (suss) => {
-          console.log(suss)
-          this.loading = false
+          let tem = suss as Temas
+          if (tem.Id >0) {
+            
+            this._snackBar.open('Se modifico correctamente', "Ok!", { duration: 3000, });
+            this.dialogRef.close({
+              data: tem,
+              type: 'edit'
+            })
+            this.loading = false
+          }
         }, (err) => {
           console.log(err)
+          this._snackBar.open('Se presento un error', "Ok!", { duration: 3000, });
           this.loading = false
         }
-        
+
       )
     } else {
 

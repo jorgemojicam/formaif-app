@@ -406,7 +406,7 @@ export class UrbanoComponent implements OnInit {
 
     for (let cru = 0; cru < cruces.length; cru++) {
       let periodhis = []
-      
+
       if (cruces[cru].periodohistoricas)
         periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
 
@@ -479,6 +479,7 @@ export class UrbanoComponent implements OnInit {
       }
     })
   }
+
   addActividad() {
     this.actividades().push(this.itemactividad());
     this.selected.setValue(this.actividades().length - 1);
@@ -498,9 +499,33 @@ export class UrbanoComponent implements OnInit {
     })
   }
   loadVentas(ac: number, event) {
+    let periodo = event.value
+
+    let listPeriodo = []
+    if (periodo.id == 1) {
+      listPeriodo = DataSelect.DiasSemana
+    } else if (periodo.id == 2) {
+      listPeriodo = DataSelect.Semanas
+    } else if (periodo.id == 3) {
+      listPeriodo = DataSelect.Quince
+    }
     this.ventashistoricas(ac).clear();
     for (let i = 0; i < event.value.cant; i++) {
-      this.addVentashis(ac);
+      
+      let valordia = ""
+      if (listPeriodo.length > 0) {
+        valordia = listPeriodo[i].name      
+      }else{
+        valordia = (i + 1).toString()
+      }
+
+      this.ventashistoricas(ac).push(
+        this.fb.group({
+          dia: [valordia],
+          valor: ['', Validators.required]
+        })
+      );
+
     }
   }
   loadDataVentas(ventas: any) {

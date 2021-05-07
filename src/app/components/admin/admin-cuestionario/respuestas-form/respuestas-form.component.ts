@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Respuestas } from 'src/app/model/respuestas';
+import { Resultado } from 'src/app/model/resultado';
 import { RespuestasService } from 'src/app/services/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
@@ -55,9 +56,13 @@ export class RespuestasFormComponent implements OnInit {
     if (this.respuestasForm.value.Id > 0) {
       this._srvRespuestas.update(respuestas).subscribe(
         (suss) => {
-
-          if (suss) {
-            this._snackBar.open('Se inserto Correctamente', "Ok!", { duration: 3000, });
+          let res = suss as Resultado
+          if (res.Id) {
+            this._snackBar.open('Se modifico Correctamente', "Ok!", { duration: 3000, });
+            this.dialogRef.close({
+              data: res,
+              type: 'update'
+            })
           } else {
             this._snackBar.open('!Error! no se inserto', "Ok!", { duration: 3000, });
           }
@@ -75,14 +80,17 @@ export class RespuestasFormComponent implements OnInit {
             let res = suss as Respuestas
             if (res.Id > 0) {
               this._snackBar.open('Se inserto Correctamente', "Ok!", { duration: 3000, });
-              this.dialogRef.close(res)
+              this.dialogRef.close({
+                data: res,
+                type: 'create'
+              })
             } else {
               this._snackBar.open('!Error! no se inserto', "Ok!", { duration: 3000, });
             }
           }
           this.loading = false
         }, (err) => {
-         
+
           this.loading = false
         }
       )

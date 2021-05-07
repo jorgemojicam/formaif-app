@@ -1,14 +1,14 @@
 <!-- tabla -->
 <div class="container">
     <div fxLayout="row wrap">
-        <div class="gr" fxFlex="50%" fxFlex.xs="70%" fxFlex.sm="60%">
+        <div class="gr" fxFlex="50%" fxFlex.xs="80%" fxFlex.sm="60%">
             <mat-form-field>
                 <mat-label>Filtrar</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+                <input matInput autocomplete="off" (keyup)="applyFilter($event)" placeholder="Buscar" #input>
             </mat-form-field>
         </div>
-        <div class="gr" fxFlex="50%" fxFlex.xs="30%" fxFlex.sm="40%">
-            <button mat-mini-fab type="button" class="addact" color="primary" (click)="abrir(null)">
+        <div fxFlex="50%" fxFlex.xs="20%" fxFlex.sm="40%">
+            <button mat-mini-fab type="button" class="addact" color="primary" (click)="onCreate()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -20,15 +20,15 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
                     <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
                 </ng-container>
-                <ng-container matColumnDef="Ph">
+                <ng-container style="width: 10%;" matColumnDef="Ph">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Ph</th>
                     <td mat-cell *matCellDef="let row"> {{row.Ph}} </td>
                 </ng-container>
-                <ng-container matColumnDef="Precipitacion">
+                <ng-container style="width: 10%;" matColumnDef="Precipitacion">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Precipitacion</th>
                     <td mat-cell *matCellDef="let row"> {{row.Precipitacion}} </td>
                 </ng-container>
-                <ng-container matColumnDef="Temperatura">
+                <ng-container style="width: 10%;" matColumnDef="Temperatura">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Temperatura</th>
                     <td mat-cell *matCellDef="let row"> {{row.Temperatura}} </td>
                 </ng-container>
@@ -42,8 +42,25 @@
                     </td>
                 </ng-container>
 
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="accent" (click)="onEdit(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="warn" (click)="onDelete(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="abrir(row)"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
                 <tr class="mat-row" *matNoDataRow>
                     <td class="mat-cell" colspan="4">No se encontraron datos "{{input.value}}"</td>
