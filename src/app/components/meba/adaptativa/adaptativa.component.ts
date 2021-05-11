@@ -99,6 +99,7 @@ export class AdaptativaComponent implements OnInit {
     aPreguntas.forEach(element => {
       arrayForm.push(
         this._formbuild.group({
+          Id: [element.Id],
           Nombre: [element.Nombre],
           Peso: [element.Peso],
           Preguntas: this.loadRespuestas(element.Preguntas),
@@ -151,8 +152,7 @@ export class AdaptativaComponent implements OnInit {
   getPreguntas() {
     return new Promise((resolve, reject) => {
       this._srvIdb.get('dimenciones').subscribe(
-        (data) => {
-          console.log(data)
+        (data) => {        
           resolve(data)
         })
     })

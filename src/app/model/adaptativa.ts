@@ -1,8 +1,10 @@
 import { Pregunta } from "./pregunta";
 
 export class Adaptativa {
+    Id:number;
     dimension:string;
-    peso:number;
+    Peso:number;  
+    total:number;  
     Preguntas:Pregunta[];
 
 }

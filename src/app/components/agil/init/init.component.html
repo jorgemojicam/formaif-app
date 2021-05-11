@@ -2,7 +2,7 @@
     <div fxLayout="row wrap">
         <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
             <mat-form-field>
-                <input type="number" autocomplete="off" matInput placeholder="# Solicitud" formControlName="solicitud">
+                <input type="number" autocomplete="off" [readonly]="datos.fechades" matInput placeholder="# Solicitud" formControlName="solicitud">
             </mat-form-field>
         </div>
         <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
@@ -24,8 +24,8 @@
         </div>
         <br>
         <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-            <button *ngIf="!datos.cedula" type="button" (click)="onSave()" mat-raised-button [disabled]="!initForm.valid" color="primary">Guardar</button>
-            <button *ngIf="datos.cedula" type="button" (click)="onEdit()" mat-raised-button [disabled]="!initForm.valid" color="warn">Editar</button>
+            <button *ngIf="!datos.cedula || datos.fechades" type="button" (click)="onSave()" mat-raised-button [disabled]="!initForm.valid" color="primary">Guardar</button>
+            <button *ngIf="datos.cedula && !datos.fechades" type="button" (click)="onEdit()" mat-raised-button [disabled]="!initForm.valid" color="warn">Editar</button>
         </div>
         <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
             <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>

@@ -49,9 +49,8 @@ export class HomeComponent implements AfterViewInit {
     private ofiServ: OficinaService,
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
-    private carpetaServ: CarpetadigitalService,
     private _bottomSheet: MatBottomSheet,
-    private srvCarpeta: CarpetadigitalService
+    private _srvCarpeta: CarpetadigitalService
   ) {
   }
 
@@ -172,6 +171,14 @@ export class HomeComponent implements AfterViewInit {
         return
       }
 
+      let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
+      let solCarpeta = JSON.parse(strcarpetaDig)
+
+      if (solCarpeta.EstadoCarpeta !== "Abierto") {
+        Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+        return
+      }
+
       let aseso = await this.getDirector() as Asesor
 
       if (aseso.Nombre) {
@@ -210,34 +217,38 @@ export class HomeComponent implements AfterViewInit {
                     if (this.datasol.asesor == 2) {
                       const contentagro = this.analisisAgro.reporte.nativeElement
                       const contentflujo = this.flujo.reporte.nativeElement
+
                       b.textContent = "Generacion Analisis de credito pdf..."
                       pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
                       b.textContent = "Generacion Flujo de caja pdf..."
                       pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
+                      b.textContent = "Insertando en carpeta digital..."
+                      let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
+                      console.log("Insetando analisis el carpeta digital", resCarpeta)
+
+                      let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64Agro, 3)
+                      console.log("Insertando flujo en carpeta", resCarpetaFlujo)
+
                     } else if (this.datasol.asesor == 1) {
                       const contentana = this.analisis.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
                       pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
+                      
+                      let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
+                      console.log("Insertndo el carpeta digital", solCarpeta)
                     }
 
                     b.textContent = "Enviando email..."
-                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
-                    //let email = "jorge.mojica@fundaciondelamujer.com"
+                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"                  
                     await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
 
                     b.textContent = "Insertando el analisis..."
                     await this.insert(this.datasol)
-
+                    
                     Swal.close()
                     Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                     this.procesando = false
-
-                    let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
-                    console.log(existeSolicitud)
-                    //let insertaCarpeta = await this.inserCarpetaDigital(this.datasol,pdfBase64)
-                    //console.log("Insertndo el carpeta digital",insertaCarpeta)
-
                   }
                 }
               }
@@ -338,9 +349,9 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  getCarpetaDigital(solicitud: Solicitud) {
+  getCarpetaDigital(solicitud: number) {
     return new Promise(resolve => {
-      this.carpetaServ.get(solicitud.solicitud)
+      this._srvCarpeta.get(solicitud)
         .subscribe((res) => {
           return resolve(res)
         });
@@ -348,9 +359,9 @@ export class HomeComponent implements AfterViewInit {
 
   }
 
-  inserCarpetaDigital(solicitud: Solicitud, pfd: string, tipo:number) {
+  inserCarpetaDigital(solicitud: Solicitud, pfd: string, tipo: number) {
     return new Promise(resolve => {
-      this.carpetaServ.insert(solicitud, pfd, tipo)
+      this._srvCarpeta.insert(solicitud, pfd, tipo)
         .subscribe((res) => {
           return resolve(res)
         });
@@ -471,9 +482,3 @@ export class HomeComponent implements AfterViewInit {
   }
 
 }
-
-/**
- * Análisis de crédito (PDF Generado Asesor Agil) COL-FO-001
- * Análisis de crédito Agropecuario (PDF Generado Asesor Agil) COL-FO-006
- * Flujo de Caja Agropecuario (PDF Generado Asesor Agil) COL-FO-017
- * */

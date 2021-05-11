@@ -139,6 +139,7 @@ export class VerificacionComponent implements OnInit {
 
       arrayForm.push(
         this._formbuild.group({
+          Id: [element.Id],
           Nombre: [element.Nombre],
           aplicapregunta: [element.aplicapregunta],
           Preguntas: this.loadRespuestas(element.Preguntas),

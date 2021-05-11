@@ -12,8 +12,6 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { TokenStorageService } from '../services/token-storage.service';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
-import { CarpetadigitalService } from '../services/carpetadigital.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -24,7 +22,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private token: TokenStorageService,
-    private carpetaSrv: CarpetadigitalService,
     private route: Router,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,

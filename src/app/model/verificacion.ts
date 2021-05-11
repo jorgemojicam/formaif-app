@@ -1,9 +1,10 @@
 import { Pregunta } from "./pregunta"
 
 export class Verificacion {
-    Nombre: string
+    Id:number;
+    Nombre: string;
     aplicapregunta: boolean
     Preguntas: Pregunta[]
-    total: number    
+    total: number  
     totalAcumulado:number
 }

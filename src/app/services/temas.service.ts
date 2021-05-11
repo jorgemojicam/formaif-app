@@ -26,4 +26,7 @@ export class TemasService {
   update(tema:any){
     return this.http.put(`${environment.AUTH_API}Temas`,tema)
   }
+  createByAnalisis(data){    
+    return this.http.post(`${environment.AUTH_API}AnalisismebaTema`,data)
+  }
 }

@@ -80,10 +80,9 @@ export class InitComponent implements OnInit {
               this.srvSol.save(this.solis)
               this.srvSol.saveSol(cedula, this.newSolicitud)
               this.dialog.closeAll()
-              this._snackBar.open("Se inicio la solicitud, para el cliente con cedula" + cedula, "Ok!", {
+              this._snackBar.open(`Se creo la solicitud, para el cliente con cedula ${cedula} `, "Ok!", {
                 duration: 9000,
               });
-              this.route.navigate(['agil'], { queryParams: { cedula: cedula } })
             })
           }
         });

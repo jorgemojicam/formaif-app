@@ -19,6 +19,7 @@ import { SolicitudService } from 'src/app/services/solicitud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import { TemasService } from 'src/app/services/temas.service';
 
 @Component({
   selector: 'app-home-meba',
@@ -44,6 +45,7 @@ export class HomeMebaComponent implements AfterViewInit {
     private srvSol: IdbSolicitudService,
     private _router: Router,
     private _srvAnalisis: AnalisismebaprodService,
+    private _srvTemas: TemasService,
     private _srvEmail: EmailService,
     private _srvCarpeta: CarpetadigitalService,
     private _srvResultado: ResultadoService,
@@ -60,23 +62,23 @@ export class HomeMebaComponent implements AfterViewInit {
         this.dataSource = new MatTableDataSource(solicitud);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.loading = false
       }
+      this.loading = false
     })
   }
 
   async onGetSol() {
     this.loading = true
     if (this.consultaForm.valid) {
-      let numero = this.consultaForm.value.numeroSol      
+      let numero = this.consultaForm.value.numeroSol
       let sol = await this.getSolByNum(numero) as any
       this.loading = false
-      
+
       if (sol.length > 0) {
         let data = {
           solicitud: sol[0].Solicitud,
           cedula: sol[0].Cedula,
-          fechades:sol[0].FechaDesembolso,
+          fechades: sol[0].FechaDesembolso,
           asesor: "2",
         }
         this.openDialog('Consulta Solicitud', 'home-meba', data)
@@ -106,18 +108,26 @@ export class HomeMebaComponent implements AfterViewInit {
   async onSend(element) {
 
     if (navigator.onLine) {
-
+      this.loading = true
       const cedula: string = element.cedula.toString();
-      this.datasol = await this.getSolicitud(cedula) as Solicitud
-      let datos = this.datasol
-
+      let datos = await this.getSolicitud(cedula) as Solicitud
+      
       if (!datos.solicitud) {
         Swal.fire('Incompleto!', 'Por favor ingresar el numero de solicitud en Asesor Agil', 'info')
         return
       }
 
-      let asesores: Asesor = this._srvToken.getUser()
+      let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
+      let solCarpeta = JSON.parse(strsolCarpeta)
 
+      if (solCarpeta.EstadoCarpeta !== "Abierto") {
+        this.loading = false
+        Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+        return
+      }
+
+      let asesores: Asesor = this._srvToken.getUser()
+      this.loading = false
       let analisisArr = new Array()
       //Recorre los datos de sensibilidad
       if (datos.Sensibilidad) {
@@ -128,18 +138,23 @@ export class HomeMebaComponent implements AfterViewInit {
             })
           }
         });
-      } else {
-        Swal.fire('Incompleto!', 'Por favor ingresar los datos de Sensibilidad', 'info')
-        return
       }
 
+      let listTemas = new Array()
       let listRespuestas = new Array()
       //Recorre las respuestas 
       if (datos.dimensiones) {
         datos.dimensiones.forEach(dim => {
+          //Llena el array de los temas con el total
+          listTemas.push({
+            Id: dim.Id,
+            Peso: dim.total
+          })
+
           if (dim.Preguntas.length > 0) {
             dim.Preguntas.forEach(pre => {
               if (pre.Resultado) {
+                //Lennar las tespuestas seleccionadas en capacidad adaptativa
                 listRespuestas.push({
                   Id: pre.Resultado.Id
                 })
@@ -148,12 +163,19 @@ export class HomeMebaComponent implements AfterViewInit {
           }
         });
       } else {
-        Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Capacidad Adaptativa', 'info')
+        Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Capacidad Adaptativa', 'info') 
         return
       }
       //Recorre las espuestas de verificacion
       if (datos.verificacion) {
         datos.verificacion.forEach(ver => {
+
+          if (ver.aplicapregunta) {
+            listTemas.push({
+              Id: ver.Id,
+              Peso: ver.totalAcumulado
+            })
+          }
 
           if (ver.Preguntas.length > 0) {
             ver.Preguntas.forEach(pre => {
@@ -177,11 +199,8 @@ export class HomeMebaComponent implements AfterViewInit {
             });
           }
         })
-      } else {
-        Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Verificacion EBA', 'info')
-        return
       }
-
+      this.datasol = datos
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
         html: `Se enviara email a:
@@ -211,7 +230,7 @@ export class HomeMebaComponent implements AfterViewInit {
                 const b = content.querySelector('b')
                 if (b) {
 
-                  b.textContent = "Creando pdf..."
+                  b.textContent = "Creando pdf..."                  
                   let pdfBase64: string = "";
                   const resultado = this.resultado.reporte.nativeElement
                   pdfBase64 = await this.createpdf(resultado, "MEBA_", datos.solicitud, "p") as string
@@ -228,17 +247,23 @@ export class HomeMebaComponent implements AfterViewInit {
 
                   if (idAnalisis > 0) {
 
+                    b.textContent = "Cargando Produccion..."
                     let anapro = await this.setAnalisisProduccion(idAnalisis, analisisArr)
                     console.log('analisis produccion ->', anapro)
 
                     if (listRespuestas.length > 0) {
-                      let resul = await this.setResultado(idAnalisis, listRespuestas);
-                      console.log('resultado analisis ->', resul)
+                      b.textContent = "Cargando Resultados..."
+                      let resulrespuestas = await this.setResultado(idAnalisis, listRespuestas);
+                      console.log('resultado analisis ->', resulrespuestas)
                     }
+                    if(listTemas.length>0){
+                      b.textContent = "Cargando Totales..."
+                      let resultemas = await this.setAnalisisTemas(idAnalisis, listTemas);
+                      console.log('resultado temas analisis ->', resultemas)
+                    }
+
                   }
                   b.textContent = "Insertando en carpeta digital..."
-                  //let existeSolicitud = await this.getCarpetaDigital(this.datasol) as string
-                  //console.log(existeSolicitud)
                   let insertaCarpeta = await this.inserCarpetaDigital(datos, pdfBase64, 4)
                   console.log("Insertndo el carpeta digital ", insertaCarpeta)
 
@@ -261,6 +286,16 @@ export class HomeMebaComponent implements AfterViewInit {
 
   }
 
+  /**
+ * Autor: Jorge Enrique Mojica Martinez
+ * Fecha: 2021-05-10
+ * Nombre: getSolicitud
+ * Descripcion : Consulta solicitud en local storage
+ * 
+ * @param {string} solicitud 
+ *
+ * @return {object} 
+*/
   getSolicitud(solicitud) {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(solicitud).subscribe(
@@ -273,6 +308,17 @@ export class HomeMebaComponent implements AfterViewInit {
     })
   }
 
+  /**
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-05-10
+   * Nombre: setResultado
+   * Descripcion : Insetar los datos en la tabla resultado asociados a un analisis meba
+   * 
+   * @param {number} idAnalisis 
+   * @param {Array} listRespuestas 
+   *
+   * @return {string} 
+  */
   setResultado(idAnalisis: number, listRespuestas) {
 
     let datoresultados = {
@@ -295,15 +341,15 @@ export class HomeMebaComponent implements AfterViewInit {
   }
 
   /**
- * Autor: Jorge Enrique Mojica Martinez
- * Fecha: 2021-03-26
- * Nombre: setAnalisis
- * Descripcion : inserta los datos del analisis de meba en la base de datos 
- * 
- * @param {object} datos 
- *
- * @return {string}
- */
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-03-26
+   * Nombre: setAnalisis
+   * Descripcion : inserta los datos del analisis de meba en la base de datos 
+   * 
+   * @param {object} datos 
+   *
+   * @return {string}
+  */
   setAnalisis(datos) {
 
     let fechahoy = new Date()
@@ -313,6 +359,7 @@ export class HomeMebaComponent implements AfterViewInit {
       Solicitud: datos.solicitud,
       FechaInicio: datos.fechacreacion,
       FechaFin: fechahoy,
+      TotalAdaptativa: datos.totalAdaptativa,
       Sucursal: {
         Codigo: datos.oficina
       },
@@ -359,6 +406,36 @@ export class HomeMebaComponent implements AfterViewInit {
         })
     })
   }
+
+    /**
+   * Autor: Jorge Enrique Mojica Martinez
+   * Fecha: 2021-03-26
+   * Nombre: setAnalisisTemas
+   * Descripcion : Insertar en la tabla que analisis temas el id del del analisis el id del tema y el total por cada tema
+   * 
+   * @param {number} idAnalisis 
+   * @param {Array} analisisArr
+   *
+   * @return {string} archivo pdf en base64
+   */
+     setAnalisisTemas(idAnalisis: number, analisisArr) {
+
+      let dataprod = {
+        listTema: analisisArr,
+        AnalisisMeba: {
+          Id: idAnalisis
+        }
+      }
+      return new Promise((resolve, reject) => {
+        this._srvTemas.createByAnalisis(dataprod).subscribe(
+          (a) => {
+            return resolve(a)
+          },
+          (err) => {
+            reject(err)
+          })
+      })
+    }
 
   /**
  * Autor: Jorge Enrique Mojica Martinez
@@ -434,9 +511,9 @@ export class HomeMebaComponent implements AfterViewInit {
  * 
  * @param {Solicitud} solicitud 
  */
-  getCarpetaDigital(solicitud: Solicitud) {
+  getCarpetaDigital(solicitud: number) {
     return new Promise(resolve => {
-      this._srvCarpeta.get(solicitud.solicitud)
+      this._srvCarpeta.get(solicitud)
         .subscribe((res) => {
           return resolve(res)
         });
