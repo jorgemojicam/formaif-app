@@ -20,10 +20,9 @@ export class AuthService {
   ) { }
 
   login(user: User): Observable<any> {
-    return this.http.post(environment.AUTH_API + 'login/authenticate', {
+    return this.http.post(environment.AUTH_API + 'login/userauthenticate', {
       Username: user.Username,
-      Passw: user.Passw,
-      Rol: "User"
+      Passw: user.Passw   
     }, httpOptions);
   }
 }

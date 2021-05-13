@@ -234,18 +234,18 @@ export class HomeComponent implements AfterViewInit {
                       const contentana = this.analisis.reporte.nativeElement
                       b.textContent = "Generacion Analisis de credito pdf..."
                       pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
-                      
+
                       let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
                       console.log("Insertndo el carpeta digital", solCarpeta)
                     }
 
                     b.textContent = "Enviando email..."
-                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"                  
+                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
                     await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
 
                     b.textContent = "Insertando el analisis..."
                     await this.insert(this.datasol)
-                    
+
                     Swal.close()
                     Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                     this.procesando = false
@@ -373,33 +373,8 @@ export class HomeComponent implements AfterViewInit {
 
     let asesores: Asesor = this.tokenStorage.getUser()
     let suc = asesores.Sucursales.Codigo;
+    return asesores.Director as Asesor
 
-    if (suc == "969") {
-      return asesores.Director as Asesor
-    } else {
-
-      return new Promise((resolve, reject) => {
-        this.ofiServ.getAsesores(suc).subscribe(
-          (ase) => {
-            let diretores = ase as Asesor[]
-            if (ase) {
-              diretores.forEach(aseso => {
-                if (aseso.Grupo == 'DTRAGMGE' || aseso.Grupo == 'LIDPDS' || aseso.Grupo == 'LDRANMGE' || aseso.Grupo == 'LIDPDSMJ') {
-                  return resolve(aseso)
-                }
-              })
-            } else {
-              console.error('No se encontro la oficina')
-              return resolve([])
-            }
-          },
-          (err) => {
-            console.error('error algo', err)
-            return reject([])
-          })
-      })
-
-    }
 
   }
 

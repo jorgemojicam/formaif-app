@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
+import { EncryptService } from './encrypt.service';
 import { LocalStorageService } from './local-storage.service';
 
 const TOKEN_KEY = 'auth-token';
@@ -11,26 +12,10 @@ const USER_KEY = 'auth-user';
 
 export class TokenStorageService {
 
-  jwtToken: string;
-  decodedToken: { [key: string]: string };
-
   constructor(
     private srvLocalS: LocalStorageService,
+    private _srvCrypto: EncryptService
   ) { }
-
-  setToken(token: string) {
-    if (token) {
-      this.jwtToken = token;
-    }
-  }
-  decodeToken() {
-    if (this.jwtToken) {
-      this.decodedToken = jwt_decode(this.jwtToken);
-    }
-  }
-  getDecodeToken() {
-    return jwt_decode(this.jwtToken);
-  }
 
   signOut(): void {
     this.srvLocalS.removeall();
@@ -44,7 +29,7 @@ export class TokenStorageService {
   }
   public saveUser(user): void {
     this.srvLocalS.remove(USER_KEY);
-    this.srvLocalS.set(USER_KEY, JSON.stringify(user));
+    this.srvLocalS.set(this._srvCrypto.encrypt(USER_KEY),this._srvCrypto.encrypt(JSON.stringify(user)));
   }
   public getUser(): any {
     return JSON.parse(this.srvLocalS.get(USER_KEY));
