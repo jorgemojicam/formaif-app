@@ -38,6 +38,8 @@ import { ProduccionComponent } from './components/admin/admin-produccion/producc
 import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
 import { BalanceComponent } from './components/agil/balance/balance.component';
 import { GastosComponent } from './components/agil/gastos/gastos.component';
+import { RolComponent } from './components/admin/admin-rol/rol/rol.component';
+import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form.component';
 
 
 @NgModule({
@@ -66,7 +68,9 @@ import { GastosComponent } from './components/agil/gastos/gastos.component';
     ProduccionComponent,
     ProduccionFormComponent,
     BalanceComponent,
-    GastosComponent
+    GastosComponent,
+    RolComponent,
+    RolFormComponent
     
   ],
   imports: [

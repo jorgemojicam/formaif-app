@@ -6,6 +6,7 @@ import { Gastos } from 'src/app/model/gastos';
 import { OtrosIngresos } from 'src/app/model/otrosingresosfamilia';
 import { Remuneracion } from 'src/app/model/remuneracion';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import DataSelect from '../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -19,8 +20,9 @@ export class GastosComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public srvSol: IdbSolicitudService,
-    private activeRoute: ActivatedRoute
+    public _srvSol: IdbSolicitudService,
+    private activeRoute: ActivatedRoute,
+    private _srvEncr: EncryptService
   ) { }
 
   public gastosForm: FormGroup = this.fb.group({
@@ -60,23 +62,31 @@ export class GastosComponent implements OnInit {
   tipoSol: number;
   ced: string;
 
-  ngOnInit(): void {
+  getSol() {
+    return new Promise(resolve => {
+      this._srvSol.getSol(this.ced).subscribe(
+        (datasol) => {
+          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+        }, (err) => {
+          resolve([])
+        })
+
+    })
+  }
+
+  async ngOnInit() {
 
     this.activeRoute.queryParamMap
       .subscribe((params) => {
         this.ced = params.get('cedula')
       });
 
-    this.srvSol.getSol(this.ced).subscribe((datasol) => {
-
-      if (datasol) {
-        this.dataSolicitud = datasol as Solicitud
-        this.tipoSol = datasol.asesor
-        if (this.dataSolicitud.Gastos) {
-          this.gastosForm = this.loadDataGastosRow(this.dataSolicitud.Gastos);
-        }
-      }
-
+    this.dataSolicitud = await this.getSol() as Solicitud
+    this.tipoSol = this.dataSolicitud.asesor
+    if (this.dataSolicitud.Gastos) {
+      this.gastosForm = this.loadDataGastosRow(this.dataSolicitud.Gastos);
+    }
+   
       this.gastosForm.valueChanges.subscribe((values) => {
 
         let alquilerN = this.formatNumber(values.alquilerN)
@@ -168,9 +178,9 @@ export class GastosComponent implements OnInit {
 
         this.dataGastos = this.gastosForm.value
         this.dataSolicitud.Gastos = this.dataGastos
-        this.srvSol.saveSol(this.ced, this.dataSolicitud)
+        this._srvSol.saveSol(this.ced, this.dataSolicitud)
       })
-    });
+  
   }
 
   loadDataGastosRow(remu: Gastos) {
@@ -236,7 +246,7 @@ export class GastosComponent implements OnInit {
   //---------------Estacionales---------------------
   initEstacionales() {
     return this.fb.group({
-      concepto: ['', Validators.required],     
+      concepto: ['', Validators.required],
       mes: ['', Validators.required],
       valor: ['', Validators.required],
     });
@@ -246,7 +256,7 @@ export class GastosComponent implements OnInit {
     estacionales.forEach(estacional => {
       esta.push(
         this.fb.group({
-          concepto: [estacional.concepto, Validators.required],         
+          concepto: [estacional.concepto, Validators.required],
           mes: [estacional.mes, Validators.required],
           valor: [estacional.valor, Validators.required]
         })

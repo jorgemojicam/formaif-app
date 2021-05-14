@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -28,7 +29,7 @@ export class InitComponent implements OnInit {
   constructor(
     public srvSol: IdbSolicitudService,
     private _snackBar: MatSnackBar,
-    private route: Router,
+    private _srvEncr: EncryptService,
     public dialog: MatDialog,
     private tokenStorage: TokenStorageService,
   ) { }
@@ -98,7 +99,7 @@ export class InitComponent implements OnInit {
 
       this.srvSol.getSol(cedula).subscribe((sol) => {
         if (sol) {          
-          let solicitud = sol as Solicitud
+          let solicitud = JSON.parse(this._srvEncr.decrypt(sol)) as Solicitud
           solicitud.solicitud = numSolicitud          
           this.srvSol.saveSol(cedula, solicitud)
 

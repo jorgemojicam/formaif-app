@@ -2,6 +2,7 @@
 import {  Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class CrucesComponent implements OnInit {
 
   constructor(
     public srvSol: IdbSolicitudService,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private _srvEncr: EncryptService
   ) { }
   tipoAsesor: number;
   loadData: boolean = false
@@ -31,7 +33,7 @@ export class CrucesComponent implements OnInit {
 
     this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
-      this.datasolicitud = datasol as Solicitud
+      this.datasolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
       this.tipoAsesor = this.datasolicitud.asesor
     
     })

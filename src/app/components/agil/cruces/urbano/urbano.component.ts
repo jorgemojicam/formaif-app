@@ -11,6 +11,7 @@ import { MateriaPrima } from 'src/app/model/materiaprima';
 import { Compras } from 'src/app/model/compras';
 import { CostoVenta } from 'src/app/model/costoventa';
 import Utils from '../../../../utils';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-urbano',
@@ -21,9 +22,10 @@ export class UrbanoComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public srvSol: IdbSolicitudService,
+    public _srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _srvEncr: EncryptService
   ) { }
 
   @Input() loadData: boolean = false
@@ -54,309 +56,319 @@ export class UrbanoComponent implements OnInit {
   quincena = DataSelect.Quince;
   semanas = DataSelect.Semanas;
 
-  ngOnInit(): void {
+  getSol() {
+    return new Promise(resolve => {
+      this._srvSol.getSol(this.ced).subscribe(
+        (datasol) => {
+          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+        }, (err) => {
+          resolve([])
+        })
+
+    })
+  }
+
+  async ngOnInit() {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+    this.datasolicitud = await this.getSol() as Solicitud
+    this.tipoAsesor = this.datasolicitud.asesor
 
-      this.datasolicitud = datasol as Solicitud
-      this.tipoAsesor = this.datasolicitud.asesor
-      if (this.datasolicitud.Cruces) {
-        this.loadactividad(this.datasolicitud.Cruces)
-      }
-      this.loadData = true
-      this.isLoad.emit(true)
+    if (this.datasolicitud.Cruces) {
+      this.loadactividad(this.datasolicitud.Cruces)
+    }
+    this.loadData = true;
+    this.isLoad.emit(true);
+    this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
-      this.actividadesForm.get('act').valueChanges.subscribe(values => {
+      const ctrl = <FormArray>this.actividadesForm.controls['act'];
+      ctrl.controls.forEach((x) => {
 
-        const ctrl = <FormArray>this.actividadesForm.controls['act'];
-        ctrl.controls.forEach((x) => {
+        //-----------------------Cruce 1 ventas B R M -------------------  
+        let cantperiodo = 0
+        let valorpromedio = 0
+        let periodoventas = x.get('periodoventas').value
 
-          //-----------------------Cruce 1 ventas B R M -------------------  
-          let cantperiodo = 0
-          let valorpromedio = 0
-          let periodoventas = x.get('periodoventas').value
+        if (periodoventas == 1) {
+          cantperiodo = 4
+          valorpromedio = 3
+        } else if (periodoventas == 2) {
+          cantperiodo = 1
+          valorpromedio = 3
+        } else if (periodoventas == 3) {
+          cantperiodo = 1
+          valorpromedio = 2
+        }
+        let cantB = x.get('diasB').value.length
+        let cantR = x.get('diasR').value.length
+        let cantM = x.get('diasM').value.length
+        let valorB = this.formatNumber(x.get('valorB').value)
+        let valorR = this.formatNumber(x.get('valorR').value)
+        let valorM = this.formatNumber(x.get('valorM').value)
 
-          if (periodoventas == 1) {
-            cantperiodo = 4
-            valorpromedio = 3
-          } else if (periodoventas == 2) {
-            cantperiodo = 1
-            valorpromedio = 3
-          } else if (periodoventas == 3) {
-            cantperiodo = 1
-            valorpromedio = 2
-          }
-          let cantB = x.get('diasB').value.length
-          let cantR = x.get('diasR').value.length
-          let cantM = x.get('diasM').value.length
-          let valorB = this.formatNumber(x.get('valorB').value)
-          let valorR = this.formatNumber(x.get('valorR').value)
-          let valorM = this.formatNumber(x.get('valorM').value)
+        let totalB = cantB * valorB * cantperiodo
+        let totalR = cantR * valorR * cantperiodo
+        let totalM = cantM * valorM * cantperiodo
 
-          let totalB = cantB * valorB * cantperiodo
-          let totalR = cantR * valorR * cantperiodo
-          let totalM = cantM * valorM * cantperiodo
+        let totaldias = this.formatNumber(x.get('totalDias').value)
 
-          let totaldias = this.formatNumber(x.get('totalDias').value)
-
-          let promedio = (valorB + valorR + valorM) / valorpromedio
-          let totalpromedio = promedio * totaldias
-          let totalbrm = totalB + totalR + totalM
+        let promedio = (valorB + valorR + valorM) / valorpromedio
+        let totalpromedio = promedio * totaldias
+        let totalbrm = totalB + totalR + totalM
 
 
-          if (valorR > valorB) {
-            valorR = 0
-            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
-              duration: 9000,
-            });
-          }
-          if (valorM > valorR) {
-            valorM = 0
-            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
-              duration: 9000,
-            });
-          }
-          let totalCruce1 = 0
-          if (totalpromedio > totalbrm) {
-            totalCruce1 = totalbrm
-          } else {
-            totalCruce1 = totalpromedio
-          }
-          //---------------------------------------------------------------------------
+        if (valorR > valorB) {
+          valorR = 0
+          this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+            duration: 9000,
+          });
+        }
+        if (valorM > valorR) {
+          valorM = 0
+          this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+            duration: 9000,
+          });
+        }
+        let totalCruce1 = 0
+        if (totalpromedio > totalbrm) {
+          totalCruce1 = totalbrm
+        } else {
+          totalCruce1 = totalpromedio
+        }
+        //---------------------------------------------------------------------------
 
-          //---------------------Ventas Historicas--------------------------------------
-          let total = 0
-          let tipoactividad = x.get("tipo").value
-          let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
-          let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
+        //---------------------Ventas Historicas--------------------------------------
+        let total = 0
+        let tipoactividad = x.get("tipo").value
+        let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
+        let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
 
-          const ventashistoricas = <FormArray>x.get('ventasHis')
-          ventashistoricas.controls.forEach((ven) => {
-            let valor = this.formatNumber(ven.get("valor").value)
-            total += valor
-            ven.patchValue({
-              valor: isFinite(valor) ? valor.toLocaleString() : 0
-            }, { emitEvent: false })
-          })
-          let promedioven = total / frechis
-          let totalPromedio = promedioven * frechisdias
-          x.patchValue({
-            promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toFixed() : 0,
-            totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0
+        const ventashistoricas = <FormArray>x.get('ventasHis')
+        ventashistoricas.controls.forEach((ven) => {
+          let valor = this.formatNumber(ven.get("valor").value)
+          total += valor
+          ven.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false })
+        })
+        let promedioven = total / frechis
+        let totalPromedio = promedioven * frechisdias
+        x.patchValue({
+          promtotalvenHis: isFinite(totalPromedio) ? totalPromedio.toFixed() : 0,
+          totalVentasHis: isFinite(promedioven) ? promedioven.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : 0
+        }, { emitEvent: false })
 
-          //--------------------Produccion --------------------------------------------
-          let totalprod = 0
-          const produccionArr = <FormArray>x.get('produccion')
-          produccionArr.controls.forEach((prod) => {
-            let valor = this.formatNumber(prod.get("valor").value)
-            let cantidad = this.formatNumber(prod.get("cantidad").value)
-            let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
-            let total = valor * cantidad * frec
-            prod.patchValue({
-              valor: isFinite(valor) ? valor.toLocaleString() : 0,
-              total: isFinite(total) ? total.toLocaleString() : 0,
-            }, { emitEvent: false })
-            totalprod += total
-          })
-          x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
-          //---------------------------------------------------------------
+        //--------------------Produccion --------------------------------------------
+        let totalprod = 0
+        const produccionArr = <FormArray>x.get('produccion')
+        produccionArr.controls.forEach((prod) => {
+          let valor = this.formatNumber(prod.get("valor").value)
+          let cantidad = this.formatNumber(prod.get("cantidad").value)
+          let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
+          let total = valor * cantidad * frec
+          prod.patchValue({
+            valor: isFinite(valor) ? valor.toLocaleString() : 0,
+            total: isFinite(total) ? total.toLocaleString() : 0,
+          }, { emitEvent: false })
+          totalprod += total
+        })
+        x.get("totalProduccion").setValue(totalprod, { emitEvent: false });
+        //---------------------------------------------------------------
 
-          //----------------Total Cruce 2----------------------------------
-          let totalCruce2 = 0
-          if (tipoactividad == 2) {
-            if (totalPromedio > totalprod) {
-              totalCruce2 = totalprod
-            } else {
-              totalCruce2 = totalPromedio
-            }
+        //----------------Total Cruce 2----------------------------------
+        let totalCruce2 = 0
+        if (tipoactividad == 2) {
+          if (totalPromedio > totalprod) {
+            totalCruce2 = totalprod
           } else {
             totalCruce2 = totalPromedio
           }
-          //---------------------------------------------------------------
+        } else {
+          totalCruce2 = totalPromedio
+        }
+        //---------------------------------------------------------------
 
-          let margen = 0
-          let costo = 0
-          let totalparticipacion = 0
-          //------------------Costo de venta------------------------------
-          const costoventa = <FormArray>x.get('costoventa')
-          costoventa.controls.forEach((cos) => {
-            let preciocompra = this.formatNumber(cos.get("precioCompra").value)
-            let precioventa = this.formatNumber(cos.get("precioVenta").value)
-            let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
-            var participacion = this.formatNumber(cos.get("participacion").value)
+        let margen = 0
+        let costo = 0
+        let totalparticipacion = 0
+        //------------------Costo de venta------------------------------
+        const costoventa = <FormArray>x.get('costoventa')
+        costoventa.controls.forEach((cos) => {
+          let preciocompra = this.formatNumber(cos.get("precioCompra").value)
+          let precioventa = this.formatNumber(cos.get("precioVenta").value)
+          let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
+          var participacion = this.formatNumber(cos.get("participacion").value)
 
-            let margenglobal = (participacion / 100) * porcentaje
+          let margenglobal = (participacion / 100) * porcentaje
+          totalparticipacion += participacion
+          if (totalparticipacion > 100) {
+            participacion = 0;
+            this._snackBar.open("No puede superar el 100% en el total de participacion", "Ok!", {
+              duration: 6000,
+            });
+          }
+          margen += margenglobal
+
+          cos.patchValue({
+            participacion: isFinite(participacion) ? participacion.toLocaleString() : 0,
+            precioVenta: isFinite(precioventa) ? precioventa.toLocaleString() : 0,
+            precioCompra: isFinite(preciocompra) ? preciocompra.toLocaleString() : 0,
+            porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
+          }, { emitEvent: false })
+        })
+
+        //------------------------------------------------------------------
+
+        //--------------Costo de venta [materia prima]----------------------
+        let totalcomporas = 0
+        if (tipoactividad == 2) {
+          margen = 0
+          totalcomporas = 0
+          const materiapri = <FormArray>x.get('materiaprima')
+          materiapri.controls.forEach((mat) => {
+            let cantidad = this.formatNumber(mat.get("cantidad").value)
+            let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
+            let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
+            let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
+            let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
+            let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
+            let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
+            let valormao = this.formatNumber(mat.get("valorMao").value)
+            let valorcif = this.formatNumber(mat.get("valorCif").value)
+            var participacion = this.formatNumber(mat.get("participacion").value)
             totalparticipacion += participacion
             if (totalparticipacion > 100) {
-              participacion = 0;
+              participacion = 0
               this._snackBar.open("No puede superar el 100% en el total de participacion", "Ok!", {
-                duration: 6000,
+                duration: 3000,
               });
             }
+            let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
+            let precioventa = cantidad * preciovenorod
+            let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
+            let margenglobal = (participacion / 100) * porcentaje
+
             margen += margenglobal
 
-            cos.patchValue({
-              participacion: isFinite(participacion) ? participacion.toLocaleString() : 0,
-              precioVenta: isFinite(precioventa) ? precioventa.toLocaleString() : 0,
-              precioCompra: isFinite(preciocompra) ? preciocompra.toLocaleString() : 0,
-              porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
+            mat.patchValue({
+              precioVenProd: preciovenorod.toLocaleString("es-CO"),
+              valorMatPri: valormatpri.toLocaleString("es-CO"),
+              valorMatPri2: valormatpri2.toLocaleString("es-CO"),
+              valorMatPri3: valormatpri3.toLocaleString("es-CO"),
+              valorMatPri4: valormatpri4.toLocaleString("es-CO"),
+              valorMatPri5: valormatpri5.toLocaleString("es-CO"),
+              valorMao: valormao.toLocaleString("es-CO"),
+              valorCif: valorcif.toLocaleString("es-CO"),
+              precioCompra: preciocompra.toLocaleString("es-CO"),
+              precioVenta: precioventa.toLocaleString("es-CO"),
+              porcentaje: isNaN(porcentaje) ? 0 : porcentaje.toFixed(),
+              participacion: participacion
             }, { emitEvent: false })
+
           })
+          let unidadrend = materiapri.controls[0].get("unidad").value.name
+          let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
+          let cantidad = materiapri.controls[0].get("cantMatPri").value
+          let cantpro = materiapri.controls[0].get("cantidad").value
+          let precioVenProd = Utils.formatNumber(materiapri.controls[0].get("precioVenProd").value)
 
-          //------------------------------------------------------------------
+          const rendCantidad = Utils.formatNumber(x.get('rendCantidad').value)
+          const rendFrecuencia = (x.get('rendFrecuencia').value ? x.get('rendFrecuencia').value.dias : 0)
+          const rendValorU = Utils.formatNumber(x.get('rendValorU').value)
 
-          //--------------Costo de venta [materia prima]----------------------
-          let totalcomporas = 0
-          if (tipoactividad == 2) {
-            margen = 0
-            totalcomporas = 0
-            const materiapri = <FormArray>x.get('materiaprima')
-            materiapri.controls.forEach((mat) => {
-              let cantidad = this.formatNumber(mat.get("cantidad").value)
-              let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
-              let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
-              let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
-              let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
-              let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
-              let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
-              let valormao = this.formatNumber(mat.get("valorMao").value)
-              let valorcif = this.formatNumber(mat.get("valorCif").value)
-              var participacion = this.formatNumber(mat.get("participacion").value)
-              totalparticipacion += participacion
-              if (totalparticipacion > 100) {
-                participacion = 0
-                this._snackBar.open("No puede superar el 100% en el total de participacion", "Ok!", {
-                  duration: 3000,
-                });
-              }
-              let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
-              let precioventa = cantidad * preciovenorod
-              let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
-              let margenglobal = (participacion / 100) * porcentaje
+          let rendValorT = rendValorU * rendFrecuencia * rendCantidad
+          let rendTotal = (rendCantidad * rendFrecuencia * cantpro) / cantidad
 
-              margen += margenglobal
-
-              mat.patchValue({
-                precioVenProd: preciovenorod.toLocaleString("es-CO"),
-                valorMatPri: valormatpri.toLocaleString("es-CO"),
-                valorMatPri2: valormatpri2.toLocaleString("es-CO"),
-                valorMatPri3: valormatpri3.toLocaleString("es-CO"),
-                valorMatPri4: valormatpri4.toLocaleString("es-CO"),
-                valorMatPri5: valormatpri5.toLocaleString("es-CO"),
-                valorMao: valormao.toLocaleString("es-CO"),
-                valorCif: valorcif.toLocaleString("es-CO"),
-                precioCompra: preciocompra.toLocaleString("es-CO"),
-                precioVenta: precioventa.toLocaleString("es-CO"),
-                porcentaje: isNaN(porcentaje) ? 0 : porcentaje.toFixed(),
-                participacion: participacion
-              }, { emitEvent: false })
-
-            })
-            let unidadrend = materiapri.controls[0].get("unidad").value.name
-            let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
-            let cantidad = materiapri.controls[0].get("cantMatPri").value
-            let cantpro = materiapri.controls[0].get("cantidad").value
-            let precioVenProd = Utils.formatNumber(materiapri.controls[0].get("precioVenProd").value)
-
-            const rendCantidad = Utils.formatNumber(x.get('rendCantidad').value)
-            const rendFrecuencia = (x.get('rendFrecuencia').value ? x.get('rendFrecuencia').value.dias : 0)
-            const rendValorU = Utils.formatNumber(x.get('rendValorU').value)
-
-            let rendValorT = rendValorU * rendFrecuencia * rendCantidad
-            let rendTotal = (rendCantidad * rendFrecuencia * cantpro) / cantidad
-
-            totalcomporas += rendValorT
-
-            x.patchValue({
-              rendUnidad: unidadrend,
-              rendMateriaprima: materiaprimarend,
-              rendValorT: rendValorT.toLocaleString(),
-              rendTotal: isNaN(rendTotal) ? 0 : rendTotal.toLocaleString(),
-            }, { emitEvent: false })
-
-            let totalcruce = rendTotal * precioVenProd
-            x.patchValue({
-              totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
-            }, { emitEvent: false })
-
-          }
-          //Costo de venta cuando la actividad es servicios
-          if (tipoactividad == 3) {
-            costo = Utils.formatNumber(x.get('costo').value)
-
-            if (costo > 100) {
-              costo = 0
-              this._snackBar.open("El porcentaje de costo de venta no puede superar el 100", "Ok!", {
-                duration: 9000,
-              });
-            }
-          } else {
-            //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
-            costo = 100 - margen
-          }
-          console.log(costo)
-          //--------------------Compras---------------------------------------
-          const compras = <FormArray>x.get('compras')
-          compras.controls.forEach((com) => {
-            let cantidad = this.formatNumber(com.get("cantidad").value)
-            let valor = this.formatNumber(com.get("valor").value)
-            let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
-            let total = cantidad * valor * frec
-            totalcomporas += total
-            com.patchValue({
-              valor: valor.toLocaleString(),
-              total: isFinite(total) ? total.toLocaleString() : 0,
-            }, { emitEvent: false })
-          })
-          x.patchValue({
-            totalCompras: isFinite(totalcomporas) ? totalcomporas.toLocaleString() : 0
-          }, { emitEvent: false })
-          //---------------------------------------------------------------
-
-          //--------------Total cruce3-------------------------------------
-
-          let promreal: number = 0;
-          if (tipoactividad == 1) {
-            promreal = (100 - margen) / 100
-            let totalcruce = totalcomporas / promreal
-            x.patchValue({
-              totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
-            }, { emitEvent: false })
-          } else if (tipoactividad == 3) {
-            x.patchValue({
-              totalCruce3: isFinite(totalcomporas) ? totalcomporas.toFixed() : 0
-            }, { emitEvent: false })
-          }
-
+          totalcomporas += rendValorT
 
           x.patchValue({
-            valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
-            valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
-            valorM: isFinite(valorM) ? valorM.toLocaleString() : 0,
-            totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
-            totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
-            totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
-            promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
-            totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
-            totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
-            totalCruce1: isFinite(totalCruce1) ? totalCruce1.toFixed() : 0,
-            totalCruce2: isFinite(totalCruce2) ? totalCruce2.toFixed() : 0,
-            costo: isNaN(costo) ? 0 : costo.toFixed(),
-            margen: isNaN(margen) ? 0 : margen.toFixed(),
-
+            rendUnidad: unidadrend,
+            rendMateriaprima: materiaprimarend,
+            rendValorT: rendValorT.toLocaleString(),
+            rendTotal: isNaN(rendTotal) ? 0 : rendTotal.toLocaleString(),
           }, { emitEvent: false })
-        });
 
-        this.dataCruces = this.actividadesForm.get('act').value
-        this.datasolicitud.Cruces = this.dataCruces
-        this.srvSol.saveSol(this.ced, this.datasolicitud)
-      })
+          let totalcruce = rendTotal * precioVenProd
+          x.patchValue({
+            totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
+          }, { emitEvent: false })
+
+        }
+        //Costo de venta cuando la actividad es servicios
+        if (tipoactividad == 3) {
+          costo = Utils.formatNumber(x.get('costo').value)
+
+          if (costo > 100) {
+            costo = 0
+            this._snackBar.open("El porcentaje de costo de venta no puede superar el 100", "Ok!", {
+              duration: 9000,
+            });
+          }
+        } else {
+          //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
+          costo = 100 - margen
+        }
+        console.log(costo)
+        //--------------------Compras---------------------------------------
+        const compras = <FormArray>x.get('compras')
+        compras.controls.forEach((com) => {
+          let cantidad = this.formatNumber(com.get("cantidad").value)
+          let valor = this.formatNumber(com.get("valor").value)
+          let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
+          let total = cantidad * valor * frec
+          totalcomporas += total
+          com.patchValue({
+            valor: valor.toLocaleString(),
+            total: isFinite(total) ? total.toLocaleString() : 0,
+          }, { emitEvent: false })
+        })
+        x.patchValue({
+          totalCompras: isFinite(totalcomporas) ? totalcomporas.toLocaleString() : 0
+        }, { emitEvent: false })
+        //---------------------------------------------------------------
+
+        //--------------Total cruce3-------------------------------------
+
+        let promreal: number = 0;
+        if (tipoactividad == 1) {
+          promreal = (100 - margen) / 100
+          let totalcruce = totalcomporas / promreal
+          x.patchValue({
+            totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
+          }, { emitEvent: false })
+        } else if (tipoactividad == 3) {
+          x.patchValue({
+            totalCruce3: isFinite(totalcomporas) ? totalcomporas.toFixed() : 0
+          }, { emitEvent: false })
+        }
+
+
+        x.patchValue({
+          valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
+          valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
+          valorM: isFinite(valorM) ? valorM.toLocaleString() : 0,
+          totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
+          totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
+          totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
+          promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
+          totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
+          totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
+          totalCruce1: isFinite(totalCruce1) ? totalCruce1.toFixed() : 0,
+          totalCruce2: isFinite(totalCruce2) ? totalCruce2.toFixed() : 0,
+          costo: isNaN(costo) ? 0 : costo.toFixed(),
+          margen: isNaN(margen) ? 0 : margen.toFixed(),
+
+        }, { emitEvent: false })
+      });
+
+      this.dataCruces = this.actividadesForm.get('act').value
+      this.datasolicitud.Cruces = this.dataCruces
+      this._srvSol.saveSol(this.ced, this.datasolicitud)
     })
+
   }
 
   itemactividad() {
@@ -511,11 +523,11 @@ export class UrbanoComponent implements OnInit {
     }
     this.ventashistoricas(ac).clear();
     for (let i = 0; i < event.value.cant; i++) {
-      
+
       let valordia = ""
       if (listPeriodo.length > 0) {
-        valordia = listPeriodo[i].name      
-      }else{
+        valordia = listPeriodo[i].name
+      } else {
         valordia = (i + 1).toString()
       }
 

@@ -29,10 +29,15 @@ export class TokenStorageService {
   }
   public saveUser(user): void {
     this.srvLocalS.remove(USER_KEY);
-    this.srvLocalS.set(this._srvCrypto.encrypt(USER_KEY),this._srvCrypto.encrypt(JSON.stringify(user)));
+    this.srvLocalS.set(USER_KEY,this._srvCrypto.encrypt(JSON.stringify(user)));
   }
   public getUser(): any {
-    return JSON.parse(this.srvLocalS.get(USER_KEY));
+    let data = this.srvLocalS.get(USER_KEY)
+    
+    if(!data)
+      return null
+
+    return JSON.parse(this._srvCrypto.decrypt(data));
   }
 
   

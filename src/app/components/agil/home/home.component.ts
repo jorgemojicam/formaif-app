@@ -22,6 +22,7 @@ import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 import Utils from 'src/app/utils';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,8 @@ export class HomeComponent implements AfterViewInit {
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
     private _bottomSheet: MatBottomSheet,
-    private _srvCarpeta: CarpetadigitalService
+    private _srvCarpeta: CarpetadigitalService,
+    private _srvEncr: EncryptService
   ) {
   }
 
@@ -140,7 +142,16 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  async onSend(element) {
+  async onSend(element) {    
+
+    Swal.fire({
+      title: 'Cargando',
+      html: 'Tenga calma por favor, se esta procensando la información ...',
+      allowOutsideClick: false,
+      didOpen: async () => {
+        Swal.showLoading()
+      }
+    })
 
     this.procesando = true
     if (element.solicitud == "") {
@@ -153,6 +164,7 @@ export class HomeComponent implements AfterViewInit {
       this.procesando = false
       return
     }
+
     if (navigator.onLine) {
 
       const numeroCedula: string = element.cedula.toString();
@@ -176,20 +188,21 @@ export class HomeComponent implements AfterViewInit {
 
       if (solCarpeta.EstadoCarpeta !== "Abierto") {
         Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+        this.procesando = false
         return
       }
 
       let aseso = await this.getDirector() as Asesor
-
-      if (aseso.Nombre) {
+      console.log(aseso)
+      if (aseso) {
 
         Swal.fire({
           title: '¿Desea Enviar Analisis de credito?',
           html: `Se enviara email al director:
-        <br><b>`+ aseso.Nombre + `</b>, 
-        <br><small>`+ aseso.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
-        <br><b>Solicitud :</b>` + numeroCedula + `
-        <br><b>Oficina :</b> `+ aseso.Sucursales.Nombre,
+        <br><b>${aseso.Director.Nombre}</b>, 
+        <br><small>${aseso.Director.Correo}</small>
+        <br><b>Solicitud :</b>${numeroCedula}
+        <br><b>Oficina :</b>${aseso.Sucursales.Nombre}`,
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Si, Enviar!',
@@ -240,7 +253,7 @@ export class HomeComponent implements AfterViewInit {
                     }
 
                     b.textContent = "Enviando email..."
-                    let email = aseso.Clave.toLocaleLowerCase() + "@fundaciondelamujer.com"
+                    let email = aseso.Director.Correo
                     await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
 
                     b.textContent = "Insertando el analisis..."
@@ -288,7 +301,7 @@ export class HomeComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(solicitud).subscribe(
         (datasol) => {
-          return resolve(datasol)
+          return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
         },
         (err) => {
           reject(err)
@@ -370,12 +383,12 @@ export class HomeComponent implements AfterViewInit {
 
   //Consulta los datos del diretor de la oficina a la cual esta asociado el colaborador
   getDirector() {
-
     let asesores: Asesor = this.tokenStorage.getUser()
-    let suc = asesores.Sucursales.Codigo;
-    return asesores.Director as Asesor
-
-
+    if (asesores.Director) {
+      return asesores as Asesor
+    } else {
+      return null
+    }
   }
 
   onEdit(row) {

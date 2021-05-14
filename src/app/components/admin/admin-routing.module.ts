@@ -5,6 +5,7 @@ import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestio
 import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
 import { LobbyComponent } from '../lobby/lobby.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
+import { RolComponent } from './admin-rol/rol/rol.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,14 @@ const routes: Routes = [
         data: {
           routerName: 'produccion'
         }
+      },
+      {
+        path: 'rol',
+        component: RolComponent,
+        data: {
+          routerName: 'rol'
+        },
+        canActivate: [AuthGuard]
       },
       {
         path: 'home',

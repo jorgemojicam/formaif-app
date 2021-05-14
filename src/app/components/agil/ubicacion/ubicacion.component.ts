@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
 import { Ubicacion } from 'src/app/model/ubicacion';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
 @Component({
@@ -38,10 +39,11 @@ export class UbicacionComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public srvSol: IdbSolicitudService,
+    private srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private _srvEncr: EncryptService
   ) { }
 
   ngOnInit(): void {
@@ -51,9 +53,10 @@ export class UbicacionComponent implements OnInit {
     });
 
     this.srvSol.getSol(this.ced).subscribe((datasol) => {
+
       if (this.ced) {
 
-        this.dataSolicitud = datasol as Solicitud
+        this.dataSolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
         if (this.dataSolicitud.Ubicacion) {
           this.loadUbicacion(this.dataSolicitud.Ubicacion)
         }

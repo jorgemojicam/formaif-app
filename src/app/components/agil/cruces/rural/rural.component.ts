@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {  FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Egresos } from 'src/app/model/egresos';
 import { LoteAgro } from 'src/app/model/loteAgro';
 import { LotePecuario } from 'src/app/model/lotePecuario';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import Swal from 'sweetalert2';
 import DataSelect from '../../../../data-select/dataselect.json';
@@ -22,9 +23,10 @@ export class RuralComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public srvSol: IdbSolicitudService,
+    public _srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _srvEncr: EncryptService
   ) { }
 
   @Input() loadData: boolean = false
@@ -61,335 +63,345 @@ export class RuralComponent implements OnInit {
 
   datosAuto: any[] = [DataSelect.ActividadRural]
 
-  ngOnInit(): void {
+  getSol() {
+    return new Promise(resolve => {
+      this._srvSol.getSol(this.ced).subscribe(
+        (datasol) => {
+          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+        }, (err) => {
+          resolve([])
+        })
+
+    })
+  }
+
+  async ngOnInit() {
 
     this.activeRoute.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+    this.datasolicitud = await this.getSol() as Solicitud
+    this.tipoAsesor = this.datasolicitud.asesor
 
-      this.datasolicitud = datasol as Solicitud
-      this.tipoAsesor = this.datasolicitud.asesor
+    if (this.datasolicitud.CrucesAgro) {
+      this.loadactividad(this.datasolicitud.CrucesAgro)
+    }
+    this.loadData = true;
+    this.isLoad.emit(true);
 
-      if (this.datasolicitud.CrucesAgro) {
-        this.loadactividad(this.datasolicitud.CrucesAgro)
-      }
-      this.loadData = true;
-      this.isLoad.emit(true);
+    this.actividadesForm.get('act').valueChanges.subscribe(values => {
 
-      this.actividadesForm.get('act').valueChanges.subscribe(values => {
+      const ctrl = <FormArray>this.actividadesForm.controls['act'];
+      ctrl.controls.forEach((x) => {
+        //---------------------Otras actividades ---------------------------
+        let cantperiodo = 0
+        let valorpromedio = 0
+        let periodoventas = x.get('periodoventas').value
+        if (periodoventas == 1) {
+          cantperiodo = 4
+          valorpromedio = 3
+        } else if (periodoventas == 2) {
+          cantperiodo = 1
+          valorpromedio = 3
+        } else if (periodoventas == 3) {
+          cantperiodo = 1
+          valorpromedio = 2
+        }
+        let valorB = Utils.formatNumber(x.get('valorB').value)
+        let valorR = Utils.formatNumber(x.get('valorR').value)
+        let valorM = Utils.formatNumber(x.get('valorM').value)
 
-        const ctrl = <FormArray>this.actividadesForm.controls['act'];
-        ctrl.controls.forEach((x) => {
-          //---------------------Otras actividades ---------------------------
-          let cantperiodo = 0
-          let valorpromedio = 0
-          let periodoventas = x.get('periodoventas').value
-          if (periodoventas == 1) {
-            cantperiodo = 4
-            valorpromedio = 3
-          } else if (periodoventas == 2) {
-            cantperiodo = 1
-            valorpromedio = 3
-          } else if (periodoventas == 3) {
-            cantperiodo = 1
-            valorpromedio = 2
-          }
-          let valorB = Utils.formatNumber(x.get('valorB').value)
-          let valorR = Utils.formatNumber(x.get('valorR').value)
-          let valorM = Utils.formatNumber(x.get('valorM').value)
-
-          if (valorR > valorB) {
-            valorR = 0
-            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
-              duration: 3000,
-            });
-          }
-          if (valorM > valorR) {
-            valorM = 0
-            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
-              duration: 3000,
-            });
-          }
-
-          let cantB = x.get('diasB').value.length
-          let cantR = x.get('diasR').value.length
-          let cantM = x.get('diasM').value.length
-
-          let totalB = cantB * valorB * cantperiodo
-          let totalR = cantR * valorR * cantperiodo
-          let totalM = cantM * valorM * cantperiodo
-          let totaldias = Utils.formatNumber(x.get('totalDias').value)
-          let totaldiassel = (cantB + cantR + cantM) * cantperiodo
-
-          if (totaldias > totaldiassel) {
-            totaldias = 0
-            this._snackBar.open("Los dias no pueden superar los seleccionados", "Ok!", {
-              duration: 3000,
-            });
-          }
-
-          let promedio = (valorB + valorR + valorM) / valorpromedio
-          let totalpromedio = promedio * totaldias
-          let totalventas = totalB + totalR + totalM
-          let tipoproducto = (x.get('nombre').value !== null ? x.get('nombre').value.tipoproducto : 0)
-
-          let totalCompras = Utils.formatNumber(x.get('totalCompras').value)
-          let margenBruto = Utils.formatNumber(x.get('margenBruto').value)
-          let otrosGastos = Utils.formatNumber(x.get('otrosGastos').value)
-
-          if (margenBruto > 100) {
-            margenBruto = 0
-            this._snackBar.open("Margen no puede superar el 100%", "Ok!", {
-              duration: 3000,
-            });
-          }
-
-          let ventasestimadas = 0
-          if (totalpromedio > totalventas) {
-            ventasestimadas = totalventas
-          } else {
-            ventasestimadas = totalpromedio
-          }
-          const realmargen = 100 / margenBruto
-          let totalliquido = (ventasestimadas * realmargen) - otrosGastos
-
-          let preciomin = Utils.formatNumber(x.get("preciomin").value)
-          let precioactual = Utils.formatNumber(x.get("precioactual").value)
-          let preciopromedio = (preciomin + precioactual) / 2
-
-          x.patchValue({
-            valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
-            valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
-            valorM: isFinite(valorM) ? valorM.toLocaleString() : 0,
-            totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
-            totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
-            totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
-            totalDias: totaldias,
-            promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
-            totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
-            totalVentas: isFinite(totalventas) ? totalventas.toLocaleString() : 0,
-            totalCompras: isFinite(totalCompras) ? totalCompras.toLocaleString() : 0,
-            ventasEstimadas: isFinite(ventasestimadas) ? ventasestimadas.toLocaleString() : 0,
-            otrosGastos: isFinite(otrosGastos) ? otrosGastos.toLocaleString() : 0,
-            ingresoLiquido: isFinite(totalliquido) ? totalliquido.toLocaleString() : 0,
-            margenBruto: isFinite(margenBruto) ? margenBruto : 0,
-            preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
-            precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
-            preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0
-          }, { emitEvent: false })
-          //---------------------------------------------------------
-
-          //-------------------------Agricola---------------------------------------
-          const lotesArr = <FormArray>x.get('lotesAgro')
-          lotesArr.controls.forEach((lot) => {
-            let unidadestotales = Utils.formatNumber(lot.get("unidadestotales").value)
-            let rendiemientolote = Utils.formatNumber(lot.get("rendiemientolote").value)
-
-            if (unidadestotales > rendiemientolote) {
-              unidadestotales = 0
-              this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
-                duration: 3000,
-              });
-            }
-
-            let area = Utils.formatNumber(lot.get("areacult").value)
-            let dsurco = Utils.formatNumber(lot.get("dsurcos").value)
-            let dpanta = Utils.formatNumber(lot.get("dplantas").value)
-            let distancia = area / (dsurco * dpanta)
-            let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
-
-            //--------------------------Permanente---------------------------
-            let rendimientoCos = Utils.formatNumber(lot.get("rendimientoCos").value)
-            let unidadesCos = Utils.formatNumber(lot.get("unidadesCos").value)
-            let perdidaCos = (1 - (unidadesCos / rendimientoCos)) * 100
-            let totalCos = unidadesCos * preciopromedio
-            if (unidadesCos > rendimientoCos) {
-              unidadesCos = 0
-              this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
-                duration: 3000,
-              });
-            }
-            let rendimientoTra = Utils.formatNumber(lot.get("rendimientoTra").value)
-            let unidadesTra = Utils.formatNumber(lot.get("unidadesTra").value)
-            let perdidaTra = (1 - (unidadesTra / rendimientoTra)) * 100
-            let totalTra = unidadesTra * preciopromedio
-            if (rendimientoTra > rendimientoCos) {
-              rendimientoTra = 0
-              this._snackBar.open("Rendimiento de traviesa no puede ser mayor al de la cosecha", "Ok!", {
-                duration: 3000,
-              });
-            }
-            if (unidadesTra > rendimientoTra) {
-              unidadesTra = 0
-              this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
-                duration: 3000,
-              });
-            }
-
-            let rendimientoPepeo = Utils.formatNumber(lot.get("rendimientoPepeo").value)
-            let unidadesPepeo = Utils.formatNumber(lot.get("unidadesPepeo").value)
-            let perdidaPepeo = (1 - (unidadesPepeo / rendimientoPepeo)) * 100
-            let totalPepeo = unidadesPepeo * preciopromedio
-            if (rendimientoPepeo > rendimientoTra) {
-              rendimientoPepeo = 0
-              this._snackBar.open("Rendimiento de pepeo no puede ser mayor al de la traviesa", "Ok!", {
-                duration: 3000,
-              });
-            }
-            if (unidadesPepeo > rendimientoPepeo) {
-              unidadesPepeo = 0
-              this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
-                duration: 3000,
-              });
-            }
-            let totalIngreso = unidadestotales * preciopromedio
-            let unidadtotal = unidadesCos + unidadesTra + unidadesPepeo
-            let procentageCos = (unidadesCos / unidadtotal) * 100
-            let procentageTra = (unidadesTra / unidadtotal) * 100
-            let procentagePepeo = (unidadesPepeo / unidadtotal) * 100
-            let totalanual = totalCos + totalTra + totalPepeo
-
-            //------------------------Egresos ----------------------------------------------------
-            let totalEgAdecuacion = 0
-            const egresoAdecua = <FormArray>lot.get('egresosAdecuacion')
-            egresoAdecua.controls.forEach((lot, idxlot) => {
-              let valor = Utils.formatNumber(lot.get("valorunitario").value)
-              let cantidad = Utils.formatNumber(lot.get("cantidad").value)
-              let total = valor * cantidad
-              totalEgAdecuacion += total
-              lot.patchValue({
-                valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
-                total: isFinite(total) ? total.toLocaleString() : 0
-              }, { emitEvent: false })
-            })
-            let totalEgSiembra = 0
-            const egresosSiembra = <FormArray>lot.get('egresosSiembra')
-            egresosSiembra.controls.forEach((eg, idxeg) => {
-              let valor = Utils.formatNumber(eg.get("valorunitario").value)
-              let cantidad = Utils.formatNumber(eg.get("cantidad").value)
-              let total = valor * cantidad
-              totalEgSiembra += total
-              eg.patchValue({
-                valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
-                total: isFinite(total) ? total.toLocaleString() : 0
-              }, { emitEvent: false })
-            })
-            let totalEgMante = 0
-            const egresosMante = <FormArray>lot.get('egresosMante')
-            egresosMante.controls.forEach((eg, idxeg) => {
-              let valor = Utils.formatNumber(eg.get("valorunitario").value)
-              let cantidad = Utils.formatNumber(eg.get("cantidad").value)
-              let total = valor * cantidad
-              totalEgMante += total
-              eg.patchValue({
-                valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
-                total: isFinite(total) ? total.toLocaleString() : 0
-              }, { emitEvent: false })
-            })
-            let totalEgCosecha = 0
-            const egresosCocecha = <FormArray>lot.get('egresosCocecha')
-            egresosCocecha.controls.forEach((eg, idxeg) => {
-              let valor = Utils.formatNumber(eg.get("valorunitario").value)
-              let cantidad = Utils.formatNumber(eg.get("cantidad").value)
-              let total = valor * cantidad
-              totalEgCosecha += total
-              eg.patchValue({
-                valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
-                total: isFinite(total) ? total.toLocaleString() : 0
-              }, { emitEvent: false })
-            })
-
-            let totalEgresos = 0
-            if (tipoproducto == 'Transitorio') {
-              totalEgresos = totalEgAdecuacion + totalEgCosecha + totalEgMante + totalEgSiembra
-            } else {
-              totalEgresos = totalEgMante + totalEgCosecha
-            }
-            lot.patchValue({
-              unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
-              rendimientoTra: rendimientoTra,
-              rendimientoPepeo: rendimientoPepeo,
-              unidadesCos: isFinite(unidadesCos) ? unidadesCos.toLocaleString('es-CO') : 0,
-              unidadesTra: isFinite(unidadesTra) ? unidadesTra.toLocaleString('es-CO') : 0,
-              unidadesPepeo: isFinite(unidadesPepeo) ? unidadesPepeo.toLocaleString('es-CO') : 0,
-              perdida: isFinite(perdida) ? perdida.toLocaleString('es-CO') : 0,
-              diastancia: isFinite(distancia) ? distancia.toLocaleString('es-CO') : 0,
-              perdidaCos: isFinite(perdidaCos) ? perdidaCos.toLocaleString('es-CO') : 0,
-              perdidaTra: isFinite(perdidaTra) ? perdidaTra.toLocaleString('es-CO') : 0,
-              perdidaPepeo: isFinite(perdidaPepeo) ? perdidaPepeo.toLocaleString('es-CO') : 0,
-              procentageCos: isFinite(procentageCos) ? procentageCos.toFixed(2) : 0,
-              procentageTra: isFinite(procentageTra) ? procentageTra.toFixed(2) : 0,
-              procentagePepeo: isFinite(procentagePepeo) ? procentagePepeo.toFixed(2) : 0,
-              totalCos: isFinite(totalCos) ? totalCos.toLocaleString('es-CO') : 0,
-              totalTra: isFinite(totalTra) ? totalTra.toLocaleString('es-CO') : 0,
-              totalPepeo: isFinite(totalPepeo) ? totalPepeo.toLocaleString('es-CO') : 0,
-              totalUnidades: isFinite(unidadtotal) ? unidadtotal : 0,
-              totalLoteAunual: isFinite(totalanual) ? totalanual.toLocaleString('es-CO') : 0,
-              totalIngreso: isFinite(totalIngreso) ? totalIngreso.toLocaleString('es-CO') : 0,
-              totalEgresosAdecuacion: isFinite(totalEgAdecuacion) ? totalEgAdecuacion.toLocaleString('es-CO') : 0,
-              totalEgresosSiembre: isFinite(totalEgSiembra) ? totalEgSiembra.toLocaleString('es-CO') : 0,
-              totalEgresosCosecha: isFinite(totalEgCosecha) ? totalEgCosecha.toLocaleString('es-CO') : 0,
-              totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0,
-              totalEgresos: isFinite(totalEgresos) ? totalEgresos.toLocaleString('es-CO') : 0,
-            }, { emitEvent: false })
+        if (valorR > valorB) {
+          valorR = 0
+          this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+            duration: 3000,
           });
+        }
+        if (valorM > valorR) {
+          valorM = 0
+          this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+            duration: 3000,
+          });
+        }
 
-          //-------------------lote------------------------------------
-          //-------------------Pecuario--------------------------------
-          const lotesPecuArr = <FormArray>x.get('lotesPecuario')
-          lotesPecuArr.controls.forEach((lot) => {
-            let totalEg = 0
-            const egresoAdecua = <FormArray>lot.get('egresos')
-            egresoAdecua.controls.forEach((egr) => {
+        let cantB = x.get('diasB').value.length
+        let cantR = x.get('diasR').value.length
+        let cantM = x.get('diasM').value.length
 
-              let valor = Utils.formatNumber(egr.get("valorunitario").value)
-              let cantidad = Utils.formatNumber(egr.get("cantidad").value)
-              let total = valor * cantidad
-              totalEg += total
-              egr.patchValue({
-                valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
-                total: isFinite(total) ? total.toLocaleString() : 0
-              }, { emitEvent: false })
-            })
+        let totalB = cantB * valorB * cantperiodo
+        let totalR = cantR * valorR * cantperiodo
+        let totalM = cantM * valorM * cantperiodo
+        let totaldias = Utils.formatNumber(x.get('totalDias').value)
+        let totaldiassel = (cantB + cantR + cantM) * cantperiodo
 
-            let numanimales = Utils.formatNumber(lot.get("numanimales").value)
-            let cantidadxanimal = Utils.formatNumber(lot.get("cantidadxanimal").value)
-            let frecuencia = Utils.formatNumber(lot.get("frecuencia").value != null ? lot.get("frecuencia").value.dias : 0)
-            let cantidadtotal = numanimales * cantidadxanimal * frecuencia
+        if (totaldias > totaldiassel) {
+          totaldias = 0
+          this._snackBar.open("Los dias no pueden superar los seleccionados", "Ok!", {
+            duration: 3000,
+          });
+        }
 
-            let unitotalesventa = Utils.formatNumber(lot.get("unitotalesventa").value)
-            if (unitotalesventa > cantidadtotal) {
-              unitotalesventa = 0
-              this._snackBar.open("Unidades de venta totales no puede ser mayor a la cantidad producida", "Ok!", {
-                duration: 3000,
-              });
+        let promedio = (valorB + valorR + valorM) / valorpromedio
+        let totalpromedio = promedio * totaldias
+        let totalventas = totalB + totalR + totalM
+        let tipoproducto = (x.get('nombre').value !== null ? x.get('nombre').value.tipoproducto : 0)
 
-            }
-            let perdida = (1 - (unitotalesventa / cantidadtotal)) * 100
-            let totalmes = preciopromedio * unitotalesventa
+        let totalCompras = Utils.formatNumber(x.get('totalCompras').value)
+        let margenBruto = Utils.formatNumber(x.get('margenBruto').value)
+        let otrosGastos = Utils.formatNumber(x.get('otrosGastos').value)
 
+        if (margenBruto > 100) {
+          margenBruto = 0
+          this._snackBar.open("Margen no puede superar el 100%", "Ok!", {
+            duration: 3000,
+          });
+        }
+
+        let ventasestimadas = 0
+        if (totalpromedio > totalventas) {
+          ventasestimadas = totalventas
+        } else {
+          ventasestimadas = totalpromedio
+        }
+        const realmargen = 100 / margenBruto
+        let totalliquido = (ventasestimadas * realmargen) - otrosGastos
+
+        let preciomin = Utils.formatNumber(x.get("preciomin").value)
+        let precioactual = Utils.formatNumber(x.get("precioactual").value)
+        let preciopromedio = (preciomin + precioactual) / 2
+
+        x.patchValue({
+          valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
+          valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
+          valorM: isFinite(valorM) ? valorM.toLocaleString() : 0,
+          totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
+          totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
+          totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
+          totalDias: totaldias,
+          promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
+          totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,
+          totalVentas: isFinite(totalventas) ? totalventas.toLocaleString() : 0,
+          totalCompras: isFinite(totalCompras) ? totalCompras.toLocaleString() : 0,
+          ventasEstimadas: isFinite(ventasestimadas) ? ventasestimadas.toLocaleString() : 0,
+          otrosGastos: isFinite(otrosGastos) ? otrosGastos.toLocaleString() : 0,
+          ingresoLiquido: isFinite(totalliquido) ? totalliquido.toLocaleString() : 0,
+          margenBruto: isFinite(margenBruto) ? margenBruto : 0,
+          preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
+          precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
+          preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0
+        }, { emitEvent: false })
+        //---------------------------------------------------------
+
+        //-------------------------Agricola---------------------------------------
+        const lotesArr = <FormArray>x.get('lotesAgro')
+        lotesArr.controls.forEach((lot) => {
+          let unidadestotales = Utils.formatNumber(lot.get("unidadestotales").value)
+          let rendiemientolote = Utils.formatNumber(lot.get("rendiemientolote").value)
+
+          if (unidadestotales > rendiemientolote) {
+            unidadestotales = 0
+            this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
+              duration: 3000,
+            });
+          }
+
+          let area = Utils.formatNumber(lot.get("areacult").value)
+          let dsurco = Utils.formatNumber(lot.get("dsurcos").value)
+          let dpanta = Utils.formatNumber(lot.get("dplantas").value)
+          let distancia = area / (dsurco * dpanta)
+          let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
+
+          //--------------------------Permanente---------------------------
+          let rendimientoCos = Utils.formatNumber(lot.get("rendimientoCos").value)
+          let unidadesCos = Utils.formatNumber(lot.get("unidadesCos").value)
+          let perdidaCos = (1 - (unidadesCos / rendimientoCos)) * 100
+          let totalCos = unidadesCos * preciopromedio
+          if (unidadesCos > rendimientoCos) {
+            unidadesCos = 0
+            this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
+              duration: 3000,
+            });
+          }
+          let rendimientoTra = Utils.formatNumber(lot.get("rendimientoTra").value)
+          let unidadesTra = Utils.formatNumber(lot.get("unidadesTra").value)
+          let perdidaTra = (1 - (unidadesTra / rendimientoTra)) * 100
+          let totalTra = unidadesTra * preciopromedio
+          if (rendimientoTra > rendimientoCos) {
+            rendimientoTra = 0
+            this._snackBar.open("Rendimiento de traviesa no puede ser mayor al de la cosecha", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (unidadesTra > rendimientoTra) {
+            unidadesTra = 0
+            this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
+              duration: 3000,
+            });
+          }
+
+          let rendimientoPepeo = Utils.formatNumber(lot.get("rendimientoPepeo").value)
+          let unidadesPepeo = Utils.formatNumber(lot.get("unidadesPepeo").value)
+          let perdidaPepeo = (1 - (unidadesPepeo / rendimientoPepeo)) * 100
+          let totalPepeo = unidadesPepeo * preciopromedio
+          if (rendimientoPepeo > rendimientoTra) {
+            rendimientoPepeo = 0
+            this._snackBar.open("Rendimiento de pepeo no puede ser mayor al de la traviesa", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (unidadesPepeo > rendimientoPepeo) {
+            unidadesPepeo = 0
+            this._snackBar.open("Unidades de venta totales no pueden ser superior al rendimiento por lote", "Ok!", {
+              duration: 3000,
+            });
+          }
+          let totalIngreso = unidadestotales * preciopromedio
+          let unidadtotal = unidadesCos + unidadesTra + unidadesPepeo
+          let procentageCos = (unidadesCos / unidadtotal) * 100
+          let procentageTra = (unidadesTra / unidadtotal) * 100
+          let procentagePepeo = (unidadesPepeo / unidadtotal) * 100
+          let totalanual = totalCos + totalTra + totalPepeo
+
+          //------------------------Egresos ----------------------------------------------------
+          let totalEgAdecuacion = 0
+          const egresoAdecua = <FormArray>lot.get('egresosAdecuacion')
+          egresoAdecua.controls.forEach((lot, idxlot) => {
+            let valor = Utils.formatNumber(lot.get("valorunitario").value)
+            let cantidad = Utils.formatNumber(lot.get("cantidad").value)
+            let total = valor * cantidad
+            totalEgAdecuacion += total
             lot.patchValue({
-              preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
-              precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
-              cantproducida: isFinite(cantidadtotal) ? cantidadtotal.toLocaleString() : 0,
-              unitotalesventa: unitotalesventa,
-              perdida: isFinite(perdida) ? perdida.toFixed(2) : 0,
-              ingresomes: isFinite(totalmes) ? totalmes.toLocaleString() : 0,
-              totalEgresos: isFinite(totalEg) ? totalEg.toLocaleString() : 0,
-              preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0,
+              valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
+              total: isFinite(total) ? total.toLocaleString() : 0
             }, { emitEvent: false })
           })
-          //---------------------------------------------------------------------
+          let totalEgSiembra = 0
+          const egresosSiembra = <FormArray>lot.get('egresosSiembra')
+          egresosSiembra.controls.forEach((eg, idxeg) => {
+            let valor = Utils.formatNumber(eg.get("valorunitario").value)
+            let cantidad = Utils.formatNumber(eg.get("cantidad").value)
+            let total = valor * cantidad
+            totalEgSiembra += total
+            eg.patchValue({
+              valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
+              total: isFinite(total) ? total.toLocaleString() : 0
+            }, { emitEvent: false })
+          })
+          let totalEgMante = 0
+          const egresosMante = <FormArray>lot.get('egresosMante')
+          egresosMante.controls.forEach((eg, idxeg) => {
+            let valor = Utils.formatNumber(eg.get("valorunitario").value)
+            let cantidad = Utils.formatNumber(eg.get("cantidad").value)
+            let total = valor * cantidad
+            totalEgMante += total
+            eg.patchValue({
+              valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
+              total: isFinite(total) ? total.toLocaleString() : 0
+            }, { emitEvent: false })
+          })
+          let totalEgCosecha = 0
+          const egresosCocecha = <FormArray>lot.get('egresosCocecha')
+          egresosCocecha.controls.forEach((eg, idxeg) => {
+            let valor = Utils.formatNumber(eg.get("valorunitario").value)
+            let cantidad = Utils.formatNumber(eg.get("cantidad").value)
+            let total = valor * cantidad
+            totalEgCosecha += total
+            eg.patchValue({
+              valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
+              total: isFinite(total) ? total.toLocaleString() : 0
+            }, { emitEvent: false })
+          })
 
+          let totalEgresos = 0
+          if (tipoproducto == 'Transitorio') {
+            totalEgresos = totalEgAdecuacion + totalEgCosecha + totalEgMante + totalEgSiembra
+          } else {
+            totalEgresos = totalEgMante + totalEgCosecha
+          }
+          lot.patchValue({
+            unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
+            rendimientoTra: rendimientoTra,
+            rendimientoPepeo: rendimientoPepeo,
+            unidadesCos: isFinite(unidadesCos) ? unidadesCos.toLocaleString('es-CO') : 0,
+            unidadesTra: isFinite(unidadesTra) ? unidadesTra.toLocaleString('es-CO') : 0,
+            unidadesPepeo: isFinite(unidadesPepeo) ? unidadesPepeo.toLocaleString('es-CO') : 0,
+            perdida: isFinite(perdida) ? perdida.toLocaleString('es-CO') : 0,
+            diastancia: isFinite(distancia) ? distancia.toLocaleString('es-CO') : 0,
+            perdidaCos: isFinite(perdidaCos) ? perdidaCos.toLocaleString('es-CO') : 0,
+            perdidaTra: isFinite(perdidaTra) ? perdidaTra.toLocaleString('es-CO') : 0,
+            perdidaPepeo: isFinite(perdidaPepeo) ? perdidaPepeo.toLocaleString('es-CO') : 0,
+            procentageCos: isFinite(procentageCos) ? procentageCos.toFixed(2) : 0,
+            procentageTra: isFinite(procentageTra) ? procentageTra.toFixed(2) : 0,
+            procentagePepeo: isFinite(procentagePepeo) ? procentagePepeo.toFixed(2) : 0,
+            totalCos: isFinite(totalCos) ? totalCos.toLocaleString('es-CO') : 0,
+            totalTra: isFinite(totalTra) ? totalTra.toLocaleString('es-CO') : 0,
+            totalPepeo: isFinite(totalPepeo) ? totalPepeo.toLocaleString('es-CO') : 0,
+            totalUnidades: isFinite(unidadtotal) ? unidadtotal : 0,
+            totalLoteAunual: isFinite(totalanual) ? totalanual.toLocaleString('es-CO') : 0,
+            totalIngreso: isFinite(totalIngreso) ? totalIngreso.toLocaleString('es-CO') : 0,
+            totalEgresosAdecuacion: isFinite(totalEgAdecuacion) ? totalEgAdecuacion.toLocaleString('es-CO') : 0,
+            totalEgresosSiembre: isFinite(totalEgSiembra) ? totalEgSiembra.toLocaleString('es-CO') : 0,
+            totalEgresosCosecha: isFinite(totalEgCosecha) ? totalEgCosecha.toLocaleString('es-CO') : 0,
+            totalEgresosMante: isFinite(totalEgMante) ? totalEgMante.toLocaleString('es-CO') : 0,
+            totalEgresos: isFinite(totalEgresos) ? totalEgresos.toLocaleString('es-CO') : 0,
+          }, { emitEvent: false })
         });
-        this.dataCruces = this.actividadesForm.get('act').value
-        this.datasolicitud.CrucesAgro = this.dataCruces
-        this.srvSol.saveSol(this.ced, this.datasolicitud)
-      })
 
+        //-------------------lote------------------------------------
+        //-------------------Pecuario--------------------------------
+        const lotesPecuArr = <FormArray>x.get('lotesPecuario')
+        lotesPecuArr.controls.forEach((lot) => {
+          let totalEg = 0
+          const egresoAdecua = <FormArray>lot.get('egresos')
+          egresoAdecua.controls.forEach((egr) => {
+
+            let valor = Utils.formatNumber(egr.get("valorunitario").value)
+            let cantidad = Utils.formatNumber(egr.get("cantidad").value)
+            let total = valor * cantidad
+            totalEg += total
+            egr.patchValue({
+              valorunitario: isFinite(valor) ? valor.toLocaleString() : 0,
+              total: isFinite(total) ? total.toLocaleString() : 0
+            }, { emitEvent: false })
+          })
+
+          let numanimales = Utils.formatNumber(lot.get("numanimales").value)
+          let cantidadxanimal = Utils.formatNumber(lot.get("cantidadxanimal").value)
+          let frecuencia = Utils.formatNumber(lot.get("frecuencia").value != null ? lot.get("frecuencia").value.dias : 0)
+          let cantidadtotal = numanimales * cantidadxanimal * frecuencia
+
+          let unitotalesventa = Utils.formatNumber(lot.get("unitotalesventa").value)
+          if (unitotalesventa > cantidadtotal) {
+            unitotalesventa = 0
+            this._snackBar.open("Unidades de venta totales no puede ser mayor a la cantidad producida", "Ok!", {
+              duration: 3000,
+            });
+
+          }
+          let perdida = (1 - (unitotalesventa / cantidadtotal)) * 100
+          let totalmes = preciopromedio * unitotalesventa
+
+          lot.patchValue({
+            preciomin: isFinite(preciomin) ? preciomin.toLocaleString() : 0,
+            precioactual: isFinite(precioactual) ? precioactual.toLocaleString() : 0,
+            cantproducida: isFinite(cantidadtotal) ? cantidadtotal.toLocaleString() : 0,
+            unitotalesventa: unitotalesventa,
+            perdida: isFinite(perdida) ? perdida.toFixed(2) : 0,
+            ingresomes: isFinite(totalmes) ? totalmes.toLocaleString() : 0,
+            totalEgresos: isFinite(totalEg) ? totalEg.toLocaleString() : 0,
+            preciopromedio: isFinite(preciopromedio) ? preciopromedio.toLocaleString() : 0,
+          }, { emitEvent: false })
+        })
+        //---------------------------------------------------------------------
+
+      });
+      this.dataCruces = this.actividadesForm.get('act').value
+      this.datasolicitud.CrucesAgro = this.dataCruces
+      this._srvSol.saveSol(this.ced, this.datasolicitud)
     })
+
+
   }
 
   changeperiodo(e: FormGroup) {
@@ -457,8 +469,8 @@ export class RuralComponent implements OnInit {
     let crucesArray = this.fb.array([])
     for (let cru = 0; cru < cruces.length; cru++) {
       let unidadVenta = []
-      if(cruces[cru].unidadventa){
-        unidadVenta = this.unidades.filter((un)=> un.id == cruces[cru].unidadventa.id)
+      if (cruces[cru].unidadventa) {
+        unidadVenta = this.unidades.filter((un) => un.id == cruces[cru].unidadventa.id)
       }
       let tipoprod
       if (cruces[cru].tipo == 2) {
@@ -564,8 +576,8 @@ export class RuralComponent implements OnInit {
     let lotesArray = this.fb.array([])
     for (let lo = 0; lo < lotes.length; lo++) {
       let frec = []
-      if(lotes[lo].frecuencia){        
-        frec = this.frecuencia.find((f)=> f.id == lotes[lo].frecuencia.id)
+      if (lotes[lo].frecuencia) {
+        frec = this.frecuencia.find((f) => f.id == lotes[lo].frecuencia.id)
       }
       lotesArray.push(
         this.fb.group({
@@ -598,6 +610,7 @@ export class RuralComponent implements OnInit {
     this.actividades().push(this.itemactividad());
     this.selected.setValue(this.actividades().length - 1);
   }
+  
   deleteAct(act: number) {
 
     Swal.fire({
@@ -698,7 +711,7 @@ export class RuralComponent implements OnInit {
       totalEgresosMante: '',
       egresosCocecha: this.fb.array([this.itemEgresos()]),
       totalEgresosCosecha: '',
-      totalEgresos:''
+      totalEgresos: ''
     })
   }
   removeLotes(act: number, lote: number) {
@@ -798,7 +811,7 @@ export class RuralComponent implements OnInit {
 
   clear(acti: FormGroup) {
     acti.patchValue({
-      nombre:""
+      nombre: ""
     }, { emitEvent: false })
   }
 }

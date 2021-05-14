@@ -4,6 +4,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute } from '@angular/router';
 import { Adaptativa } from 'src/app/model/adaptativa';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbService } from 'src/app/services/idb.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
@@ -29,6 +30,7 @@ export class AdaptativaComponent implements OnInit {
     private _formbuild: FormBuilder,
     public srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
+    private _srvEncr: EncryptService
   ) {
     this.adaptativoForm = this._formbuild.group({
       totalAdaptativa: 0,
@@ -167,7 +169,7 @@ export class AdaptativaComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(this.ced).subscribe(
         (d) => {
-          resolve(d)
+          resolve(JSON.parse(this._srvEncr.decrypt(d)))
         })
     })
   }

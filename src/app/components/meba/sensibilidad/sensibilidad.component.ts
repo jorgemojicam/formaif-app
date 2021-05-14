@@ -8,6 +8,7 @@ import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { ActivatedRoute } from '@angular/router';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import { IdbService } from 'src/app/services/idb.service';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-sensibilidad',
@@ -32,6 +33,7 @@ export class SensibilidadComponent implements OnInit {
     private route: ActivatedRoute,
     public srvSol: IdbSolicitudService,
     private _srvIdb: IdbService,
+    private _srvEncr: EncryptService
   ) {
 
     this.actividadesForm = this._formBuilder.group({
@@ -40,7 +42,8 @@ export class SensibilidadComponent implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
-    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+    this.srvSol.getSol(this.ced).subscribe((d) => {
+      let datasol = JSON.parse(this._srvEncr.decrypt(d))
       if (this.ced) {
 
         this.dataSolicitud = datasol as Solicitud
@@ -59,7 +62,7 @@ export class SensibilidadComponent implements OnInit {
             this.arrayOptions[index] = this.optionChar(element) as EChartsOption
           }
           x.patchValue({
-            name: element.name     
+            name: element.name
           }, { emitEvent: false })
 
         })
@@ -74,7 +77,7 @@ export class SensibilidadComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.DataSensibilidad = await this.getProduccion() 
+    this.DataSensibilidad = await this.getProduccion()
   }
 
   getProduccion() {
@@ -153,12 +156,12 @@ export class SensibilidadComponent implements OnInit {
     return user && user.Nombre ? user.Nombre : '';
   }
   _filter(name: any): Observable<any[]> {
-      const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.Nombre.toLowerCase())
-      return this.DataSensibilidad.filter(option => option.Nombre.toLowerCase().indexOf(filterValue) >= 0);    
+    const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.Nombre.toLowerCase())
+    return this.DataSensibilidad.filter(option => option.Nombre.toLowerCase().indexOf(filterValue) >= 0);
   }
   itemActividad() {
     return this._formBuilder.group({
-      nombre: ['']    
+      nombre: ['']
     })
 
   }
@@ -174,7 +177,7 @@ export class SensibilidadComponent implements OnInit {
       this.arrayOptions[se] = this.optionChar(sens.nombre) as EChartsOption
       sensibilidadArray.push(
         this._formBuilder.group({
-          nombre: [sens.nombre]     
+          nombre: [sens.nombre]
         })
       )
     }

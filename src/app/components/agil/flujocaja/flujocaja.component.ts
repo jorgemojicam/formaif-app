@@ -7,6 +7,7 @@ import { LoteAgro } from 'src/app/model/loteAgro';
 import { CrucesAgro } from 'src/app/model/crucesagro';
 import { LotePecuario } from 'src/app/model/lotePecuario';
 import Utils from '../../../utils';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-flujocaja',
@@ -21,7 +22,8 @@ export class FlujocajaComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    public srvSol: IdbSolicitudService,
+    private srvSol: IdbSolicitudService,
+    private _srvEncr: EncryptService
   ) { }
 
   datasolicitud: Solicitud = new Solicitud()
@@ -53,7 +55,7 @@ export class FlujocajaComponent implements OnInit {
         return new Promise(resolve => {
           this.srvSol.getSol(this.ced).subscribe(
             (datasol) => {
-              return resolve(datasol)
+              return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
             }
           )
         })

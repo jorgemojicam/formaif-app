@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -42,7 +43,8 @@ export class ResultadoComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    public srvSol: IdbSolicitudService,
+    private _srvSol: IdbSolicitudService,
+    private _srvEncr:EncryptService
   ) { }
 
   ngOnInit(): void {
@@ -52,10 +54,10 @@ export class ResultadoComponent implements OnInit {
         this.ced = params.get('cedula')
       });
 
-    this.srvSol.getSol(this.ced)
+    this._srvSol.getSol(this.ced)
       .subscribe((datasol) => {
 
-        this.datasolicitud = datasol as Solicitud
+        this.datasolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
         this.tiposol = this.datasolicitud.asesor
         let totalrecuperacion = 0
         let otrosingresos = 0

@@ -20,6 +20,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 import { TemasService } from 'src/app/services/temas.service';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-home-meba',
@@ -52,6 +53,7 @@ export class HomeMebaComponent implements AfterViewInit {
     private _srvToken: TokenStorageService,
     private _srvSolicitud: SolicitudService,
     public dialog: MatDialog,
+    private _srvEncr:EncryptService
   ) { }
 
   ngAfterViewInit(): void {
@@ -114,6 +116,7 @@ export class HomeMebaComponent implements AfterViewInit {
       
       if (!datos.solicitud) {
         Swal.fire('Incompleto!', 'Por favor ingresar el numero de solicitud en Asesor Agil', 'info')
+        this.loading = false
         return
       }
 
@@ -204,8 +207,8 @@ export class HomeMebaComponent implements AfterViewInit {
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
         html: `Se enviara email a:
-      <br><b>`+ asesores.Nombre + `</b>, 
-      <br><small>`+ asesores.Clave.toLocaleLowerCase() + `@fundaciondelamujer.com</small>
+      <br><b>`+ asesores.Director.Nombre + `</b>, 
+      <br><small>${asesores.Director.Correo}</small>
       <br><b>Solicitud :</b>` + datos.solicitud + `
       <br><b>Oficina :</b> `+ asesores.Sucursales.Nombre,
         icon: 'warning',
@@ -300,7 +303,7 @@ export class HomeMebaComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(solicitud).subscribe(
         (datasol) => {
-          return resolve(datasol)
+          return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
         },
         (err) => {
           reject(err)

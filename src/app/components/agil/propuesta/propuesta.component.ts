@@ -7,6 +7,7 @@ import { Solicitud } from 'src/app/model/solicitud';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
 import Utils from '../../../utils'
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-propuesta',
@@ -24,10 +25,11 @@ export class PropuestaComponent implements OnInit {
   minDate = new Date();
 
   constructor(
-    public srvSol: IdbSolicitudService,
+    private _srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _srvEncr: EncryptService
   ) { }
 
   propuestaForm: FormGroup = this.fb.group({
@@ -49,90 +51,100 @@ export class PropuestaComponent implements OnInit {
     return this.propuestaForm.get('irregular') as FormArray;
   }
 
-  ngOnInit(): void {
+  getSol() {
+    return new Promise(resolve => {
+      this._srvSol.getSol(this.ced).subscribe(
+        (datasol) => {
+          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+        }, (err) => {
+          resolve([])
+        })
+
+    })
+  }
+
+  async ngOnInit() {
+    
     this.route.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
 
-    this.srvSol.getSol(this.ced).subscribe((datasol) => {
+    this.dataSolicitud = await this.getSol() as Solicitud
+    this.tipoSol = this.dataSolicitud.asesor
 
-      if (this.ced) {
-        this.tipoSol = datasol.asesor
-        this.dataSolicitud = datasol as Solicitud
-        if (this.dataSolicitud.Propuesta) {
-          this.loadPropuesta(this.dataSolicitud.Propuesta)
-        }
-      }
-      this.propuestaForm.valueChanges.subscribe(form => {
+    if (this.dataSolicitud.Propuesta) {
+      this.loadPropuesta(this.dataSolicitud.Propuesta)
+    }
+    this.propuestaForm.valueChanges.subscribe(form => {
 
-        let montorecomentado = Utils.formatNumber(form.montorecomendado)
-        let valor = Utils.formatNumber(form.valor)
-        let valorcapital = Utils.formatNumber(form.valorcapital)
+      let montorecomentado = Utils.formatNumber(form.montorecomendado)
+      let valor = Utils.formatNumber(form.valor)
+      let valorcapital = Utils.formatNumber(form.valorcapital)
 
-        if (valor > montorecomentado) {
-          valor = 0
-          this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
-            duration: 6000,
-          });
-        }
-        if (valorcapital > montorecomentado) {
-          valorcapital = 0
-          this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
-            duration: 6000,
-          });
-        }
-        let totalmonto = valor + valorcapital
-        if (totalmonto > montorecomentado) {
-          valorcapital = 0
-          this._snackBar.open("La suma de los valores no puede superar el monto recomentado", "Ok!", {
-            duration: 9000,
-          });
-        }
-        const irregular = <FormArray>this.propuestaForm.controls['irregular'];
-        let arrDate = []
-
-        irregular.controls.forEach(x => {
-
-          let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
-          let fecha = x.get('fechacuota').value
-
-          if (fecha != "" || fecha != null) {
-
-            if (fecha == "") {
-              console.log("No tiene mes")
-            } else {
-              fecha as Date
-
-              let ano = fecha.getMonth()
-              let mes = fecha.getFullYear()
-              let fulldate = ano + "-" + mes
-
-              if (arrDate.indexOf(fulldate) >= 0) {
-                this._snackBar.open("La cuota del mes ya se ingreso", "Ok!", {
-                  duration: 9000,
-                });
-                fecha = ""
-              }
-              arrDate.push(fulldate)
-            }
-          }
-          x.patchValue({
-            valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0,
-            fechacuota: fecha
-          }, { emitEvent: false })
+      if (valor > montorecomentado) {
+        valor = 0
+        this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
+          duration: 6000,
         });
+      }
+      if (valorcapital > montorecomentado) {
+        valorcapital = 0
+        this._snackBar.open("El valor no puede superar el monto recomendado", "Ok!", {
+          duration: 6000,
+        });
+      }
+      let totalmonto = valor + valorcapital
+      if (totalmonto > montorecomentado) {
+        valorcapital = 0
+        this._snackBar.open("La suma de los valores no puede superar el monto recomentado", "Ok!", {
+          duration: 9000,
+        });
+      }
+      const irregular = <FormArray>this.propuestaForm.controls['irregular'];
+      let arrDate = []
 
-        this.propuestaForm.patchValue({
-          montorecomendado: isFinite(montorecomentado) ? montorecomentado.toLocaleString() : 0,
-          valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          valorcapital: isFinite(valorcapital) ? valorcapital.toLocaleString() : 0
+      irregular.controls.forEach(x => {
+
+        let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
+        let fecha = x.get('fechacuota').value
+
+        if (fecha != "" || fecha != null) {
+
+          if (fecha == "") {
+            console.log("No tiene mes")
+          } else {
+            fecha as Date
+
+            let ano = fecha.getMonth()
+            let mes = fecha.getFullYear()
+            let fulldate = ano + "-" + mes
+
+            if (arrDate.indexOf(fulldate) >= 0) {
+              this._snackBar.open("La cuota del mes ya se ingreso", "Ok!", {
+                duration: 9000,
+              });
+              fecha = ""
+            }
+            arrDate.push(fulldate)
+          }
+        }
+        x.patchValue({
+          valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0,
+          fechacuota: fecha
         }, { emitEvent: false })
+      });
 
-        this.dataPropuesta = this.propuestaForm.value
-        this.dataSolicitud.Propuesta = this.dataPropuesta
-        this.srvSol.saveSol(this.ced, this.dataSolicitud)
-      })
+      this.propuestaForm.patchValue({
+        montorecomendado: isFinite(montorecomentado) ? montorecomentado.toLocaleString() : 0,
+        valor: isFinite(valor) ? valor.toLocaleString() : 0,
+        valorcapital: isFinite(valorcapital) ? valorcapital.toLocaleString() : 0
+      }, { emitEvent: false })
+
+      this.dataPropuesta = this.propuestaForm.value
+      this.dataSolicitud.Propuesta = this.dataPropuesta
+      this._srvSol.saveSol(this.ced, this.dataSolicitud)
     })
+
   }
   itemsCuotas() {
     return this.fb.group({

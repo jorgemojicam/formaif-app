@@ -6,6 +6,7 @@ import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import { ProfileComponent } from '../../components/admin/profile/profile.component';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -30,6 +31,7 @@ export class ToolbarComponent implements OnInit {
     private _bottomSheet: MatBottomSheet,
     private tokenStorage: TokenStorageService,
     public srvSol: IdbSolicitudService,
+    private _srvEncr: EncryptService
   ) {
      
     this.activateRoute.queryParamMap.subscribe((params) => {
@@ -82,7 +84,8 @@ export class ToolbarComponent implements OnInit {
 
     if (this.ced) {
       this.srvSol.getSol(this.ced).subscribe((datasol) => {
-        this.tipo = datasol.asesor
+        let solici = JSON.parse(this._srvEncr.decrypt(datasol))
+        this.tipo = solici.asesor
       })
     }
   }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Asesor } from 'src/app/model/asesor';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-lobby',
@@ -8,14 +10,31 @@ import { Router } from '@angular/router';
 })
 export class LobbyComponent implements OnInit {
 
-  constructor(
-    private route:Router
-  ) { }
+  perfil: Asesor = this._srvTokn.getUser();
+  rol: number
 
-  ngOnInit(): void {
+  constructor(
+    private route: Router,
+    private _srvTokn: TokenStorageService
+  ) {
+    console.log(this.perfil)
   }
 
-  onRouter(module:string){
+  ngOnInit(): void {
+
+
+    if (!this.perfil) {
+      this._srvTokn.signOut()
+      this.route.navigate(['auth'])
+      return
+    } else {
+      console.log(this.perfil.Rol)
+      this.rol = this.perfil.Rol.Permiso.Id
+    }
+
+  }
+
+  onRouter(module: string) {
     this.route.navigate([module])
   }
 

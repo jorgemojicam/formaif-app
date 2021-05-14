@@ -6,6 +6,7 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
 import Utils from '../../../utils';
 import { CrucesAgro } from 'src/app/model/crucesagro';
+import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-analisisagro',
@@ -20,7 +21,8 @@ export class AnalisisagroComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    public srvSol: IdbSolicitudService
+    public srvSol: IdbSolicitudService,
+    public _srvEncr: EncryptService
   ) { }
 
   datasolicitud: Solicitud = new Solicitud();
@@ -37,7 +39,8 @@ export class AnalisisagroComponent implements OnInit {
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
         let ced = params.get('cedula')
-        this.srvSol.getSol(ced).subscribe((datasol) => {
+        this.srvSol.getSol(ced).subscribe((res) => {
+          let datasol = JSON.parse(this._srvEncr.decrypt(res))
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })

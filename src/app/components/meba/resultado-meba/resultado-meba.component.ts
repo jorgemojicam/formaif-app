@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EChartsOption } from 'echarts';
 import { Sensibilidad } from 'src/app/model/sensibilidad';
 import { Solicitud } from 'src/app/model/solicitud';
+import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -23,7 +24,8 @@ export class ResultadoMebaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public srvSol: IdbSolicitudService
+    private srvSol: IdbSolicitudService,
+    private _srvEncr: EncryptService
   ) { }
 
   async ngOnInit() {
@@ -94,7 +96,7 @@ export class ResultadoMebaComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(this.ced).subscribe(
         (d) => {
-          resolve(d)
+          resolve(JSON.parse(this._srvEncr.decrypt(d)))
         })
     })
   }

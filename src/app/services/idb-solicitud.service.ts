@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { EncryptService } from './encrypt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,17 @@ export class IdbSolicitudService {
   constructor(
     private storage: StorageMap,
     private tokenStorage: TokenStorageService,
+    private _srvCrypto: EncryptService
   ) { }
 
   saveSol(name: string, data: any) { 
-    this.storage.set(name, data).subscribe(() => { });
+    this.storage.set(name, this._srvCrypto.encrypt(JSON.stringify(data))).subscribe(() => { });
   }
+
   getSol(name: string): any {
     return this.storage.get(name.toString());
   }
+
   deleteSol(name: string) {
     return this.storage.delete(name.toString())
   }
@@ -28,11 +32,13 @@ export class IdbSolicitudService {
     const user = asesores.Clave.toLocaleLowerCase()
     this.storage.delete(user.toString()).subscribe(() => { });
   }
+
   save(data: any,) {
     const asesores: Asesor = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
     this.storage.set(user.toString(), data).subscribe(() => { });
   }
+
   get(): any {
     const asesores: Asesor = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
