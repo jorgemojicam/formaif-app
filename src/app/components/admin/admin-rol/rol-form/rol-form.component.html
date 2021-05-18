@@ -17,11 +17,11 @@
                 </mat-select>
             </mat-form-field>
         </div>
-
   
         <br>
     </div>
-    <div fxLayout="row wrap">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <div *ngIf="!loading" fxLayout="row wrap">
         <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
             <button type="submit" mat-raised-button [disabled]="!rolForm.valid" color="primary">Guardar</button>
         </div>

@@ -222,7 +222,7 @@ export class UrbanoComponent implements OnInit {
 
         //------------------------------------------------------------------
 
-        //--------------Costo de venta [materia prima]----------------------
+        //--------------Costo de venta [materia prima] ----------------------
         let totalcomporas = 0
         if (tipoactividad == 2) {
           margen = 0
@@ -269,7 +269,8 @@ export class UrbanoComponent implements OnInit {
             }, { emitEvent: false })
 
           })
-          let unidadrend = materiapri.controls[0].get("unidad").value.name
+          
+          let unidadrend = materiapri.controls[0].get("unidad").value ? materiapri.controls[0].get("unidad").value.name : ""
           let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
           let cantidad = materiapri.controls[0].get("cantMatPri").value
           let cantpro = materiapri.controls[0].get("cantidad").value
@@ -295,6 +296,7 @@ export class UrbanoComponent implements OnInit {
           x.patchValue({
             totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
           }, { emitEvent: false })
+
 
         }
         //Costo de venta cuando la actividad es servicios

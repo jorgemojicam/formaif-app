@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild ,ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -15,7 +15,7 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
 export class RolComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['Nombre', 'Permiso', 'edit', 'delete'];
+  displayedColumns: string[] = ['Nombre', 'Permiso', 'edit'];
   dataSource: MatTableDataSource<Rol>;
   @ViewChild(MatSort) sort: MatSort;
   datos: any = []
@@ -23,6 +23,7 @@ export class RolComponent implements OnInit {
   constructor(
     private _serv: RolService,
     public dialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { }
 
   async ngOnInit() {
@@ -48,10 +49,6 @@ export class RolComponent implements OnInit {
     this.openDialog(msg, datos);
   }
 
-  onDelete(datos) {
-    console.log(datos)
-  }
-
   onCreate() {
     const msg = 'Crear Rol';
     this.openDialog(msg, null);
@@ -69,7 +66,13 @@ export class RolComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
-      this.datos = await this.getRol()
+
+      if (result) {
+        this.datos = this.datos.filter(a => a.Id != result.Id)  
+        this.datos.push(result)     
+        this.dataSource.data = this.datos
+        this.changeDetectorRefs.detectChanges();
+      }
 
     })
   }
