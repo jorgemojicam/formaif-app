@@ -104,6 +104,7 @@ export class BalanceComponent implements OnInit {
 
     })
   }
+
   async ngOnInit() {
 
     this.route.queryParamMap.subscribe((params) => {
@@ -113,8 +114,10 @@ export class BalanceComponent implements OnInit {
     this.dataSolicitud = await this.getSol() as Solicitud
     this.tipoSol = this.dataSolicitud.asesor
 
-    if (this.tipoSol == 1)
+    if (this.tipoSol == 1){
       this.tipoPasivo = DataSelect.TipoPasivo.filter(pas => pas.id != 7)
+      this.tipoActivo = DataSelect.TipoActivoNeg.filter(ac => ac.id != 5)
+    }
 
     if (this.dataSolicitud.Balance) {
       this.loadBalance(this.dataSolicitud.Balance)
@@ -157,6 +160,14 @@ export class BalanceComponent implements OnInit {
         }, { emitEvent: false })
       });
 
+      if(recuperacionCobrar > totalCobrar){
+        recuperacionCobrar = 0
+        this._snackBar.open("Valor de recuperacion no puede superar las cuentas por cobrar", "Ok!", {
+          duration: 3000,
+        });
+      }
+
+      
       //Calculo inventario
       let totalInv = 0
       const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
