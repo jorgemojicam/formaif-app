@@ -838,6 +838,8 @@
                                                                 <mat-select formControlName="frecuencia"
                                                                     id="frecuencia{{ac}}-{{com}}" required>
                                                                     <mat-option>--</mat-option>
+                                                                    <mat-option *ngIf="acti.value.tipo ==3" 
+                                                                    [value]="tipoAnual">{{tipoAnual.name}}</mat-option>
                                                                     <mat-option *ngFor="let frec of frecuencia"
                                                                         [value]="frec">
                                                                         {{frec.name}}
@@ -876,7 +878,6 @@
                                             <mat-icon>add</mat-icon>
                                         </button>
                                     </mat-card>
-
                                     <!-- costo de venta -->
                                     <ng-container *ngIf="acti.value.tipo==3">
                                         <mat-card class="mat-card-cruce">

@@ -824,15 +824,18 @@
                                             formControlName="cuota">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="67%" fxFlex.xs="67%" fxFlex.sm="33%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field>
                                         <input type="text" matInput placeholder="Acreedor" id="acreedor{{pas}}"
                                             formControlName="acreedor">
                                     </mat-form-field>
                                 </div>
-
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                    <mat-form-field>
+                                        <input type="tel" matInput placeholder="Cuota" formControlName="cuotahipoteca">
+                                    </mat-form-field>
+                                </div>
                                 <ng-container *ngIf="itemrow.value.negociovivienda">
-
                                     <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <b>Negocio</b>
                                     </div>

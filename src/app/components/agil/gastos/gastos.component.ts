@@ -7,6 +7,7 @@ import { OtrosIngresos } from 'src/app/model/otrosingresosfamilia';
 import { Remuneracion } from 'src/app/model/remuneracion';
 import { Solicitud } from 'src/app/model/solicitud';
 import { EncryptService } from 'src/app/services/encrypt.service';
+import Utils from 'src/app/utils';
 import DataSelect from '../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -61,6 +62,8 @@ export class GastosComponent implements OnInit {
   meses: any = DataSelect.Meses;
   tipoSol: number;
   ced: string;
+  coutafam: number
+  cuotaneg: number
 
   getSol() {
     return new Promise(resolve => {
@@ -83,104 +86,115 @@ export class GastosComponent implements OnInit {
 
     this.dataSolicitud = await this.getSol() as Solicitud
     this.tipoSol = this.dataSolicitud.asesor
+    let totalCoutaF = 0
+    let totalCoutaN = 0
+    if (this.dataSolicitud.Balance) {
+      this.dataSolicitud.Balance.pasivosRows.forEach(element => {
+        totalCoutaF += Utils.formatNumber(element.cuotafam)
+        totalCoutaN += Utils.formatNumber(element.coutaneg)
+      });
+    }
+
     if (this.dataSolicitud.Gastos) {
       this.gastosForm = this.loadDataGastosRow(this.dataSolicitud.Gastos);
     }
-   
-      this.gastosForm.valueChanges.subscribe((values) => {
 
-        let alquilerN = this.formatNumber(values.alquilerN)
-        let serviciosN = this.formatNumber(values.serviciosN)
-        let transporteN = this.formatNumber(values.transporteN)
-        let fletesN = this.formatNumber(values.fletesN)
-        let impuestosN = this.formatNumber(values.impuestosN)
-        let mantenimientoN = this.formatNumber(values.mantenimientoN)
-        let imprevistosN = this.formatNumber(values.imprevistosN)
-        let otrosN = this.formatNumber(values.otrosN)
-        let totalgatosN = alquilerN + serviciosN + transporteN + fletesN + impuestosN + mantenimientoN + imprevistosN + otrosN
+    this.gastosForm.valueChanges.subscribe((values) => {
 
-        let totalEstacionalesN = 0
-        const estacionalesN = <FormArray>this.gastosForm.controls['estacionalesN'];
-        estacionalesN.controls.forEach((x) => {
-          let valor = this.formatNumber(x.get('valor').value)
-          totalEstacionalesN += valor
-          x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          }, { emitEvent: false })
-        })
-
-        let arriendoF = this.formatNumber(values.arriendoF)
-        let alimentacionF = this.formatNumber(values.alimentacionF)
-        let educacionF = this.formatNumber(values.educacionF)
-        let vestuarioF = this.formatNumber(values.vestuarioF)
-        let saludF = this.formatNumber(values.saludF)
-        let transporteF = this.formatNumber(values.transporteF)
-        let serviciosF = this.formatNumber(values.serviciosF)
-        let entretenimientoF = this.formatNumber(values.entretenimientoF)
-        let otrosF = this.formatNumber(values.otrosF)
-        let totalgatosF = arriendoF + alimentacionF + educacionF + vestuarioF + saludF + transporteF + serviciosF + entretenimientoF + otrosF
-
-        let totalEstacionalesF = 0
-        const estacionalesF = <FormArray>this.gastosForm.controls['estacionalesF'];
-        estacionalesF.controls.forEach((x) => {
-          let valor = this.formatNumber(x.get('valor').value)
-          totalEstacionalesF += valor
-          x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          }, { emitEvent: false })
-        })
-
-        let totalre = 0
-        const ctrl = <FormArray>this.gastosForm.controls['remuneracionRow'];
-        ctrl.controls.forEach((x) => {
-          let valor = this.formatNumber(x.get('valor').value)
-          totalre += valor
-          x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          }, { emitEvent: false })
-        })
-
-        let totalOtros = 0
-        const otrosI = <FormArray>this.gastosForm.controls['otrosIngresosRow'];
-        otrosI.controls.forEach((x) => {
-          let valor = this.formatNumber(x.get('valor').value)
-          totalOtros += valor
-          x.patchValue({
-            valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          }, { emitEvent: false })
-        })
-
-        this.gastosForm.patchValue({
-          totalRemuneracion: isFinite(totalre) ? totalre.toLocaleString() : 0,
-          alquilerN: isFinite(alquilerN) ? alquilerN.toLocaleString() : 0,
-          serviciosN: isFinite(serviciosN) ? serviciosN.toLocaleString() : 0,
-          transporteN: isFinite(transporteN) ? transporteN.toLocaleString() : 0,
-          fletesN: isFinite(fletesN) ? fletesN.toLocaleString() : 0,
-          impuestosN: isFinite(impuestosN) ? impuestosN.toLocaleString() : 0,
-          mantenimientoN: isFinite(mantenimientoN) ? mantenimientoN.toLocaleString() : 0,
-          imprevistosN: isFinite(imprevistosN) ? imprevistosN.toLocaleString() : 0,
-          otrosN: isFinite(otrosN) ? otrosN.toLocaleString() : 0,
-          totalEstacionalesN: isFinite(totalEstacionalesN) ? totalEstacionalesN.toLocaleString() : 0,
-          arriendoF: isFinite(arriendoF) ? arriendoF.toLocaleString() : 0,
-          alimentacionF: isFinite(alimentacionF) ? alimentacionF.toLocaleString() : 0,
-          educacionF: isFinite(educacionF) ? educacionF.toLocaleString() : 0,
-          vestuarioF: isFinite(vestuarioF) ? vestuarioF.toLocaleString() : 0,
-          saludF: isFinite(saludF) ? saludF.toLocaleString() : 0,
-          transporteF: isFinite(transporteF) ? transporteF.toLocaleString() : 0,
-          serviciosF: isFinite(serviciosF) ? serviciosF.toLocaleString() : 0,
-          entretenimientoF: isFinite(entretenimientoF) ? entretenimientoF.toLocaleString() : 0,
-          otrosF: isFinite(otrosF) ? otrosF.toLocaleString() : 0,
-          totalEstacionalesF: isFinite(totalEstacionalesF) ? totalEstacionalesF.toLocaleString() : 0,
-          totalN: isFinite(totalgatosN) ? totalgatosN.toLocaleString() : 0,
-          totalF: isFinite(totalgatosF) ? totalgatosF.toLocaleString() : 0,
-          totalOtros: isFinite(totalOtros) ? totalOtros.toLocaleString() : 0,
+      let alquilerN = this.formatNumber(values.alquilerN)
+      let serviciosN = this.formatNumber(values.serviciosN)
+      let transporteN = this.formatNumber(values.transporteN)
+      let fletesN = this.formatNumber(values.fletesN)
+      let impuestosN = this.formatNumber(values.impuestosN)
+      let mantenimientoN = this.formatNumber(values.mantenimientoN)
+      let imprevistosN = this.formatNumber(values.imprevistosN)
+      let otrosN = this.formatNumber(values.otrosN)
+      let totalgatosN = alquilerN + serviciosN + transporteN + fletesN + impuestosN + mantenimientoN + imprevistosN + otrosN
+      totalgatosN += totalCoutaN
+      
+      let totalEstacionalesN = 0
+      const estacionalesN = <FormArray>this.gastosForm.controls['estacionalesN'];
+      estacionalesN.controls.forEach((x) => {
+        let valor = this.formatNumber(x.get('valor').value)
+        totalEstacionalesN += valor
+        x.patchValue({
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
         }, { emitEvent: false })
-
-        this.dataGastos = this.gastosForm.value
-        this.dataSolicitud.Gastos = this.dataGastos
-        this._srvSol.saveSol(this.ced, this.dataSolicitud)
       })
-  
+
+      let arriendoF = this.formatNumber(values.arriendoF)
+      let alimentacionF = this.formatNumber(values.alimentacionF)
+      let educacionF = this.formatNumber(values.educacionF)
+      let vestuarioF = this.formatNumber(values.vestuarioF)
+      let saludF = this.formatNumber(values.saludF)
+      let transporteF = this.formatNumber(values.transporteF)
+      let serviciosF = this.formatNumber(values.serviciosF)
+      let entretenimientoF = this.formatNumber(values.entretenimientoF)
+      let otrosF = this.formatNumber(values.otrosF)
+      let totalgatosF = arriendoF + alimentacionF + educacionF + vestuarioF + saludF + transporteF + serviciosF + entretenimientoF + otrosF
+      totalgatosF += totalCoutaF
+
+      let totalEstacionalesF = 0
+      const estacionalesF = <FormArray>this.gastosForm.controls['estacionalesF'];
+      estacionalesF.controls.forEach((x) => {
+        let valor = this.formatNumber(x.get('valor').value)
+        totalEstacionalesF += valor
+        x.patchValue({
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
+        }, { emitEvent: false })
+      })
+
+      let totalre = 0
+      const ctrl = <FormArray>this.gastosForm.controls['remuneracionRow'];
+      ctrl.controls.forEach((x) => {
+        let valor = this.formatNumber(x.get('valor').value)
+        totalre += valor
+        x.patchValue({
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
+        }, { emitEvent: false })
+      })
+
+      let totalOtros = 0
+      const otrosI = <FormArray>this.gastosForm.controls['otrosIngresosRow'];
+      otrosI.controls.forEach((x) => {
+        let valor = this.formatNumber(x.get('valor').value)
+        totalOtros += valor
+        x.patchValue({
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
+        }, { emitEvent: false })
+      })
+
+      this.gastosForm.patchValue({
+        totalRemuneracion: isFinite(totalre) ? totalre.toLocaleString() : 0,
+        alquilerN: isFinite(alquilerN) ? alquilerN.toLocaleString() : 0,
+        serviciosN: isFinite(serviciosN) ? serviciosN.toLocaleString() : 0,
+        transporteN: isFinite(transporteN) ? transporteN.toLocaleString() : 0,
+        fletesN: isFinite(fletesN) ? fletesN.toLocaleString() : 0,
+        impuestosN: isFinite(impuestosN) ? impuestosN.toLocaleString() : 0,
+        mantenimientoN: isFinite(mantenimientoN) ? mantenimientoN.toLocaleString() : 0,
+        imprevistosN: isFinite(imprevistosN) ? imprevistosN.toLocaleString() : 0,
+        otrosN: isFinite(otrosN) ? otrosN.toLocaleString() : 0,
+        totalEstacionalesN: isFinite(totalEstacionalesN) ? totalEstacionalesN.toLocaleString() : 0,
+        arriendoF: isFinite(arriendoF) ? arriendoF.toLocaleString() : 0,
+        alimentacionF: isFinite(alimentacionF) ? alimentacionF.toLocaleString() : 0,
+        educacionF: isFinite(educacionF) ? educacionF.toLocaleString() : 0,
+        vestuarioF: isFinite(vestuarioF) ? vestuarioF.toLocaleString() : 0,
+        saludF: isFinite(saludF) ? saludF.toLocaleString() : 0,
+        transporteF: isFinite(transporteF) ? transporteF.toLocaleString() : 0,
+        serviciosF: isFinite(serviciosF) ? serviciosF.toLocaleString() : 0,
+        entretenimientoF: isFinite(entretenimientoF) ? entretenimientoF.toLocaleString() : 0,
+        otrosF: isFinite(otrosF) ? otrosF.toLocaleString() : 0,
+        totalEstacionalesF: isFinite(totalEstacionalesF) ? totalEstacionalesF.toLocaleString() : 0,
+        totalN: isFinite(totalgatosN) ? totalgatosN.toLocaleString() : 0,
+        totalF: isFinite(totalgatosF) ? totalgatosF.toLocaleString() : 0,
+        totalOtros: isFinite(totalOtros) ? totalOtros.toLocaleString() : 0,
+      }, { emitEvent: false })
+
+      this.dataGastos = this.gastosForm.value
+      this.dataSolicitud.Gastos = this.dataGastos
+      this._srvSol.saveSol(this.ced, this.dataSolicitud)
+    })
+
   }
 
   loadDataGastosRow(remu: Gastos) {

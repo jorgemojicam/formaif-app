@@ -42,6 +42,9 @@ export class Pasivos {
         period: number;
     };
     fechaproxcap: Date;
+    cuotahipoteca:number
+    cuotafam: number
+    coutaneg: number
     montoF: string;
     montoN: string;
     cuotaN: string;

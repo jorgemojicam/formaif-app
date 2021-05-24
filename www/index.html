@@ -12,12 +12,32 @@
 
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#1976d2">
+    <script>
+        function onLoad() {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+
+        // device APIs are available
+        //
+        function onDeviceReady() {
+            // Register the event listener
+            document.addEventListener("backbutton", onBackKeyDown, false);
+        }
+
+        // Handle the back button
+        //
+        function onBackKeyDown() {
+        }
+
+
+    </script>
 <link rel="stylesheet" href="styles.bfca51b5b22025b35e25.css"></head>
 
-<body class="mat-typography">
+<body  onload="onLoad()" class="mat-typography">
     <app-root></app-root>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
     <script src="cordova.js"></script>
-<script src="runtime.95db7f2ceadebe102ced.js" defer></script><script src="polyfills-es5.521d0992408f591a7296.js" nomodule defer></script><script src="polyfills.61acaf97a950ac27c6ba.js" defer></script><script src="main.1d1cfb4d1def1d8d28f3.js" defer></script></body>
+
+<script src="runtime.8ff3c8655432fbb8febc.js" defer></script><script src="polyfills-es5.45ad9a262803d3f98922.js" nomodule defer></script><script src="polyfills.2d8b709f3d5d0ee502d4.js" defer></script><script src="main.f2598580f7bf4c048738.js" defer></script></body>
 
 </html>

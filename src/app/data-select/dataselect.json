@@ -259,12 +259,6 @@
       "name": "Mensual",
       "dias": 1,
       "cant": 4
-    },
-    {
-      "id": 5,
-      "name": "Anual",
-      "dias": 1,
-      "cant": 0
     }
   ],
   "DiasSemana": [
@@ -325,7 +319,7 @@
       "name": "Quince 2"
     },
     {
-      "id": 2,
+      "id": 3,
       "name": "Quince 3"
     }
   ],

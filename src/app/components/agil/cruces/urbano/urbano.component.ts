@@ -46,6 +46,12 @@ export class UrbanoComponent implements OnInit {
   frecuencia: any = DataSelect.Frecuencia;
   tipoAct: any = DataSelect.TipoActividadUrban;
   unidades: any = DataSelect.Unidades;
+  tipoAnual = {
+    id: 5,
+    name: "Anual",
+    dias: 11,
+    cant: 12
+  }
 
   diasSema: any = [];
   ced: string;
@@ -64,7 +70,6 @@ export class UrbanoComponent implements OnInit {
         }, (err) => {
           resolve([])
         })
-
     })
   }
 
@@ -92,6 +97,13 @@ export class UrbanoComponent implements OnInit {
         let valorpromedio = 0
         let periodoventas = x.get('periodoventas').value
 
+        let cantB = x.get('diasB').value.length
+        let cantR = x.get('diasR').value.length
+        let cantM = x.get('diasM').value.length
+        let valorB = this.formatNumber(x.get('valorB').value)
+        let valorR = this.formatNumber(x.get('valorR').value)
+        let valorM = this.formatNumber(x.get('valorM').value)
+
         if (periodoventas == 1) {
           cantperiodo = 4
           valorpromedio = 3
@@ -102,23 +114,19 @@ export class UrbanoComponent implements OnInit {
           cantperiodo = 1
           valorpromedio = 2
         }
-        let cantB = x.get('diasB').value.length
-        let cantR = x.get('diasR').value.length
-        let cantM = x.get('diasM').value.length
-        let valorB = this.formatNumber(x.get('valorB').value)
-        let valorR = this.formatNumber(x.get('valorR').value)
-        let valorM = this.formatNumber(x.get('valorM').value)
+        let cantDias = cantB + cantM + cantR
+        let totaldias = cantDias * cantperiodo
+        if (totaldias > 26) {
+          totaldias = 26
+        }
 
         let totalB = cantB * valorB * cantperiodo
         let totalR = cantR * valorR * cantperiodo
         let totalM = cantM * valorM * cantperiodo
 
-        let totaldias = this.formatNumber(x.get('totalDias').value)
-
         let promedio = (valorB + valorR + valorM) / valorpromedio
         let totalpromedio = promedio * totaldias
         let totalbrm = totalB + totalR + totalM
-
 
         if (valorR > valorB) {
           valorR = 0
@@ -269,7 +277,7 @@ export class UrbanoComponent implements OnInit {
             }, { emitEvent: false })
 
           })
-          
+
           let unidadrend = materiapri.controls[0].get("unidad").value ? materiapri.controls[0].get("unidad").value.name : ""
           let materiaprimarend = materiapri.controls[0].get("materiaprimapri").value
           let cantidad = materiapri.controls[0].get("cantMatPri").value
@@ -319,8 +327,18 @@ export class UrbanoComponent implements OnInit {
         compras.controls.forEach((com) => {
           let cantidad = this.formatNumber(com.get("cantidad").value)
           let valor = this.formatNumber(com.get("valor").value)
+
+          let idFrec = com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.id
           let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
-          let total = cantidad * valor * frec
+          let cantAnua = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.cant)
+          let total = 0
+          
+          //Condicion solo aplica para anual en servicios
+          if (idFrec == 5) {
+            total = (cantidad * valor * frec ) / cantAnua
+          } else {
+            total = cantidad * valor * frec
+          }
           totalcomporas += total
           com.patchValue({
             valor: valor.toLocaleString(),
@@ -355,6 +373,7 @@ export class UrbanoComponent implements OnInit {
           totalB: isFinite(totalB) ? totalB.toLocaleString() : 0,
           totalR: isFinite(totalR) ? totalR.toLocaleString() : 0,
           totalM: isFinite(totalM) ? totalM.toLocaleString() : 0,
+          totalDias: totaldias,
           promedio: isFinite(promedio) ? promedio.toLocaleString() : 0,
           totalVentas: isFinite(totalbrm) ? totalbrm.toLocaleString() : 0,
           totalPromedio: isFinite(totalpromedio) ? totalpromedio.toLocaleString() : 0,

@@ -395,6 +395,7 @@ export class BalanceComponent implements OnInit {
           else if (tipo.id == "2") {
             let porcentajeneg = x.get('porcentajeneg').value ? x.get('porcentajeneg').value : 0
             let negociovivienda = x.get('negociovivienda').value ? x.get('negociovivienda').value : false
+            let cuotahipoteca = Utils.formatNumber(x.get('cuotahipoteca').value ? x.get('cuotahipoteca').value : 0)
 
             if (!negociovivienda) {
               porcentajeneg = 0
@@ -412,6 +413,10 @@ export class BalanceComponent implements OnInit {
                 duration: 4000,
               });
             }
+
+            let coutaneg = (cuotahipoteca * porcentajeneg) / 100
+            let cuotafam = cuotahipoteca - coutaneg
+
             let montoneg = (saldo * porcentajeneg) / 100
             let montofam = saldo - montoneg
 
@@ -442,6 +447,8 @@ export class BalanceComponent implements OnInit {
               nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
               corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
               nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,
+              coutaneg: isFinite(coutaneg) ? coutaneg.toLocaleString() : 0,
+              cuotafam: isFinite(cuotafam) ? cuotafam.toLocaleString() : 0,
 
             }, { emitEvent: false })
 
@@ -929,11 +936,9 @@ export class BalanceComponent implements OnInit {
     });
     return arr
   }
-
   deleteCreditoDetalle(cred: number) {
     this.creditosDetalle().removeAt(cred)
   }
-
   //-------------------------------------------------
 
   //---------------Creditos-------------------------
@@ -1032,6 +1037,9 @@ export class BalanceComponent implements OnInit {
       tipo: ['', Validators.required],
       clase: [''],
       negociovivienda: [false],
+      cuotahipoteca: [0],
+      cuotafam: [0],
+      coutaneg: [0],
       porcentajeneg: '',
       acreedor: [''],
       descuentolibranza: [false],
@@ -1091,6 +1099,9 @@ export class BalanceComponent implements OnInit {
           tipo: [tipopas],
           clase: [pas.clase],
           negociovivienda: [pas.negociovivienda],
+          cuotahipoteca: [pas.cuotahipoteca],
+          cuotafam: [pas.cuotafam],
+          coutaneg: [pas.coutaneg],
           porcentajeneg: [pas.porcentajeneg],
           acreedor: [pas.acreedor],
           descuentolibranza: [pas.descuentolibranza],
