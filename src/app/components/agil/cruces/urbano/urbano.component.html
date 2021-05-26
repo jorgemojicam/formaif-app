@@ -67,7 +67,7 @@
                                     <div fxLayout="row wrap">
                                         <mat-card class="radioperiodo">
                                             <mat-card-content>
-                                                <mat-radio-group fxLayout="row wrap" formControlName="periodoventas">
+                                                <mat-radio-group fxLayout="row wrap" (change)="changePeriodo(acti)" formControlName="periodoventas">
                                                     <mat-radio-button fxFlex="40%" fxFlex.xs="25%" value="1">Dia
                                                     </mat-radio-button>
                                                     <mat-radio-button fxFlex="35%" fxFlex.xs="35%" value="2">Semana
@@ -238,7 +238,7 @@
                                                         formControlName="totalVentas">
                                                 </mat-form-field>
                                             </div>
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="43%" fxFlex.sm="25%">
+                                            <div class="gr" fxFlex="33%" fxFlex.xs="43%" fxFlex.sm="40%">
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Promedio</mat-label>
                                                     <input matInput type="text" readonly id="promedio{{ac}}"
@@ -246,14 +246,14 @@
                                                     <mat-icon matSuffix>attach_money</mat-icon>
                                                 </mat-form-field>
                                             </div>
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="15%" fxFlex.sm="15%">
+                                            <div class="gr" fxFlex="33%" fxFlex.xs="27%" fxFlex.sm="20%">
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Dias</mat-label>
                                                     <input matInput type="number" matInput placeholder="Dias"
                                                         id="totalDias{{ac}}" formControlName="totalDias">
                                                 </mat-form-field>
                                             </div>
-                                            <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="25%">
+                                            <div class="gr" fxFlex="33%" fxFlex.xs="30%" fxFlex.sm="40%">
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Total Promedio</mat-label>
                                                     <input type="text" readonly matInput placeholder="Total Promedio"
@@ -322,7 +322,10 @@
                                                                 </mat-form-field>
                                                             </div>
                                                             <button class="btndelete" color="warn" mat-icon-button
-                                                                [disabled]="ven==0 || acti.value.periodohistoricas.id==1"
+                                                                [disabled]="ven==0 || acti.value.periodohistoricas.id==1 
+                                                                || (acti.value.periodohistoricas.id==2 && ven < 3)
+                                                                || (acti.value.periodohistoricas.id==3 && ven < 2)
+                                                                || (acti.value.periodohistoricas.id==4 && ven < 3)"
                                                                 (click)="removeVentas(ac,ven)">
                                                                 <mat-icon>cancel</mat-icon>
                                                             </button>
@@ -508,7 +511,7 @@
                                                         </div>
                                                         <div class="gr" fxFlex="47%" fxFlex.xs="47%" fxFlex.sm="47%">
                                                             <mat-form-field>
-                                                                <input type="tel" matInput placeholder="Valor"
+                                                                <input type="tel" matInput placeholder="Valor Total"
                                                                     id="valorMatPri{{mat}}"
                                                                     formControlName="valorMatPri">
                                                             </mat-form-field>

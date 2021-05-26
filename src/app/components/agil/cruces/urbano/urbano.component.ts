@@ -100,9 +100,10 @@ export class UrbanoComponent implements OnInit {
         let cantB = x.get('diasB').value.length
         let cantR = x.get('diasR').value.length
         let cantM = x.get('diasM').value.length
-        let valorB = this.formatNumber(x.get('valorB').value)
-        let valorR = this.formatNumber(x.get('valorR').value)
-        let valorM = this.formatNumber(x.get('valorM').value)
+        let valorB = Utils.formatNumber(x.get('valorB').value)
+        let valorR = Utils.formatNumber(x.get('valorR').value)
+        let valorM = Utils.formatNumber(x.get('valorM').value)
+        let totaldias = Utils.formatNumber(x.get('totalDias').value)
 
         if (periodoventas == 1) {
           cantperiodo = 4
@@ -115,7 +116,8 @@ export class UrbanoComponent implements OnInit {
           valorpromedio = 2
         }
         let cantDias = cantB + cantM + cantR
-        let totaldias = cantDias * cantperiodo
+        totaldias = cantDias * cantperiodo
+               
         if (totaldias > 26) {
           totaldias = 26
         }
@@ -151,12 +153,12 @@ export class UrbanoComponent implements OnInit {
         //---------------------Ventas Historicas--------------------------------------
         let total = 0
         let tipoactividad = x.get("tipo").value
-        let frechis = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
-        let frechisdias = this.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
+        let frechis = Utils.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
+        let frechisdias = Utils.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
 
         const ventashistoricas = <FormArray>x.get('ventasHis')
         ventashistoricas.controls.forEach((ven) => {
-          let valor = this.formatNumber(ven.get("valor").value)
+          let valor = Utils.formatNumber(ven.get("valor").value)
           total += valor
           ven.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
@@ -173,9 +175,9 @@ export class UrbanoComponent implements OnInit {
         let totalprod = 0
         const produccionArr = <FormArray>x.get('produccion')
         produccionArr.controls.forEach((prod) => {
-          let valor = this.formatNumber(prod.get("valor").value)
-          let cantidad = this.formatNumber(prod.get("cantidad").value)
-          let frec = this.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
+          let valor = Utils.formatNumber(prod.get("valor").value)
+          let cantidad = Utils.formatNumber(prod.get("cantidad").value)
+          let frec = Utils.formatNumber(prod.get("frecuencia").value == null ? 0 : prod.get("frecuencia").value.dias)
           let total = valor * cantidad * frec
           prod.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0,
@@ -205,10 +207,10 @@ export class UrbanoComponent implements OnInit {
         //------------------Costo de venta------------------------------
         const costoventa = <FormArray>x.get('costoventa')
         costoventa.controls.forEach((cos) => {
-          let preciocompra = this.formatNumber(cos.get("precioCompra").value)
-          let precioventa = this.formatNumber(cos.get("precioVenta").value)
+          let preciocompra = Utils.formatNumber(cos.get("precioCompra").value)
+          let precioventa = Utils.formatNumber(cos.get("precioVenta").value)
           let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
-          var participacion = this.formatNumber(cos.get("participacion").value)
+          var participacion = Utils.formatNumber(cos.get("participacion").value)
 
           let margenglobal = (participacion / 100) * porcentaje
           totalparticipacion += participacion
@@ -227,7 +229,6 @@ export class UrbanoComponent implements OnInit {
             porcentaje: isFinite(porcentaje) ? porcentaje.toFixed() : 0
           }, { emitEvent: false })
         })
-
         //------------------------------------------------------------------
 
         //--------------Costo de venta [materia prima] ----------------------
@@ -237,16 +238,16 @@ export class UrbanoComponent implements OnInit {
           totalcomporas = 0
           const materiapri = <FormArray>x.get('materiaprima')
           materiapri.controls.forEach((mat) => {
-            let cantidad = this.formatNumber(mat.get("cantidad").value)
-            let preciovenorod = this.formatNumber(mat.get("precioVenProd").value)
-            let valormatpri = this.formatNumber(mat.get("valorMatPri").value)
-            let valormatpri2 = this.formatNumber(mat.get("valorMatPri2").value)
-            let valormatpri3 = this.formatNumber(mat.get("valorMatPri3").value)
-            let valormatpri4 = this.formatNumber(mat.get("valorMatPri4").value)
-            let valormatpri5 = this.formatNumber(mat.get("valorMatPri5").value)
-            let valormao = this.formatNumber(mat.get("valorMao").value)
-            let valorcif = this.formatNumber(mat.get("valorCif").value)
-            var participacion = this.formatNumber(mat.get("participacion").value)
+            let cantidad = Utils.formatNumber(mat.get("cantidad").value)
+            let preciovenorod = Utils.formatNumber(mat.get("precioVenProd").value)
+            let valormatpri = Utils.formatNumber(mat.get("valorMatPri").value)
+            let valormatpri2 = Utils.formatNumber(mat.get("valorMatPri2").value)
+            let valormatpri3 = Utils.formatNumber(mat.get("valorMatPri3").value)
+            let valormatpri4 = Utils.formatNumber(mat.get("valorMatPri4").value)
+            let valormatpri5 = Utils.formatNumber(mat.get("valorMatPri5").value)
+            let valormao = Utils.formatNumber(mat.get("valorMao").value)
+            let valorcif = Utils.formatNumber(mat.get("valorCif").value)
+            var participacion = Utils.formatNumber(mat.get("participacion").value)
             totalparticipacion += participacion
             if (totalparticipacion > 100) {
               participacion = 0
@@ -310,7 +311,6 @@ export class UrbanoComponent implements OnInit {
         //Costo de venta cuando la actividad es servicios
         if (tipoactividad == 3) {
           costo = Utils.formatNumber(x.get('costo').value)
-
           if (costo > 100) {
             costo = 0
             this._snackBar.open("El porcentaje de costo de venta no puede superar el 100", "Ok!", {
@@ -321,21 +321,20 @@ export class UrbanoComponent implements OnInit {
           //Aplica para costo de venta y el calculo que se hace con  costo de venta [Materia Prima]
           costo = 100 - margen
         }
-        console.log(costo)
         //--------------------Compras---------------------------------------
         const compras = <FormArray>x.get('compras')
         compras.controls.forEach((com) => {
-          let cantidad = this.formatNumber(com.get("cantidad").value)
-          let valor = this.formatNumber(com.get("valor").value)
+          let cantidad = Utils.formatNumber(com.get("cantidad").value)
+          let valor = Utils.formatNumber(com.get("valor").value)
 
           let idFrec = com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.id
-          let frec = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
-          let cantAnua = this.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.cant)
+          let frec = Utils.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.dias)
+          let cantAnua = Utils.formatNumber(com.get("frecuencia").value == null ? 0 : com.get("frecuencia").value.cant)
           let total = 0
-          
+
           //Condicion solo aplica para anual en servicios
           if (idFrec == 5) {
-            total = (cantidad * valor * frec ) / cantAnua
+            total = (cantidad * valor * frec) / cantAnua
           } else {
             total = cantidad * valor * frec
           }
@@ -365,7 +364,6 @@ export class UrbanoComponent implements OnInit {
           }, { emitEvent: false })
         }
 
-
         x.patchValue({
           valorB: isFinite(valorB) ? valorB.toLocaleString() : 0,
           valorR: isFinite(valorR) ? valorR.toLocaleString() : 0,
@@ -381,15 +379,18 @@ export class UrbanoComponent implements OnInit {
           totalCruce2: isFinite(totalCruce2) ? totalCruce2.toFixed() : 0,
           costo: isNaN(costo) ? 0 : costo.toFixed(),
           margen: isNaN(margen) ? 0 : margen.toFixed(),
-
         }, { emitEvent: false })
       });
 
-      this.dataCruces = this.actividadesForm.get('act').value
-      this.datasolicitud.Cruces = this.dataCruces
-      this._srvSol.saveSol(this.ced, this.datasolicitud)
+      this.save(this.actividadesForm.get('act').value)
     })
 
+  }
+
+  save(actividad) {
+    this.dataCruces = actividad
+    this.datasolicitud.Cruces = this.dataCruces
+    this._srvSol.saveSol(this.ced, this.datasolicitud)
   }
 
   itemactividad() {
@@ -763,12 +764,27 @@ export class UrbanoComponent implements OnInit {
   }
   //--------------------------------------------------------------
 
-  formatNumber(num: string) {
-    if (typeof (num) == "number") {
-      return parseInt(num)
-    } else {
-      return parseInt(num == "" || num == null ? "0" : num.replace(/[\D\s\._\-]+/g, ""))
-    }
+  changePeriodo(acti) {
+   
+    acti.patchValue({
+      diasB: [],
+      diasR: [],
+      diasM: [],
+      valorB: 0,
+      valorR: 0,
+      valorM: 0,
+      totalB: 0,
+      totalR: 0,
+      totalM: 0,
+      totalDias: 0,
+      promedio: 0,
+      totalVentas: 0,
+      totalPromedio: 0,
+      totalCruce1: 0,
+    }, { emitEvent: false })
+
+    this.save(this.actividadesForm.get('act').value)
+    
   }
 
 }

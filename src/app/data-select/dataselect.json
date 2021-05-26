@@ -83,6 +83,10 @@
     {
       "id": 5,
       "name": "Animales"
+    },
+    {
+      "id": 6,
+      "name": "Vehiculo"
     }
   ],
   "TipoActivoFam": [

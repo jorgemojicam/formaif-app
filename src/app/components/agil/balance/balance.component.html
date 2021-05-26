@@ -115,12 +115,10 @@
         </mat-card>
     </ng-container>
     <!--
-    .####.##....##.##.....##.########.##....##.########....###....########..####..#######.
-    ..##..###...##.##.....##.##.......###...##....##......##.##...##.....##..##..##.....##
+    .####.##....##.##.....##.########.##....##.########....###....########..####..#######.    
     ..##..####..##.##.....##.##.......####..##....##.....##...##..##.....##..##..##.....##
     ..##..##.##.##.##.....##.######...##.##.##....##....##.....##.########...##..##.....##
-    ..##..##..####..##...##..##.......##..####....##....#########.##...##....##..##.....##
-    ..##..##...###...##.##...##.......##...###....##....##.....##.##....##...##..##.....##
+    ..##..##..####..##...##..##.......##..####....##....#########.##...##....##..##.....##   
     .####.##....##....###....########.##....##....##....##.....##.##.....##.####..#######.
     -->
     <mat-card>
@@ -203,10 +201,8 @@
     <!--
     ....###.....######..########.####.##.....##..#######...######.....##....##.########..######....#######...######..####..#######.
     ...##.##...##....##....##.....##..##.....##.##.....##.##....##....###...##.##.......##....##..##.....##.##....##..##..##.....##
-    ..##...##..##..........##.....##..##.....##.##.....##.##..........####..##.##.......##........##.....##.##........##..##.....##
     .##.....##.##..........##.....##..##.....##.##.....##..######.....##.##.##.######...##...####.##.....##.##........##..##.....##
     .#########.##..........##.....##...##...##..##.....##.......##....##..####.##.......##....##..##.....##.##........##..##.....##
-    .##.....##.##....##....##.....##....##.##...##.....##.##....##....##...###.##.......##....##..##.....##.##....##..##..##.....##
     .##.....##..######.....##....####....###.....#######...######.....##....##.########..######....#######...######..####..#######.
     -->
     <mat-card>
@@ -289,7 +285,7 @@
                             <textarea matInput formControlName="detalle"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <mat-label>Tipo</mat-label>
                             <mat-select formControlName="tipo" id="tipo{{actfam}}" required>
@@ -300,13 +296,13 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="10%" fxFlex.xs="20%" fxFlex.sm="20%">
+                    <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
                         <mat-form-field>
                             <input type="number" matInput placeholder="Cantidad" id="cantidad{{actfam}}"
                                 formControlName="cantidad">
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="10%" fxFlex.xs="40%" fxFlex.sm="40%">
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
                             <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{actfam}}"
                                 formControlName="vlrUni">
@@ -584,13 +580,13 @@
                         *ngFor="let itemrow of balanceForm.controls.inversiones['controls']; let inver=index"
                         [formGroupName]="inver">
 
-                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
                             <mat-form-field>
                                 <input type="text" matInput placeholder="Detalle" id="detalle{{inver}}"
                                     formControlName="detalle">
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="20%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
                             <mat-form-field>
                                 <mat-label>Mes</mat-label>
                                 <mat-select formControlName="mes" id="mes{{inver}}" required>
@@ -601,13 +597,13 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <input type="text" matInput placeholder="Origen" id="origen{{inver}}"
                                     formControlName="origen">
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="30%" fxFlex.xs="50%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                             <mat-form-field>
                                 <input type="tel" autocomplete="off" matInput placeholder="Valor" id="valor{{inver}}"
                                     formControlName="valor">
@@ -629,11 +625,9 @@
     </mat-card>
     <!--
     .########.....###.....######..####.##.....##..#######...######.
-    .##.....##...##.##...##....##..##..##.....##.##.....##.##....##
-    .##.....##..##...##..##........##..##.....##.##.....##.##......
+    .##.....##...##.##...##....##..##..##.....##.##.....##.##....##   
     .########..##.....##..######...##..##.....##.##.....##..######.
-    .##........#########.......##..##...##...##..##.....##.......##
-    .##........##.....##.##....##..##....##.##...##.....##.##....##
+    .##........#########.......##..##...##...##..##.....##.......##   
     .##........##.....##..######..####....###.....#######...######.
     -->
     <mat-card>
@@ -839,21 +833,21 @@
                                     <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                         <b>Negocio</b>
                                     </div>
-                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Monto</mat-label>
                                             <input type="tel" readonly matInput placeholder="Monto" id="montoN{{pas}}"
                                                 formControlName="montoN">
                                         </mat-form-field>
                                     </div>
-                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Corriente</mat-label>
                                             <input type="text" matInput placeholder="Corriente" id="corrienteN{{pas}}"
                                                 formControlName="corrienteN" readonly>
                                         </mat-form-field>
                                     </div>
-                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>No Corriente</mat-label>
                                             <input type="text" matInput placeholder="No Corriente"
@@ -865,21 +859,21 @@
                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                     <b>Familia</b>
                                 </div>
-                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Monto</mat-label>
                                         <input type="tel" readonly matInput placeholder="Monto" id="montoF{{pas}}"
                                             formControlName="montoF">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline">
                                         <mat-label>Corriente</mat-label>
                                         <input type="text" matInput placeholder="Corriente" id="corrienteF{{pas}}"
                                             formControlName="corrienteF" readonly>
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="15%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                     <mat-form-field appearance="outline">
                                         <mat-label>No Corriente</mat-label>
                                         <input type="text" matInput placeholder="No Corriente" id="nocorrienteF{{pas}}"

@@ -38,7 +38,11 @@ const routes: Routes = [
     loadChildren: () => import('./components/agil/agil.module').then(m => m.AgilModule),
     canActivate: [AuthGuard]
   },
-  
+  {
+    path: 'zona', loadChildren: () => import('./components/zona/zona.module').then(m => m.ZonaModule),
+    canActivate: [AuthGuard]
+  },
+
   {
     path: '**',
     redirectTo: '/404'

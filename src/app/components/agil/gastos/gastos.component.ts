@@ -93,6 +93,10 @@ export class GastosComponent implements OnInit {
         totalCoutaF += Utils.formatNumber(element.cuotafam)
         totalCoutaN += Utils.formatNumber(element.coutaneg)
       });
+      this.gastosForm.patchValue({
+        totalN: isFinite(totalCoutaF) ? totalCoutaF.toLocaleString() : 0,
+        totalF: isFinite(totalCoutaF) ? totalCoutaF.toLocaleString() : 0
+      })
     }
 
     if (this.dataSolicitud.Gastos) {
@@ -111,7 +115,7 @@ export class GastosComponent implements OnInit {
       let otrosN = this.formatNumber(values.otrosN)
       let totalgatosN = alquilerN + serviciosN + transporteN + fletesN + impuestosN + mantenimientoN + imprevistosN + otrosN
       totalgatosN += totalCoutaN
-      
+
       let totalEstacionalesN = 0
       const estacionalesN = <FormArray>this.gastosForm.controls['estacionalesN'];
       estacionalesN.controls.forEach((x) => {

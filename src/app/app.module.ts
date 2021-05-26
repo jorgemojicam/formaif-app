@@ -40,6 +40,8 @@ import { BalanceComponent } from './components/agil/balance/balance.component';
 import { GastosComponent } from './components/agil/gastos/gastos.component';
 import { RolComponent } from './components/admin/admin-rol/rol/rol.component';
 import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form.component';
+import { ZonaComponent } from './components/zona/zona.component';
+import { ZonaModule } from './components/zona/zona.module';
 
 
 @NgModule({
@@ -70,7 +72,8 @@ import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form
     BalanceComponent,
     GastosComponent,
     RolComponent,
-    RolFormComponent
+    RolFormComponent,
+    ZonaComponent
     
   ],
   imports: [
@@ -85,7 +88,8 @@ import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form
     FlexLayoutModule,
     HttpClientModule,
     MebaModule,
-    AgilModule
+    AgilModule,
+    ZonaModule
       
   ],
   entryComponents: [

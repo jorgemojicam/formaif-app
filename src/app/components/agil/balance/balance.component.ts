@@ -313,7 +313,7 @@ export class BalanceComponent implements OnInit {
       let tcorrienten = 0
       let tnocorrienten = 0
       let tcuotaf = 0
-      let tcuotan = 0
+      let tcuotan = totalCredito
 
       ctrl.controls.forEach((x) => {
         let tipo = x.get('tipo').value
@@ -413,6 +413,12 @@ export class BalanceComponent implements OnInit {
                 duration: 4000,
               });
             }
+            if(saldo > monto){
+              saldo = 0
+              this._snackBar.open("Saldo actual no puede superar el monto", "Ok!", {
+                duration: 4000,
+              });
+            }
 
             let coutaneg = (cuotahipoteca * porcentajeneg) / 100
             let cuotafam = cuotahipoteca - coutaneg
@@ -441,6 +447,7 @@ export class BalanceComponent implements OnInit {
             x.patchValue({
               clase: 0,
               porcentajeneg: isFinite(porcentajeneg) ? porcentajeneg.toLocaleString() : 0,
+              cuotahipoteca: isFinite(cuotahipoteca) ? cuotahipoteca.toLocaleString() : 0,
               montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
               montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
