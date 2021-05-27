@@ -22,6 +22,7 @@ export class ToolbarComponent implements OnInit {
   perfil: Asesor = this.tokenStorage.getUser();
   tipo: number = 0;
   titulo: string;
+  color:string = 'primary'
   rout: string;
   modul: string;
 
@@ -58,7 +59,10 @@ export class ToolbarComponent implements OnInit {
           this.titulo = 'MEBA'
         } else if (this.modul === 'agil') {
           this.titulo = 'Asesor Agil'
-        }else{
+        }else if(this.modul ==='zona'){
+          this.titulo = 'ZONAS'
+          this.color = 'accent'
+        }else{          
           this.titulo = 'Asesor Agil'
         }
       }else{

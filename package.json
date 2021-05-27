@@ -27,6 +27,7 @@
         "@angular/platform-browser-dynamic": "~9.0.2",
         "@angular/router": "~9.0.2",
         "@angular/service-worker": "~9.0.2",
+        "@arcgis/core": "^4.19.3",
         "@ngx-pwa/local-storage": "^9.0.3",
         "@types/crypto-js": "^4.0.1",
         "cordova-android": "^7.0.0",
