@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
-import { HomeZonaComponent } from './home-zona/home-zona.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
 
@@ -14,17 +13,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'solicitud',
         pathMatch: 'prefix',
         data: {
-          routerName: 'home'
-        }
-      },
-      {
-        path: 'home',
-        component: HomeZonaComponent,
-        data: {
-          routerName: 'home'
+          routerName: 'solicitud'
         }
       },
       {

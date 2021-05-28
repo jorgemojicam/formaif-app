@@ -1,22 +1,56 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
+import { SolicitudzonaService } from 'src/app/services/solicitudzona.service';
 
 @Component({
   selector: 'app-solicitud-form',
   templateUrl: './solicitud-form.component.html',
   styleUrls: ['./solicitud-form.component.scss']
 })
-export class SolicitudFormComponent implements OnInit {
+export class SolicitudFormComponent implements AfterViewInit {
 
-  constructor() { }
+  
+  displayedColumns: string[] = ['tipo', 'sucursal', 'estado','gestion'];
+  dataSource: MatTableDataSource<SolicitudZona>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  procesando = false
+  data: SolicitudZona[];
+  loading: boolean = true
 
-  formSolicitud: FormGroup = new FormGroup({
-    tiposolicitud: new FormControl(''),
-    asesoresActual: new FormControl(null),
-    asesoresAprobados: new FormControl(null),
-  })
+  constructor(
+    private _srvSolicitudZ: SolicitudzonaService,
+    private _route: Router,
+  ) { }
 
-  ngOnInit(): void {
+  ngAfterViewInit() {
+
+    const that = this
+    this._srvSolicitudZ.get().subscribe(
+      (res) => {
+        that.data = res as any
+        if (that.data) {
+          console.log(this.data)
+          that.dataSource = new MatTableDataSource(that.data);
+          that.dataSource.paginator = that.paginator;
+          that.dataSource.sort = that.sort;
+          that.loading = false
+        }        
+      }, (err) => {
+        
+      })
+    
+  }
+
+  onGestion(e){
+
+  }
+  onCreate(){
+    this._route.navigate(['zona/gestion'])
   }
 
 }

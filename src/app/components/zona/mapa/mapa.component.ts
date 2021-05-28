@@ -4,6 +4,7 @@ import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import Graphic from "@arcgis/core/Graphic";
+import Sketch from "@arcgis/core/widgets/Sketch";
 
 esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92mqQMGlhYgfJmb97ZZpalTLhniXfHunb8ajs2yB_44";
 
@@ -15,19 +16,19 @@ esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92
 export class MapaComponent implements OnInit {
 
   constructor(
-    
+
   ) { }
 
   ngOnInit(): void {
 
     const map = new Map({
-      basemap: "arcgis-topographic" //Basemap layer service
+      basemap: "arcgis-topographic"
     });
 
     const graphicsLayer = new GraphicsLayer();
     map.add(graphicsLayer);
 
-    
+
     const polygon = {
       type: "polygon",
       rings: [
@@ -47,7 +48,7 @@ export class MapaComponent implements OnInit {
       }
     };
     const polygonGraphic = new Graphic({
-      geometry: polygon,
+      //geometry: polygon,
       symbol: simpleFillSymbol,
     });
 
@@ -59,6 +60,18 @@ export class MapaComponent implements OnInit {
       center: [-118.805, 34.027], // Longitude, latitude
       zoom: 13, // Zoom level
     });
+
+    view.when(() => {
+      const sketch = new Sketch({
+        layer: graphicsLayer,
+        view: view,
+        // graphic will be selected as soon as it is created
+        creationMode: "update"
+      });
+
+      view.ui.add(sketch, "top-right");
+    });
+
 
 
 

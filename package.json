@@ -1,7 +1,7 @@
 {
     "name": "com.asesor.agil",
     "displayName": "asesorAgil",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "description": "A sample Apache Cordova application that responds to the deviceready event.",
     "main": "index.js",
     "scripts": {
