@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Asesor } from 'src/app/model/asesor';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-gestion-zona',
@@ -38,9 +40,12 @@ export class GestionZonaComponent implements OnInit {
   formNiveles: FormGroup = this._formBuilder.group({
     niveles: this._formBuilder.array([])
   })
+ 
+  dataUsuario: Asesor = this._srvStorage.getUser();
 
   constructor(
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _srvStorage:TokenStorageService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +63,13 @@ export class GestionZonaComponent implements OnInit {
     })
 
     this.registroForm = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      firstCtrl: ['', Validators.required],
+      nombre: [this.dataUsuario.Nombre],
+      cargo: [this.dataUsuario.Rol.Nombre],
+      oficina: [this.dataUsuario.Sucursales.Nombre],
+      tipo:[],
+      asesoresactual:[null],
+      asesoresaprobados:[null]
     });
         /*
     this.secondFormGroup = this._formBuilder.group({

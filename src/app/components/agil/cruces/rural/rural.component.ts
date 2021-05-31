@@ -112,17 +112,27 @@ export class RuralComponent implements OnInit {
         let valorR = Utils.formatNumber(x.get('valorR').value)
         let valorM = Utils.formatNumber(x.get('valorM').value)
 
-        if (valorR > valorB) {
-          valorR = 0
-          this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
-            duration: 3000,
-          });
-        }
-        if (valorM > valorR) {
-          valorM = 0
-          this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
-            duration: 3000,
-          });
+        if (periodoventas == 3) {
+          if (valorM > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }          
+        }else{
+          if (valorR > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (valorM > valorR) {
+            valorM = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+              duration: 3000,
+            });
+          }
+
         }
 
         let cantB = x.get('diasB').value.length
@@ -610,7 +620,7 @@ export class RuralComponent implements OnInit {
     this.actividades().push(this.itemactividad());
     this.selected.setValue(this.actividades().length - 1);
   }
-  
+
   deleteAct(act: number) {
 
     Swal.fire({

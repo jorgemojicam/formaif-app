@@ -1,15 +1,58 @@
-
 <mat-horizontal-stepper linear #stepper>
     <mat-step [stepControl]="registroForm" [editable]="true">
         <form [formGroup]="registroForm">
             <ng-template matStepLabel>Registro Solicitud</ng-template>
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
-            </mat-form-field>
-            <div>
-                <button mat-button matStepperNext>Next</button>
-            </div>
+            <mat-card>
+                <mat-card-header>             
+                    <mat-card-subtitle>Todos los campo son obligatorio para radicar la solicitud</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div fxLayout="row wrap">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Nombre</mat-label>
+                                <input matInput formControlName="nombre" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Cargo</mat-label>
+                                <input matInput formControlName="cargo" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Oficina</mat-label>
+                                <input matInput formControlName="oficina" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Tipo Solicitud</mat-label>
+                                <mat-select placeholder="">
+                                    <mat-option></mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Asesores Actual</mat-label>
+                                <input matInput formControlName="asesoresactual" readonly>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Asesores Aprobados</mat-label>
+                                <input matInput formControlName="asesoresaprobados" readonly>
+                            </mat-form-field>
+                        </div>
+                        
+                    </div>
+                </mat-card-content>
+                <mat-card-actions align="start">
+                    <button mat-button matStepperNext>Next</button>
+                </mat-card-actions>
+            </mat-card>
         </form>
     </mat-step>
     <form [formGroup]="formNiveles">
