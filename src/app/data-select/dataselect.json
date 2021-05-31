@@ -321,11 +321,7 @@
     {
       "id": 2,
       "name": "Quince 2"
-    },
-    {
-      "id": 3,
-      "name": "Quince 3"
-    }
+    }   
   ],
   "TipoActividadUrban": [
     {
@@ -339,6 +335,11 @@
     {
       "id": 3,
       "name": "Servicios"
+    }
+    ,
+    {
+      "id": 4,
+      "name": "Arriendos"
     }
   ],
   "TipoActividadRural": [

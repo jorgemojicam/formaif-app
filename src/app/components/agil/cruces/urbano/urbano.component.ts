@@ -117,7 +117,7 @@ export class UrbanoComponent implements OnInit {
         }
         let cantDias = cantB + cantM + cantR
         totaldias = cantDias * cantperiodo
-               
+
         if (totaldias > 26) {
           totaldias = 26
         }
@@ -310,6 +310,14 @@ export class UrbanoComponent implements OnInit {
         }
         //Costo de venta cuando la actividad es servicios
         if (tipoactividad == 3) {
+          costo = Utils.formatNumber(x.get('costo').value)
+          if (costo > 100) {
+            costo = 0
+            this._snackBar.open("El porcentaje de costo de venta no puede superar el 100", "Ok!", {
+              duration: 9000,
+            });
+          }
+        } else if (tipoactividad == 4) {
           costo = Utils.formatNumber(x.get('costo').value)
           if (costo > 100) {
             costo = 0
@@ -765,7 +773,7 @@ export class UrbanoComponent implements OnInit {
   //--------------------------------------------------------------
 
   changePeriodo(acti) {
-   
+
     acti.patchValue({
       diasB: [],
       diasR: [],
@@ -784,7 +792,7 @@ export class UrbanoComponent implements OnInit {
     }, { emitEvent: false })
 
     this.save(this.actividadesForm.get('act').value)
-    
+
   }
 
 }

@@ -14,14 +14,24 @@
                     *ngFor="let itemrow of gastosForm.controls.remuneracionRow['controls']; let re=index"
                     [formGroupName]="re">
 
-                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                    <div class="gr" fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
                         <mat-form-field>
                             <input type="text" matInput placeholder="Cargo" id="cargo{{re}}" formControlName="cargo">
                         </mat-form-field>
                     </div>
+                    <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="Cantidad" formControlName="cantidad">
+                        </mat-form-field>
+                    </div>
                     <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{re}}" formControlName="valor">
+                            <input type="tel" matInput placeholder="Valor Unitario" formControlName="valoru">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{re}}" readonly formControlName="valor">
                         </mat-form-field>
                     </div>
                     <button class="btndelete" color="warn" mat-icon-button [disabled]="re==0"
@@ -31,7 +41,7 @@
 
                 </div>
             </div>
-            <button mat-fab aria-label="add" [disabled]="gastosForm.controls.remuneracionRow['controls'].length >=4"
+            <button mat-fab aria-label="add" [disabled]="gastosForm.controls.remuneracionRow['controls'].length >=10"
                 mat-mini-fab class="btnadd" type="button" color="accent" (click)="addRemuneraRow()">
                 <mat-icon>add</mat-icon>
             </button>

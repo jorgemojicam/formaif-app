@@ -302,7 +302,7 @@
                                                                 formControlName="planatasinformacli">
                                                         </mat-form-field>
                                                     </div>
-                                                </ng-container>                                          
+                                                </ng-container>
                                                 <!-- Ingresos transitorio -->
                                                 <ng-container *ngIf="acti.value.nombre.tipoproducto=='Transitorio'">
                                                     <div class="gr" fxFlex="100%" fxFlex.xs="100%">
@@ -1016,11 +1016,10 @@
                                                                         <ng-container *ngIf="acti.value.unidadventa">
                                                                             {{acti.value.unidadventa.name}}
                                                                         </ng-container>
-                                                                         Producidas
+                                                                        Producidas
                                                                     </mat-label>
-                                                                    <input type="tel" matInput
-                                                                        placeholder="Cantidad" readonly
-                                                                        formControlName="cantproducida">
+                                                                    <input type="tel" matInput placeholder="Cantidad"
+                                                                        readonly formControlName="cantproducida">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
@@ -1178,16 +1177,19 @@
                                         <div fxLayout="row wrap">
                                             <mat-card class="radioperiodo">
                                                 <mat-card-content>
-                                                    <mat-radio-group formControlName="periodoventas"
-                                                        (change)="changeperiodo(acti)">
-                                                        <mat-radio-button value="1">Dia</mat-radio-button>
-                                                        <mat-radio-button value="2">Semana</mat-radio-button>
-                                                        <mat-radio-button value="3">Quincena</mat-radio-button>
+                                                    <mat-radio-group fxLayout="row wrap" (change)="changePeriodo(acti)"
+                                                        formControlName="periodoventas">
+                                                        <mat-radio-button fxFlex="40%" fxFlex.xs="25%" value="1">Dia
+                                                        </mat-radio-button>
+                                                        <mat-radio-button fxFlex="35%" fxFlex.xs="35%" value="2">Semana
+                                                        </mat-radio-button>
+                                                        <mat-radio-button fxFlex="25%" fxFlex.xs="40%" value="3">
+                                                            Quincena
+                                                        </mat-radio-button>
                                                     </mat-radio-group>
                                                 </mat-card-content>
                                             </mat-card>
                                             <ng-container *ngIf="acti.value.periodoventas">
-
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                     <ng-container [ngSwitch]="acti.value.periodoventas">
                                                         <ng-container *ngSwitchCase="1">
@@ -1228,23 +1230,19 @@
 
                                                     </ng-container>
                                                 </div>
-
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                     <mat-form-field>
                                                         <input type="tel" matInput placeholder="Valor Buenas"
                                                             id="valorB{{ac}}" formControlName="valorB">
                                                     </mat-form-field>
                                                 </div>
-
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                     <mat-form-field>
                                                         <input type="text" readonly matInput placeholder="Total"
                                                             id="totalB{{ac}}" formControlName="totalB">
                                                     </mat-form-field>
                                                 </div>
-                                                <ng-content *ngIf="acti.value.periodoventas !=3; then regulares">
-                                                </ng-content>
-                                                <ng-template #regulares>
+                                                <ng-container *ngIf="acti.value.periodoventas !=3">
                                                     <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                         <ng-container [ngSwitch]="acti.value.periodoventas">
                                                             <ng-container *ngSwitchCase="1">
@@ -1298,8 +1296,7 @@
                                                                 id="totalR{{ac}}" formControlName="totalR">
                                                         </mat-form-field>
                                                     </div>
-                                                </ng-template>
-
+                                                </ng-container>
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                                     <ng-container [ngSwitch]="acti.value.periodoventas">
                                                         <ng-container *ngSwitchCase="1">
@@ -1337,6 +1334,7 @@
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </ng-container>
+
                                                     </ng-container>
                                                 </div>
                                                 <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
@@ -1354,10 +1352,10 @@
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                     <mat-form-field>
                                                         <input type="text" readonly matInput placeholder="Total"
-                                                            id="totalVentas{{ac}}" formControlName="totalVentas">
+                                                            formControlName="totalVentas">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                                <div class="gr" fxFlex="33%" fxFlex.xs="43%" fxFlex.sm="40%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Promedio</mat-label>
                                                         <input matInput type="text" readonly id="promedio{{ac}}"
@@ -1365,14 +1363,14 @@
                                                         <mat-icon matSuffix>attach_money</mat-icon>
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="30%" fxFlex.xs="20%" fxFlex.sm="20%">
+                                                <div class="gr" fxFlex="33%" fxFlex.xs="27%" fxFlex.sm="20%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Dias</mat-label>
                                                         <input matInput type="number" matInput placeholder="Dias"
                                                             id="totalDias{{ac}}" formControlName="totalDias">
                                                     </mat-form-field>
                                                 </div>
-                                                <div class="gr" fxFlex="30%" fxFlex.xs="40%" fxFlex.sm="40%">
+                                                <div class="gr" fxFlex="33%" fxFlex.xs="30%" fxFlex.sm="40%">
                                                     <mat-form-field appearance="outline">
                                                         <mat-label>Total Promedio</mat-label>
                                                         <input type="text" readonly matInput
@@ -1382,53 +1380,6 @@
                                                     </mat-form-field>
                                                 </div>
                                             </ng-container>
-                                            <mat-card>
-                                                <mat-card-header>
-                                                    <mat-card-title>Resumen Ingreso</mat-card-title>
-                                                </mat-card-header>
-                                                <mat-card-content>
-                                                    <div fxLayout="row wrap">
-
-                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
-                                                            <mat-form-field>
-                                                                <input type="tel" autocomplete="off" matInput
-                                                                    placeholder="Total Compras" required
-                                                                    formControlName="totalCompras">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
-                                                            <mat-form-field>
-                                                                <input type="tel" autocomplete="off" matInput readonly
-                                                                    placeholder="Ventas Estimadas" required
-                                                                    formControlName="ventasEstimadas">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
-                                                            <mat-form-field>
-                                                                <input type="tel" autocomplete="off" matInput
-                                                                    placeholder="Margen Bruto" required
-                                                                    formControlName="margenBruto">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
-                                                            <mat-form-field>
-                                                                <input type="tel" autocomplete="off" matInput
-                                                                    placeholder="Otros Gastos" required
-                                                                    formControlName="otrosGastos">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                                                            <mat-form-field appearance="outline">
-                                                                <mat-label>Ingreso Liquido</mat-label>
-                                                                <input matInput type="text" readonly
-                                                                    id="ingresoLiquido{{ac}}"
-                                                                    formControlName="ingresoLiquido">
-                                                                <mat-icon matSuffix>attach_money</mat-icon>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                </mat-card-content>
-                                            </mat-card>
                                         </div>
                                     </mat-card-content>
                                 </mat-card>

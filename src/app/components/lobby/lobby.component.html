@@ -7,13 +7,13 @@
     </div>
 
     <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card fxLayout="column center wrap" (click)="onRouter('agil')">
+        <mat-card style="width: 100%;" fxLayout="column center wrap" (click)="onRouter('agil')">
             <h2>ASESOR</h2>
             <img src="assets/pictures/dollar.svg">
         </mat-card>
     </div>
     <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card fxLayout="column center wrap" (click)="onRouter('meba')">
+        <mat-card style="width: 100%;" fxLayout="column center wrap" (click)="onRouter('meba')">
             <h2>MEBA</h2>
             <img src="assets/pictures/planet-earth.svg">
         </mat-card>
@@ -24,8 +24,8 @@
             <img src="assets/pictures/map.svg">
         </mat-card>
     </div>
-    <div *ngIf="this.rol ==1" class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%">
-        <mat-card fxLayout="column center wrap" (click)="onRouter('admin')">
+    <div class="gr" fxFlex="20%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="this.rol ==1">
+        <mat-card style="width: 100%;" fxLayout="column center wrap" (click)="onRouter('admin')">
             <h2>ADMIN</h2>
             <img src="assets/pictures/web-management.svg">
         </mat-card>

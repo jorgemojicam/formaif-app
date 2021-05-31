@@ -23,7 +23,7 @@ export class SolicitudFormComponent implements AfterViewInit {
   loading: boolean = true
 
   constructor(
-    private _srvSolicitudZ: SolicitudzonaService,
+    private _srvSolicitudZ: SolicitudzonaService,    
     private _route: Router,
   ) { }
 

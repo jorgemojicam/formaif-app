@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Estacionales } from 'src/app/model/estacionales';
 import { Gastos } from 'src/app/model/gastos';
@@ -23,7 +24,8 @@ export class GastosComponent implements OnInit {
     private fb: FormBuilder,
     public _srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
-    private _srvEncr: EncryptService
+    private _srvEncr: EncryptService,
+    private _snackBar: MatSnackBar,
   ) { }
 
   public gastosForm: FormGroup = this.fb.group({
@@ -86,16 +88,14 @@ export class GastosComponent implements OnInit {
 
     this.dataSolicitud = await this.getSol() as Solicitud
     this.tipoSol = this.dataSolicitud.asesor
-    let totalCoutaF = 0
-    let totalCoutaN = 0
+    let cuotahipoteca = 0
+
     if (this.dataSolicitud.Balance) {
       this.dataSolicitud.Balance.pasivosRows.forEach(element => {
-        totalCoutaF += Utils.formatNumber(element.cuotafam)
-        totalCoutaN += Utils.formatNumber(element.coutaneg)
+        cuotahipoteca += Utils.formatNumber(element.cuotahipoteca)
       });
       this.gastosForm.patchValue({
-        totalN: isFinite(totalCoutaF) ? totalCoutaF.toLocaleString() : 0,
-        totalF: isFinite(totalCoutaF) ? totalCoutaF.toLocaleString() : 0
+        totalF: isFinite(cuotahipoteca) ? cuotahipoteca.toLocaleString() : 0
       })
     }
 
@@ -114,7 +114,6 @@ export class GastosComponent implements OnInit {
       let imprevistosN = this.formatNumber(values.imprevistosN)
       let otrosN = this.formatNumber(values.otrosN)
       let totalgatosN = alquilerN + serviciosN + transporteN + fletesN + impuestosN + mantenimientoN + imprevistosN + otrosN
-      totalgatosN += totalCoutaN
 
       let totalEstacionalesN = 0
       const estacionalesN = <FormArray>this.gastosForm.controls['estacionalesN'];
@@ -136,7 +135,7 @@ export class GastosComponent implements OnInit {
       let entretenimientoF = this.formatNumber(values.entretenimientoF)
       let otrosF = this.formatNumber(values.otrosF)
       let totalgatosF = arriendoF + alimentacionF + educacionF + vestuarioF + saludF + transporteF + serviciosF + entretenimientoF + otrosF
-      totalgatosF += totalCoutaF
+      totalgatosF += cuotahipoteca
 
       let totalEstacionalesF = 0
       const estacionalesF = <FormArray>this.gastosForm.controls['estacionalesF'];
@@ -149,12 +148,26 @@ export class GastosComponent implements OnInit {
       })
 
       let totalre = 0
+      let totalcant = 0
       const ctrl = <FormArray>this.gastosForm.controls['remuneracionRow'];
       ctrl.controls.forEach((x) => {
-        let valor = this.formatNumber(x.get('valor').value)
+        let valor = 0
+        let cantidad = this.formatNumber(x.get('cantidad').value)
+        totalcant += cantidad
+        if (totalcant > 10) {
+          cantidad = 0
+          this._snackBar.open("No puede superar los 10 empleados", "Ok!", {
+            duration: 9000,
+          });
+        }
+        let valoru = this.formatNumber(x.get('valoru').value)
+        valor = cantidad * valoru
         totalre += valor
+
         x.patchValue({
+          valoru: isFinite(valoru) ? valoru.toLocaleString() : 0,
           valor: isFinite(valor) ? valor.toLocaleString() : 0,
+          cantidad: cantidad
         }, { emitEvent: false })
       })
 
@@ -239,6 +252,8 @@ export class GastosComponent implements OnInit {
     remu.forEach(re => {
       remuneraArray.push(this.fb.group({
         cargo: [re.cargo, Validators.required],
+        cantidad: [re.cantidad, Validators.required],
+        valoru: [re.valoru, Validators.required],
         valor: [re.valor, Validators.required]
       }))
     });
@@ -247,6 +262,8 @@ export class GastosComponent implements OnInit {
   initRemuneraRows() {
     return this.fb.group({
       cargo: [null, Validators.required],
+      cantidad: [null, Validators.required],
+      valoru: [null, Validators.required],
       valor: [null, Validators.required]
     });
   }

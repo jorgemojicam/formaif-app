@@ -183,6 +183,8 @@ export class HomeComponent implements AfterViewInit {
         return
       }
 
+      let aseso = await this.getDirector() as Asesor    
+      /*
       let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
       let solCarpeta = JSON.parse(strcarpetaDig)
 
@@ -191,9 +193,7 @@ export class HomeComponent implements AfterViewInit {
         this.procesando = false
         return
       }
-
-      let aseso = await this.getDirector() as Asesor
-      console.log(aseso)
+     */
       if (aseso) {
 
         Swal.fire({

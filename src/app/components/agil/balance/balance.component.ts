@@ -418,10 +418,7 @@ export class BalanceComponent implements OnInit {
               this._snackBar.open("Saldo actual no puede superar el monto", "Ok!", {
                 duration: 4000,
               });
-            }
-
-            let coutaneg = (cuotahipoteca * porcentajeneg) / 100
-            let cuotafam = cuotahipoteca - coutaneg
+            }     
 
             let montoneg = (saldo * porcentajeneg) / 100
             let montofam = saldo - montoneg
@@ -453,9 +450,7 @@ export class BalanceComponent implements OnInit {
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
               nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
               corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
-              nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,
-              coutaneg: isFinite(coutaneg) ? coutaneg.toLocaleString() : 0,
-              cuotafam: isFinite(cuotafam) ? cuotafam.toLocaleString() : 0,
+              nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,      
 
             }, { emitEvent: false })
 

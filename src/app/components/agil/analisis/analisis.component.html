@@ -463,265 +463,269 @@
             </tr>
         </table>
 
-        <h3>Cruce #1 Ventas B R M</h3>
-        <table>
-            <thead>
+        <ng-container *ngIf="act.tipo ==4">
+
+            <h3>Cruce #1 Ventas B R M</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2" style="text-align:center">Ventas</th>
+                        <th colspan="2" style="text-align:center">Valor</th>
+                        <th colspan="2" style="text-align:center">Total</th>
+                    </tr>
+                </thead>
                 <tr>
-                    <th colspan="2" style="text-align:center">Ventas</th>
-                    <th colspan="2" style="text-align:center">Valor</th>
-                    <th colspan="2" style="text-align:center">Total</th>
+                    <td colspan="2">{{diaNombre(act.diasB,act.periodoventas)}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorB}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalB}}</td>
                 </tr>
-            </thead>
-            <tr>
-                <td colspan="2">{{diaNombre(act.diasB,act.periodoventas)}}</td>
-                <td colspan="2" style="text-align:right">${{act.valorB}}</td>
-                <td colspan="2" style="text-align:right">${{act.totalB}}</td>
-            </tr>
-            <tr>
-                <td colspan="2">{{diaNombre(act.diasR,act.periodoventas)}}</td>
-                <td colspan="2" style="text-align:right">${{act.valorR}}</td>
-                <td colspan="2" style="text-align:right">${{act.totalR}}</td>
-            </tr>
-            <tr>
-                <td colspan="2">{{diaNombre(act.diasM,act.periodoventas)}}</td>
-                <td colspan="2" style="text-align:right">${{act.valorM}}</td>
-                <td colspan="2" style="text-align:right">${{act.totalM}}</td>
-            </tr>
-            <tr>
-                <th colspan="2">Total</th>
-                <td style="text-align:right" colspan="4">${{act.totalVentas}}</td>
-            </tr>
-            <tr>
-                <th>Promedio</th>
-                <td style="text-align:right">{{act.promedio}}</td>
-                <th style="text-align:center">Dias</th>
-                <td style="text-align:center">{{act.totalDias}}</td>
-                <th style="text-align:center">Total Promedio</th>
-                <td style="text-align:right">${{act.totalPromedio}}</td>
-            </tr>
-        </table>
-
-        <h3>Cruce #2</h3>
-        <ng-container *ngIf="act.ventasHis">
-            <table>
-                <thead>
-                    <tr>
-                        <ng-container *ngIf="act.periodohistoricas">
-                            <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
-                        </ng-container>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Semana</th>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let his of act.ventasHis; let cont=index">
-                    <tr>
-                        <td>{{cont + 1}}</td>
-                        <td style="text-align:right"> ${{his.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td style="text-align:right">${{act.totalVentasHis}}</td>
-                    </tr>
-                </tfoot>
-
+                <tr>
+                    <td colspan="2">{{diaNombre(act.diasR,act.periodoventas)}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorR}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalR}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">{{diaNombre(act.diasM,act.periodoventas)}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorM}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalM}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Total</th>
+                    <td style="text-align:right" colspan="4">${{act.totalVentas}}</td>
+                </tr>
+                <tr>
+                    <th>Promedio</th>
+                    <td style="text-align:right">{{act.promedio}}</td>
+                    <th style="text-align:center">Dias</th>
+                    <td style="text-align:center">{{act.totalDias}}</td>
+                    <th style="text-align:center">Total Promedio</th>
+                    <td style="text-align:right">${{act.totalPromedio}}</td>
+                </tr>
             </table>
 
-        </ng-container>
+            <h3>Cruce #2</h3>
+            <ng-container *ngIf="act.ventasHis">
+                <table>
+                    <thead>
+                        <tr>
+                            <ng-container *ngIf="act.periodohistoricas">
+                                <th colspan=2>Ventas Historicas {{act.periodohistoricas.name}}</th>
+                            </ng-container>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Semana</th>
+                            <th style="text-align:center">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let his of act.ventasHis; let cont=index">
+                        <tr>
+                            <td>{{cont + 1}}</td>
+                            <td style="text-align:right"> ${{his.valor}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>Total</td>
+                            <td style="text-align:right">${{act.totalVentasHis}}</td>
+                        </tr>
+                    </tfoot>
 
-        <ng-container *ngIf="act.tipo ==2">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="4">Producción</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Nombre</th>
-                        <th style="text-align:center">Cantidad</th>
-                        <th style="text-align:center">Frecuencia</th>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let prod of act.produccion">
-                    <tr>
-                        <td>{{prod.nombre}}</td>
-                        <td>{{prod.cantidad}}</td>
-                        <td>
-                            <ng-container *ngIf="prod.frecuencia"> {{prod.frecuencia.name}}</ng-container>
-                        </td>
-                        <td>${{prod.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">Total</td>
-                        <td>${{act.totalProduccion}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </ng-container>
+                </table>
 
-        <h3>Cruce #3</h3>
-        <ng-container *ngIf="act.tipo ==1">
-            <!-- costo de venta -->
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="5">
-                            Costo de venta
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio Compra</th>
-                        <th>Precio Venta</th>
-                        <th>%Participación</th>
-                        <th>Margen</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let cos of act.costoventa; let cont=index">
-                    <tr>
-                        <td style="text-align:center"> {{cos.nombre}}</td>
-                        <td style="text-align:right">${{cos.precioCompra}}</td>
-                        <td style="text-align:right">${{cos.precioVenta}}</td>
-                        <td style="text-align:center">{{cos.participacion}} %</td>
-                        <td style="text-align:center">{{cos.porcentaje}} %</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">Margen Total</td>
-                        <td style="text-align:center">{{act.margen}}%</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </ng-container>
-        <!-- materia prima -->
-        <ng-container *ngIf="act.tipo ==2">
+            </ng-container>
+
+            <ng-container *ngIf="act.tipo ==2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4">Producción</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center">Nombre</th>
+                            <th style="text-align:center">Cantidad</th>
+                            <th style="text-align:center">Frecuencia</th>
+                            <th style="text-align:center">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let prod of act.produccion">
+                        <tr>
+                            <td>{{prod.nombre}}</td>
+                            <td>{{prod.cantidad}}</td>
+                            <td>
+                                <ng-container *ngIf="prod.frecuencia"> {{prod.frecuencia.name}}</ng-container>
+                            </td>
+                            <td>${{prod.valor}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total</td>
+                            <td>${{act.totalProduccion}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </ng-container>
+
+            <h3>Cruce #3</h3>
+            <ng-container *ngIf="act.tipo ==1">
+                <!-- costo de venta -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="5">
+                                Costo de venta
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio Compra</th>
+                            <th>Precio Venta</th>
+                            <th>%Participación</th>
+                            <th>Margen</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let cos of act.costoventa; let cont=index">
+                        <tr>
+                            <td style="text-align:center"> {{cos.nombre}}</td>
+                            <td style="text-align:right">${{cos.precioCompra}}</td>
+                            <td style="text-align:right">${{cos.precioVenta}}</td>
+                            <td style="text-align:center">{{cos.participacion}} %</td>
+                            <td style="text-align:center">{{cos.porcentaje}} %</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">Margen Total</td>
+                            <td style="text-align:center">{{act.margen}}%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </ng-container>
             <!-- materia prima -->
-            <table>
-                <thead>
-                    <tr>
-                        <th [attr.colspan]="act.materiaprima.length + 1">Costo de Venta</th>
-                    </tr>
-                    <tr>
-                        <th>Nombre Producto</th>
-                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
-                            {{item.producto}}
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Materia Prima 1</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: left;">{{item.materiaprimapri}}</div>
-                            <div style="float: right;">${{item.valorMatPri}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Materia Prima 2</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: left;">{{item.matPrima2}}</div>
-                            <div style="float: right;">${{item.valorMatPri2}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Materia Prima 3</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: left;">{{item.matPrima3}}</div>
-                            <div style="float: right;">${{item.valorMatPri3}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Materia Prima 4</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: left;">{{item.matPrima4}}</div>
-                            <div style="float: right;">${{item.valorMatPri4}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Materia Prima 5</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: left;">{{item.matPrima5}}</div>
-                            <div style="float: right;">${{item.valorMatPri5}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mano de Obra</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: right;">${{item.valorMao}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CIF</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: right;">${{item.valorCif}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Precio de venta</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: right;">${{item.precioVenta}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cantidad</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: right;">{{item.cantidad}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Precio de Compra</td>
-                        <td *ngFor="let item of act.materiaprima">
-                            <div style="float: right;">${{item.precioCompra}}</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Participacion</td>
-                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
-                            {{item.participacion}} %
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Margen de Utilidad</td>
-                        <td style="text-align: center;" *ngFor="let item of act.materiaprima">
-                            {{item.porcentaje}} %
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <ng-container *ngIf="act.tipo ==2">
 
-            <!-- materia prima -->
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="6">Materia Prima</th>
-                    </tr>
-                    <tr>
-                        <th>Unidad</th>
-                        <th>Cantidad</th>
-                        <th>Frecuencia</th>
-                        <th>Materia Prima</th>
-                        <th>Valor Unitario</th>
-                        <th>Valor Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{act.rendUnidad}}</td>
-                        <td>{{act.rendCantidad}}</td>
-                        <td *ngIf="act.rendFrecuencia">{{act.rendFrecuencia.name}}</td>
-                        <td>{{act.rendMateriaprima}}</td>
-                        <td style="text-align: right;">${{act.rendValorU}}</td>
-                        <td style="text-align: right;">${{act.rendValorT}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            
+                <!-- materia prima -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th [attr.colspan]="act.materiaprima.length + 1">Costo de Venta</th>
+                        </tr>
+                        <tr>
+                            <th>Nombre Producto</th>
+                            <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                                {{item.producto}}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Materia Prima 1</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: left;">{{item.materiaprimapri}}</div>
+                                <div style="float: right;">${{item.valorMatPri}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Materia Prima 2</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: left;">{{item.matPrima2}}</div>
+                                <div style="float: right;">${{item.valorMatPri2}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Materia Prima 3</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: left;">{{item.matPrima3}}</div>
+                                <div style="float: right;">${{item.valorMatPri3}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Materia Prima 4</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: left;">{{item.matPrima4}}</div>
+                                <div style="float: right;">${{item.valorMatPri4}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Materia Prima 5</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: left;">{{item.matPrima5}}</div>
+                                <div style="float: right;">${{item.valorMatPri5}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mano de Obra</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: right;">${{item.valorMao}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CIF</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: right;">${{item.valorCif}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Precio de venta</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: right;">${{item.precioVenta}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: right;">{{item.cantidad}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Precio de Compra</td>
+                            <td *ngFor="let item of act.materiaprima">
+                                <div style="float: right;">${{item.precioCompra}}</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Participacion</td>
+                            <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                                {{item.participacion}} %
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Margen de Utilidad</td>
+                            <td style="text-align: center;" *ngFor="let item of act.materiaprima">
+                                {{item.porcentaje}} %
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- materia prima -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="6">Materia Prima</th>
+                        </tr>
+                        <tr>
+                            <th>Unidad</th>
+                            <th>Cantidad</th>
+                            <th>Frecuencia</th>
+                            <th>Materia Prima</th>
+                            <th>Valor Unitario</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{act.rendUnidad}}</td>
+                            <td>{{act.rendCantidad}}</td>
+                            <td *ngIf="act.rendFrecuencia">{{act.rendFrecuencia.name}}</td>
+                            <td>{{act.rendMateriaprima}}</td>
+                            <td style="text-align: right;">${{act.rendValorU}}</td>
+                            <td style="text-align: right;">${{act.rendValorT}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </ng-container>
         </ng-container>
 
         <!-- ventas maximas -->
@@ -729,6 +733,12 @@
             <thead>
                 <tr>
                     <th colspan="5">
+                        <ng-container *ngIf="act.tipo ==4">
+                            Arriendos
+                        </ng-container>
+                        <ng-container *ngIf="act.tipo ==3">
+                            Servicios
+                        </ng-container>
                         <ng-container *ngIf="act.tipo ==2">
                             Compras
                         </ng-container>

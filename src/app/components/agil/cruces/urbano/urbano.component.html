@@ -53,7 +53,7 @@
 
                             <mat-accordion class="example-headers-align" multi>
                                 <!-- cruce 1 -->
-                                <mat-expansion-panel>
+                                <mat-expansion-panel *ngIf="acti.value.tipo !=4">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             Cruce #1
@@ -67,7 +67,8 @@
                                     <div fxLayout="row wrap">
                                         <mat-card class="radioperiodo">
                                             <mat-card-content>
-                                                <mat-radio-group fxLayout="row wrap" (change)="changePeriodo(acti)" formControlName="periodoventas">
+                                                <mat-radio-group fxLayout="row wrap" (change)="changePeriodo(acti)"
+                                                    formControlName="periodoventas">
                                                     <mat-radio-button fxFlex="40%" fxFlex.xs="25%" value="1">Dia
                                                     </mat-radio-button>
                                                     <mat-radio-button fxFlex="35%" fxFlex.xs="35%" value="2">Semana
@@ -265,7 +266,7 @@
                                     </div>
                                 </mat-expansion-panel>
                                 <!-- cruce 2 -->
-                                <mat-expansion-panel>
+                                <mat-expansion-panel *ngIf="acti.value.tipo !=4">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             Cruce #2
@@ -309,8 +310,7 @@
                                                                 <mat-form-field>
                                                                     <input type="text" matInput
                                                                         placeholder="{{acti.value.periodohistoricas.name}}"
-                                                                        id="dia{{ven}}"
-                                                                        formControlName="dia" readonly>
+                                                                        id="dia{{ven}}" formControlName="dia" readonly>
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="gr" fxFlex="60%" fxFlex.xs="70%"
@@ -801,13 +801,16 @@
                                         <mat-card-header>
                                             <ng-container *ngIf="acti.value.tipo ==1">
                                                 <mat-card-title>Ventas Máximas</mat-card-title>
-                                                <mat-card-subtitle>Compras</mat-card-subtitle>
+                                                <!-- <mat-card-subtitle>Compras</mat-card-subtitle> -->
                                             </ng-container>
                                             <ng-container *ngIf="acti.value.tipo ==2">
                                                 <mat-card-title>Compras</mat-card-title>
                                             </ng-container>
                                             <ng-container *ngIf="acti.value.tipo ==3">
                                                 <mat-card-title>Servicios</mat-card-title>
+                                            </ng-container>
+                                            <ng-container *ngIf="acti.value.tipo ==4">
+                                                <mat-card-title>Arriendos</mat-card-title>
                                             </ng-container>
                                             <mat-chip-list class="pull-right">
                                                 <mat-chip color="accent" selected>
@@ -841,12 +844,15 @@
                                                                 <mat-select formControlName="frecuencia"
                                                                     id="frecuencia{{ac}}-{{com}}" required>
                                                                     <mat-option>--</mat-option>
-                                                                    <mat-option *ngIf="acti.value.tipo ==3" 
-                                                                    [value]="tipoAnual">{{tipoAnual.name}}</mat-option>
-                                                                    <mat-option *ngFor="let frec of frecuencia"
-                                                                        [value]="frec">
-                                                                        {{frec.name}}
+                                                                    <mat-option *ngIf="acti.value.tipo ==4"
+                                                                        [value]="tipoAnual">{{tipoAnual.name}}
                                                                     </mat-option>
+                                                                    <ng-container *ngIf="acti.value.tipo ==3">
+                                                                        <mat-option *ngFor="let frec of frecuencia"
+                                                                            [value]="frec">
+                                                                            {{frec.name}}
+                                                                        </mat-option>
+                                                                    </ng-container>
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </div>
@@ -882,7 +888,7 @@
                                         </button>
                                     </mat-card>
                                     <!-- costo de venta -->
-                                    <ng-container *ngIf="acti.value.tipo==3">
+                                    <ng-container *ngIf="acti.value.tipo ==4 || acti.value.tipo==3">
                                         <mat-card class="mat-card-cruce">
                                             <mat-card-header>
                                                 <mat-card-title>Costo de venta</mat-card-title>
