@@ -414,21 +414,33 @@ export class RuralComponent implements OnInit {
 
   }
 
-  changeperiodo(e: FormGroup) {
-    e.patchValue({
-      diasB: '',
-      diasR: '',
-      diasM: '',
-      valorB: '',
-      valorR: '',
-      valorM: '',
-      totalB: '',
-      totalR: '',
-      totalM: '',
-      totalDias: '',
-      promedio: '',
-      totalPromedio: '',
+  save(actividad) {
+    this.dataCruces = actividad
+    this.datasolicitud.Cruces = this.dataCruces
+    this._srvSol.saveSol(this.ced, this.datasolicitud)
+  }
+
+  changePeriodo(acti) {
+
+    acti.patchValue({
+      diasB: [],
+      diasR: [],
+      diasM: [],
+      valorB: 0,
+      valorR: 0,
+      valorM: 0,
+      totalB: 0,
+      totalR: 0,
+      totalM: 0,
+      totalDias: 0,
+      promedio: 0,
+      totalVentas: 0,
+      totalPromedio: 0,
+      totalCruce1: 0,
     }, { emitEvent: false })
+
+    this.save(this.actividadesForm.get('act').value)
+
   }
 
   displayFn(user: any): string {

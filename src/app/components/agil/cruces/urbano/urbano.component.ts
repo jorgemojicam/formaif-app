@@ -130,17 +130,26 @@ export class UrbanoComponent implements OnInit {
         let totalpromedio = promedio * totaldias
         let totalbrm = totalB + totalR + totalM
 
-        if (valorR > valorB) {
-          valorR = 0
-          this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
-            duration: 9000,
-          });
-        }
-        if (valorM > valorR) {
-          valorM = 0
-          this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
-            duration: 9000,
-          });
+        if (periodoventas == 3) {
+          if (valorM > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }
+        } else {
+          if (valorR > valorB) {
+            valorR = 0
+            this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
+              duration: 3000,
+            });
+          }
+          if (valorM > valorR) {
+            valorM = 0
+            this._snackBar.open("Ventas malas no puede ser mayor a Ventas regulares", "Ok!", {
+              duration: 3000,
+            });
+          }
         }
         let totalCruce1 = 0
         if (totalpromedio > totalbrm) {
