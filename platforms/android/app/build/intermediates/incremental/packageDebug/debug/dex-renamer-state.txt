@@ -1,4 +1,0 @@
-#Sat May 22 15:44:34 COT 2021
-base.0=D\:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-renamed.0=classes.dex
-file.0=D\:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0\\classes.dex

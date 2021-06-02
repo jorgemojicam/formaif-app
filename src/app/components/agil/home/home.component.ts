@@ -384,6 +384,7 @@ export class HomeComponent implements AfterViewInit {
   //Consulta los datos del diretor de la oficina a la cual esta asociado el colaborador
   getDirector() {
     let asesores: Asesor = this.tokenStorage.getUser()
+  
     if (asesores.Director) {
       return asesores as Asesor
     } else {

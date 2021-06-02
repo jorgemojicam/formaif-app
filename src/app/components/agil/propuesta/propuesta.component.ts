@@ -64,7 +64,7 @@ export class PropuestaComponent implements OnInit {
   }
 
   async ngOnInit() {
-    
+
     this.route.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
@@ -188,6 +188,11 @@ export class PropuestaComponent implements OnInit {
 
 
   loadPropuesta(propuestas: Propuesta) {
+    
+    let per = []
+    if (propuestas.formapgo) {
+      per = this.periodo.find(a => a.id == propuestas.formapgo.id)
+    }
     return this.propuestaForm = this.fb.group({
       montorecomendado: propuestas.montorecomendado,
       plazo: propuestas.plazo,
@@ -197,7 +202,7 @@ export class PropuestaComponent implements OnInit {
       detallecapital: propuestas.detalle,
       valorcapital: propuestas.valorcapital,
       tipocuota: propuestas.tipocuota,
-      formapgo: propuestas.formapgo,
+      formapgo: per,
       valorcouta: propuestas.valorcouta,
       numerocuotas: propuestas.numerocuotas,
       irregular: this.loadCuotas(propuestas.irregular)
