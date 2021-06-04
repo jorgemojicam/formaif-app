@@ -51,7 +51,6 @@ export class BalanceComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
-    private _srvEncr: EncryptService
   ) { }
 
   balanceForm: FormGroup = this.fb.group({
@@ -97,7 +96,7 @@ export class BalanceComponent implements OnInit {
     return new Promise(resolve => {
       this._srvSol.getSol(this.ced).subscribe(
         (datasol) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          resolve(JSON.parse(datasol))
         }, (err) => {
           resolve([])
         })

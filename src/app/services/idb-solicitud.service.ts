@@ -11,12 +11,11 @@ export class IdbSolicitudService {
 
   constructor(
     private storage: StorageMap,
-    private tokenStorage: TokenStorageService,
-    private _srvCrypto: EncryptService
+    private tokenStorage: TokenStorageService
   ) { }
 
   saveSol(name: string, data: any) { 
-    this.storage.set(name, this._srvCrypto.encrypt(JSON.stringify(data))).subscribe(() => { });
+    this.storage.set(name, JSON.stringify(data)).subscribe(() => { });
   }
 
   getSol(name: string): any {

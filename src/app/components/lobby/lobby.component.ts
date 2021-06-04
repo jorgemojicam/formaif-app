@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import { ProfileComponent } from '../admin/profile/profile.component';
 
 @Component({
   selector: 'app-lobby',
@@ -15,7 +17,8 @@ export class LobbyComponent implements OnInit {
 
   constructor(
     private route: Router,
-    private _srvTokn: TokenStorageService
+    private _srvTokn: TokenStorageService,    
+    private _bottomSheet: MatBottomSheet,
   ) {
     console.log(this.perfil)
   }
@@ -36,6 +39,10 @@ export class LobbyComponent implements OnInit {
 
   onRouter(module: string) {
     this.route.navigate([module])
+  }
+
+  openProfile(): void {
+    this._bottomSheet.open(ProfileComponent);
   }
 
 }

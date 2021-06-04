@@ -29,7 +29,6 @@ export class InitComponent implements OnInit {
   constructor(
     public srvSol: IdbSolicitudService,
     private _snackBar: MatSnackBar,
-    private _srvEncr: EncryptService,
     public dialog: MatDialog,
     private tokenStorage: TokenStorageService,
   ) { }
@@ -99,7 +98,7 @@ export class InitComponent implements OnInit {
 
       this.srvSol.getSol(cedula).subscribe((sol) => {
         if (sol) {          
-          let solicitud = JSON.parse(this._srvEncr.decrypt(sol)) as Solicitud
+          let solicitud = JSON.parse(sol) as Solicitud
           solicitud.solicitud = numSolicitud          
           this.srvSol.saveSol(cedula, solicitud)
 

@@ -73,12 +73,12 @@ export class VerificacionComponent implements OnInit {
         let acumulado = 0
 
         preguntas.controls.forEach(pre => {
-          
+
           let resultado = pre.get("Resultado").value
           let multiple = pre.get("Multiple").value
           let total = pre.get("Total").value
           let peso = pre.get("Peso").value / 100
-      
+
           if (resultado) {
             if (multiple) {
               let check1 = 0
@@ -86,7 +86,7 @@ export class VerificacionComponent implements OnInit {
 
               for (let re = 0; re < resultado.length; re++) {
                 const resul = resultado[re];
-                
+
                 let puntaje = Utils.formatNumber(resul.Punaje)
                 if (puntaje == 1) {
                   check1 += 1
@@ -108,18 +108,18 @@ export class VerificacionComponent implements OnInit {
             } else {
               acumulado += peso * Utils.formatNumber(resultado.Punaje)
             }
-            
+
           }
 
         });
-   
+
         x.patchValue({
           totalAcumulado: acumulado.toFixed(2)
         }, { emitEvent: false })
       })
       console.log(this.verificacionForm)
       this.dVerificacion = this.verificacionForm.value.verificacion
-      this.dSolicitud.verificacion = this.dVerificacion   
+      this.dSolicitud.verificacion = this.dVerificacion
       this.srvSol.saveSol(this.ced, this.dSolicitud)
 
     })
@@ -134,7 +134,7 @@ export class VerificacionComponent implements OnInit {
   async loadPreguntas(aPreguntas: any[], total) {
 
     let arrayForm = this._formbuild.array([])
- 
+
     aPreguntas.forEach(element => {
 
       arrayForm.push(
@@ -165,13 +165,25 @@ export class VerificacionComponent implements OnInit {
     let aRespuestas: FormArray = this._formbuild.array([])
 
     respuestas.forEach(pre => {
+      let res = []
+      if (pre.Resultado) {
+        if (pre.Multiple) {
+
+          pre.Resultado.forEach(resultado => {
+            let arRes = pre.Respuestas.find(a=> a.Id == resultado.Id)
+            res.push(arRes)
+          });
+        }else{
+          res = pre.Respuestas.find(a=> a.Id == pre.Resultado.Id)    
+        }
+      }
       aRespuestas.push(this._formbuild.group({
         Titulo: [pre.Titulo],
         Respuestas: [pre.Respuestas],
         Peso: [pre.Peso],
         Total: [pre.Total],
         Multiple: [pre.Multiple],
-        Resultado: [pre.Resultado]
+        Resultado: [res]
       }))
     });
     return aRespuestas
@@ -203,7 +215,7 @@ export class VerificacionComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(this.ced).subscribe(
         (d) => {
-          resolve(d)
+          resolve(JSON.parse(d))
         })
     })
   }

@@ -2,4 +2,26 @@ node_modules/*
 dist/*
 src/enviroments/*
 www/*
-platforms/*
+
+# Non-project-specific build files:
+platforms/platforms/build.xml
+platforms/local.properties
+platforms/gradlew
+platforms/gradlew.bat
+platforms/gradle
+# Ant builds
+platforms/ant-build
+platforms/ant-gen
+# Eclipse builds
+platforms/gen
+platforms/out
+# Gradle build artifacts
+platforms/.gradle
+platforms/.gradletasknamecache
+platforms/build
+platforms/CordovaLib/build
+platforms/app/build
+platforms/gradle-app.setting
+# Android Studio
+platforms/.idea
+platforms/

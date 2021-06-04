@@ -14,8 +14,7 @@ export class CrucesComponent implements OnInit {
 
   constructor(
     public srvSol: IdbSolicitudService,
-    private activeRoute: ActivatedRoute,
-    private _srvEncr: EncryptService
+    private activeRoute: ActivatedRoute
   ) { }
   tipoAsesor: number;
   loadData: boolean = false
@@ -33,7 +32,8 @@ export class CrucesComponent implements OnInit {
 
     this.srvSol.getSol(this.ced).subscribe((datasol) => {
 
-      this.datasolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
+      this.datasolicitud = JSON.parse(datasol) as Solicitud
+      console.log(this.datasolicitud)
       this.tipoAsesor = this.datasolicitud.asesor
     
     })

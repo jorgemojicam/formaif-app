@@ -51,8 +51,7 @@ export class HomeComponent implements AfterViewInit {
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
     private _bottomSheet: MatBottomSheet,
-    private _srvCarpeta: CarpetadigitalService,
-    private _srvEncr: EncryptService
+    private _srvCarpeta: CarpetadigitalService
   ) {
   }
 
@@ -301,7 +300,7 @@ export class HomeComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(solicitud).subscribe(
         (datasol) => {
-          return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          return resolve(JSON.parse(datasol))
         },
         (err) => {
           reject(err)

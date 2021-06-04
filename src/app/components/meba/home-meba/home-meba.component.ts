@@ -52,8 +52,7 @@ export class HomeMebaComponent implements AfterViewInit {
     private _srvResultado: ResultadoService,
     private _srvToken: TokenStorageService,
     private _srvSolicitud: SolicitudService,
-    public dialog: MatDialog,
-    private _srvEncr:EncryptService
+    public dialog: MatDialog
   ) { }
 
   ngAfterViewInit(): void {
@@ -303,7 +302,7 @@ export class HomeMebaComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(solicitud).subscribe(
         (datasol) => {
-          return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          return resolve(JSON.parse(datasol))
         },
         (err) => {
           reject(err)

@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AnalisisComponent } from './analisis/analisis.component';
 import { AnalisisagroComponent } from './analisisagro/analisisagro.component';
 import { FlujocajaComponent } from './flujocaja/flujocaja.component';
-import { LobbyComponent } from '../lobby/lobby.component';
 import { PropuestaComponent } from './propuesta/propuesta.component';
 import { ResultadoComponent } from './resultado/resultado.component';
 import { UbicacionComponent } from './ubicacion/ubicacion.component';
@@ -28,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'lobby',
-        component: LobbyComponent,
+        redirectTo: 'lobby',
         data: {
           routerName: 'lobby'
         }

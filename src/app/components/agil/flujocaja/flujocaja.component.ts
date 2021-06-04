@@ -22,8 +22,7 @@ export class FlujocajaComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private srvSol: IdbSolicitudService,
-    private _srvEncr: EncryptService
+    private srvSol: IdbSolicitudService
   ) { }
 
   datasolicitud: Solicitud = new Solicitud()
@@ -55,7 +54,7 @@ export class FlujocajaComponent implements OnInit {
         return new Promise(resolve => {
           this.srvSol.getSol(this.ced).subscribe(
             (datasol) => {
-              return resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+              return resolve(JSON.parse(datasol))
             }
           )
         })

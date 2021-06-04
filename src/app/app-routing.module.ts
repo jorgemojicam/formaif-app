@@ -16,6 +16,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'home',
+    redirectTo: 'lobby',
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'admin',
     loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule),
     canActivate: [AuthGuard]
@@ -42,6 +47,7 @@ const routes: Routes = [
     path: 'zona', loadChildren: () => import('./components/zona/zona.module').then(m => m.ZonaModule),
     canActivate: [AuthGuard]
   },
+  { path: 'lobby', loadChildren: () => import('./components/lobby/lobby.module').then(m => m.LobbyModule) },
 
   {
     path: '**',

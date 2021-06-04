@@ -43,8 +43,7 @@ export class ResultadoComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private _srvSol: IdbSolicitudService,
-    private _srvEncr:EncryptService
+    private _srvSol: IdbSolicitudService
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +56,7 @@ export class ResultadoComponent implements OnInit {
     this._srvSol.getSol(this.ced)
       .subscribe((datasol) => {
 
-        this.datasolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
+        this.datasolicitud = JSON.parse(datasol) as Solicitud
         this.tiposol = this.datasolicitud.asesor
         let totalrecuperacion = 0
         let otrosingresos = 0

@@ -32,8 +32,7 @@ export class SensibilidadComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private route: ActivatedRoute,
     public srvSol: IdbSolicitudService,
-    private _srvIdb: IdbService,
-    private _srvEncr: EncryptService
+    private _srvIdb: IdbService
   ) {
 
     this.actividadesForm = this._formBuilder.group({
@@ -43,7 +42,7 @@ export class SensibilidadComponent implements OnInit {
       this.ced = params.get('cedula')
     });
     this.srvSol.getSol(this.ced).subscribe((d) => {
-      let datasol = JSON.parse(this._srvEncr.decrypt(d))
+      let datasol = JSON.parse(d)
       if (this.ced) {
 
         this.dataSolicitud = datasol as Solicitud

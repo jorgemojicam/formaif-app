@@ -25,7 +25,6 @@ export class UrbanoComponent implements OnInit {
     public _srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    private _srvEncr: EncryptService
   ) { }
 
   @Input() loadData: boolean = false
@@ -66,7 +65,7 @@ export class UrbanoComponent implements OnInit {
     return new Promise(resolve => {
       this._srvSol.getSol(this.ced).subscribe(
         (datasol) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          resolve(JSON.parse(datasol))
         }, (err) => {
           resolve([])
         })

@@ -28,8 +28,7 @@ export class PropuestaComponent implements OnInit {
     private _srvSol: IdbSolicitudService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar,
-    private _srvEncr: EncryptService
+    private _snackBar: MatSnackBar
   ) { }
 
   propuestaForm: FormGroup = this.fb.group({
@@ -55,7 +54,7 @@ export class PropuestaComponent implements OnInit {
     return new Promise(resolve => {
       this._srvSol.getSol(this.ced).subscribe(
         (datasol) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          resolve(JSON.parse(datasol))
         }, (err) => {
           resolve([])
         })

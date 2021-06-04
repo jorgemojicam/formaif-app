@@ -24,7 +24,6 @@ export class GastosComponent implements OnInit {
     private fb: FormBuilder,
     public _srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
-    private _srvEncr: EncryptService,
     private _snackBar: MatSnackBar,
   ) { }
 
@@ -71,7 +70,7 @@ export class GastosComponent implements OnInit {
     return new Promise(resolve => {
       this._srvSol.getSol(this.ced).subscribe(
         (datasol) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(datasol)))
+          resolve(JSON.parse(datasol))
         }, (err) => {
           resolve([])
         })

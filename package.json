@@ -1,7 +1,7 @@
 {
     "name": "com.asesor.agil",
-    "displayName": "AsesorAgil",
-    "version": "1.1.5",
+    "displayName": "asesorAgil",
+    "version": "1.2.0",
     "description": "Formulario de agilidad en la captura y generacion de los formatos de analisis de credito.",
     "main": "index.js",
     "scripts": {
@@ -27,10 +27,9 @@
         "@angular/platform-browser-dynamic": "~9.0.2",
         "@angular/router": "~9.0.2",
         "@angular/service-worker": "~9.0.2",
-        "@arcgis/core": "^4.19.3",
         "@ngx-pwa/local-storage": "^9.0.3",
         "@types/crypto-js": "^4.0.1",
-        "cordova-android": "^8.0.0",
+        "cordova-android": "^9.0.0",
         "cordova-plugin-statusbar": "^2.4.3",
         "crypto-js": "^4.0.0",
         "echarts": "^5.0.2",

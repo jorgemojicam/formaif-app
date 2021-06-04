@@ -24,7 +24,6 @@ import { AnalisisagroComponent} from './components/agil/analisisagro/analisisagr
 import { ProfileComponent } from './components/admin/profile/profile.component';
 import { ResultadoComponent } from './components/agil/resultado/resultado.component';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
-import { LobbyComponent } from './components/lobby/lobby.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
 
@@ -60,7 +59,6 @@ import { ZonaModule } from './components/zona/zona.module';
     ProfileComponent,
     ResultadoComponent,
     ToolbarComponent,
-    LobbyComponent,
     MebaComponent,
     CuestionarioComponent,
     TemasFormComponent,

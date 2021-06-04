@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import esriConfig from "@arcgis/core/config.js";
+
+/*import esriConfig from "@arcgis/core/config.js";
 import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import Graphic from "@arcgis/core/Graphic";
 import Sketch from "@arcgis/core/widgets/Sketch";
-
 esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92mqQMGlhYgfJmb97ZZpalTLhniXfHunb8ajs2yB_44";
-
+*/
 @Component({
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
@@ -20,7 +20,7 @@ export class MapaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+/*
     const map = new Map({
       basemap: "arcgis-topographic"
     });
@@ -72,7 +72,7 @@ export class MapaComponent implements OnInit {
       view.ui.add(sketch, "top-right");
     });
 
-
+*/
 
 
   }

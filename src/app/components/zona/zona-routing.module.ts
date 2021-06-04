@@ -39,16 +39,17 @@ const routes: Routes = [
         data: {
           routerName: 'mapa'
         }
-      },      
-      {
-        path: 'home',
-        component: LobbyComponent,
-        data: {
-          routerName: 'mapa'
-        }
-      }
+      }      
     ]
-  }
+  },   
+  {
+    path: 'home',
+    loadChildren: () => import('../lobby/lobby.module').then(m => m.LobbyModule),
+    data: {
+      routerName: 'lobby'
+    }
+  }   
+  
 
 ];
 

@@ -13,4 +13,7 @@ export class SolicitudzonaService {
   get(){
     return this.http.get(`${environment.AUTH_API}SolicitudZona`)
   }
+  create(data){
+    return this.http.post(`${environment.AUTH_API}SolicitudZona`,data)
+  }
 }

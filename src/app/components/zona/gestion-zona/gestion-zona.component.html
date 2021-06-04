@@ -1,6 +1,6 @@
-<mat-horizontal-stepper linear #stepper>
+<mat-horizontal-stepper #stepper>
     <mat-step [stepControl]="registroForm" [editable]="true">
-        <form [formGroup]="registroForm" (ngSubmit)="onRegistro()">
+        <form [formGroup]="registroForm">
             <ng-template matStepLabel>Registro Solicitud</ng-template>
             <mat-card>
                 <mat-card-header>
@@ -29,8 +29,7 @@
                         <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline">
                                 <mat-label>Tipo Solicitud</mat-label>
-                                <mat-select placeholder="">
-                                    <mat-option>--Seleccione Tipo--</mat-option>
+                                <mat-select formControlName="tipo" required>
                                     <mat-option *ngFor="let item of tipos" [value]="item">
                                         {{item.Nombre}}
                                     </mat-option>
@@ -40,13 +39,15 @@
                         <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline">
                                 <mat-label>Asesores Actual</mat-label>
-                                <input matInput autocomplete="off" formControlName="asesoresactual" type="number">
+                                <input required matInput autocomplete="off" formControlName="asesoresactual"
+                                    type="number">
                             </mat-form-field>
                         </div>
                         <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                             <mat-form-field appearance="outline">
                                 <mat-label>Asesores Aprobados</mat-label>
-                                <input matInput autocomplete="off" formControlName="asesoresaprobados" type="number">
+                                <input required matInput autocomplete="off" formControlName="asesoresaprobados"
+                                    type="number">
                             </mat-form-field>
                         </div>
 
@@ -55,10 +56,16 @@
                 <mat-card-actions>
                     <div style="width: 100%;" fxLayout="row center wrap">
                         <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                            <button mat-button mat-raised-button color="primary">REGISTRAR</button>
+                            <button  type="button" mat-button mat-raised-button (click)="onRegistro()"
+                            [disabled]="!registroForm.valid" color="primary">
+                                REGISTRAR
+                            </button>
                         </div>
                         <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                            <button mat-button mat-raised-button color="primary">REGISTRAR</button>
+                            <button mat-button mat-raised-button color="accent">APROBAR</button>
+                        </div>
+                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                            <button type="button" mat-button mat-raised-button block color="warn">RECHAZAR</button>
                         </div>
                     </div>
                 </mat-card-actions>
@@ -85,6 +92,69 @@
         </div>
     </form>
 </mat-horizontal-stepper>
+
+<div class="example-action-buttons">
+    <button mat-button (click)="accordion.openAll()">Expandir</button>
+    <button mat-button (click)="accordion.closeAll()">Contraer</button>
+</div>
+<mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Datos de la oficina
+            </mat-panel-title>
+            <mat-panel-description>
+                Novedades de asesores y barrios
+                <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <mat-label>First name</mat-label>
+            <input matInput>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Age</mat-label>
+            <input matInput type="number" min="1">
+        </mat-form-field>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel disabled>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Ubicacion y Mapa
+            </mat-panel-title>
+            <mat-panel-description>
+                Type the country name
+                <mat-icon>map</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <mat-label>Country</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Day of the trip
+            </mat-panel-title>
+            <mat-panel-description>
+                Inform the date you wish to travel
+                <mat-icon>date_range</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+        </mat-form-field>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-expansion-panel>
+</mat-accordion>
 
 
 <!--

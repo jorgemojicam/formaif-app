@@ -22,7 +22,7 @@ export class AnalisisagroComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
     public srvSol: IdbSolicitudService,
-    public _srvEncr: EncryptService
+    
   ) { }
 
   datasolicitud: Solicitud = new Solicitud();
@@ -40,7 +40,7 @@ export class AnalisisagroComponent implements OnInit {
       this.activeRoute.queryParamMap.subscribe((params) => {
         let ced = params.get('cedula')
         this.srvSol.getSol(ced).subscribe((res) => {
-          let datasol = JSON.parse(this._srvEncr.decrypt(res))
+          let datasol = JSON.parse(res)
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })

@@ -42,8 +42,7 @@ export class UbicacionComponent implements OnInit {
     private srvSol: IdbSolicitudService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    private sanitizer: DomSanitizer,
-    private _srvEncr: EncryptService
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +55,7 @@ export class UbicacionComponent implements OnInit {
 
       if (this.ced) {
 
-        this.dataSolicitud = JSON.parse(this._srvEncr.decrypt(datasol)) as Solicitud
+        this.dataSolicitud = JSON.parse(datasol) as Solicitud
         if (this.dataSolicitud.Ubicacion) {
           this.loadUbicacion(this.dataSolicitud.Ubicacion)
         }

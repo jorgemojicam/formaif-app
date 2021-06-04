@@ -16,8 +16,7 @@ export class AnalisisComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    public srvSol: IdbSolicitudService,
-    private _srvEncr:EncryptService
+    public srvSol: IdbSolicitudService
   ) { }
 
   datasolicitud: Solicitud = new Solicitud()
@@ -34,7 +33,7 @@ export class AnalisisComponent implements OnInit {
       this.activeRoute.queryParamMap.subscribe((params) => {
         let ced = params.get('cedula')
         this.srvSol.getSol(ced).subscribe((res) => {
-          let datasol = JSON.parse(this._srvEncr.decrypt(res))
+          let datasol = JSON.parse(res)
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
         })

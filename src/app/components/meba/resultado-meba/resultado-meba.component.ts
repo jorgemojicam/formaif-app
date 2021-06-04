@@ -24,8 +24,7 @@ export class ResultadoMebaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private srvSol: IdbSolicitudService,
-    private _srvEncr: EncryptService
+    private srvSol: IdbSolicitudService
   ) { }
 
   async ngOnInit() {
@@ -96,7 +95,7 @@ export class ResultadoMebaComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(this.ced).subscribe(
         (d) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(d)))
+          resolve(JSON.parse(d))
         })
     })
   }

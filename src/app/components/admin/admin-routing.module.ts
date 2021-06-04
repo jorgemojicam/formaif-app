@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestionario.component";
 import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
-import { LobbyComponent } from '../lobby/lobby.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { RolComponent } from './admin-rol/rol/rol.component';
 
@@ -44,7 +43,7 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        component: LobbyComponent,
+        redirectTo: 'lobby',
         data: {
           routerName: 'lobby'
         },

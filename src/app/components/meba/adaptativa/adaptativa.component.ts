@@ -29,8 +29,7 @@ export class AdaptativaComponent implements OnInit {
     private _srvIdb: IdbService,
     private _formbuild: FormBuilder,
     public srvSol: IdbSolicitudService,
-    private route: ActivatedRoute,
-    private _srvEncr: EncryptService
+    private route: ActivatedRoute
   ) {
     this.adaptativoForm = this._formbuild.group({
       totalAdaptativa: 0,
@@ -65,26 +64,26 @@ export class AdaptativaComponent implements OnInit {
 
         let preguntas = <FormArray>x.get("Preguntas")
         let pesodim = Utils.formatNumber(x.get("Peso").value)
-        
+
         let acumulado = 0
         preguntas.controls.forEach(pre => {
           let resultado = pre.get("Resultado").value
           let peso = pre.get("Peso").value
           if (resultado) {
-            let puntaje = resultado.Punaje            
-            let porcentaje = (peso / 100) * puntaje            
-            console.log('porcentaje ',porcentaje)
-            acumulado += porcentaje            
+            let puntaje = resultado.Punaje
+            let porcentaje = (peso / 100) * puntaje
+            console.log('porcentaje ', porcentaje)
+            acumulado += porcentaje
           }
         })
-        console.log('acumulado ',acumulado)
+        console.log('acumulado ', acumulado)
         let valortotal = (pesodim / 100) * acumulado
         totaladapta += valortotal
         x.patchValue({
           total: isFinite(acumulado) ? acumulado.toFixed(1) : 0
         }, { emitEvent: false })
       })
- 
+
       this.adaptativoForm.patchValue({
         totalAdaptativa: isFinite(totaladapta) ? totaladapta.toFixed(1) : 0
       }, { emitEvent: false });
@@ -132,13 +131,17 @@ export class AdaptativaComponent implements OnInit {
     let aRespuestas: FormArray = this._formbuild.array([])
 
     respuestas.forEach(pre => {
-
+      console.log(pre)
+      let resul = []
+      if (pre.Resultado) {
+        resul = pre.Respuestas.find(a => a.Id == pre.Resultado.Id)
+      }
       aRespuestas.push(this._formbuild.group({
         Titulo: [pre.Titulo],
         Peso: [pre.Peso],
         Respuestas: [pre.Respuestas],
         Multiple: [pre.Multiple],
-        Resultado: [pre.Resultado]
+        Resultado: [resul]
       }))
     });
     return aRespuestas
@@ -154,7 +157,7 @@ export class AdaptativaComponent implements OnInit {
   getPreguntas() {
     return new Promise((resolve, reject) => {
       this._srvIdb.get('dimenciones').subscribe(
-        (data) => {        
+        (data) => {
           resolve(data)
         })
     })
@@ -169,7 +172,7 @@ export class AdaptativaComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.srvSol.getSol(this.ced).subscribe(
         (d) => {
-          resolve(JSON.parse(this._srvEncr.decrypt(d)))
+          resolve(JSON.parse(d))
         })
     })
   }
