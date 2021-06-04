@@ -21,7 +21,7 @@ export class ToolbarComponent implements OnInit {
   perfil: Asesor = this.tokenStorage.getUser();
   tipo: number = 0;
   titulo: string;
-  color:string = 'primary'
+  color: string = 'primary'
   rout: string;
   modul: string;
 
@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     public srvSol: IdbSolicitudService
   ) {
-     
+
     this.activateRoute.queryParamMap.subscribe((params) => {
       this.ced = params.get('cedula')
     });
@@ -57,13 +57,13 @@ export class ToolbarComponent implements OnInit {
           this.titulo = 'MEBA'
         } else if (this.modul === 'agil') {
           this.titulo = 'Asesor Agil'
-        }else if(this.modul ==='zona'){
+        } else if (this.modul === 'zona') {
           this.titulo = 'ZONAS'
           this.color = 'accent'
-        }else{          
+        } else {
           this.titulo = 'Asesor Agil'
         }
-      }else{
+      } else {
         this.titulo = 'Asesor Agil'
       }
     });
@@ -85,10 +85,11 @@ export class ToolbarComponent implements OnInit {
     }
 
     if (this.ced) {
-      this.srvSol.getSol(this.ced).subscribe((datasol) => {
-        let solici = datasol
-        this.tipo = solici.asesor
-      })
+      this.srvSol.getSol(this.ced).subscribe(
+        (datasol) => {
+          let solici = JSON.parse(datasol)
+          this.tipo = solici.asesor
+        })
     }
   }
 

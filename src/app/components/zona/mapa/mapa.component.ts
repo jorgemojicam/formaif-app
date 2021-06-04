@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-
-/*import esriConfig from "@arcgis/core/config.js";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import esriConfig from "@arcgis/core/config.js";
 import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import Graphic from "@arcgis/core/Graphic";
 import Sketch from "@arcgis/core/widgets/Sketch";
 esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92mqQMGlhYgfJmb97ZZpalTLhniXfHunb8ajs2yB_44";
-*/
+
+import { loadModules } from "esri-loader";
+import esri = __esri; // Esri TypeScript Types
+
 @Component({
   selector: 'app-mapa',
   templateUrl: './mapa.component.html',
@@ -15,12 +17,84 @@ esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92
 })
 export class MapaComponent implements OnInit {
 
+  @ViewChild("mapViewNode", { static: true }) private mapViewEl: ElementRef;
+
+  private _zoom = 15;
+
+  private _center: Array<number> = [-73.11551918100278,7.06165317851025];
+  private _basemap = "topo";
+  private _loaded = false;
+  private _view: esri.MapView = null;
+  private _poligon
+
   constructor(
 
   ) { }
 
+  async initializeMap() {
+    try {
+      // Load the modules for the ArcGIS API for JavaScript
+      /*
+      const [EsriMap, EsriMapView] = await loadModules([
+        "esri/Map",
+        "esri/views/MapView"
+      ]);
+      */
+
+      // Configure the Map
+      const mapProperties: esri.MapProperties = {
+        basemap: this._basemap
+      };
+
+      const map: esri.Map = new Map(mapProperties);
+
+      const graphicsLayer = new GraphicsLayer();
+      map.add(graphicsLayer);
+
+      // Initialize the MapView
+      const mapViewProperties: esri.MapViewProperties = {
+        container: this.mapViewEl.nativeElement,
+        center: this._center,
+        zoom: this._zoom,
+        map: map
+      };
+
+      this._view = new MapView(mapViewProperties);
+
+      await this._view.when(() => {
+        const sketch = new Sketch({
+          layer: graphicsLayer,
+          view: this._view,
+          // graphic will be selected as soon as it is created
+          creationMode: "update"
+        });
+
+        this._view.ui.add(sketch, "top-right");
+      }); 
+
+      this._view.on("click", function(evt) {
+        console.log(evt)
+      })
+
+      return this._view;
+    } catch (error) {
+      console.log("EsriLoader: ", error);
+    }
+  }
+
   ngOnInit(): void {
-/*
+
+    this.initializeMap().then(mapView => {
+      // The map has been initialized
+      console.log("mapView ready: ", this._view.ready);
+      console.log("puntos: ", this._view.viewpoint.targetGeometry);
+      console.log("mapView ",mapView)
+      this._loaded = this._view.ready;
+    });
+    
+
+
+    /*
     const map = new Map({
       basemap: "arcgis-topographic"
     });
@@ -48,7 +122,7 @@ export class MapaComponent implements OnInit {
       }
     };
     const polygonGraphic = new Graphic({
-      //geometry: polygon,
+      geometry: polygon,
       symbol: simpleFillSymbol,
     });
 
@@ -71,10 +145,14 @@ export class MapaComponent implements OnInit {
 
       view.ui.add(sketch, "top-right");
     });
-
 */
+  }
 
-
+  ngOnDestroy() {
+    if (this._view) {
+      // destroy the map view
+      this._view.container = null;
+    }
   }
 
 }
