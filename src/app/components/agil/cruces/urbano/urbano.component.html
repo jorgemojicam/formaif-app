@@ -847,7 +847,7 @@
                                                                     <mat-option *ngIf="acti.value.tipo ==4"
                                                                         [value]="tipoAnual">{{tipoAnual.name}}
                                                                     </mat-option>
-                                                                    <ng-container *ngIf="acti.value.tipo ==3">
+                                                                    <ng-container *ngIf="acti.value.tipo !=4">
                                                                         <mat-option *ngFor="let frec of frecuencia"
                                                                             [value]="frec">
                                                                             {{frec.name}}

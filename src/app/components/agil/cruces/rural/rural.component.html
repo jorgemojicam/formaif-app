@@ -46,8 +46,7 @@
                                         <div class="gr" fxFlex="35%" fxFlex.xs="35%" fxFlex.sm="35%">
                                             <mat-form-field class="example-full-width">
                                                 <mat-label>Actividad</mat-label>
-                                                <input type="text" matInput formControlName="nombre"
-                                                    [matAutocomplete]="auto">
+                                                <input type="text" (change)="displayBlack(acti)" matInput  formControlName="nombre" [matAutocomplete]="auto">
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                                                     <mat-option
                                                         *ngFor="let option of _filter(acti.value.nombre,acti.value.tipo,ac)"

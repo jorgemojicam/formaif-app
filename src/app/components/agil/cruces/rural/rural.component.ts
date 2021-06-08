@@ -442,6 +442,12 @@ export class RuralComponent implements OnInit {
 
   }
 
+  displayBlack(form){
+    form.patchValue({
+      nombre: ""
+    }, { emitEvent: false })
+  }
+
   displayFn(user: any): string {
     return user && user.name ? user.name : '';
   }
@@ -835,4 +841,5 @@ export class RuralComponent implements OnInit {
       nombre: ""
     }, { emitEvent: false })
   }
+
 }

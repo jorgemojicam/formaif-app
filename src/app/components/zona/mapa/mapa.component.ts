@@ -4,9 +4,7 @@ import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import Graphic from "@arcgis/core/Graphic";
-import Draw from "@arcgis/core/views/draw/Draw";
 import Sketch from "@arcgis/core/widgets/Sketch";
-import SketchViewModel from "@arcgis/core/widgets/Sketch";
 esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92mqQMGlhYgfJmb97ZZpalTLhniXfHunb8ajs2yB_44";
 import esri = __esri; // Esri TypeScript Types
 
@@ -33,10 +31,9 @@ export class MapaComponent implements OnInit {
   async initializeMap() {
     const that = this
     try {
-
       // Configure the Map
       const mapProperties: esri.MapProperties = {
-        basemap: this._basemap
+        basemap: this._basemap,       
       };
       const map: esri.Map = new Map(mapProperties);
       const graphicsLayer = new GraphicsLayer();
@@ -54,8 +51,9 @@ export class MapaComponent implements OnInit {
       await this._view.when(() => {
 
       });
+    
 
-      let sketchVM = new SketchViewModel({
+      let sketch = new Sketch({
 
         layer: graphicsLayer,
         view: this._view,
@@ -72,30 +70,23 @@ export class MapaComponent implements OnInit {
         },
       });
 
-      sketchVM.create("polygon", { mode: "freehand" });
-      // listen to create event, only respond when event's state changes to complete
-      sketchVM.on("create", function (event) {
-        if (event.state === "complete") {
-          // remove the graphic from the layer associated with the sketch widget
-          // instead use the polygon that user created to query features that
-          // intersect it.
-          console.log(event.graphic.geometry)
+      sketch.create("polygon", { mode: "click" });
+      sketch.on("create", function (event) {
+        if (event.state === "complete") {    
+          console.log("lo creo->",event.graphic.geometry)
           that.createPolygonGraphic(event.graphic.geometry);
           //selectFeatures(event.graphic.geometry);
         }
       });
 
-      sketchVM.on("update", function (event) {
+      sketch.on("update", function (event) {
         if (event.state === "complete") {
-          // remove the graphic from the layer associated with the sketch widget
-          // instead use the polygon that user created to query features that
-          // intersect it.
-          console.log(event.graphics)          
+          console.log("lo modifico->",event.graphics[0].geometry)          
           //selectFeastures(event.graphic.geometry);
         }
-      });
+      });  
 
-      this._view.ui.add(sketchVM, "top-right");
+      this._view.ui.add(sketch, "top-right");
       return this._view;
     } catch (error) {
       console.log("EsriLoader: ", error);
@@ -112,9 +103,18 @@ export class MapaComponent implements OnInit {
   createPolygonGraphic(polygon) {
     //this._view.graphics.removeAll();
 
+    const popupTemplate = {
+      title: "{Name}",
+      content: "{Description}"
+   }
+   const attributes = {
+      Name: "Graphic",
+      Description: "I am a polygon"
+   }
+
     const simpleFillSymbol = {
       type: "simple-fill",
-      color: [227, 139, 79, 0.8],  // Orange, opacity 80%
+      color: [135, 32, 117, 0.7],  // purple, opacity 80%
       outline: {
         color: "purple",
         width: 1
@@ -123,6 +123,8 @@ export class MapaComponent implements OnInit {
     let graphic = new Graphic({
       geometry: polygon,
       symbol: simpleFillSymbol,
+      attributes: attributes,
+      popupTemplate: popupTemplate
     });
 
     this._view.graphics.add(graphic);
