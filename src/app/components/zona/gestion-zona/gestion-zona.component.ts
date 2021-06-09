@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatStepper } from '@angular/material/stepper';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Asesor } from 'src/app/model/asesor';
 import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
 import { FlujoService } from 'src/app/services/flujo.service';
@@ -22,6 +24,7 @@ export class GestionZonaComponent implements OnInit {
   secondFormGroup: FormGroup;
   tipos: any[]
   flujo: any
+  id:any
 
   niveles: any[] = [
     {
@@ -56,18 +59,31 @@ export class GestionZonaComponent implements OnInit {
   })
 
   dataUsuario: Asesor = this._srvStorage.getUser();
+  dataSolicitud: any
 
   constructor(
     private _formBuilder: FormBuilder,
     private _srvFLujo: FlujoService,
     private _srvTipo: TipoService,
     private _srvSol: SolicitudzonaService,
-    private _srvStorage: TokenStorageService
-  ) { }
+    private _srvStorage: TokenStorageService,
+    private _router: Router,
+    private _actiro: ActivatedRoute
+  ) {
+  }
 
-  async ngOnInit() {
+  async ngOnInit() {    
+    const that = this 
+    
+    this._actiro.queryParamMap.subscribe((params) => {
+      this.id = params.get('id')
+    });
 
-    const that = this
+    if(this.id ){
+      console.log(this.id)
+      this.stepper.selectedIndex = 1;
+    }
+
     let arrayNiveles = that._formBuilder.array([])
     this.niveles.forEach(niv => {
       arrayNiveles.push(that._formBuilder.group({
@@ -94,8 +110,8 @@ export class GestionZonaComponent implements OnInit {
 
     let resTipo = await this.getTipo() as any
     this.tipos = resTipo.data
-
-    this.stepper.selectedIndex = 1;
+    this.stepper.selectedIndex = 0;
+    
   }
 
   nivel() {
@@ -152,10 +168,10 @@ export class GestionZonaComponent implements OnInit {
     return new Promise(resolve => {
       this._srvSol.create(data).subscribe((res) => {
         let sol = res as SolicitudZona
-        if(sol.Id>0){
-          resolve({data:res,error:null})
-        }else{
-          resolve({data:null,error:'Se presento un error'})
+        if (sol.Id > 0) {
+          resolve({ data: res, error: null })
+        } else {
+          resolve({ data: null, error: 'Se presento un error' })
         }
       }, (err) => {
 

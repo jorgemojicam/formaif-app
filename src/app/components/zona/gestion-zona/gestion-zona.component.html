@@ -56,8 +56,8 @@
                 <mat-card-actions>
                     <div style="width: 100%;" fxLayout="row center wrap">
                         <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                            <button  type="button" mat-button mat-raised-button (click)="onRegistro()"
-                            [disabled]="!registroForm.valid" color="primary">
+                            <button type="button" mat-button mat-raised-button (click)="onRegistro()"
+                                [disabled]="!registroForm.valid" color="primary">
                                 REGISTRAR
                             </button>
                         </div>
@@ -92,11 +92,9 @@
         </div>
     </form>
 </mat-horizontal-stepper>
+<br>
+<h2>Datos de la zonificacion</h2>
 
-<div class="example-action-buttons">
-    <button mat-button (click)="accordion.openAll()">Expandir</button>
-    <button mat-button (click)="accordion.closeAll()">Contraer</button>
-</div>
 <mat-accordion class="example-headers-align" multi>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -147,10 +145,7 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <mat-form-field>
-            <mat-label>Country</mat-label>
-            <input matInput>
-        </mat-form-field>
+        <app-mapa></app-mapa>
     </mat-expansion-panel>
 
     <mat-expansion-panel>

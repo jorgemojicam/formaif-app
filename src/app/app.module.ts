@@ -42,7 +42,6 @@ import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form
 import { ZonaComponent } from './components/zona/zona.component';
 import { ZonaModule } from './components/zona/zona.module';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,8 +86,7 @@ import { ZonaModule } from './components/zona/zona.module';
     HttpClientModule,
     MebaModule,
     AgilModule,
-    ZonaModule
-      
+    ZonaModule 
   ],
   entryComponents: [
     ModalComponent,

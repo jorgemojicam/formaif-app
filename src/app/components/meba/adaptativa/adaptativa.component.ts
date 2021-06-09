@@ -4,7 +4,6 @@ import { MatAccordion } from '@angular/material/expansion';
 import { ActivatedRoute } from '@angular/router';
 import { Adaptativa } from 'src/app/model/adaptativa';
 import { Solicitud } from 'src/app/model/solicitud';
-import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbService } from 'src/app/services/idb.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
@@ -131,7 +130,7 @@ export class AdaptativaComponent implements OnInit {
     let aRespuestas: FormArray = this._formbuild.array([])
 
     respuestas.forEach(pre => {
-      console.log(pre)
+
       let resul = []
       if (pre.Resultado) {
         resul = pre.Respuestas.find(a => a.Id == pre.Resultado.Id)

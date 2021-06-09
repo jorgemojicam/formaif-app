@@ -9,9 +9,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapaComponent } from './mapa/mapa.component';
 import { RegistroFormComponent } from './registro-form/registro-form.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ModalInfomapComponent } from './modal-infomap/modal-infomap.component';
 
 @NgModule({
-  declarations: [SolicitudFormComponent, GestionZonaComponent, MapaComponent, RegistroFormComponent],
+  declarations: [SolicitudFormComponent, GestionZonaComponent, MapaComponent, RegistroFormComponent, ModalInfomapComponent],
   imports: [
     CommonModule,
     ZonaRoutingModule,
@@ -19,7 +20,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormsModule, 
     ReactiveFormsModule,
     FlexLayoutModule
-    
-  ]
+  ],
+  entryComponents: [
+    ModalInfomapComponent
+  ],
 })
 export class ZonaModule { }

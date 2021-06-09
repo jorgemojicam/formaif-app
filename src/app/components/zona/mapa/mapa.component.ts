@@ -3,10 +3,14 @@ import esriConfig from "@arcgis/core/config.js";
 import MapView from "@arcgis/core/views/MapView";
 import Map from "@arcgis/core/Map";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+
 import Graphic from "@arcgis/core/Graphic";
 import Sketch from "@arcgis/core/widgets/Sketch";
+
 esriConfig.apiKey = "AAPK7d8e7f5fbe484587845583d624ad5f4661U73yeiDt-rdiitWwxbj92mqQMGlhYgfJmb97ZZpalTLhniXfHunb8ajs2yB_44";
-import esri = __esri; // Esri TypeScript Types
+import esri = __esri;
+import { MatDialog } from '@angular/material/dialog';
+import { ModalInfomapComponent } from '../modal-infomap/modal-infomap.component';
 
 @Component({
   selector: 'app-mapa',
@@ -24,21 +28,23 @@ export class MapaComponent implements OnInit {
   private _loaded = false;
   private _view: esri.MapView = null;
 
-  constructor(
+  animal: string;
+  name: string;
 
-  ) { }
+  constructor(public dialog: MatDialog) { }
 
   async initializeMap() {
+
     const that = this
     try {
       // Configure the Map
       const mapProperties: esri.MapProperties = {
-        basemap: this._basemap,       
+        basemap: this._basemap,
       };
       const map: esri.Map = new Map(mapProperties);
       const graphicsLayer = new GraphicsLayer();
       map.add(graphicsLayer);
-      // Initialize the MapView
+
       const mapViewProperties: esri.MapViewProperties = {
         container: this.mapViewEl.nativeElement,
         center: this._center,
@@ -51,7 +57,6 @@ export class MapaComponent implements OnInit {
       await this._view.when(() => {
 
       });
-    
 
       let sketch = new Sketch({
 
@@ -71,26 +76,48 @@ export class MapaComponent implements OnInit {
       });
 
       sketch.create("polygon", { mode: "click" });
+
       sketch.on("create", function (event) {
-        if (event.state === "complete") {    
-          console.log("lo creo->",event.graphic.geometry)
-          that.createPolygonGraphic(event.graphic.geometry);
-          //selectFeatures(event.graphic.geometry);
+        if (event.state === "complete") {
+          that.openDialog(event.graphic.geometry)
+          console.log("lo creo->", event.graphic.geometry)      
         }
       });
 
       sketch.on("update", function (event) {
         if (event.state === "complete") {
-          console.log("lo modifico->",event.graphics[0].geometry)          
+
+          console.log("lo modifico->", event.graphics) 
+          //that.updatePolygonGraphic( graphics[0].attributes[0])
           //selectFeastures(event.graphic.geometry);
         }
-      });  
+      });
 
       this._view.ui.add(sketch, "top-right");
       return this._view;
     } catch (error) {
       console.log("EsriLoader: ", error);
     }
+  }
+
+  openDialog(graph): void {
+    const that = this
+    const dialogRef = this.dialog.open(ModalInfomapComponent, {
+      width: '500px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result.data) {
+        const attributes = {
+          Name: result.data.titulo,
+          Description: result.data.descripcion
+        }
+        let color = result.data.color
+        that.createPolygonGraphic(graph, attributes, color);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -100,23 +127,19 @@ export class MapaComponent implements OnInit {
     });
   }
 
-  createPolygonGraphic(polygon) {
+  createPolygonGraphic(polygon, attributes, color) {
     //this._view.graphics.removeAll();
-
     const popupTemplate = {
       title: "{Name}",
       content: "{Description}"
-   }
-   const attributes = {
-      Name: "Graphic",
-      Description: "I am a polygon"
-   }
-
+    }
+    const opacity = [parseInt(color.slice(-6, -4), 16), parseInt(color.slice(-4, -2), 16), parseInt(color.slice(-2), 16), 0.6];
+    console.log(opacity)
     const simpleFillSymbol = {
       type: "simple-fill",
-      color: [135, 32, 117, 0.7],  // purple, opacity 80%
+      color: opacity,
       outline: {
-        color: "purple",
+        color: color,
         width: 1
       }
     };
@@ -130,11 +153,47 @@ export class MapaComponent implements OnInit {
     this._view.graphics.add(graphic);
   }
 
+
+  updatePolygonGraphic(polygon,description) {
+    
+    for (let gL =0; gL< this._view.graphics.length; gL++){
+      if ( this._view.graphics[gL].attributes[0] == description){
+        this._view.graphics.remove(this._view.graphics[gL]);        
+      }
+    }
+/*
+    const popupTemplate = {
+      title: "{Name}",
+      content: "{Description}"
+    }
+    const opacity = [parseInt(color.slice(-6, -4), 16), parseInt(color.slice(-4, -2), 16), parseInt(color.slice(-2), 16), 0.6];
+    console.log(opacity)
+    const simpleFillSymbol = {
+      type: "simple-fill",
+      color: opacity,
+      outline: {
+        color: color,
+        width: 1
+      }
+    };
+    let graphic = new Graphic({
+      geometry: polygon,
+      symbol: simpleFillSymbol,
+      attributes: attributes,
+      popupTemplate: popupTemplate
+    });
+
+    this._view.graphics.add(graphic);
+    */
+  }
+
   ngOnDestroy() {
     if (this._view) {
       // destroy the map view
       this._view.container = null;
     }
   }
+
+
 
 }

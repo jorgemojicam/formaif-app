@@ -46,7 +46,8 @@
                                         <div class="gr" fxFlex="35%" fxFlex.xs="35%" fxFlex.sm="35%">
                                             <mat-form-field class="example-full-width">
                                                 <mat-label>Actividad</mat-label>
-                                                <input type="text" (change)="displayBlack(acti)" matInput  formControlName="nombre" [matAutocomplete]="auto">
+                                                <input type="text" (change)="displayBlack(acti)" matInput
+                                                    formControlName="nombre" [matAutocomplete]="auto">
                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                                                     <mat-option
                                                         *ngFor="let option of _filter(acti.value.nombre,acti.value.tipo,ac)"
@@ -1379,6 +1380,53 @@
                                                     </mat-form-field>
                                                 </div>
                                             </ng-container>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+
+                                <mat-card>
+                                    <mat-card-header>
+                                        <mat-card-title>Resumen Ingreso</mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <div fxLayout="row wrap">
+
+                                            <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                <mat-form-field>
+                                                    <input type="tel" autocomplete="off" matInput
+                                                        placeholder="Total Compras" required
+                                                        formControlName="totalCompras">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                <mat-form-field>
+                                                    <input type="tel" autocomplete="off" matInput readonly
+                                                        placeholder="Ventas Estimadas" required
+                                                        formControlName="ventasEstimadas">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                <mat-form-field>
+                                                    <input type="tel" autocomplete="off" matInput
+                                                        placeholder="Margen Bruto" required
+                                                        formControlName="margenBruto">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="25%" fxFlex.xs="50%" fxFlex.sm="45%">
+                                                <mat-form-field>
+                                                    <input type="tel" autocomplete="off" matInput
+                                                        placeholder="Otros Gastos" required
+                                                        formControlName="otrosGastos">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Ingreso Liquido</mat-label>
+                                                    <input matInput type="text" readonly id="ingresoLiquido{{ac}}"
+                                                        formControlName="ingresoLiquido">
+                                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                                </mat-form-field>
+                                            </div>
                                         </div>
                                     </mat-card-content>
                                 </mat-card>

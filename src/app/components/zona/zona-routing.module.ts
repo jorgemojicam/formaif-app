@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LobbyComponent } from '../lobby/lobby.component';
 import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
 import { MapaComponent } from './mapa/mapa.component';
 import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
@@ -39,7 +38,7 @@ const routes: Routes = [
         data: {
           routerName: 'mapa'
         }
-      }      
+      }          
     ]
   },   
   {

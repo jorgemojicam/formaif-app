@@ -1,0 +1,31 @@
+<mat-dialog-content class="mat-typography">
+
+  <form [formGroup]="formMap">
+
+    <div fxLayout="row wrap">
+      <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-form-field>
+          <input type="text" autocomplete="off" matInput placeholder="Titulo" formControlName="titulo">
+        </mat-form-field>
+      </div>
+      <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-form-field>
+          <input type="text" autocomplete="off" matInput placeholder="Descripcion" formControlName="descripcion">
+        </mat-form-field>
+      </div>
+      <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+        <mat-form-field>
+          <input matInput type="color"
+          formControlName="color"
+       />         
+        </mat-form-field>
+      </div>
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button [disabled]="!formMap.valid" (click)="addMapdata()">Guardar</button>
+</mat-dialog-actions>

@@ -391,7 +391,7 @@
       "id": 6,
       "name": "Ajonjoli",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 7,
@@ -433,7 +433,7 @@
       "id": 13,
       "name": "Badea",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 14,
@@ -487,7 +487,7 @@
       "id": 22,
       "name": "Caña",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 23,
@@ -577,7 +577,7 @@
       "id": 37,
       "name": "Fresa",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 38,
@@ -601,7 +601,7 @@
       "id": 41,
       "name": "Granadilla",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 42,
@@ -631,7 +631,7 @@
       "id": 46,
       "name": "Gulupa",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 47,
@@ -679,7 +679,7 @@
       "id": 54,
       "name": "Lulo",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 55,
@@ -727,7 +727,7 @@
       "id": 62,
       "name": "Maracuya",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 63,
@@ -745,7 +745,7 @@
       "id": 65,
       "name": "Mora",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 66,
@@ -799,7 +799,7 @@
       "id": 74,
       "name": "Papaya",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 75,
@@ -841,13 +841,13 @@
       "id": 81,
       "name": "Piña",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 82,
       "name": "PiñaPerolera",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 83,
@@ -859,7 +859,7 @@
       "id": 84,
       "name": "Plátano",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 85,
@@ -913,7 +913,7 @@
       "id": 93,
       "name": "TomateDeÁrbol",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 94,
@@ -931,7 +931,7 @@
       "id": 96,
       "name": "Uchuva",
       "tipo": 1,
-      "tipoproducto": "Permanentes"
+      "tipoproducto": "Permanente"
     },
     {
       "id": 97,

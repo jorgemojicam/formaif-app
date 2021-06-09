@@ -13,8 +13,8 @@ import { SolicitudzonaService } from 'src/app/services/solicitudzona.service';
 })
 export class SolicitudFormComponent implements AfterViewInit {
 
-  
-  displayedColumns: string[] = ['tipo', 'sucursal', 'estado','gestion'];
+
+  displayedColumns: string[] = ['tipo', 'sucursal', 'estado', 'gestion'];
   dataSource: MatTableDataSource<SolicitudZona>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -23,8 +23,9 @@ export class SolicitudFormComponent implements AfterViewInit {
   loading: boolean = true
 
   constructor(
-    private _srvSolicitudZ: SolicitudzonaService,    
+    private _srvSolicitudZ: SolicitudzonaService,
     private _route: Router,
+
   ) { }
 
   ngAfterViewInit() {
@@ -39,17 +40,17 @@ export class SolicitudFormComponent implements AfterViewInit {
           that.dataSource.paginator = that.paginator;
           that.dataSource.sort = that.sort;
           that.loading = false
-        }        
+        }
       }, (err) => {
-        
+
       })
-    
-  }
-
-  onGestion(e){
 
   }
-  onCreate(){
+
+  onGestion(e) {
+    this._route.navigate(['zona/gestion'], { queryParams: { id: e.Id } });
+  }
+  onCreate() {
     this._route.navigate(['zona/gestion'])
   }
 

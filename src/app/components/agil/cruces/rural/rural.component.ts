@@ -8,7 +8,6 @@ import { Egresos } from 'src/app/model/egresos';
 import { LoteAgro } from 'src/app/model/loteAgro';
 import { LotePecuario } from 'src/app/model/lotePecuario';
 import { Solicitud } from 'src/app/model/solicitud';
-import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import Swal from 'sweetalert2';
 import DataSelect from '../../../../data-select/dataselect.json';
