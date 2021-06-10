@@ -617,7 +617,7 @@
     },
     {
       "id": 44,
-      "name": "GuayabaPera",
+      "name": "Guayaba Pera",
       "tipo": 1,
       "tipoproducto": "Permanente"
     },
@@ -653,7 +653,7 @@
     },
     {
       "id": 50,
-      "name": "Lechugahidroponica",
+      "name": "Lechuga hidroponica",
       "tipo": 1,
       "tipoproducto": "Transitorio"
     },
@@ -665,13 +665,13 @@
     },
     {
       "id": 52,
-      "name": "Limóncriollo",
+      "name": "Limón criollo",
       "tipo": 1,
       "tipoproducto": "Permanente"
     },
     {
       "id": 53,
-      "name": "LimónTahití",
+      "name": "Limón Tahití",
       "tipo": 1,
       "tipoproducto": "Permanente"
     },
@@ -689,7 +689,7 @@
     },
     {
       "id": 56,
-      "name": "MaizMazorca",
+      "name": "Maiz Mazorca",
       "tipo": 1,
       "tipoproducto": "Transitorio"
     },
@@ -905,13 +905,13 @@
     },
     {
       "id": 92,
-      "name": "TomateChonto",
+      "name": "Tomate Chonto",
       "tipo": 1,
       "tipoproducto": "Transitorio"
     },
     {
       "id": 93,
-      "name": "TomateDeÁrbol",
+      "name": "Tomate De Árbol",
       "tipo": 1,
       "tipoproducto": "Permanente"
     },

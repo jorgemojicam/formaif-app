@@ -14,12 +14,12 @@ import Swal from 'sweetalert2';
 import { Asesor } from 'src/app/model/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
-import { ResultadoService } from 'src/app/services/resultado.service';
+import { ResultadoService } from 'src/app/services/MEBA/resultado.service';
 import { SolicitudService } from 'src/app/services/solicitud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
-import { TemasService } from 'src/app/services/temas.service';
+import { TemasService } from 'src/app/services/MEBA/temas.service';
 import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({

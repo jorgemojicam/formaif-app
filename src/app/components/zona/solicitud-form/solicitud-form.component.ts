@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
-import { SolicitudzonaService } from 'src/app/services/solicitudzona.service';
+import { SolicitudzonaService } from 'src/app/services/zona/solicitudzona.service';
 
 @Component({
   selector: 'app-solicitud-form',

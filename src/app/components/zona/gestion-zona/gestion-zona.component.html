@@ -4,6 +4,7 @@
             <ng-template matStepLabel>Registro Solicitud</ng-template>
             <mat-card>
                 <mat-card-header>
+                    <mat-card-title>{{ identificador }}</mat-card-title>
                     <mat-card-subtitle>Todos los campo son obligatorio para radicar la solicitud</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
@@ -55,17 +56,17 @@
                 </mat-card-content>
                 <mat-card-actions>
                     <div style="width: 100%;" fxLayout="row center wrap">
-                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="!dataSolicitud.Id">
                             <button type="button" mat-button mat-raised-button (click)="onRegistro()"
                                 [disabled]="!registroForm.valid" color="primary">
                                 REGISTRAR
                             </button>
                         </div>
-                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                            <button mat-button mat-raised-button color="accent">APROBAR</button>
+                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="dataSolicitud.Id">
+                            <button mat-button mat-raised-button (click)="onGestion(3)" color="accent">APROBAR</button>
                         </div>
-                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                            <button type="button" mat-button mat-raised-button block color="warn">RECHAZAR</button>
+                        <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="dataSolicitud.Id">
+                            <button type="button" mat-button (click)="onGestion(2)" mat-raised-button block color="warn">RECHAZAR</button>
                         </div>
                     </div>
                 </mat-card-actions>
@@ -125,7 +126,7 @@
             </mat-panel-title>
             <mat-panel-description>
                 POT-EOT-Recibos Publicos-UPZ
-                <mat-icon>map</mat-icon>
+                <mat-icon>attach_file</mat-icon>
             </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -166,31 +167,3 @@
         <mat-datepicker #picker></mat-datepicker>
     </mat-expansion-panel>
 </mat-accordion>
-
-
-<!--
-<mat-horizontal-stepper linear #stepper>
-    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-        <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>Fill out your address</ng-template>
-            <mat-form-field>
-                <mat-label>Address</mat-label>
-                <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
-            </mat-form-field>
-            <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
-            </div>
-        </form>
-    </mat-step>
-    <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
-        </div>
-    </mat-step>
-</mat-horizontal-stepper>
-
--->

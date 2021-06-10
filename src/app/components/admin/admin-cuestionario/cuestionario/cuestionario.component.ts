@@ -4,9 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Cuestionario } from 'src/app/model/cuestionario';
 import { CuestionarioNones } from 'src/app/model/cuestionnodes';
-import { CuestionarioService } from 'src/app/services/cuestionario.service';
-import { PreguntasService } from 'src/app/services/preguntas.service';
-import { RespuestasService } from 'src/app/services/respuestas.service';
+import { CuestionarioService } from 'src/app/services/MEBA/cuestionario.service';
+import { PreguntasService } from 'src/app/services/MEBA/preguntas.service';
+import { RespuestasService } from 'src/app/services/MEBA/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 import Swal from 'sweetalert2';
 

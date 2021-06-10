@@ -116,8 +116,8 @@ export class RuralComponent implements OnInit {
             this._snackBar.open("Ventas malas no puede ser mayor a ventas buenas", "Ok!", {
               duration: 3000,
             });
-          }          
-        }else{
+          }
+        } else {
           if (valorR > valorB) {
             valorR = 0
             this._snackBar.open("Ventas regulares no puede ser mayor a Ventas buenas", "Ok!", {
@@ -441,10 +441,26 @@ export class RuralComponent implements OnInit {
 
   }
 
-  displayBlack(form){
-    form.patchValue({
-      nombre: ""
-    }, { emitEvent: false })
+  async displayBlack(form, ac) {
+    const delay = (time = 500) => {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          return resolve(true)
+        }, time)
+      })
+    }
+    await delay()
+    let name = form.value.nombre
+    let tipo = form.value.tipo
+
+    const filterValue = (typeof name === 'string' ? name.toLowerCase() : name.name.toLowerCase())
+    const existe = this.datosAuto[ac].find(option => option.name.toLowerCase() === filterValue && option.tipo === tipo);
+
+    if (!existe) {
+      form.patchValue({
+        nombre: ""
+      }, { emitEvent: false })
+    }
   }
 
   displayFn(user: any): string {

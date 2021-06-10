@@ -13,9 +13,14 @@ export class NivelService {
 
   get() {
     return this.http.get(`${environment.AUTH_API}Nivel`);
-  }
- 
+  } 
   getByFlujo(flujo) {
     return this.http.get(`${environment.AUTH_API}Nivel/GetByFlujo?flujo=${flujo}`);
+  }
+  create(data){
+    return this.http.post(`${environment.AUTH_API}Nivel`,data);
+  }
+  update(data){
+    return this.http.put(`${environment.AUTH_API}Nivel`,data);
   }
 }
