@@ -27,10 +27,10 @@
                                 <input matInput formControlName="oficina" readonly>
                             </mat-form-field>
                         </div>
-                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                        <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="tipos">
                             <mat-form-field appearance="outline">
                                 <mat-label>Tipo Solicitud</mat-label>
-                                <mat-select formControlName="tipo" required>
+                                <mat-select formControlName="tipo" [compareWith]="compareFunction" required>
                                     <mat-option *ngFor="let item of tipos" [value]="item">
                                         {{item.Nombre}}
                                     </mat-option>
@@ -66,7 +66,8 @@
                             <button mat-button mat-raised-button (click)="onGestion(3)" color="accent">APROBAR</button>
                         </div>
                         <div fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%" *ngIf="dataSolicitud.Id">
-                            <button type="button" mat-button (click)="onGestion(2)" mat-raised-button block color="warn">RECHAZAR</button>
+                            <button type="button" mat-button (click)="onGestion(2)" mat-raised-button block
+                                color="warn">RECHAZAR</button>
                         </div>
                     </div>
                 </mat-card-actions>
@@ -79,13 +80,33 @@
                 <mat-step [stepControl]="niv" [editable]="niv.value.isEditable">
                     <form [formGroup]="niv">
                         <ng-template matStepLabel>{{niv.value.Nombre}}</ng-template>
-                        <mat-form-field>
-                            <mat-label>Name</mat-label>
-                            <input matInput formControlName="Estado" placeholder="Last name, First name" required>
-                        </mat-form-field>
-                        <div>
-                            <button mat-raised-button color="primary">APROBAR</button>
-                            <button mat-raised-button color="warn">DEVOLVER</button>
+
+                        <div fxLayout="row wrap">
+                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-list style="width: 100%;">
+                                    <div mat-subheader>Observaciones</div>
+                                    <mat-list-item class="content-obser mat-elevation-z1"
+                                        *ngFor="let his of niv.value.Historial">
+                                        <mat-icon mat-list-icon>account_circle</mat-icon>
+                                        <div mat-line>{{his.Comentario}}</div>
+                                        <div mat-line><small> {{his.Fecha | date:'yyyy-MM-dd HH:mm'}}</small> </div>
+                                    </mat-list-item>
+                                </mat-list>
+                            </div>
+                            <div *ngIf="niv.value.isEditable" class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                                <mat-form-field>
+                                    <mat-label>Nueva Observacion</mat-label>
+                                    <textarea formControlName="Observacion" matInput></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                <button mat-raised-button color="primary">APROBAR</button>
+                            </div>
+                            <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                <button mat-raised-button color="warn">DEVOLVER</button>
+                            </div>
+
                         </div>
                     </form>
                 </mat-step>
@@ -93,77 +114,5 @@
         </div>
     </form>
 </mat-horizontal-stepper>
-<br>
-<h2>Datos de la zonificacion</h2>
 
-<mat-accordion class="example-headers-align" multi>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                1. ARC-FO-003
-            </mat-panel-title>
-            <mat-panel-description>
-                Novedades de asesores y barrios
-                <mat-icon>account_circle</mat-icon>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <mat-form-field>
-            <mat-label>First name</mat-label>
-            <input matInput>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Age</mat-label>
-            <input matInput type="number" min="1">
-        </mat-form-field>
-
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                2. Adjuntos
-            </mat-panel-title>
-            <mat-panel-description>
-                POT-EOT-Recibos Publicos-UPZ
-                <mat-icon>attach_file</mat-icon>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <mat-form-field>
-            <mat-label>Country</mat-label>
-            <input matInput>
-        </mat-form-field>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                3. Zona Oficina - Mapa
-            </mat-panel-title>
-            <mat-panel-description>
-                Type the country name
-                <mat-icon>map</mat-icon>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <app-mapa></app-mapa>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            <mat-panel-title>
-                4. Limite de la Oficina
-            </mat-panel-title>
-            <mat-panel-description>
-                Inform the date you wish to travel
-                <mat-icon>date_range</mat-icon>
-            </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <mat-form-field>
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
-        </mat-form-field>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-expansion-panel>
-</mat-accordion>
+<app-registro-form></app-registro-form>

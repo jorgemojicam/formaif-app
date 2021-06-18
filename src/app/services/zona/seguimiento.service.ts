@@ -12,15 +12,15 @@ export class SeguimientoService {
   ) { }
 
   get() {
-    return this.http.get(`${environment.AUTH_API}Seguimiento`);
+    return this.http.get(`${environment.AUTH_API}SeguimientoZona`);
   } 
   getBySol(solicitud) {
-    return this.http.get(`${environment.AUTH_API}Seguimiento/GetBySol?sol=${solicitud}`);
+    return this.http.get(`${environment.AUTH_API}SeguimientoZona/GetBySol?sol=${solicitud}`);
   }
   create(data){
-    return this.http.post(`${environment.AUTH_API}Seguimiento`,data);
+    return this.http.post(`${environment.AUTH_API}SeguimientoZona`,data);
   }
   update(data){
-    return this.http.put(`${environment.AUTH_API}Seguimiento`,data);
+    return this.http.put(`${environment.AUTH_API}SeguimientoZona`,data);
   }
 }

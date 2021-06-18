@@ -1,7 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Asesor } from 'src/app/model/asesor';
-import { TokenStorageService } from 'src/app/services/token-storage.service';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatAccordion } from '@angular/material/expansion';
+export interface PeriodicElement {
+  CodigoDepartamento: string;
+  NombreDepartamento: string;
+  CodigoCiudadoMunicipio: string;
+  NombreCiudadoMunicipio: string;
+  CodigoBarrioVereda: string;
+  NombredelBarrioVereda: string;
+}
+const ELEMENT_DATA: PeriodicElement[] = [
+  {
+    CodigoDepartamento: "",
+    NombreDepartamento: "",
+    CodigoCiudadoMunicipio: "",
+    NombreCiudadoMunicipio: "",
+    CodigoBarrioVereda: "",
+    NombredelBarrioVereda: ""
+  }
+];
 @Component({
   selector: 'app-registro-form',
   templateUrl: './registro-form.component.html',
@@ -9,8 +25,10 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class RegistroFormComponent implements OnInit {
 
+  displayedColumns: string[] = ['CodigoDepartamento', 'NombreDepartamento', 'CodigoCiudadoMunicipio', 'NombreCiudadoMunicipio', 'CodigoBarrioVereda', 'NombredelBarrioVereda'];
+  dataSource = ELEMENT_DATA;
 
-
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   ngOnInit(): void {
   }

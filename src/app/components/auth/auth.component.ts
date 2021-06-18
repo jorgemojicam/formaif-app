@@ -9,7 +9,7 @@ import { Temas } from 'src/app/model/temas';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { IdbService } from 'src/app/services/idb.service';
-import { ProduccionService } from 'src/app/services/produccion.service';
+import { ProduccionService } from 'src/app/services/MEBA/produccion.service';
 import { RespuestasService } from 'src/app/services/MEBA/respuestas.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { environment } from 'src/environments/environment';

@@ -9,7 +9,7 @@ export class Asesor {
   Sucursales: Sucursal;
   Director: Asesor;
   Rol: {
-    Id: string
+    Id: number;
     Nombre: string
     Permiso: {
       Id: number

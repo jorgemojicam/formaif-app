@@ -41,6 +41,8 @@ import { RolComponent } from './components/admin/admin-rol/rol/rol.component';
 import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form.component';
 import { ZonaComponent } from './components/zona/zona.component';
 import { ZonaModule } from './components/zona/zona.module';
+import { AdjuntosZonaComponent } from './component/zona/adjuntos-zona/adjuntos-zona.component';
+import { AdjuntosComponent } from './components/zona/adjuntos/adjuntos.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { ZonaModule } from './components/zona/zona.module';
     GastosComponent,
     RolComponent,
     RolFormComponent,
-    ZonaComponent
+    ZonaComponent,
+    AdjuntosZonaComponent,
+    AdjuntosComponent
     
   ],
   imports: [

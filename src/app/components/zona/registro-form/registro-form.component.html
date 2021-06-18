@@ -1,1 +1,101 @@
-<p>registro-form works!</p>
+<h2>Datos de la zonificacion</h2>
+<mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                1. ARC-FO-003
+            </mat-panel-title>
+            <mat-panel-description>
+                Novedades de asesores y barrios
+                <mat-icon>account_circle</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="CodigoDepartamento">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.CodigoDepartamento}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="NombreDepartamento">
+                <th mat-header-cell *matHeaderCellDef> NombreDepartamento </th>
+                <td mat-cell *matCellDef="let element"> {{element.NombreDepartamento}} </td>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="CodigoCiudadoMunicipio">
+                <th mat-header-cell *matHeaderCellDef> CodigoCiudadoMunicipio </th>
+                <td mat-cell *matCellDef="let element"> {{element.CodigoCiudadoMunicipio}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="NombreCiudadoMunicipio">
+                <th mat-header-cell *matHeaderCellDef> NombreCiudadoMunicipio </th>
+                <td mat-cell *matCellDef="let element"> {{element.NombreCiudadoMunicipio}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="CodigoBarrioVereda">
+                <th mat-header-cell *matHeaderCellDef> CodigoBarrioVereda </th>
+                <td mat-cell *matCellDef="let element"> {{element.CodigoBarrioVereda}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="NombredelBarrioVereda">
+                <th mat-header-cell *matHeaderCellDef> NombredelBarrioVereda </th>
+                <td mat-cell *matCellDef="let element"> {{element.NombredelBarrioVereda}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                2. Adjuntos
+            </mat-panel-title>
+            <mat-panel-description>
+                POT-EOT-Recibos Publicos-UPZ
+                <mat-icon>attach_file</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <mat-label>Country</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                3. Zona Oficina - Mapa
+            </mat-panel-title>
+            <mat-panel-description>
+                Type the country name
+                <mat-icon>map</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-mapa></app-mapa>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                4. Limite de la Oficina
+            </mat-panel-title>
+            <mat-panel-description>
+                Inform the date you wish to travel
+                <mat-icon>date_range</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly>
+        </mat-form-field>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-expansion-panel>
+</mat-accordion>

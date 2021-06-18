@@ -1,41 +1,44 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TipoProduccion } from 'src/app/model/tipoproduccion';
-import { ProduccionService } from 'src/app/services/MEBA/produccion.service';
+import { Adjuntos } from 'src/app/model/zona/adjuntos';
+import { AdjuntosService } from 'src/app/services/zona/adjuntos.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'app-produccion',
-  templateUrl: './produccion.component.html',
-  styleUrls: ['./produccion.component.scss']
+  selector: 'app-adjuntos',
+  templateUrl: './adjuntos.component.html',
+  styleUrls: ['./adjuntos.component.scss']
 })
-export class ProduccionComponent implements OnInit {
+export class AdjuntosComponent implements OnInit {
 
+  @Input() id: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['Nombre', 'Ph', 'Precipitacion', 'Temperatura', 'edit', 'delete'];
-  dataSource: MatTableDataSource<TipoProduccion>;
+  dataSource: MatTableDataSource<Adjuntos>;
   @ViewChild(MatSort) sort: MatSort;
   datosPorud: any = []
-
+  
   constructor(
-    private serv: ProduccionService,
+    private _srvAdjuntos:AdjuntosService,
     public dialog: MatDialog,
-    private changeDetectorRefs: ChangeDetectorRef
   ) { }
 
   async ngOnInit() {
-    this.datosPorud = await this.getProduccion()
+    if(this.id){
+    this.datosPorud = await this.getBySol(this.id)
     this.dataSource = new MatTableDataSource(this.datosPorud);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    }
   }
 
-  getProduccion() {
+  
+  getBySol(idSolicitud) {
     return new Promise((resolve, reject) => {
-      this.serv.get().subscribe(
+      this._srvAdjuntos.getBySolicitud(idSolicitud).subscribe(
         (sus) => {
           resolve(sus)
         }, (err) => {
@@ -54,7 +57,7 @@ export class ProduccionComponent implements OnInit {
   }
 
   onEdit(datos) {
-    const msg = 'Produccion';
+    const msg = 'Adjuntos';
     this.openDialog(msg, datos);
   }
 
@@ -63,7 +66,7 @@ export class ProduccionComponent implements OnInit {
   }
 
   onCreate() {
-    const msg = 'Crear Produccion';
+    const msg = 'Crear Adjunto';
     this.openDialog(msg, null);
   }
 
@@ -73,14 +76,16 @@ export class ProduccionComponent implements OnInit {
     const config = {
       data: {
         mensaje: menssage,
-        form: 'produccion',
+        form: 'adjuntos',
         content: datos
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
-      this.datosPorud = await this.getProduccion()
-
+      this.datosPorud = await this.getBySol(this.id)
     })
   }
+
+  
+
 }

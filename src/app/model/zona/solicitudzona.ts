@@ -1,14 +1,11 @@
 import { Asesor } from "../asesor";
 import { Sucursal } from "../sucursal";
+import { Tipo } from "./tipo";
 
 export class SolicitudZona {
 
     Id: number;
-    Tipo: {
-        Id: number;
-        Nombre: string;
-        Iniciales: string;
-    }
+    Tipo: Tipo;
     Sucursal: Sucursal
     NumeroActual: number;
     NumeroAprobado: number;
