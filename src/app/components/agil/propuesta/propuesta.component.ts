@@ -79,6 +79,8 @@ export class PropuestaComponent implements OnInit {
       let montorecomentado = Utils.formatNumber(form.montorecomendado)
       let valor = Utils.formatNumber(form.valor)
       let valorcapital = Utils.formatNumber(form.valorcapital)
+      let valorcouta = Utils.formatNumber(form.valorcouta)
+      
 
       if (valor > montorecomentado) {
         valor = 0
@@ -136,7 +138,8 @@ export class PropuestaComponent implements OnInit {
       this.propuestaForm.patchValue({
         montorecomendado: isFinite(montorecomentado) ? montorecomentado.toLocaleString() : 0,
         valor: isFinite(valor) ? valor.toLocaleString() : 0,
-        valorcapital: isFinite(valorcapital) ? valorcapital.toLocaleString() : 0
+        valorcapital: isFinite(valorcapital) ? valorcapital.toLocaleString() : 0,
+        valorcouta: isFinite(valorcouta) ? valorcouta.toLocaleString() : 0
       }, { emitEvent: false })
 
       this.dataPropuesta = this.propuestaForm.value

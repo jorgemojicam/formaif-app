@@ -1,0 +1,79 @@
+<div class="container">
+    <div fxLayout="row wrap">
+        <div class="gr" fxFlex="45%" fxFlex.xs="45%" fxFlex.sm="45%">
+            <mat-form-field>
+                <mat-label>Buscar</mat-label>
+                <input matInput autocomplete="off" [formControl]="nombre" placeholder="Nombre" #input>
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="45%" fxFlex.xs="45%" fxFlex.sm="45%">
+            <mat-form-field>
+                <mat-label>Flujo</mat-label>
+                <mat-select [formControl]="flujo" [compareWith]="compareFunction">
+                    <mat-option *ngFor="let flu of aFlujo" [value]="flu">
+                        {{flu.Nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+            <button mat-mini-fab type="button" color="primary" (click)="onCreate()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="mat-elevation-z8">
+
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="flujo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Flujo </th>
+                <td mat-cell *matCellDef="let row"> {{row.Flujo.Nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="orden">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Orden </th>
+                <td mat-cell *matCellDef="let row"> {{row.Orden}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="aprobador">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Aprobador </th>
+                <td mat-cell *matCellDef="let row"> {{row.Rol.Nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="accent">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>

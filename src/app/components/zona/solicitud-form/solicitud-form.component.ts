@@ -13,7 +13,6 @@ import { SolicitudzonaService } from 'src/app/services/zona/solicitudzona.servic
 })
 export class SolicitudFormComponent implements AfterViewInit {
 
-
   displayedColumns: string[] = ['tipo', 'sucursal', 'estado', 'gestion'];
   dataSource: MatTableDataSource<SolicitudZona>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,7 +24,6 @@ export class SolicitudFormComponent implements AfterViewInit {
   constructor(
     private _srvSolicitudZ: SolicitudzonaService,
     private _route: Router,
-
   ) { }
 
   ngAfterViewInit() {

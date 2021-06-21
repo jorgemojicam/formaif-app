@@ -1,0 +1,39 @@
+table {
+    width: 100%;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.gr {
+    padding-right: 10px;
+}
+
+td,
+th {
+    width: 25%;
+}
+
+.container {
+    margin: 10px;
+}
+
+.mat-column-Nombre {
+    width: 30% !important;
+}
+
+.mat-column-edit {
+    width: 10% !important;
+}
+
+.mat-column-delete {
+    width: 10% !important;
+}
+
+.btnadd {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}

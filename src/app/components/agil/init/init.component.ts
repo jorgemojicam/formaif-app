@@ -1,11 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { Asesor } from 'src/app/model/asesor';
 import { Solicitud } from 'src/app/model/solicitud';
-import { EncryptService } from 'src/app/services/encrypt.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 
@@ -16,11 +14,20 @@ import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 })
 export class InitComponent implements OnInit {
 
-  @Input() datos  
+  @Input() datos
 
   initForm = new FormGroup({
-    solicitud: new FormControl('', [Validators.min(999999999), Validators.max(9999999999)]),
-    cedula: new FormControl('', [Validators.required, Validators.min(99999), Validators.max(9999999999)]),
+    solicitud: new FormControl('', [
+      Validators.min(999999999),
+      Validators.max(9999999999),
+      Validators.pattern("^[0-9]+$")
+    ]),
+    cedula: new FormControl('', [
+      Validators.required,
+      Validators.min(99999),
+      Validators.max(9999999999),
+      Validators.pattern("^[0-9]+$")
+    ]),
     asesor: new FormControl("1", Validators.required)
   });
 
@@ -33,11 +40,18 @@ export class InitComponent implements OnInit {
     private tokenStorage: TokenStorageService,
   ) { }
 
-  ngOnInit(): void {    
-    if (this.datos) {      
+  ngOnInit(): void {
+    if (this.datos) {
       this.initForm = new FormGroup({
-        solicitud: new FormControl(this.datos.solicitud, [Validators.min(999999999), Validators.max(9999999999)]),
-        cedula: new FormControl(this.datos.cedula, [Validators.required, Validators.min(99999), Validators.max(9999999999)]),
+        solicitud: new FormControl(this.datos.solicitud, [
+          Validators.min(999999999),
+          Validators.max(9999999999)
+        ]),
+        cedula: new FormControl(this.datos.cedula, [
+          Validators.required,
+          Validators.min(99999),
+          Validators.max(9999999999)
+        ]),
         asesor: new FormControl(this.datos.asesor, Validators.required)
       });
 
@@ -97,17 +111,17 @@ export class InitComponent implements OnInit {
       const numSolicitud = this.initForm.value.solicitud
 
       this.srvSol.getSol(cedula).subscribe((sol) => {
-        if (sol) {          
+        if (sol) {
           let solicitud = JSON.parse(sol) as Solicitud
-          solicitud.solicitud = numSolicitud          
+          solicitud.solicitud = numSolicitud
           this.srvSol.saveSol(cedula, solicitud)
 
-          this.srvSol.get().subscribe((allsol)=>{
+          this.srvSol.get().subscribe((allsol) => {
 
-            let aSolicitudOld =allsol.filter(a => a.cedula != cedula)
+            let aSolicitudOld = allsol.filter(a => a.cedula != cedula)
             let aSolicitud = allsol.find(a => a.cedula == cedula) as Solicitud
             aSolicitud.solicitud = numSolicitud
-            aSolicitudOld.push(aSolicitud)            
+            aSolicitudOld.push(aSolicitud)
             this.srvSol.save(aSolicitudOld)
           })
         }

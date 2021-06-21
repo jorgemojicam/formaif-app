@@ -726,7 +726,7 @@
                                 <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                     <mat-form-field>
                                         <mat-label>Periodo</mat-label>
-                                        <mat-select formControlName="periodo" id="periodo{{pas}}" required>
+                                        <mat-select formControlName="periodo" id="periodo{{pas}}" [compareWith]="compareFunction"  required>
                                             <mat-option>--</mat-option>
                                             <mat-option *ngFor="let pe of periodo" [value]="pe">
                                                 {{pe.name}}
@@ -1023,7 +1023,7 @@
                                         <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                             <mat-form-field>
                                                 <mat-label>Periodo Capital</mat-label>
-                                                <mat-select formControlName="periodocap" id="periodocap{{pas}}"
+                                                <mat-select formControlName="periodocap" [compareWith]="compareFunction" id="periodocap{{pas}}"
                                                     required>
                                                     <mat-option>-Seleccione-</mat-option>
                                                     <mat-option *ngFor="let pe of periodo" [value]="pe">
@@ -1148,7 +1148,7 @@
                                 <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <mat-label>Cuota difiere</mat-label>
-                                        <mat-select formControlName="cuotadifiere" required>
+                                        <mat-select formControlName="periodo" [compareWith]="compareFunction" required>
                                             <mat-option disabled>--</mat-option>
                                             <mat-option *ngFor="let pe of CuotasDifiere" [value]="pe">
                                                 {{pe.name}}

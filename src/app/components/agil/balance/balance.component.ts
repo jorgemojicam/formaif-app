@@ -1051,7 +1051,6 @@ export class BalanceComponent implements OnInit {
       cuota: [''],
       valor: [''],
       periodo: [''],
-      cuotadifiere: [''],
       cuotacalcu: '',
       tasa: [''],
       pago: [''],//Periodico =1, Irregular=2
@@ -1078,18 +1077,14 @@ export class BalanceComponent implements OnInit {
     let pasivosArray = this.fb.array([])
 
     pasivos.forEach(pas => {
-      let tipopas = [];
-      let periodopas = [];
-      let cuotadifpas = [];
+      let tipopas = []; 
       let periodocap = [];
       let periodoint = [];
+      
+      console.log(pas.periodo)
 
       if (pas.tipo)
-        tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
-      if (pas.periodo)
-        periodopas = this.periodo.find(pe => pe.id == pas.periodo.id)
-      if (pas.cuotadifiere)
-        cuotadifpas = this.CuotasDifiere.find(ca => ca.id == pas.cuotadifiere.id)
+        tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)     
       if (pas.periodocap)
         periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
       if (pas.periodoint)
@@ -1112,8 +1107,7 @@ export class BalanceComponent implements OnInit {
           destino: [pas.destino],
           cuota: [pas.cuota],
           valor: [pas.valor],
-          cuotadifiere: [cuotadifpas],
-          periodo: [periodopas],
+          periodo: [pas.periodo],
           cuotacalcu: [pas.cuotacalcu],
           tasa: [pas.tasa],
           pago: [pas.pago],//Periodico =1, Irregular=2
@@ -1207,6 +1201,10 @@ export class BalanceComponent implements OnInit {
         }
         break
     }
+  }
+
+  compareFunction(o1: any, o2: any) {
+    return o1 && o2 ? o1.Id === o2.Id : o1 === o2;
   }
 
 }

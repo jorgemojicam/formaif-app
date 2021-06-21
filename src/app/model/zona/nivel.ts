@@ -1,4 +1,5 @@
 import { Rol } from "../rol";
+import { Flujo } from "./flujo";
 
 export class Nivel {
 
@@ -6,5 +7,6 @@ export class Nivel {
     Nombre:string;
     Rol:Rol;
     Orden:number;
+    Flujo:Flujo    
     Editable:boolean;
 }

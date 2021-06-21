@@ -10,46 +10,54 @@
                 <mat-icon>account_circle</mat-icon>
             </mat-panel-description>
         </mat-expansion-panel-header>
+        <div class="mat-elevation-z8 table-sol">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Position Column -->
+                <ng-container matColumnDef="asesor">
+                    <th mat-header-cell *matHeaderCellDef> Asesor </th>
+                    <td mat-cell *matCellDef="let element"> {{element.asesor}} </td>
+                </ng-container>
 
-            <!-- Position Column -->
-            <ng-container matColumnDef="CodigoDepartamento">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.CodigoDepartamento}} </td>
-            </ng-container>
+                <!-- Position Column -->
+                <ng-container matColumnDef="CodigoDepartamento">
+                    <th mat-header-cell *matHeaderCellDef> Codigo Depto</th>
+                    <td mat-cell *matCellDef="let element"> {{element.CodigoDepartamento}} </td>
+                </ng-container>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="NombreDepartamento">
-                <th mat-header-cell *matHeaderCellDef> NombreDepartamento </th>
-                <td mat-cell *matCellDef="let element"> {{element.NombreDepartamento}} </td>
-            </ng-container>
+                <!-- Name Column -->
+                <ng-container matColumnDef="NombreDepartamento">
+                    <th mat-header-cell *matHeaderCellDef> Nombre Departamento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.NombreDepartamento}} </td>
+                </ng-container>
 
-            <!-- Weight Column -->
-            <ng-container matColumnDef="CodigoCiudadoMunicipio">
-                <th mat-header-cell *matHeaderCellDef> CodigoCiudadoMunicipio </th>
-                <td mat-cell *matCellDef="let element"> {{element.CodigoCiudadoMunicipio}} </td>
-            </ng-container>
+                <!-- Weight Column -->
+                <ng-container matColumnDef="CodigoCiudadoMunicipio">
+                    <th mat-header-cell *matHeaderCellDef> Codigo Ciudad</th>
+                    <td mat-cell *matCellDef="let element"> {{element.CodigoCiudadoMunicipio}} </td>
+                </ng-container>
 
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="NombreCiudadoMunicipio">
-                <th mat-header-cell *matHeaderCellDef> NombreCiudadoMunicipio </th>
-                <td mat-cell *matCellDef="let element"> {{element.NombreCiudadoMunicipio}} </td>
-            </ng-container>
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="NombreCiudadoMunicipio">
+                    <th mat-header-cell *matHeaderCellDef> Nombre Ciudad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.NombreCiudadoMunicipio}} </td>
+                </ng-container>
 
-            <ng-container matColumnDef="CodigoBarrioVereda">
-                <th mat-header-cell *matHeaderCellDef> CodigoBarrioVereda </th>
-                <td mat-cell *matCellDef="let element"> {{element.CodigoBarrioVereda}} </td>
-            </ng-container>
+                <ng-container matColumnDef="CodigoBarrioVereda">
+                    <th mat-header-cell *matHeaderCellDef> Codigo Barrio</th>
+                    <td mat-cell *matCellDef="let element"> {{element.CodigoBarrioVereda}} </td>
+                </ng-container>
 
-            <ng-container matColumnDef="NombredelBarrioVereda">
-                <th mat-header-cell *matHeaderCellDef> NombredelBarrioVereda </th>
-                <td mat-cell *matCellDef="let element"> {{element.NombredelBarrioVereda}} </td>
-            </ng-container>
+                <ng-container matColumnDef="NombredelBarrioVereda">
+                    <th mat-header-cell *matHeaderCellDef> Nombre Barrio</th>
+                    <td mat-cell *matCellDef="let element"> {{element.NombredelBarrioVereda}} </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
     </mat-expansion-panel>
     <mat-expansion-panel>
         <mat-expansion-panel-header>

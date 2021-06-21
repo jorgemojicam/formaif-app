@@ -16,6 +16,9 @@ export class SolicitudzonaService {
   getById(id){
     return this.http.get(`${environment.AUTH_API}SolicitudZona/GetBySol?id=${id}`)
   }
+   getByOfi(sucursal){
+    return this.http.get(`${environment.AUTH_API}SolicitudZona?Sucursal=${sucursal}`)
+  }
   create(data){
     return this.http.post(`${environment.AUTH_API}SolicitudZona`,data)
   }

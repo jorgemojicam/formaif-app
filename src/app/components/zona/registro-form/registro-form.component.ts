@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatPaginator } from '@angular/material/paginator';
 export interface PeriodicElement {
+  asesor:string,
   CodigoDepartamento: string;
   NombreDepartamento: string;
   CodigoCiudadoMunicipio: string;
@@ -10,13 +12,110 @@ export interface PeriodicElement {
 }
 const ELEMENT_DATA: PeriodicElement[] = [
   {
-    CodigoDepartamento: "",
-    NombreDepartamento: "",
-    CodigoCiudadoMunicipio: "",
-    NombreCiudadoMunicipio: "",
-    CodigoBarrioVereda: "",
-    NombredelBarrioVereda: ""
-  }
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },{
+    asesor: "Jorge Enrique Mojica",
+    CodigoDepartamento: "03",
+    NombreDepartamento: "Santander",
+    CodigoCiudadoMunicipio: "75",
+    NombreCiudadoMunicipio: "Floridablanca",
+    CodigoBarrioVereda: "21",
+    NombredelBarrioVereda: "La Cumbre"
+  },
 ];
 @Component({
   selector: 'app-registro-form',
@@ -25,9 +124,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class RegistroFormComponent implements OnInit {
 
-  displayedColumns: string[] = ['CodigoDepartamento', 'NombreDepartamento', 'CodigoCiudadoMunicipio', 'NombreCiudadoMunicipio', 'CodigoBarrioVereda', 'NombredelBarrioVereda'];
+  displayedColumns: string[] = ['asesor','CodigoDepartamento', 'NombreDepartamento', 'CodigoCiudadoMunicipio', 'NombreCiudadoMunicipio', 'CodigoBarrioVereda', 'NombredelBarrioVereda'];
   dataSource = ELEMENT_DATA;
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   ngOnInit(): void {

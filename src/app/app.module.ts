@@ -41,8 +41,10 @@ import { RolComponent } from './components/admin/admin-rol/rol/rol.component';
 import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form.component';
 import { ZonaComponent } from './components/zona/zona.component';
 import { ZonaModule } from './components/zona/zona.module';
-import { AdjuntosZonaComponent } from './component/zona/adjuntos-zona/adjuntos-zona.component';
 import { AdjuntosComponent } from './components/zona/adjuntos/adjuntos.component';
+import { NivelListComponent } from './components/zona/nivel/nivel-list/nivel-list.component';
+import { NivelFormComponent } from './components/zona/nivel/nivel-form/nivel-form.component';
+import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-list.component';
 
 @NgModule({
   declarations: [
@@ -73,8 +75,10 @@ import { AdjuntosComponent } from './components/zona/adjuntos/adjuntos.component
     RolComponent,
     RolFormComponent,
     ZonaComponent,
-    AdjuntosZonaComponent,
-    AdjuntosComponent
+    AdjuntosComponent,
+    NivelListComponent,
+    NivelFormComponent,
+    FlujoListComponent
     
   ],
   imports: [

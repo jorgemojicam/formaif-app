@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
 import { MapaComponent } from './mapa/mapa.component';
+import { NivelListComponent } from './nivel/nivel-list/nivel-list.component';
 import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
 import { ZonaComponent } from './zona.component';
 
@@ -30,6 +31,13 @@ const routes: Routes = [
         component: GestionZonaComponent,
         data: {
           routerName: 'gestion'
+        }
+      },      
+      {
+        path: 'nivel',
+        component: NivelListComponent,
+        data: {
+          routerName: 'nivel'
         }
       },
       {
