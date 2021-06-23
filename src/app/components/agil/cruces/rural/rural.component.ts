@@ -130,7 +130,6 @@ export class RuralComponent implements OnInit {
               duration: 3000,
             });
           }
-
         }
 
         let cantB = x.get('diasB').value.length
@@ -140,14 +139,11 @@ export class RuralComponent implements OnInit {
         let totalB = cantB * valorB * cantperiodo
         let totalR = cantR * valorR * cantperiodo
         let totalM = cantM * valorM * cantperiodo
-        let totaldias = Utils.formatNumber(x.get('totalDias').value)
-        let totaldiassel = (cantB + cantR + cantM) * cantperiodo
+        //let totaldias = Utils.formatNumber(x.get('totalDias').value)
+        let totaldias = (cantB + cantR + cantM) * cantperiodo
 
-        if (totaldias > totaldiassel) {
-          totaldias = 0
-          this._snackBar.open("Los dias no pueden superar los seleccionados", "Ok!", {
-            duration: 3000,
-          });
+        if (totaldias > 26) {
+          totaldias = 26
         }
 
         let promedio = (valorB + valorR + valorM) / valorpromedio
@@ -221,8 +217,9 @@ export class RuralComponent implements OnInit {
           let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
 
           //--------------------------Permanente---------------------------
-          let rendimientoCos = Utils.formatNumber(lot.get("rendimientoCos").value)
-          let unidadesCos = Utils.formatNumber(lot.get("unidadesCos").value)
+          let rendimientoCos = parseFloat(lot.get("rendimientoCos").value)
+          let unidadesCos = parseFloat(lot.get("unidadesCos").value)
+          console.log('unidadesCos ->',unidadesCos)
           let perdidaCos = (1 - (unidadesCos / rendimientoCos)) * 100
           let totalCos = unidadesCos * preciopromedio
           if (unidadesCos > rendimientoCos) {
@@ -331,7 +328,7 @@ export class RuralComponent implements OnInit {
             unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
             rendimientoTra: rendimientoTra,
             rendimientoPepeo: rendimientoPepeo,
-            unidadesCos: isFinite(unidadesCos) ? unidadesCos.toLocaleString('es-CO') : 0,
+            unidadesCos: unidadesCos,
             unidadesTra: isFinite(unidadesTra) ? unidadesTra.toLocaleString('es-CO') : 0,
             unidadesPepeo: isFinite(unidadesPepeo) ? unidadesPepeo.toLocaleString('es-CO') : 0,
             perdida: isFinite(perdida) ? perdida.toLocaleString('es-CO') : 0,
