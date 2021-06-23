@@ -14,28 +14,29 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
 })
 export class AdjuntosComponent implements OnInit {
 
-  @Input() id: any
+  @Input() idSolicitud: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['Nombre', 'Ph', 'Precipitacion', 'Temperatura', 'edit', 'delete'];
+  displayedColumns: string[] = ['tipo', 'estrato', 'edit', 'delete'];
   dataSource: MatTableDataSource<Adjuntos>;
   @ViewChild(MatSort) sort: MatSort;
   datosPorud: any = []
-  
+
   constructor(
-    private _srvAdjuntos:AdjuntosService,
+    private _srvAdjuntos: AdjuntosService,
     public dialog: MatDialog,
   ) { }
 
   async ngOnInit() {
-    if(this.id){
-    this.datosPorud = await this.getBySol(this.id)
-    this.dataSource = new MatTableDataSource(this.datosPorud);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+
+    if (this.idSolicitud) {
+      this.datosPorud = await this.getBySol(this.idSolicitud)
+      console.log(this.datosPorud)
+      this.dataSource = new MatTableDataSource(this.datosPorud);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     }
   }
 
-  
   getBySol(idSolicitud) {
     return new Promise((resolve, reject) => {
       this._srvAdjuntos.getBySolicitud(idSolicitud).subscribe(
@@ -70,22 +71,21 @@ export class AdjuntosComponent implements OnInit {
     this.openDialog(msg, null);
   }
 
-
   openDialog(menssage: string, datos: any) {
 
     const config = {
       data: {
         mensaje: menssage,
-        form: 'adjuntos',
+        form: 'Adjuntos',
         content: datos
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
     dialogRef.afterClosed().subscribe(async result => {
-      this.datosPorud = await this.getBySol(this.id)
+      this.datosPorud = await this.getBySol(this.idSolicitud)
     })
   }
 
-  
+
 
 }

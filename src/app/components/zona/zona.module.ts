@@ -10,14 +10,22 @@ import { MapaComponent } from './mapa/mapa.component';
 import { RegistroFormComponent } from './registro-form/registro-form.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ModalInfomapComponent } from './modal-infomap/modal-infomap.component';
+import { AdjuntosComponent } from './adjunto/adjuntos/adjuntos.component';
 
 @NgModule({
-  declarations: [SolicitudFormComponent, GestionZonaComponent, MapaComponent, RegistroFormComponent, ModalInfomapComponent],
+  declarations: [
+    SolicitudFormComponent,
+    GestionZonaComponent, 
+    MapaComponent,
+    RegistroFormComponent, 
+    AdjuntosComponent,
+    ModalInfomapComponent
+  ],
   imports: [
     CommonModule,
     ZonaRoutingModule,
     MaterialModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule
   ],

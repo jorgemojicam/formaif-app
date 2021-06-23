@@ -20,7 +20,7 @@ import { Tipo } from 'src/app/model/zona/tipo';
   styleUrls: ['./gestion-zona.component.scss']
 })
 export class GestionZonaComponent implements OnInit {
- 
+
   @ViewChild('stepper') stepper: MatStepper;
 
   flujo: any
@@ -56,18 +56,17 @@ export class GestionZonaComponent implements OnInit {
     private _srvHistorial: HistorialService,
     private _actiro: ActivatedRoute
   ) {
+    this._actiro.queryParamMap.subscribe((params) => {
+      this.id = params.get('id')
+    });
   }
-
-
   async ngOnInit() {
     const that = this
 
     this.tipos = await this.getTipo() as Tipo[]
 
-    this._actiro.queryParamMap.subscribe((params) => {
-      this.id = params.get('id')
-    });
-
+  
+    
     if (this.id) {
       let stepselect = 0
       let arrayNiveles = this._formBuilder.array([])
@@ -77,24 +76,26 @@ export class GestionZonaComponent implements OnInit {
 
       this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona
       this.dataSeguimiento = await this.getSeguimientoBySol(this.id) as Seguimiento[]
+    
+      if (this.dataSeguimiento) {
+        for (let i = 0; i < this.dataSeguimiento.length; i++) {
+          const seg = this.dataSeguimiento[i]
 
-      for (let i = 0; i < this.dataSeguimiento.length; i++) {
-        const seg = this.dataSeguimiento[i]
+          let edit = false
+          if (seg.Nivel.Rol.Id == this.dataUsuario.Rol.Id) {
+            edit = true
+            stepselect = i
+          }
+          let dataHistorial = await this.getHistorial(seg.Id)
 
-        let edit = false
-        if (seg.Nivel.Rol.Id == this.dataUsuario.Rol.Id) {
-          edit = true
-          stepselect = i
+          arrayNiveles.push(that._formBuilder.group({
+            Nombre: [seg.Nivel.Nombre],
+            Estado: ['', Validators.required],
+            Observacion: ['', Validators.required],
+            Historial: [dataHistorial],
+            isEditable: [edit]
+          }))
         }
-        let dataHistorial = await this.getHistorial(seg.Id)
-
-        arrayNiveles.push(that._formBuilder.group({
-          Nombre: [seg.Nivel.Nombre],
-          Estado: ['', Validators.required],
-          Observacion:['',Validators.required],
-          Historial: [dataHistorial],
-          isEditable: [edit]
-        }))
       }
       this.formNiveles = this._formBuilder.group({
         niveles: arrayNiveles

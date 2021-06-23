@@ -119,6 +119,7 @@ export class HomeMebaComponent implements AfterViewInit {
         return
       }
 
+      /*
       let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
       let solCarpeta = JSON.parse(strsolCarpeta)
 
@@ -127,6 +128,7 @@ export class HomeMebaComponent implements AfterViewInit {
         Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
         return
       }
+      */
 
       let asesores: Asesor = this._srvToken.getUser()
       this.loading = false

@@ -70,6 +70,7 @@ export class AdaptativaComponent implements OnInit {
           let peso = pre.get("Peso").value
           if (resultado) {
             let puntaje = resultado.Punaje
+            console.log('puntaje ', puntaje)
             let porcentaje = (peso / 100) * puntaje
             console.log('porcentaje ', porcentaje)
             acumulado += porcentaje

@@ -21,7 +21,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthComponent implements OnInit {
 
-  isLogged: Boolean = false
+  loading: Boolean = false
   loginForm = new FormGroup({
     Username: new FormControl('', [Validators.pattern('^[A-Za-z0-9-.-/]+$')]),
     Passw: new FormControl('', Validators.required)
@@ -50,7 +50,7 @@ export class AuthComponent implements OnInit {
 
   async onLogin(user: User) {
 
-    this.isLogged = true
+    this.loading = true
     let res = await this.login(user) as any
         
     let resuser = res.data
@@ -58,7 +58,7 @@ export class AuthComponent implements OnInit {
       this.tokenStorage.saveToken(resuser.token);
       this.tokenStorage.saveUser(resuser.usario);
       this.route.navigate(['lobby']);
-      this.isLogged = false
+      this.loading = false
       this.getRespuestas()
     } else {
 
@@ -71,7 +71,7 @@ export class AuthComponent implements OnInit {
         errMsg = "Se presento error con la conexion con el servidor. " + resuser.message
       }
       this._snackBar.open(errMsg, "Ok!", { duration: 3000, });
-      this.isLogged = false
+      this.loading = false
     }
 
 

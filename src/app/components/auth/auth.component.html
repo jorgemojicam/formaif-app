@@ -1,39 +1,39 @@
-<div fxLayout="row" fxLayoutAlign="center center" class="content" >
+<div fxLayout="row" fxLayoutAlign="center center" class="content">
     <mat-card fxFlex.xs="90%" fxFlex="40%">
         <img mat-card-image src="assets/pictures/fdlmlog.png" alt="Photo of a Shiba Inu">
         <mat-card-content>
-            <ng-container *ngIf="!isLogged; else loading">
-                <mat-card-title>Inicio Sesión</mat-card-title>
-                <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
-                    <p>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Usuario</mat-label>
-                            <input matInput placeholder="Ingrese usuario" autocomplete="off" formControlName="Username">
-                            <mat-icon matSuffix>person</mat-icon>
-                        </mat-form-field>
-                    </p>
-                    <p>
-                        <mat-form-field appearance="outline">
-                            <mat-label>Contraseña</mat-label>
-                            <input [type]="hidenPass ? 'text' : 'password'" autocomplete="off" matInput placeholder="Ingrese contraseña"
-                                formControlName="Passw">
-                            <mat-icon matSuffix>lock</mat-icon>
-                            <mat-hint>
-                                <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
-                                </mat-checkbox>
-                            </mat-hint>
-                        </mat-form-field>
-                    </p>
-                    <p>
-                        <button type="submit" mat-raised-button [disabled]="!loginForm.valid" color="primary">Login</button>
-                    </p>
-                </form>
-            </ng-container>
-            <ng-template #loading>
-                <div class="container-spinner">
-                    <mat-spinner></mat-spinner>
-                </div>
-            </ng-template>
+
+            <mat-card-title>Inicio Sesión</mat-card-title>
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Usuario</mat-label>
+                        <input matInput placeholder="nombre.apellido" [readonly]="loading" autocomplete="off"
+                            formControlName="Username">
+                        <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input [type]="hidenPass ? 'text' : 'password'" autocomplete="off" matInput
+                            placeholder="Ingrese contraseña" [readonly]="loading" formControlName="Passw">
+                        <mat-icon matSuffix>lock</mat-icon>
+                        <mat-hint>
+                            <mat-checkbox (change)="showPass($event)" [(checked)]="hidenPass">Mostrar contraseña
+                            </mat-checkbox>
+                        </mat-hint>
+                    </mat-form-field>
+                </p>
+                <p>
+                    <button type="submit" mat-raised-button [disabled]="!loginForm.valid || loading" color="primary">
+                        <span *ngIf="!loading">Login</span>
+                        <span *ngIf="loading">Ingresando...</span>
+                    </button>
+                </p>
+            </form>
+
+            <mat-progress-bar *ngIf="loading" mode="buffer"></mat-progress-bar>
         </mat-card-content>
         <small>{{currentApplicationVersion}}</small>
     </mat-card>

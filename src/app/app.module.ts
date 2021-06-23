@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
@@ -20,19 +20,18 @@ import { PropuestaComponent } from './components/agil/propuesta/propuesta.compon
 import { UbicacionComponent } from './components/agil/ubicacion/ubicacion.component';
 import { AnalisisComponent } from './components/agil/analisis/analisis.component';
 import { FlujocajaComponent } from './components/agil/flujocaja/flujocaja.component';
-import { AnalisisagroComponent} from './components/agil/analisisagro/analisisagro.component';
+import { AnalisisagroComponent } from './components/agil/analisisagro/analisisagro.component';
 import { ProfileComponent } from './components/admin/profile/profile.component';
 import { ResultadoComponent } from './components/agil/resultado/resultado.component';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { MebaModule } from './components/meba/meba.module';
 import { MebaComponent } from './components/meba/meba.component';
-
 import { CuestionarioComponent } from './components/admin/admin-cuestionario/cuestionario/cuestionario.component';
 import { TemasFormComponent } from './components/admin/admin-cuestionario/temas-form/temas-form.component';
 import { PreguntasFormComponent } from './components/admin/admin-cuestionario/preguntas-form/preguntas-form.component';
 import { RespuestasFormComponent } from './components/admin/admin-cuestionario/respuestas-form/respuestas-form.component';
 import { AgilModule } from './components/agil/agil.module';
-import { AgilComponent } from "./components/agil/agil.component";  
+import { AgilComponent } from "./components/agil/agil.component";
 import { ProduccionComponent } from './components/admin/admin-produccion/produccion/produccion.component';
 import { ProduccionFormComponent } from './components/admin/admin-produccion/produccion-form/produccion-form.component';
 import { BalanceComponent } from './components/agil/balance/balance.component';
@@ -41,10 +40,10 @@ import { RolComponent } from './components/admin/admin-rol/rol/rol.component';
 import { RolFormComponent } from './components/admin/admin-rol/rol-form/rol-form.component';
 import { ZonaComponent } from './components/zona/zona.component';
 import { ZonaModule } from './components/zona/zona.module';
-import { AdjuntosComponent } from './components/zona/adjuntos/adjuntos.component';
 import { NivelListComponent } from './components/zona/nivel/nivel-list/nivel-list.component';
 import { NivelFormComponent } from './components/zona/nivel/nivel-form/nivel-form.component';
 import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-list.component';
+import { AdjuntosFormComponent } from './components/zona/adjunto/adjuntos-form/adjuntos-form.component';
 
 @NgModule({
   declarations: [
@@ -75,11 +74,11 @@ import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-lis
     RolComponent,
     RolFormComponent,
     ZonaComponent,
-    AdjuntosComponent,
     NivelListComponent,
     NivelFormComponent,
+    AdjuntosFormComponent,
     FlujoListComponent
-    
+
   ],
   imports: [
     BrowserModule,
@@ -94,20 +93,20 @@ import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-lis
     HttpClientModule,
     MebaModule,
     AgilModule,
-    ZonaModule 
+    ZonaModule
   ],
   entryComponents: [
     ModalComponent,
     ProfileComponent
   ],
-   providers: [
-     AuthGuard,
-     {
-       provide: HTTP_INTERCEPTORS,
-       useClass:AuthInterceptor,
-       multi:true
-     }
-   ],
+  providers: [
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
