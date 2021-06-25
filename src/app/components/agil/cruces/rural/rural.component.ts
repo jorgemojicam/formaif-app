@@ -853,5 +853,10 @@ export class RuralComponent implements OnInit {
       nombre: ""
     }, { emitEvent: false })
   }
+  changeMes(e){
+    this._snackBar.open("Ingrese la cantidad de meses a partir del mes seleccionado donde tendra produccion y la cantidad de meses donde no tendra produccion", "Ok!", {
+      duration: 99000,
+    });
+  }
 
 }
