@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DepartamentoService } from 'src/app/services/zona/departamento.service';
+import { MunicipioService } from 'src/app/services/zona/municipio.service';
 
 @Component({
   selector: 'app-adjuntos-form',
@@ -11,10 +12,16 @@ export class AdjuntosFormComponent implements OnInit {
 
   @Input() datos: any
   aDepartamento: any[]
+  aMunicipio: any[]
+  aTipo: any[] = [
+    { id: "1", nombre: "Cambio de Nombre" },
+    { id: "2", nombre: "Barrio Nuevo" },
+  ]
   loading: boolean = false
 
   constructor(
-    private _srvDepartamento: DepartamentoService
+    private _srvDepartamento: DepartamentoService,
+    private _srvMunicipio: MunicipioService
   ) { }
 
 
@@ -24,6 +31,7 @@ export class AdjuntosFormComponent implements OnInit {
     departamento: new FormControl(),
     municipio: new FormControl(),
     barrio: new FormControl(),
+    barrionuevo:new FormControl(),
     pot: new FormControl(),
     eot: new FormControl(),
     opz: new FormControl(),
@@ -31,6 +39,7 @@ export class AdjuntosFormComponent implements OnInit {
   })
 
   async ngOnInit() {
+
     this.aDepartamento = await this.getDepartamento() as any[]
   }
 
@@ -46,8 +55,26 @@ export class AdjuntosFormComponent implements OnInit {
     })
   }
 
-  selectedDepto(e) {
+  getMunicipio(depto) {
+    return new Promise(resolve => {
+      this._srvMunicipio.get(depto).subscribe(
+        (suc) => {
+          resolve(suc)
+        }, (err) => {
+          console.log(err)
+          resolve([])
+        })
+    })
+  }
+
+  async selectedDepto(e) {
     console.log(e)
+    if (e.value) {
+      this.aMunicipio = await this.getMunicipio(e.value.Id) as any[]
+    }
+  }
+  async selectedMun(e) {
+    console.log(e.value)
   }
 
   onSave() {

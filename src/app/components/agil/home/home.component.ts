@@ -46,7 +46,6 @@ export class HomeComponent implements AfterViewInit {
     private srvSol: IdbSolicitudService,
     private route: Router,
     private tokenStorage: TokenStorageService,
-    private ofiServ: OficinaService,
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
     private _bottomSheet: MatBottomSheet,
@@ -195,11 +194,14 @@ export class HomeComponent implements AfterViewInit {
        */
         if (aseso) {
 
+          const emailDirector = aseso.Director.Correo
+          const nombreDirector = aseso.Director.Nombre
+
           Swal.fire({
             title: '¿Desea Enviar Analisis de credito?',
             html: `Se enviara email al director:
-        <br><b>${aseso.Director.Nombre}</b>, 
-        <br><small>${aseso.Director.Correo}</small>
+        <br><b>${nombreDirector}</b>, 
+        <br><small>${emailDirector}</small>
         <br><b>Solicitud :</b>${numeroCedula}
         <br><b>Oficina :</b>${aseso.Sucursales.Nombre}`,
             icon: 'warning',
@@ -235,7 +237,6 @@ export class HomeComponent implements AfterViewInit {
                         b.textContent = "Generacion Flujo de caja pdf..."
                         pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
-                        //TODO:Carpeta digital
                         //b.textContent = "Insertando en carpeta digital..."
                         //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
                         //console.log("Insetando analisis el carpeta digital", resCarpeta)
@@ -253,8 +254,7 @@ export class HomeComponent implements AfterViewInit {
                       }
 
                       b.textContent = "Enviando email..."
-                      let email = aseso.Director.Correo
-                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
+                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, emailDirector)
 
                       b.textContent = "Insertando el analisis..."
                       await this.insert(this.datasol)
@@ -294,6 +294,7 @@ export class HomeComponent implements AfterViewInit {
       }
     } catch (e) {
       console.log(e)
+      Swal.close()
       this.procesando = false
       Swal.fire({ icon: 'error', title: 'Error', text: 'Se esta presentando error por favor reportar al administrador: ' + e })
     }
@@ -359,6 +360,7 @@ export class HomeComponent implements AfterViewInit {
           return resolve(su)
         },
         (er) => {
+          console.log(er)
           Swal.close()
           Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.reason, 'error')
           this.procesando = false
@@ -408,9 +410,11 @@ export class HomeComponent implements AfterViewInit {
     let faltantes: string = ""
 
     if (this.datasol.Balance) {
+
       if (this.datasol.Balance.inventarioTotal == 0) {
         faltantes += "<br>Inventario"
       }
+
       if (this.datasol.Balance.actnegTotal == 0) {
         faltantes += "<br>Activos del Negocio"
       }
@@ -443,6 +447,9 @@ export class HomeComponent implements AfterViewInit {
           let num: number = act + 1
           const cruces = this.datasol.CrucesAgro[act];
           if (cruces.tipo) {
+            if (cruces.tipo == 1) {
+
+            }
 
           } else {
             faltantes += "<br>Tipo de Actividad " + num

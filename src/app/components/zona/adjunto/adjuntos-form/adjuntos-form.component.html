@@ -1,25 +1,58 @@
-<form [formGroup]="adjuntosForm" (ngSubmit)="onSave()">
-    <div fxLayout="row wrap">
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-form-field>
-                <mat-select formControlName="departamento" (selectionChange)="selectedDepto($event)" placeholder="">
-                    <mat-option selected disabled>Seleccione departamento</mat-option>
-                    <mat-option *ngFor="let dep of aDepartamento" [value]="dep">
-                        {{dep.Nombre}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+<div class="container">
+    <form [formGroup]="adjuntosForm" (ngSubmit)="onSave()">
+        <div fxLayout="row wrap">
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-form-field>
+                    <mat-label>Seleccione Tipo Solicitud</mat-label>
+                    <mat-select formControlName="tipo" placeholder="Seleccione">
+                        <mat-option *ngFor="let tip of aTipo" [value]="tip">
+                            {{tip.nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-form-field>
+                    <mat-label>Seleccione Departamento</mat-label>
+                    <mat-select formControlName="departamento" (selectionChange)="selectedDepto($event)" placeholder="">
+                        <mat-option *ngFor="let dep of aDepartamento" [value]="dep">
+                            {{dep.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-form-field>
+                    <mat-label>Seleccione Municipio</mat-label>
+                    <mat-select formControlName="municipio" (selectionChange)="selectedMun($event)" placeholder="">
+                        <mat-option *ngFor="let mun of aMunicipio" [value]="mun">
+                            {{mun.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-form-field>
+                    <mat-label>Seleccione Barrio</mat-label>
+                    <mat-select formControlName="barrio" placeholder="">
+                        <mat-option *ngFor="let mun of aMunicipio" [value]="mun">
+                            {{mun.Nombre}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
 
-        <br>
-    </div>
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-    <div *ngIf="!loading" fxLayout="row wrap">
-        <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-            <button type="submit" mat-raised-button [disabled]="!adjuntosForm.valid" color="primary">Guardar</button>
+            <br>
         </div>
-        <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-            <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        <div *ngIf="!loading" fxLayout="row wrap">
+            <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                <button type="submit" mat-raised-button [disabled]="!adjuntosForm.valid"
+                    color="primary">Guardar</button>
+            </div>
+            <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
