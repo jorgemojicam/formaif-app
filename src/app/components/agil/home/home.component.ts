@@ -22,7 +22,6 @@ import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 import Utils from 'src/app/utils';
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-home',
@@ -141,154 +140,162 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  async onSend(element) {    
+  async onSend(element) {
 
-    Swal.fire({
-      title: 'Cargando',
-      html: 'Tenga calma por favor, se esta procensando la información ...',
-      allowOutsideClick: false,
-      didOpen: async () => {
-        Swal.showLoading()
-      }
-    })
-
-    this.procesando = true
-    if (element.solicitud == "") {
+    try {
       Swal.fire({
-        icon: 'info',
-        title: 'Información Incompleta',
-        html: 'Debe ingresar el numero de solicitud',
+        title: 'Cargando',
+        html: 'Tenga calma por favor, se esta procensando la información ...',
+        allowOutsideClick: false,
+        didOpen: async () => {
+          Swal.showLoading()
+        }
       })
-      this.onEdit(element)
-      this.procesando = false
-      return
-    }
 
-    if (navigator.onLine) {
-
-      const numeroCedula: string = element.cedula.toString();
-
-      this.datasol = await this.getSolicitud(numeroCedula) as Solicitud
-
-      let faltante = this.validateSol()
-
-      if (faltante != "") {
+      this.procesando = true
+      if (!element.solicitud || element.solicitud == "" || element.solicitud.length < 10) {
         this.procesando = false
         Swal.fire({
           icon: 'info',
           title: 'Información Incompleta',
-          html: 'Aun tiene pendiente completar la siguiente información: ' + faltante,
+          html: 'Debe ingresar el numero de solicitud',
+          didOpen: async () => {
+            Swal.hideLoading()
+          }
         })
+        this.onEdit(element)
         return
       }
 
-      let aseso = await this.getDirector() as Asesor    
-      /*
-      let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
-      let solCarpeta = JSON.parse(strcarpetaDig)
+      if (navigator.onLine) {
 
-      if (solCarpeta.EstadoCarpeta !== "Abierto") {
-        Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
-        this.procesando = false
-        return
-      }
-     */
-      if (aseso) {
+        const numeroCedula: string = element.cedula.toString();
+        this.datasol = await this.getSolicitud(numeroCedula) as Solicitud
+        let faltante = this.validateSol()
+        if (faltante != "") {
+          this.procesando = false
+          Swal.fire({
+            icon: 'info',
+            title: 'Información Incompleta',
+            html: 'Aun tiene pendiente completar la siguiente información: ' + faltante,
+          })
+          return
+        }
 
-        Swal.fire({
-          title: '¿Desea Enviar Analisis de credito?',
-          html: `Se enviara email al director:
+        let aseso = await this.getDirector() as Asesor
+        /*
+        let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
+        let solCarpeta = JSON.parse(strcarpetaDig)
+  
+        if (solCarpeta.EstadoCarpeta !== "Abierto") {
+          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+          this.procesando = false
+          return
+        }
+       */
+        if (aseso) {
+
+          Swal.fire({
+            title: '¿Desea Enviar Analisis de credito?',
+            html: `Se enviara email al director:
         <br><b>${aseso.Director.Nombre}</b>, 
         <br><small>${aseso.Director.Correo}</small>
         <br><b>Solicitud :</b>${numeroCedula}
         <br><b>Oficina :</b>${aseso.Sucursales.Nombre}`,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Si, Enviar!',
-          cancelButtonText: 'No, Cancelar!',
-          reverseButtons: true,
-          allowOutsideClick: false
-        }).then(async (result) => {
-          if (result.isConfirmed) {
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, Enviar!',
+            cancelButtonText: 'No, Cancelar!',
+            reverseButtons: true,
+            allowOutsideClick: false
+          }).then(async (result) => {
+            if (result.isConfirmed) {
 
-            Swal.fire({
-              title: 'Enviando analisis de credito!',
-              html: 'Por favor espere mientras se envia el analisis<br><b></b>',
-              allowOutsideClick: false,
-              didOpen: async () => {
-                Swal.showLoading()
+              Swal.fire({
+                title: 'Enviando analisis de credito!',
+                html: 'Por favor espere mientras se envia el analisis<br><b></b>',
+                allowOutsideClick: false,
+                didOpen: async () => {
+                  Swal.showLoading()
 
-                const content = Swal.getContent()
-                if (content) {
-                  const b = content.querySelector('b')
-                  if (b) {
+                  const content = Swal.getContent()
+                  if (content) {
+                    const b = content.querySelector('b')
+                    if (b) {
 
-                    let pdfBase64: string = "";
-                    let pdfBase64Agro: string = "";
+                      let pdfBase64: string = "";
+                      let pdfBase64Agro: string = "";
 
-                    if (this.datasol.asesor == 2) {
-                      const contentagro = this.analisisAgro.reporte.nativeElement
-                      const contentflujo = this.flujo.reporte.nativeElement
+                      if (this.datasol.asesor == 2) {
+                        const contentagro = this.analisisAgro.reporte.nativeElement
+                        const contentflujo = this.flujo.reporte.nativeElement
 
-                      b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
-                      b.textContent = "Generacion Flujo de caja pdf..."
-                      pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
+                        b.textContent = "Generacion Analisis de credito pdf..."
+                        pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
+                        b.textContent = "Generacion Flujo de caja pdf..."
+                        pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
-                      b.textContent = "Insertando en carpeta digital..."
-                      let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
-                      console.log("Insetando analisis el carpeta digital", resCarpeta)
+                        //TODO:Carpeta digital
+                        //b.textContent = "Insertando en carpeta digital..."
+                        //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
+                        //console.log("Insetando analisis el carpeta digital", resCarpeta)
 
-                      let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64Agro, 3)
-                      console.log("Insertando flujo en carpeta", resCarpetaFlujo)
+                        //let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64Agro, 3)
+                        //console.log("Insertando flujo en carpeta", resCarpetaFlujo)
 
-                    } else if (this.datasol.asesor == 1) {
-                      const contentana = this.analisis.reporte.nativeElement
-                      b.textContent = "Generacion Analisis de credito pdf..."
-                      pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
+                      } else if (this.datasol.asesor == 1) {
+                        const contentana = this.analisis.reporte.nativeElement
+                        b.textContent = "Generacion Analisis de credito pdf..."
+                        pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
 
-                      let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
-                      console.log("Insertndo el carpeta digital", solCarpeta)
+                        //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
+                        //console.log("Insertndo el carpeta digital", solCarpeta)
+                      }
+
+                      b.textContent = "Enviando email..."
+                      let email = aseso.Director.Correo
+                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
+
+                      b.textContent = "Insertando el analisis..."
+                      await this.insert(this.datasol)
+
+                      Swal.close()
+                      Swal.fire('Enviado!', 'Se envio correctamente', 'success')
+                      this.procesando = false
                     }
-
-                    b.textContent = "Enviando email..."
-                    let email = aseso.Director.Correo
-                    await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, email)
-
-                    b.textContent = "Insertando el analisis..."
-                    await this.insert(this.datasol)
-
-                    Swal.close()
-                    Swal.fire('Enviado!', 'Se envio correctamente', 'success')
-                    this.procesando = false
                   }
                 }
-              }
-            })
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            this.procesando = false
-            Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
-          }
-        })
+              })
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              this.procesando = false
+              Swal.fire('Cancelado', 'El proceso de envio se interrumpio :(', 'error')
+            }
+          })
 
 
-      } else {
+        } else {
+          this.procesando = false
+          Swal.fire({
+            icon: 'info',
+            title: 'No autorizado',
+            text: 'En este momento la oficina a la que corresponde no tiene director por favor comuniquese con el area de riesgos',
+          })
+        }
+
+      }
+      else {
         this.procesando = false
         Swal.fire({
           icon: 'info',
-          title: 'No autorizado',
-          text: 'En este momento la oficina a la que corresponde no tiene director por favor comuniquese con el area de riesgos',
+          title: 'Oops...',
+          text: 'En este momento no tiene conexion a internet, su informacion seguira guardada en el movil pero debe tener conexion para enviarla :('
         })
+
       }
-
-    } else {
+    } catch (e) {
+      console.log(e)
       this.procesando = false
-      Swal.fire({
-        icon: 'info',
-        title: 'Oops...',
-        text: 'En este momento no tiene conexion a internet, su informacion seguira guardada en el movil pero debe tener conexion para enviarla :('
-      })
-
+      Swal.fire({ icon: 'error', title: 'Error', text: 'Se esta presentando error por favor reportar al administrador: ' + e })
     }
   }
 
@@ -383,7 +390,7 @@ export class HomeComponent implements AfterViewInit {
   //Consulta los datos del diretor de la oficina a la cual esta asociado el colaborador
   getDirector() {
     let asesores: Asesor = this.tokenStorage.getUser()
-  
+
     if (asesores.Director) {
       return asesores as Asesor
     } else {

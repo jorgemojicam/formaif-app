@@ -115,4 +115,4 @@
     </form>
 </mat-horizontal-stepper>
 
-<app-registro-form [idSolicitud]="id"></app-registro-form>
+<app-registro-form *ngIf="id" [idSolicitud]="id"></app-registro-form>

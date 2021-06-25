@@ -1,1 +1,25 @@
+<form [formGroup]="adjuntosForm" (ngSubmit)="onSave()">
+    <div fxLayout="row wrap">
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <mat-select formControlName="departamento" (selectionChange)="selectedDepto($event)" placeholder="">
+                    <mat-option selected disabled>Seleccione departamento</mat-option>
+                    <mat-option *ngFor="let dep of aDepartamento" [value]="dep">
+                        {{dep.Nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
+        <br>
+    </div>
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    <div *ngIf="!loading" fxLayout="row wrap">
+        <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button type="submit" mat-raised-button [disabled]="!adjuntosForm.valid" color="primary">Guardar</button>
+        </div>
+        <div class="btn" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+        </div>
+    </div>
+</form>

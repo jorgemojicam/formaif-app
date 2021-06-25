@@ -82,16 +82,18 @@ export class FlujocajaComponent implements OnInit {
       if (this.datasolicitud.Propuesta) {
         let planinversion = Utils.formatNumber(this.datasolicitud.Propuesta.valorcapital)
         let cantidadValores = []
-        this.datasolicitud.CrucesAgro.forEach(act => {
-          if (act.tipo != 0 && act.tipo != 3) {
-            cantidadValores.push(0)
-          }
-        });
-        this.datasolicitud.CrucesAgro.forEach(act => {
-          if (act.tipo != 0 && act.tipo != 3) {
-            cantidadValores.push(0)
-          }
-        });
+        if (this.datasolicitud.CrucesAgro) {
+          this.datasolicitud.CrucesAgro.forEach(act => {
+            if (act.tipo != 0 && act.tipo != 3) {
+              cantidadValores.push(0)
+            }
+          });
+          this.datasolicitud.CrucesAgro.forEach(act => {
+            if (act.tipo != 0 && act.tipo != 3) {
+              cantidadValores.push(0)
+            }
+          });
+        }
 
         //-Construccion de la proyeccion segun el plazo
         for (let i = 1; i <= this.datasolicitud.Propuesta.plazo; i++) {
@@ -107,395 +109,397 @@ export class FlujocajaComponent implements OnInit {
 
         this.cantidadTotalAct = this.dataFlujo.length
         //-Actividades
-        const cruces = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0)
-        for (let cr = 0; cr < cruces.length; cr++) {
-          let cruce: CrucesAgro = cruces[cr];
-          if (cruce.tipo != 0 && cruce.tipo != 3) {
-            let totalingresos = 0
-            let totalegresos = 0
+        if (this.datasolicitud.CrucesAgro) {
+          const cruces = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0)
+          for (let cr = 0; cr < cruces.length; cr++) {
+            let cruce: CrucesAgro = cruces[cr];
+            if (cruce.tipo != 0 && cruce.tipo != 3) {
+              let totalingresos = 0
+              let totalegresos = 0
 
-            //-Posicion de las columnas ingresos
-            let columnIngreso = cr + 3
-            let columnaTotalIngresos = this.cantidadActividades + 3
+              //-Posicion de las columnas ingresos
+              let columnIngreso = cr + 3
+              let columnaTotalIngresos = this.cantidadActividades + 3
 
-            //-Posicion de las columnas Egresos
-            let columnEgresos = columnaTotalIngresos + cr + 1
-            let columnaTotalEgreos = columnaTotalIngresos + this.cantidadActividades + 1
-
-            for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
-              const flujo = this.dataFlujo[flujocaja];
-              totalingresos = 0
-              // ---------------- pecuario ----------------------------------
-              for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
-                let lotesP: LotePecuario = cruce.lotesPecuario[lote];
-                totalegresos = 0
-                //----------------------------Egresos---------------------------------
-                if (lotesP.egresos) {
-                  for (let eg = 0; eg < lotesP.egresos.length; eg++) {
-                    const egreso = lotesP.egresos[eg];
-
-                    for (let me = 0; me < egreso.mes.length; me++) {
-                      const mes = egreso.mes[me];
-                      if (flujo[1] == mes) {
-
-                        totalegresos = Utils.formatNumber(egreso.total)
-                        let egresospas = Utils.formatNumber(this.dataFlujo[flujocaja][columnEgresos])
-                        this.dataFlujo[flujocaja][columnEgresos] = totalegresos + egresospas;
-
-                        let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                        this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                        let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                        this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
-
-                      }
-                    }
-                  }
-                }
-              }
-
-              // ---------------- agricola ----------------------------------
-              //-Permanente
-              if (cruce.nombre.tipoproducto == "Permanente") {
-                let totalCosecha = 0
-                let totalTraviesa = 0
-                let totalPepeo = 0
-
-                //-------------------Ingresos---------------------------------
-                for (let index = 0; index < cruce.lotesAgro.length; index++) {
-                  const lote = cruce.lotesAgro[index];
-                  totalCosecha += Utils.formatNumber(lote.totalCos);
-                  totalTraviesa += Utils.formatNumber(lote.totalTra);
-                  totalPepeo += Utils.formatNumber(lote.totalPepeo);
-                }
-
-                let cantMesCos = cruce.mesCos.length
-                let cantMesTra = cruce.mesTra.length
-                let cantMesPepeo = cruce.mesPepeo.length
-
-                let valorMesCos = totalCosecha / cantMesCos
-                let valorMesTra = totalTraviesa / cantMesTra
-                let valorMesPepeo = totalPepeo / cantMesPepeo
-
-                if (cruce.mesCos) {
-                  cruce.mesCos.forEach(mesC => {
-                    if (flujo[1] == mesC) {
-                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesCos)
-
-                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos)
-
-                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu)
-                    }
-                  });
-                }
-                if (cruce.mesTra) {
-                  cruce.mesTra.forEach(mes => {
-                    if (flujo[1] == mes) {
-                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesTra)
-
-                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra)
-
-                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu)
-                    }
-                  });
-                }
-                if (cruce.mesPepeo) {
-                  cruce.mesPepeo.forEach(mes => {
-                    if (flujo[1] == mes) {
-                      let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                      this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesPepeo)
-
-                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo)
-
-                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                      this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu)
-                    }
-                  });
-                }
-
-                // -------------------Egresos------------------------------------
-
-                for (let index = 0; index < cruce.lotesAgro.length; index++) {
-                  const lote = cruce.lotesAgro[index];
-
-                  //-Adecuacion
-                  if (lote.egresosAdecuacion) {
-                    for (let eg = 0; eg < lote.egresosAdecuacion.length; eg++) {
-                      const egreso = lote.egresosAdecuacion[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-
-                          totalegresos = Utils.formatNumber(egreso.total);
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
-
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
-                          this.dataFlujoAcumulado[flujocaja][3] = (totalegresos + totalIngAcumu)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
-                        }
-                      }
-                    }
-                  }
-                  //-Mantenimiento
-                  if (lote.egresosMante) {
-                    for (let eg = 0; eg < lote.egresosMante.length; eg++) {
-                      const egreso = lote.egresosMante[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-
-                        if (flujo[1] == mes) {
-
-                          totalegresos = Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-
-                          console.log("flujocaja", flujocaja, " columnEgresos", columnEgresos)
-
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                  //-Siembra
-                  if (lote.egresosSiembra) {
-                    for (let eg = 0; eg < lote.egresosSiembra.length; eg++) {
-                      const egreso = lote.egresosSiembra[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos = Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                  //-Cosecha
-                  if (lote.egresosCocecha) {
-                    for (let eg = 0; eg < lote.egresosCocecha.length; eg++) {
-                      const egreso = lote.egresosCocecha[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos = Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                }
-
-              }
-            }
-            //Agricola transitorio
-            if (cruce.nombre.tipoproducto == "Transitorio") {
-
-              for (let lote = 0; lote < cruce.lotesAgro.length; lote++) {
-                let lotesA: LoteAgro = cruce.lotesAgro[lote];
-
-                let mesprod = 0
-                let mesnoprod = 0
-                let flag = true
-
-                for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
-                  const flujo = this.dataFlujo[flujocaja];
-                  // -------------------Ingresos------------------------------------
-                  let totalingresos = Utils.formatNumber(lotesA.totalIngreso)
-                  let proxcosecha = Utils.formatNumber(lotesA.proxcocecha)
-                  let cantcosecha = Utils.formatNumber(lotesA.cantmesescocecha)
-
-                  if (flujo[1] >= proxcosecha && flag) {
-                    mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
-                    mesnoprod = Utils.formatNumber(lotesA.cantmesesnoproduccion)
-                    flag = false
-                  }
-                  let totalmes = totalingresos / cantcosecha
-
-
-                  if (!flag) {
-                    if (mesprod > 0) {
-
-                      let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                      this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalmes)
-
-                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalmes)
-
-                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                      this.dataFlujoAcumulado[flujocaja][3] = (totalmes + totalIngAcumu)
-
-                      mesprod--
-                    } else if (mesnoprod > 0) {
-                      let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                      this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes)
-                      mesnoprod--
-                      if (mesprod == 0 && mesnoprod == 0) {
-                        mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
-                        mesnoprod = Utils.formatNumber(lotesA.cantmesesnoproduccion)
-                      }
-                    }
-                  }
-
-                  // -------------------Egresos------------------------------------
-                  let columnEgresos = columnaTotalIngresos + cr + 1
-                  let columnaTotalEgreos = columnaTotalIngresos + this.cantidadActividades + 1
-                  //-Adecuacion
-                  let totalegresos = 0
-                  if (lotesA.egresosAdecuacion) {
-                    for (let eg = 0; eg < lotesA.egresosAdecuacion.length; eg++) {
-                      const egreso = lotesA.egresosAdecuacion[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos += Utils.formatNumber(egreso.total);
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                  //-Mantenimiento
-                  if (lotesA.egresosMante) {
-                    for (let eg = 0; eg < lotesA.egresosMante.length; eg++) {
-                      const egreso = lotesA.egresosMante[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos += Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                  //-Siembra
-                  if (lotesA.egresosSiembra) {
-                    for (let eg = 0; eg < lotesA.egresosSiembra.length; eg++) {
-                      const egreso = lotesA.egresosSiembra[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos += Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                  //-Cosecha
-                  if (lotesA.egresosCocecha) {
-                    for (let eg = 0; eg < lotesA.egresosCocecha.length; eg++) {
-                      const egreso = lotesA.egresosCocecha[eg];
-                      for (let me = 0; me < egreso.mes.length; me++) {
-                        const mes = egreso.mes[me];
-                        if (flujo[1] == mes) {
-                          totalegresos += Utils.formatNumber(egreso.total)
-                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos
-                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
-                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                          this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
-                        }
-                      }
-                    }
-                  }
-                }
-
-              }
-            }
-
-            //Pecuario Ingresos
-            // -------------------Ingresos------------------------------------
-            for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
-              let lotesP: LotePecuario = cruce.lotesPecuario[lote];
-              let flagp = true
-
-              let produccion = 0
-              let noproduccion = 0
+              //-Posicion de las columnas Egresos
+              let columnEgresos = columnaTotalIngresos + cr + 1
+              let columnaTotalEgreos = columnaTotalIngresos + this.cantidadActividades + 1
 
               for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
                 const flujo = this.dataFlujo[flujocaja];
+                totalingresos = 0
+                // ---------------- pecuario ----------------------------------
+                for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
+                  let lotesP: LotePecuario = cruce.lotesPecuario[lote];
+                  totalegresos = 0
+                  //----------------------------Egresos---------------------------------
+                  if (lotesP.egresos) {
+                    for (let eg = 0; eg < lotesP.egresos.length; eg++) {
+                      const egreso = lotesP.egresos[eg];
 
-                let totalingresos = Utils.formatNumber(lotesP.ingresomes)
-                let mesingreso = Utils.formatNumber(lotesP.mesingreso)
+                      for (let me = 0; me < egreso.mes.length; me++) {
+                        const mes = egreso.mes[me];
+                        if (flujo[1] == mes) {
 
-                if (flujo[1] >= mesingreso && flagp) {
-                  produccion = Utils.formatNumber(lotesP.produccion)
-                  noproduccion = Utils.formatNumber(lotesP.noproduccion)
-                  flagp = false
+                          totalegresos = Utils.formatNumber(egreso.total)
+                          let egresospas = Utils.formatNumber(this.dataFlujo[flujocaja][columnEgresos])
+                          this.dataFlujo[flujocaja][columnEgresos] = totalegresos + egresospas;
+
+                          let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                          this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                          let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                          this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
+
+                        }
+                      }
+                    }
+                  }
                 }
 
-                if (!flagp) {
-                  if (produccion > 0) {
+                // ---------------- agricola ----------------------------------
+                //-Permanente
+                if (cruce.nombre.tipoproducto == "Permanente") {
+                  let totalCosecha = 0
+                  let totalTraviesa = 0
+                  let totalPepeo = 0
 
-                    let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                    this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalingresos)
+                  //-------------------Ingresos---------------------------------
+                  for (let index = 0; index < cruce.lotesAgro.length; index++) {
+                    const lote = cruce.lotesAgro[index];
+                    totalCosecha += Utils.formatNumber(lote.totalCos);
+                    totalTraviesa += Utils.formatNumber(lote.totalTra);
+                    totalPepeo += Utils.formatNumber(lote.totalPepeo);
+                  }
 
-                    let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
-                    this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalingresos)
+                  let cantMesCos = cruce.mesCos.length
+                  let cantMesTra = cruce.mesTra.length
+                  let cantMesPepeo = cruce.mesPepeo.length
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (totalingresos + totalIngAcumu)
+                  let valorMesCos = totalCosecha / cantMesCos
+                  let valorMesTra = totalTraviesa / cantMesTra
+                  let valorMesPepeo = totalPepeo / cantMesPepeo
 
-                    produccion--
-                  } else if (noproduccion > 0) {
+                  if (cruce.mesCos) {
+                    cruce.mesCos.forEach(mesC => {
+                      if (flujo[1] == mesC) {
+                        let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                        this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesCos)
 
-                    let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
-                    this.dataFlujo[flujocaja][columnIngreso] = sumatoriaTotalmes
+                        let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                        this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesCos)
 
-                    let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
-                    this.dataFlujoAcumulado[flujocaja][3] = (totalIngAcumu)
+                        let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                        this.dataFlujoAcumulado[flujocaja][3] = (valorMesCos + totalIngAcumu)
+                      }
+                    });
+                  }
+                  if (cruce.mesTra) {
+                    cruce.mesTra.forEach(mes => {
+                      if (flujo[1] == mes) {
+                        let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                        this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesTra)
 
-                    noproduccion--
-                    if (produccion == 0 && noproduccion == 0) {
-                      produccion = Utils.formatNumber(lotesP.produccion)
-                      noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                        let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                        this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesTra)
+
+                        let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                        this.dataFlujoAcumulado[flujocaja][3] = (valorMesTra + totalIngAcumu)
+                      }
+                    });
+                  }
+                  if (cruce.mesPepeo) {
+                    cruce.mesPepeo.forEach(mes => {
+                      if (flujo[1] == mes) {
+                        let totalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                        this.dataFlujo[flujocaja][columnIngreso] = (totalmes + valorMesPepeo)
+
+                        let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                        this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + valorMesPepeo)
+
+                        let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                        this.dataFlujoAcumulado[flujocaja][3] = (valorMesPepeo + totalIngAcumu)
+                      }
+                    });
+                  }
+
+                  // -------------------Egresos------------------------------------
+
+                  for (let index = 0; index < cruce.lotesAgro.length; index++) {
+                    const lote = cruce.lotesAgro[index];
+
+                    //-Adecuacion
+                    if (lote.egresosAdecuacion) {
+                      for (let eg = 0; eg < lote.egresosAdecuacion.length; eg++) {
+                        const egreso = lote.egresosAdecuacion[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+
+                            totalegresos = Utils.formatNumber(egreso.total);
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
+
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalIngAcumu = Utils.formatNumber(this.dataFlujo[flujocaja][3])
+                            this.dataFlujoAcumulado[flujocaja][3] = (totalegresos + totalIngAcumu)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalEgAcumu + totalegresos)
+                          }
+                        }
+                      }
+                    }
+                    //-Mantenimiento
+                    if (lote.egresosMante) {
+                      for (let eg = 0; eg < lote.egresosMante.length; eg++) {
+                        const egreso = lote.egresosMante[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+
+                          if (flujo[1] == mes) {
+
+                            totalegresos = Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
+                            console.log("flujocaja", flujocaja, " columnEgresos", columnEgresos)
+
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                    //-Siembra
+                    if (lote.egresosSiembra) {
+                      for (let eg = 0; eg < lote.egresosSiembra.length; eg++) {
+                        const egreso = lote.egresosSiembra[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos = Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                    //-Cosecha
+                    if (lote.egresosCocecha) {
+                      for (let eg = 0; eg < lote.egresosCocecha.length; eg++) {
+                        const egreso = lote.egresosCocecha[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos = Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+              //Agricola transitorio
+              if (cruce.nombre.tipoproducto == "Transitorio") {
+
+                for (let lote = 0; lote < cruce.lotesAgro.length; lote++) {
+                  let lotesA: LoteAgro = cruce.lotesAgro[lote];
+
+                  let mesprod = 0
+                  let mesnoprod = 0
+                  let flag = true
+
+                  for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
+                    const flujo = this.dataFlujo[flujocaja];
+                    // -------------------Ingresos------------------------------------
+                    let totalingresos = Utils.formatNumber(lotesA.totalIngreso)
+                    let proxcosecha = Utils.formatNumber(lotesA.proxcocecha)
+                    let cantcosecha = Utils.formatNumber(lotesA.cantmesescocecha)
+
+                    if (flujo[1] >= proxcosecha && flag) {
+                      mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
+                      mesnoprod = Utils.formatNumber(lotesA.cantmesesnoproduccion)
+                      flag = false
+                    }
+                    let totalmes = totalingresos / cantcosecha
+
+
+                    if (!flag) {
+                      if (mesprod > 0) {
+
+                        let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                        this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalmes)
+
+                        let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                        this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalmes)
+
+                        let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                        this.dataFlujoAcumulado[flujocaja][3] = (totalmes + totalIngAcumu)
+
+                        mesprod--
+                      } else if (mesnoprod > 0) {
+                        let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                        this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes)
+                        mesnoprod--
+                        if (mesprod == 0 && mesnoprod == 0) {
+                          mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
+                          mesnoprod = Utils.formatNumber(lotesA.cantmesesnoproduccion)
+                        }
+                      }
+                    }
+
+                    // -------------------Egresos------------------------------------
+                    let columnEgresos = columnaTotalIngresos + cr + 1
+                    let columnaTotalEgreos = columnaTotalIngresos + this.cantidadActividades + 1
+                    //-Adecuacion
+                    let totalegresos = 0
+                    if (lotesA.egresosAdecuacion) {
+                      for (let eg = 0; eg < lotesA.egresosAdecuacion.length; eg++) {
+                        const egreso = lotesA.egresosAdecuacion[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos += Utils.formatNumber(egreso.total);
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                    //-Mantenimiento
+                    if (lotesA.egresosMante) {
+                      for (let eg = 0; eg < lotesA.egresosMante.length; eg++) {
+                        const egreso = lotesA.egresosMante[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos += Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                    //-Siembra
+                    if (lotesA.egresosSiembra) {
+                      for (let eg = 0; eg < lotesA.egresosSiembra.length; eg++) {
+                        const egreso = lotesA.egresosSiembra[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos += Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                    //-Cosecha
+                    if (lotesA.egresosCocecha) {
+                      for (let eg = 0; eg < lotesA.egresosCocecha.length; eg++) {
+                        const egreso = lotesA.egresosCocecha[eg];
+                        for (let me = 0; me < egreso.mes.length; me++) {
+                          const mes = egreso.mes[me];
+                          if (flujo[1] == mes) {
+                            totalegresos += Utils.formatNumber(egreso.total)
+                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+
+                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+
+              //Pecuario Ingresos
+              // -------------------Ingresos------------------------------------
+              for (let lote = 0; lote < cruce.lotesPecuario.length; lote++) {
+                let lotesP: LotePecuario = cruce.lotesPecuario[lote];
+                let flagp = true
+
+                let produccion = 0
+                let noproduccion = 0
+
+                for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
+                  const flujo = this.dataFlujo[flujocaja];
+
+                  let totalingresos = Utils.formatNumber(lotesP.ingresomes)
+                  let mesingreso = Utils.formatNumber(lotesP.mesingreso)
+
+                  if (flujo[1] >= mesingreso && flagp) {
+                    produccion = Utils.formatNumber(lotesP.produccion)
+                    noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                    flagp = false
+                  }
+
+                  if (!flagp) {
+                    if (produccion > 0) {
+
+                      let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                      this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalingresos)
+
+                      let totalMesingresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalIngresos])
+                      this.dataFlujo[flujocaja][columnaTotalIngresos] = (totalMesingresos + totalingresos)
+
+                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                      this.dataFlujoAcumulado[flujocaja][3] = (totalingresos + totalIngAcumu)
+
+                      produccion--
+                    } else if (noproduccion > 0) {
+
+                      let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
+                      this.dataFlujo[flujocaja][columnIngreso] = sumatoriaTotalmes
+
+                      let totalIngAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][3])
+                      this.dataFlujoAcumulado[flujocaja][3] = (totalIngAcumu)
+
+                      noproduccion--
+                      if (produccion == 0 && noproduccion == 0) {
+                        produccion = Utils.formatNumber(lotesP.produccion)
+                        noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                      }
                     }
                   }
                 }
               }
             }
-          }
 
+          }
         }
 
         let primerano: boolean = true

@@ -1080,7 +1080,7 @@ export class BalanceComponent implements OnInit {
       let tipopas = []; 
       let periodocap = [];
       let periodoint = [];
-      
+
       console.log(pas.periodo)
 
       if (pas.tipo)
@@ -1204,7 +1204,7 @@ export class BalanceComponent implements OnInit {
   }
 
   compareFunction(o1: any, o2: any) {
-    return o1 && o2 ? o1.Id === o2.Id : o1 === o2;
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
 }
