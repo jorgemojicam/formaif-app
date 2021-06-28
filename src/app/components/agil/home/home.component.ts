@@ -186,8 +186,8 @@ export class HomeComponent implements AfterViewInit {
        */
         if (aseso) {
 
-          const emailDirector = aseso.Director.Correo
-          const nombreDirector = aseso.Director.Nombre
+          let emailDirector = aseso.Director.Correo
+          let nombreDirector = aseso.Director.Nombre
 
           Swal.fire({
             title: '¿Desea Enviar Analisis de credito?',
@@ -247,7 +247,7 @@ export class HomeComponent implements AfterViewInit {
                       }
               
                       b.textContent = "Enviando email..."
-                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, emailDirector)
+                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, aseso.Director.Correo)
 
                       b.textContent = "Insertando el analisis..."
                       await this.insert(this.datasol)
@@ -352,12 +352,13 @@ export class HomeComponent implements AfterViewInit {
     return new Promise((resolve, reject) => {
       this.emailServ.Send(email).subscribe(
         (su) => {
+          console.log(su)
           return resolve(su)
         },
         (er) => {
           console.log(er)
           Swal.close()
-          Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.reason, 'error')
+          Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.status, 'error')
           this.procesando = false
           reject(er)
         }
