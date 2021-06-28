@@ -973,8 +973,7 @@
                                                                 fxFlex.sm="60%">
                                                                 <mat-form-field>
                                                                     <input type="text" matInput
-                                                                        placeholder="Producto derivado"
-                                                                        id="prodderivado{{ac}}-{{lot}}"
+                                                                        placeholder="Producto derivado"                                                                       
                                                                         formControlName="prodderivado">
                                                                 </mat-form-field>
                                                             </div>
@@ -1031,8 +1030,7 @@
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
                                                                     <input type="tel" matInput
-                                                                        placeholder="Uni Total ventas"
-                                                                        id="unitotalesventa{{ac}}-{{lot}}"
+                                                                        placeholder="Uni Total ventas"                                                                        
                                                                         formControlName="unitotalesventa">
                                                                 </mat-form-field>
                                                             </div>
@@ -1050,7 +1048,7 @@
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
                                                                     <mat-label>Mes Ingreso</mat-label>
-                                                                    <mat-select formControlName="mesingreso" required>
+                                                                    <mat-select formControlName="mesingreso" (selectionChange)="changeMes($event)" required>
                                                                         <mat-option *ngFor="let mes of meses"
                                                                             [value]="mes.id">
                                                                             {{mes.name}}
@@ -1061,16 +1059,18 @@
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
-                                                                    <input type="number" matInput
-                                                                        placeholder="Producción"
+                                                                    <mat-label>Producción</mat-label>
+                                                                    <input type="number" matInput autocomplete="off"
+                                                                        placeholder="Cantidad de meses"
                                                                         formControlName="produccion">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
+                                                                    <mat-label>No Producción</mat-label>
                                                                     <input type="number" matInput
-                                                                        placeholder="No producción"
+                                                                        placeholder="Cantidad de meses"
                                                                         formControlName="noproduccion">
                                                                 </mat-form-field>
                                                             </div>

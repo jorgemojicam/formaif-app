@@ -614,13 +614,11 @@ export class FlujocajaComponent implements OnInit {
                     let anoFlujo = fechacrece.getFullYear()
 
                     for (let ir = 0; ir < pas.cuotasRow.length; ir++) {
-                      const item = pas.cuotasRow[ir];
-                      if (item.fecha) {
-                        let mes = item.fecha.getMonth()
-                        let ano = item.fecha.getFullYear()
-
-                        if (mesFlujo == mes && ano == anoFlujo) {
-                          console.log(mes)
+                      const item = pas.cuotasRow[ir];                                          
+                      if (item.fecha) {                        
+                        let mes = new Date(item.fecha).getMonth()
+                        let ano = new Date(item.fecha).getFullYear()
+                        if (mesFlujo == mes && ano == anoFlujo) {                 
                           this.dataFlujoAcumulado[f][9] = Utils.formatNumber(item.cuota) + totalacomula
                         }
                       }
@@ -755,12 +753,14 @@ export class FlujocajaComponent implements OnInit {
             let cuota = Utils.formatNumber(this.datasolicitud.Propuesta.valorcouta)
             let periodo = this.datasolicitud.Propuesta.formapgo
             let mesi = f + 1
-            if (periodo.id == 1 && mesi > 1) {
-              this.dataFlujoAcumulado[f][16] = cuota
-            } else if (periodo.id == 2 && f % 2 == 0 && mesi > 2) {
-              this.dataFlujoAcumulado[f][16] = cuota
-            } else if (periodo.id == 3 && f % 3 == 0 && mesi > 3) {
-              this.dataFlujoAcumulado[f][16] = cuota
+            if (periodo) {
+              if (periodo.id == 1 && mesi > 1) {
+                this.dataFlujoAcumulado[f][16] = cuota
+              } else if (periodo.id == 2 && f % 2 == 0 && mesi > 2) {
+                this.dataFlujoAcumulado[f][16] = cuota
+              } else if (periodo.id == 3 && f % 3 == 0 && mesi > 3) {
+                this.dataFlujoAcumulado[f][16] = cuota
+              }
             }
           } else if (tipocuota == 2) {
             for (let ir = 0; ir < this.datasolicitud.Propuesta.irregular.length; ir++) {

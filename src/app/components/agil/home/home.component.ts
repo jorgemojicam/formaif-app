@@ -11,7 +11,6 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import Swal from 'sweetalert2';
 import { AnalisisComponent } from '../analisis/analisis.component';
 import * as html2pdf from "html2pdf.js";
-import { OficinaService } from 'src/app/services/oficina.service';
 import { Asesor } from 'src/app/model/asesor';
 import { EmailService } from 'src/app/services/email.service';
 import { Email } from 'src/app/model/email';
@@ -165,6 +164,7 @@ export class HomeComponent implements AfterViewInit {
         let faltante = this.validateSol()
         if (faltante != "") {
           this.procesando = false
+          Swal.hideLoading()
           Swal.fire({
             icon: 'info',
             title: 'Información Incompleta',
@@ -204,7 +204,7 @@ export class HomeComponent implements AfterViewInit {
             allowOutsideClick: false
           }).then(async (result) => {
             if (result.isConfirmed) {
-
+              Swal.hideLoading()
               Swal.fire({
                 title: 'Enviando analisis de credito!',
                 html: 'Por favor espere mientras se envia el analisis<br><b></b>',
@@ -243,7 +243,7 @@ export class HomeComponent implements AfterViewInit {
                         pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
 
                         //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
-                        //console.log("Insertndo el carpeta digital", solCarpeta)
+                        //console.log("Insertndo el | digital", solCarpeta)
                       }
               
                       b.textContent = "Enviando email..."
