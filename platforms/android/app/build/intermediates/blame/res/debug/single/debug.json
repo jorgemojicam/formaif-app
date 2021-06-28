@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-xhdpi_screen.png.flat",
-        "source": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\src\\main\\res\\drawable-land-xhdpi\\screen.png"
-    },
-    {
         "merged": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v26_ic_launcher_foreground.png.flat",
         "source": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\src\\main\\res\\mipmap-xxhdpi-v26\\ic_launcher_foreground.png"
+    },
+    {
+        "merged": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-xhdpi_screen.png.flat",
+        "source": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\src\\main\\res\\drawable-land-xhdpi\\screen.png"
     },
     {
         "merged": "D:\\fdlm\\repos\\formaif-app\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-mdpi_screen.png.flat",

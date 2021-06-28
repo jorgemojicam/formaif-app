@@ -333,6 +333,8 @@ export class HomeComponent implements AfterViewInit {
       this.analisisServ.insert(solicitud)
         .subscribe((res) => {
           return resolve(res)
+        },(err)=>{
+          console.log("error insertando analisis base de datos ",err)
         });
     })
   }
@@ -378,6 +380,8 @@ export class HomeComponent implements AfterViewInit {
       this._srvCarpeta.insert(solicitud, pfd, tipo)
         .subscribe((res) => {
           return resolve(res)
+        },(err)=>{
+          console.log("error insertando carpeta digital "+err)
         });
     })
   }
