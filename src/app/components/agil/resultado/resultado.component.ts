@@ -73,7 +73,10 @@ export class ResultadoComponent implements OnInit {
           this.totalinventarios = this.datasolicitud.Balance.inventarioTotal
           this.totalactivosneg = this.datasolicitud.Balance.actnegTotal
           this.totalactivosfam = this.datasolicitud.Balance.actfamTotal
-          this.obligacionesfin = this.datasolicitud.Balance.totalCreditos
+          let totalcoutaf = Utils.formatNumber(this.datasolicitud.Balance.tcuotaf)
+          this.totalgastosfam += totalcoutaf
+          let totalcuootan = Utils.formatNumber(this.datasolicitud.Balance.tcuotan) + Utils.formatNumber(this.datasolicitud.Balance.totalCreditos)
+          this.obligacionesfin = totalcuootan
           this.recuperacion = Utils.formatNumber(this.datasolicitud.Balance.recuperacionCobrar)
           this.creditosproveedores = this.datasolicitud.Balance.proveedoresTotal
           this.otraspasivoscor = Utils.formatNumber(this.datasolicitud.Balance.tcorrienten)

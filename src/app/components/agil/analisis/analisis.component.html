@@ -81,70 +81,67 @@
             </tfoot>
         </table>
         <!-- Activos Negocio -->
-        <div class="medioi">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan=5>Activos Negocio</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Descripcion</th>
-                        <th style="text-align:center">Tipo</th>
-                        <th style="text-align:center">Cantidad</th>
-                        <th style="text-align:center">Valor U</th>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
-                    <tr>
-                        <td *ngIf="act.detalle">{{act.detalle}}</td>
-                        <td *ngIf="act.tipo">{{act.tipo.name}}</td>
-                        <td>{{act.cantidad}}</td>
-                        <td style="text-align: right;">{{act.vlrUni}}</td>
-                        <td align="right">${{act.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td align="right" colspan=4>${{datasolicitud.Balance.actnegTotal}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <!-- Activos Familiares -->
-        <div class="mediod">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan=5>Activos Familiares</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Descripcion</th>
-                        <th style="text-align:center">Tipo</th>
-                        <th style="text-align:center">Cantidad</th>
-                        <th style="text-align:center">Valor U</th>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let act of datasolicitud.Balance.activosFamRows; let cont=index">
-                    <tr>
-                        <td>{{act.detalle}}</td>
-                        <td *ngIf="act.tipo">{{act.tipo.name}}</td>
-                        <td>{{act.cantidad}}</td>
-                        <td style="text-align: right;">{{act.vlrUni}}</td>
-                        <td align="right">${{act.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td align="right" colspan=4>${{datasolicitud.Balance.actfamTotal}}</td>
-                    </tr>
-                </tfoot>
-            </table>
 
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=5>Activos Negocio</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Descripcion</th>
+                    <th style="text-align:center">Tipo</th>
+                    <th style="text-align:center">Cantidad</th>
+                    <th style="text-align:center">Valor U</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let act of datasolicitud.Balance.actividadNegRows; let cont=index">
+                <tr>
+                    <td *ngIf="act.detalle">{{act.detalle}}</td>
+                    <td *ngIf="act.tipo">{{act.tipo.name}}</td>
+                    <td>{{act.cantidad}}</td>
+                    <td style="text-align: right;">{{act.vlrUni}}</td>
+                    <td align="right">${{act.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=4>${{datasolicitud.Balance.actnegTotal}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Activos Familiares -->
+        <table>
+            <thead>
+                <tr>
+                    <th colspan=5>Activos Familiares</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Descripcion</th>
+                    <th style="text-align:center">Tipo</th>
+                    <th style="text-align:center">Cantidad</th>
+                    <th style="text-align:center">Valor U</th>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let act of datasolicitud.Balance.activosFamRows; let cont=index">
+                <tr>
+                    <td>{{act.detalle}}</td>
+                    <td *ngIf="act.tipo">{{act.tipo.name}}</td>
+                    <td>{{act.cantidad}}</td>
+                    <td style="text-align: right;">{{act.vlrUni}}</td>
+                    <td align="right">${{act.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=4>${{datasolicitud.Balance.actfamTotal}}</td>
+                </tr>
+            </tfoot>
+        </table>
         <!-- Principales inversiones -->
         <table>
             <thead>
@@ -174,51 +171,51 @@
             </tfoot>
         </table>
         <!--Créditos con Fundación delamujer -->
-        <div class="medioi">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Créditos con Fundación delamujer</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let inv of datasolicitud.Balance.creditos; let cont=index">
-                    <tr>
-                        <td align="right">${{inv.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Créditos con Fundación delamujer</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let inv of datasolicitud.Balance.creditos; let cont=index">
+                <tr>
+                    <td align="right">${{inv.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
         <!--Créditos con proveedores -->
-        <div class="mediod">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Créditos con proveedor</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Valor</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let inv of datasolicitud.Balance.creditos; let cont=index">
-                    <tr>
-                        <td align="right">${{inv.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Créditos con proveedor</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Valor</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let inv of datasolicitud.Balance.creditos; let cont=index">
+                <tr>
+                    <td align="right">${{inv.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td align="right">Total: ${{datasolicitud.Balance.totalCreditos}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
         <!-- pasivos del negocio -->
         <table>
             <thead>
@@ -370,61 +367,61 @@
             </tbody>
         </table>
         <!-- Remuneración de personal -->
-        <div class="medioi">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">Remuneración de personal</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Cargo</th>
-                        <th style="text-align:center">Valor</th>
 
-                    </tr>
-                </thead>
-                <tbody *ngFor="let rem of datasolicitud.Gastos.remuneracionRow; let cont=index">
-                    <tr>
-                        <td>{{rem.cargo}}</td>
-                        <td style="text-align:right">${{rem.valor}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td align="right" colspan=3>${{datasolicitud.Gastos.totalRemuneracion}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Remuneración de personal</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Cargo</th>
+                    <th style="text-align:center">Valor</th>
+
+                </tr>
+            </thead>
+            <tbody *ngFor="let rem of datasolicitud.Gastos.remuneracionRow; let cont=index">
+                <tr>
+                    <td>{{rem.cargo}}</td>
+                    <td style="text-align:right">${{rem.valor}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td align="right" colspan=3>${{datasolicitud.Gastos.totalRemuneracion}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
         <!-- Otros Ingresos Familiares -->
-        <div class="mediod">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3">Otros Ingresos Familiares</th>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center">Concepto</th>
-                        <th style="text-align:center">Valor</th>
-                        <th style="text-align:center">Observacion</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let otr of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
-                    <tr>
-                        <td>{{TipoIngreso(otr.ingreso,'tipoingreso')}}</td>
-                        <td style="text-align:right">${{otr.valor}}</td>
-                        <td>{{otr.observacion}}</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td style="text-align:right" colspan="2">${{datasolicitud.Gastos.totalOtros}}</td>
-                    </tr>
-                </tfoot>
-            </table>
 
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">Otros Ingresos Familiares</th>
+                </tr>
+                <tr>
+                    <th style="text-align:center">Concepto</th>
+                    <th style="text-align:center">Valor</th>
+                    <th style="text-align:center">Observacion</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let otr of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
+                <tr>
+                    <td>{{TipoIngreso(otr.ingreso,'tipoingreso')}}</td>
+                    <td style="text-align:right">${{otr.valor}}</td>
+                    <td>{{otr.observacion}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Total</td>
+                    <td style="text-align:right" colspan="2">${{datasolicitud.Gastos.totalOtros}}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+
     </ng-container>
     <mat-divider></mat-divider><br>
     <div *ngFor="let act of datasolicitud.Cruces" id="actividades">
@@ -463,7 +460,7 @@
             </tr>
         </table>
 
-        <ng-container *ngIf="act.tipo ==4">
+        <ng-container *ngIf="act.tipo !=4">
 
             <h3>Cruce #1 Ventas B R M</h3>
             <table>

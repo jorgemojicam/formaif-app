@@ -219,7 +219,7 @@ export class RuralComponent implements OnInit {
           //--------------------------Permanente---------------------------
           let rendimientoCos = parseFloat(lot.get("rendimientoCos").value)
           let unidadesCos = parseFloat(lot.get("unidadesCos").value)
-          console.log('unidadesCos ->',unidadesCos)
+          console.log('unidadesCos ->', unidadesCos)
           let perdidaCos = (1 - (unidadesCos / rendimientoCos)) * 100
           let totalCos = unidadesCos * preciopromedio
           if (unidadesCos > rendimientoCos) {
@@ -516,6 +516,8 @@ export class RuralComponent implements OnInit {
         tipoprod = cruces[cru].tipoproduccion
       } else if (cruces[cru].tipo == 1) {
         tipoprod = cruces[cru].nombre.tipoproducto
+      } else if (cruces[cru].tipo == 3) {
+        tipoprod = cruces[cru].tipoproduccion
       }
       crucesArray.push(
         this.fb.group({
@@ -540,12 +542,11 @@ export class RuralComponent implements OnInit {
           totalDias: '',
           totalPromedio: '',
           unidadventa: unidadVenta,
-
-          totalCompras: '',
-          ventasEstimadas: '',
-          margenBruto: '',
-          otrosGastos: '',
-          ingresoLiquido: '',
+          totalCompras: [cruces[cru].totalCompras],
+          ventasEstimadas: [cruces[cru].ventasEstimadas],
+          margenBruto: [cruces[cru].margenBruto],
+          otrosGastos: [cruces[cru].otrosGastos],
+          ingresoLiquido: [cruces[cru].ingresoLiquido],
           mesCos: [cruces[cru].mesCos],
           mesTra: [cruces[cru].mesTra],
           mesPepeo: [cruces[cru].mesPepeo],
@@ -852,6 +853,10 @@ export class RuralComponent implements OnInit {
     acti.patchValue({
       nombre: ""
     }, { emitEvent: false })
+  }
+
+  compareFunction(o1: any, o2: any) {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
 }

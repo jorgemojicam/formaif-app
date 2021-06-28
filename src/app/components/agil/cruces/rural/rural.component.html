@@ -86,7 +86,7 @@
                                             <ng-container *ngIf="acti.value.tipo ==3">
                                                 <mat-form-field>
                                                     <mat-label>Tipo Actividad</mat-label>
-                                                    <mat-select formControlName="tipoproduccion" required>
+                                                    <mat-select formControlName="tipoproduccion" [compareWith]="compareFunction" required>
                                                         <mat-option>--</mat-option>
                                                         <mat-option *ngFor="let tip of tipoAct" [value]="tip.id">
                                                             {{tip.name}}

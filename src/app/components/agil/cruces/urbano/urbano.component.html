@@ -292,7 +292,7 @@
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                     <mat-form-field>
                                                         <mat-label>Frecuencia</mat-label>
-                                                        <mat-select formControlName="periodohistoricas" required
+                                                        <mat-select formControlName="periodohistoricas" [compareWith]="compareFunction" required
                                                             (selectionChange)="loadVentas(ac,$event)">
                                                             <mat-option *ngFor="let fre of frecuencia" [value]="fre">
                                                                 {{fre.name}}
@@ -499,8 +499,7 @@
                                                         <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <mat-label>Unidad Venta</mat-label>
-                                                                <mat-select formControlName="unidad"
-                                                                    id="unidad{{ac}}-{{mat}}" required>
+                                                                <mat-select formControlName="unidad" [compareWith]="compareFunction" required>
                                                                     <mat-option>--</mat-option>
                                                                     <mat-option *ngFor="let un of unidades"
                                                                         [value]="un">
@@ -681,7 +680,7 @@
                                                     <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Frecuencia</mat-label>
-                                                            <mat-select formControlName="rendFrecuencia" required>
+                                                            <mat-select formControlName="rendFrecuencia" [compareWith]="compareFunction" required>
                                                                 <mat-option>Frecuencia</mat-option>
                                                                 <mat-option *ngFor="let frec of frecuencia"
                                                                     [value]="frec">
@@ -841,7 +840,7 @@
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
                                                             <mat-form-field>
                                                                 <mat-label>Frecuencia</mat-label>
-                                                                <mat-select formControlName="frecuencia"
+                                                                <mat-select formControlName="frecuencia" [compareWith]="compareFunction"
                                                                     id="frecuencia{{ac}}-{{com}}" required>
                                                                     <mat-option>--</mat-option>
                                                                     <mat-option *ngIf="acti.value.tipo ==4"

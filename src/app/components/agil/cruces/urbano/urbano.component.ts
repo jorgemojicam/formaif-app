@@ -263,11 +263,70 @@ export class UrbanoComponent implements OnInit {
                 duration: 3000,
               });
             }
-            let preciocompra = valormatpri + valormatpri2 + valormatpri3 + valormatpri4 + valormatpri5 + valormao + valorcif
             let precioventa = cantidad * preciovenorod
+            let preciocompra = 0
+
+            preciocompra += valormatpri
+            if (preciocompra > precioventa) {
+              preciocompra -= valormatpri
+              valormatpri = 0
+
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valormatpri2
+            if (preciocompra > precioventa) {
+              preciocompra -= valormatpri2
+              valormatpri2 = 0
+
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valormatpri3
+            if (preciocompra > precioventa) {
+              preciocompra -= valormatpri3
+              valormatpri3 = 0
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valormatpri4
+            if (preciocompra > precioventa) {
+              preciocompra -= valormatpri4
+              valormatpri4 = 0
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valormatpri5
+            if (preciocompra > precioventa) {
+              preciocompra -= valormatpri5
+              valormatpri5 = 0
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valormao
+            if (preciocompra > precioventa) {
+              preciocompra -= valormao
+              valormao = 0
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+            preciocompra += valorcif
+            if (preciocompra > precioventa) {
+              preciocompra -= valorcif
+              valorcif = 0
+              this._snackBar.open("El precio de compra no puede superar el precio de venta", "Ok!", {
+                duration: 9000,
+              });
+            }
+
             let porcentaje = ((1 - (preciocompra / precioventa)) * 100)
             let margenglobal = (participacion / 100) * porcentaje
-
             margen += margenglobal
 
             mat.patchValue({
@@ -276,9 +335,9 @@ export class UrbanoComponent implements OnInit {
               valorMatPri2: valormatpri2.toLocaleString("es-CO"),
               valorMatPri3: valormatpri3.toLocaleString("es-CO"),
               valorMatPri4: valormatpri4.toLocaleString("es-CO"),
-              valorMatPri5: valormatpri5.toLocaleString("es-CO"),
-              valorMao: valormao.toLocaleString("es-CO"),
-              valorCif: valorcif.toLocaleString("es-CO"),
+              valorMatPri5: isNaN(valormatpri5) ? 0 : valormatpri5.toLocaleString("es-CO"),
+              valorMao: isNaN(valormao) ? 0 : valormao.toLocaleString("es-CO"),
+              valorCif: isNaN(valorcif) ? 0 : valorcif.toLocaleString("es-CO"),
               precioCompra: preciocompra.toLocaleString("es-CO"),
               precioVenta: precioventa.toLocaleString("es-CO"),
               porcentaje: isNaN(porcentaje) ? 0 : porcentaje.toFixed(),
@@ -455,10 +514,6 @@ export class UrbanoComponent implements OnInit {
     let crucesArray = this.fb.array([])
 
     for (let cru = 0; cru < cruces.length; cru++) {
-      let periodhis = []
-
-      if (cruces[cru].periodohistoricas)
-        periodhis = this.frecuencia.find(el => el.id == cruces[cru].periodohistoricas.id)
 
       crucesArray.push(
         this.fb.group({
@@ -478,7 +533,7 @@ export class UrbanoComponent implements OnInit {
           totalVentas: [cruces[cru].totalVentas],
           totalCruce1: [cruces[cru].totalCruce1],
           totalDias: [cruces[cru].totalDias],
-          periodohistoricas: [periodhis],
+          periodohistoricas: [cruces[cru].periodohistoricas],
           ventasHis: this.loadDataVentas(cruces[cru].ventasHis),
           promtotalvenHis: [cruces[cru].promtotalvenHis],
           totalPromedio: [cruces[cru].totalPromedio],
@@ -506,7 +561,6 @@ export class UrbanoComponent implements OnInit {
     return this.actividadesForm = this.fb.group({
       act: crucesArray
     })
-
   }
 
   actividadActual(ac) {
@@ -652,15 +706,12 @@ export class UrbanoComponent implements OnInit {
   loadCompras(compras: Compras[]) {
     let comprasArr = this.fb.array([])
     compras.forEach(com => {
-      let fre = []
-      if (com.frecuencia)
-        fre = this.frecuencia.find(el => el.id == com.frecuencia.id)
       comprasArr.push(
         this.fb.group({
           descripcion: com.descripcion,
           cantidad: com.cantidad,
           valor: com.valor,
-          frecuencia: fre,
+          frecuencia: com.frecuencia,
           total: com.total
         }))
     });
@@ -801,6 +852,9 @@ export class UrbanoComponent implements OnInit {
 
     this.save(this.actividadesForm.get('act').value)
 
+  }
+  compareFunction(o1: any, o2: any) {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
 }

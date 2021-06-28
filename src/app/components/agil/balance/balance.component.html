@@ -1102,7 +1102,7 @@
 
                             <ng-container *ngSwitchCase="'tarjetas'">
 
-                                <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="25%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="25%">
                                     <mat-form-field>
                                         <mat-label>Clase</mat-label>
                                         <mat-select formControlName="clase" id="clase{{pas}}" required>
@@ -1114,38 +1114,38 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <input type="text" matInput placeholder="Acreedor" id="acreedor{{pas}}"
                                             formControlName="acreedor">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <input type="tel" matInput placeholder="Cupo" id="monto{{pas}}"
                                             formControlName="monto">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="50%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <input type="tel" matInput placeholder="Saldo" id="saldo{{pas}}"
                                             formControlName="saldo">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
-                                        <input type="tel" matInput placeholder="Cuota Central" id="cuota{{pas}}"
+                                        <input type="tel" matInput placeholder="Cuota Cent Riesgo" id="cuota{{pas}}"
                                             formControlName="cuota">
                                     </mat-form-field>
                                 </div>
 
-                                <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <input type="tel" readonly matInput placeholder="Cuota Calcu"
                                             id="cuotacalcu{{pas}}" formControlName="cuotacalcu">
                                     </mat-form-field>
                                 </div>
-                                <div class="gr" fxFlex="10%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                     <mat-form-field>
                                         <mat-label>Cuota difiere</mat-label>
                                         <mat-select formControlName="periodo" [compareWith]="compareFunction" required>
@@ -1158,13 +1158,13 @@
                                 </div>
 
                                 <ng-container *ngIf="itemrow.value.clase ==2">
-                                    <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                         <mat-form-field>
                                             <input type="text" matInput placeholder="Corriente" id="corriente{{pas}}"
                                                 formControlName="corrienteN" readonly>
                                         </mat-form-field>
                                     </div>
-                                    <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                         <mat-form-field>
                                             <input type="text" matInput placeholder="No corriente"
                                                 id="nocorriente{{pas}}" formControlName="nocorrienteN" readonly>
@@ -1173,13 +1173,13 @@
                                 </ng-container>
 
                                 <ng-container *ngIf="itemrow.value.clase ==1">
-                                    <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                         <mat-form-field>
                                             <input type="text" matInput placeholder="Corriente" id="corrienteF{{pas}}"
                                                 formControlName="corrienteF" readonly>
                                         </mat-form-field>
                                     </div>
-                                    <div class="gr" fxFlex="15%" fxFlex.xs="33%" fxFlex.sm="26%">
+                                    <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="26%">
                                         <mat-form-field>
                                             <input type="text" matInput placeholder="No corriente"
                                                 id="nocorrienteF{{pas}}" formControlName="nocorrienteF" readonly>

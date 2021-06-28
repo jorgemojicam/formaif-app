@@ -142,14 +142,6 @@ export class HomeComponent implements AfterViewInit {
   async onSend(element) {
 
     try {
-      Swal.fire({
-        title: 'Cargando',
-        html: 'Tenga calma por favor, se esta procensando la información ...',
-        allowOutsideClick: false,
-        didOpen: async () => {
-          Swal.showLoading()
-        }
-      })
 
       this.procesando = true
       if (!element.solicitud || element.solicitud == "" || element.solicitud.length < 10) {
@@ -218,6 +210,7 @@ export class HomeComponent implements AfterViewInit {
                 html: 'Por favor espere mientras se envia el analisis<br><b></b>',
                 allowOutsideClick: false,
                 didOpen: async () => {
+                  
                   Swal.showLoading()
 
                   const content = Swal.getContent()
@@ -252,7 +245,7 @@ export class HomeComponent implements AfterViewInit {
                         //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
                         //console.log("Insertndo el carpeta digital", solCarpeta)
                       }
-
+              
                       b.textContent = "Enviando email..."
                       await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, emailDirector)
 

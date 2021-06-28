@@ -125,7 +125,7 @@
                         <td>26- Obligaciones Financieras</td>
                         <td>
                             <mat-chip-list>
-                                <mat-chip>${{obligacionesfin}}</mat-chip>
+                                <mat-chip>{{obligacionesfin| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
                             </mat-chip-list>
                         </td>
                     </tr>
@@ -141,7 +141,7 @@
                         <td>29- Gastos y obligaciones familiares</td>
                         <td>
                             <mat-chip-list>
-                                <mat-chip>${{totalgastosfam}}</mat-chip>
+                                <mat-chip>{{totalgastosfam| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
                             </mat-chip-list>
                         </td>
                     </tr>
