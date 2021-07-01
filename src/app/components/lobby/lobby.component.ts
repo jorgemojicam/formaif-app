@@ -31,7 +31,6 @@ export class LobbyComponent implements OnInit {
       this.route.navigate(['auth'])
       return
     } else {
-      console.log(this.perfil.Rol)
       this.rol = this.perfil.Rol.Permiso.Id
     }
 

@@ -1,9 +1,9 @@
 <div class="container">
     <form [formGroup]="adjuntosForm" (ngSubmit)="onSave()">
         <div fxLayout="row wrap">
-            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <div class="gr" fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
                 <mat-form-field>
-                    <mat-label>Seleccione Tipo Solicitud</mat-label>
+                    <mat-label>Tipo Solicitud</mat-label>
                     <mat-select formControlName="tipo" placeholder="Seleccione">
                         <mat-option *ngFor="let tip of aTipo" [value]="tip">
                             {{tip.nombre}}
@@ -11,20 +11,27 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
                 <mat-form-field>
-                    <mat-label>Seleccione Departamento</mat-label>
-                    <mat-select formControlName="departamento" (selectionChange)="selectedDepto($event)" placeholder="">
+                    <mat-label>Estrato</mat-label>
+                    <input type="number" matInput placeholder="Estrato" formControlName="estrato">
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                <mat-form-field>
+                    <mat-label>Departamento</mat-label>
+                    <mat-select formControlName="departamento" required (selectionChange)="selectedDepto($event)"
+                        required>
                         <mat-option *ngFor="let dep of aDepartamento" [value]="dep">
                             {{dep.Nombre}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                 <mat-form-field>
-                    <mat-label>Seleccione Municipio</mat-label>
-                    <mat-select formControlName="municipio" (selectionChange)="selectedMun($event)" placeholder="">
+                    <mat-label>Municipio</mat-label>
+                    <mat-select formControlName="municipio" (selectionChange)="selectedMun($event)" required>
                         <mat-option *ngFor="let mun of aMunicipio" [value]="mun">
                             {{mun.Nombre}}
                         </mat-option>
@@ -32,16 +39,29 @@
                 </mat-form-field>
             </div>
             <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                <mat-form-field>
-                    <mat-label>Seleccione Barrio</mat-label>
-                    <mat-select formControlName="barrio" placeholder="">
-                        <mat-option *ngFor="let mun of aMunicipio" [value]="mun">
-                            {{mun.Nombre}}
+                <mat-form-field class="example-full-width">
+                    <mat-label>Barrio</mat-label>
+                    <input type="text" placeholder="Ingrese Barrio" aria-label="Number" matInput
+                        formControlName="barrio" [readonly]="aBarrio.length == 0" [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{option.Nombre}}
                         </mat-option>
-                    </mat-select>
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
-
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                <mat-form-field>
+                    <mat-label>Nombre Barrio</mat-label>
+                    <input type="text" matInput placeholder="Barrio" formControlName="barrionuevo">
+                </mat-form-field>
+            </div>
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <app-file formControlName="pot" [label]="labelPot"></app-file>     
+            </div>
+            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="25%">
+                <app-file formControlName="pot" [label]="labelEot"></app-file>     
+            </div>
             <br>
         </div>
         <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
-import { MapaComponent } from './mapa/mapa.component';
+import { GoogleMapComponent } from './google-map/google-map.component';
 import { NivelListComponent } from './nivel/nivel-list/nivel-list.component';
 import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
 import { ZonaComponent } from './zona.component';
@@ -42,11 +42,11 @@ const routes: Routes = [
       },
       {
         path: 'mapa',
-        component: MapaComponent,
+        component: GoogleMapComponent,
         data: {
           routerName: 'mapa'
         }
-      }          
+      }
     ]
   },   
   {

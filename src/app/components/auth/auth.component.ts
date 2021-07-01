@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { error } from 'node:console';
 import { Pregunta } from 'src/app/model/pregunta';
 import { Respuestas } from 'src/app/model/respuestas';
 import { Temas } from 'src/app/model/temas';
@@ -52,14 +51,27 @@ export class AuthComponent implements OnInit {
 
     this.loading = true
     let res = await this.login(user) as any
-        
+
     let resuser = res.data
     if (!res.error && resuser.token) {
+
       this.tokenStorage.saveToken(resuser.token);
       this.tokenStorage.saveUser(resuser.usario);
+
+      let resDimension = await this.getDimenciones()
+      let dim = this.loadCuestionario(resDimension)
+      await this.saveDimension(dim)
+
+      let resMedidas = await this.getMedidas()
+      let med = this.loadCuestionario(resMedidas)
+      await this.saveMedidas(med)
+
+      let prod = await this.getProduccion()
+      await this.saveProduccion(prod)
+
       this.route.navigate(['lobby']);
       this.loading = false
-      this.getRespuestas()
+
     } else {
 
       let errMsg = ""
@@ -73,8 +85,6 @@ export class AuthComponent implements OnInit {
       this._snackBar.open(errMsg, "Ok!", { duration: 3000, });
       this.loading = false
     }
-
-
   }
 
   login(user) {
@@ -89,38 +99,66 @@ export class AuthComponent implements OnInit {
     })
   }
 
-  getRespuestas() {
-    this._srvRespuesta.getByCuestionario(1).subscribe(
-      (a) => {
-        let dim = this.loadCuestionario(a)
-        //this._srvIdb.delete('dimenciones')
-        this._srvIdb.save('dimenciones', dim)
-      },
-      (err) => {
+  getDimenciones() {
+    return new Promise(resolve => {
+      this._srvRespuesta.getByCuestionario(1).subscribe(
+        (a) => {
+          resolve(a)
+        }, (err) => {
+          console.log(err)
+          resolve([])
+        })
+    })
+  }
+  getMedidas() {
+    return new Promise(resolve => {
+      this._srvRespuesta.getByCuestionario(2).subscribe(
+        (a) => {
+          resolve(a)
+        }, (err) => {
+          console.log(err)
+          resolve([])
+        })
+    })
+  }
+  getProduccion() {
+    return new Promise(resolve => {
+      this._srvProduccion.get().subscribe(
+        (a) => {
+          resolve(a)
+        }, (err) => {
+          console.log(err)
+          resolve([])
+        }
+      )
+    })
+  }
 
-      }
-    )
+  saveDimension(dim) {
+    return new Promise(resolve => {
+      this._srvIdb.save('dimenciones', dim).subscribe((res) => {
+        console.log(res)
+        resolve(res)
+      })
+    })
+  }
 
-    this._srvRespuesta.getByCuestionario(2).subscribe(
-      (a) => {
-        let med = this.loadCuestionario(a)
-        //this._srvIdb.delete('medidas')
-        this._srvIdb.save('medidas', med)
-      },
-      (err) => {
+  saveProduccion(prod) {
+    return new Promise(resolve => {
+      this._srvIdb.save('produccion', prod).subscribe((res) => {
+        console.log(res)
+        resolve(res)
+      })
+    })
+  }
 
-      }
-    )
-
-    this._srvProduccion.get().subscribe(
-      (a) => {
-        //this._srvIdb.delete('produccion')
-        this._srvIdb.save('produccion', a)
-      }, (err) => {
-
-      }
-    )
-
+  saveMedidas(med) {
+    return new Promise(resolve => {
+      this._srvIdb.save('medidas', med).subscribe((res) => {
+        console.log(res)
+        resolve(res)
+      })
+    })
   }
 
   loadCuestionario(respuestas) {

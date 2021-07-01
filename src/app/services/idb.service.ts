@@ -11,7 +11,7 @@ export class IdbService {
   ) { }
 
   save(name: string, data: any) { 
-    this.storage.set(name, data).subscribe(() => { });
+    return this.storage.set(name, data);
   }
   get(name: string): any {
     return this.storage.get(name.toString());

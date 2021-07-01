@@ -72,7 +72,7 @@ export class FlujocajaComponent implements OnInit {
       if (this.datasolicitud.CrucesAgro) {
         this.actividadPrincipal = this.datasolicitud.CrucesAgro[0].nombre.name
         this.cantidadActividades = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0).length
-        console.log(this.cantidadActividades)
+        console.log('cantidad de actividades ',this.cantidadActividades)
         this.datosCruces = this.datasolicitud.CrucesAgro.filter(cr => cr.tipo != 3 && cr.tipo != 0)
       }
 
@@ -325,21 +325,20 @@ export class FlujocajaComponent implements OnInit {
                   let mesprod = 0
                   let mesnoprod = 0
                   let flag = true
-
+                  
                   for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
                     const flujo = this.dataFlujo[flujocaja];
                     // -------------------Ingresos------------------------------------
                     let totalingresos = Utils.formatNumber(lotesA.totalIngreso)
                     let proxcosecha = Utils.formatNumber(lotesA.proxcocecha)
                     let cantcosecha = Utils.formatNumber(lotesA.cantmesescocecha)
-
+                    
                     if (flujo[1] >= proxcosecha && flag) {
                       mesprod = Utils.formatNumber(lotesA.cantmesescocecha)
                       mesnoprod = Utils.formatNumber(lotesA.cantmesesnoproduccion)
                       flag = false
                     }
                     let totalmes = totalingresos / cantcosecha
-
 
                     if (!flag) {
                       if (mesprod > 0) {
@@ -368,21 +367,26 @@ export class FlujocajaComponent implements OnInit {
                     // -------------------Egresos------------------------------------
                     let columnEgresos = columnaTotalIngresos + cr + 1
                     let columnaTotalEgreos = columnaTotalIngresos + this.cantidadActividades + 1
-                    //-Adecuacion
                     let totalegresos = 0
+                    //-Adecuacion
+                  
                     if (lotesA.egresosAdecuacion) {
                       for (let eg = 0; eg < lotesA.egresosAdecuacion.length; eg++) {
                         const egreso = lotesA.egresosAdecuacion[eg];
+                        
                         for (let me = 0; me < egreso.mes.length; me++) {
                           const mes = egreso.mes[me];
+                          
                           if (flujo[1] == mes) {
                             totalegresos += Utils.formatNumber(egreso.total);
                             this.dataFlujo[flujocaja][columnEgresos] = totalegresos;
-                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
+                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
+                            
                             let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                            this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
+                            
                           }
                         }
                       }
@@ -394,31 +398,38 @@ export class FlujocajaComponent implements OnInit {
                         for (let me = 0; me < egreso.mes.length; me++) {
                           const mes = egreso.mes[me];
                           if (flujo[1] == mes) {
+
                             totalegresos += Utils.formatNumber(egreso.total)
                             this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
                             let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
 
                             let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                            this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
+                           
                           }
                         }
                       }
                     }
-                    //-Siembra
+                    //-Siembra                   
                     if (lotesA.egresosSiembra) {
+            
                       for (let eg = 0; eg < lotesA.egresosSiembra.length; eg++) {
                         const egreso = lotesA.egresosSiembra[eg];
                         for (let me = 0; me < egreso.mes.length; me++) {
                           const mes = egreso.mes[me];
                           if (flujo[1] == mes) {
+
                             totalegresos += Utils.formatNumber(egreso.total)
                             this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+                            
                             let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
-
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
+                            
                             let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                            this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
+                            
                           }
                         }
                       }
@@ -430,19 +441,20 @@ export class FlujocajaComponent implements OnInit {
                         for (let me = 0; me < egreso.mes.length; me++) {
                           const mes = egreso.mes[me];
                           if (flujo[1] == mes) {
+
                             totalegresos += Utils.formatNumber(egreso.total)
                             this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+
                             let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
+                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
 
                             let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                            this.dataFlujoAcumulado[flujocaja][5] = (totalegresos + totalEgAcumu)
+                            this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
                           }
                         }
                       }
                     }
                   }
-
                 }
               }
 

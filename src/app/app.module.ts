@@ -44,6 +44,10 @@ import { NivelListComponent } from './components/zona/nivel/nivel-list/nivel-lis
 import { NivelFormComponent } from './components/zona/nivel/nivel-form/nivel-form.component';
 import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-list.component';
 import { AdjuntosFormComponent } from './components/zona/adjunto/adjuntos-form/adjuntos-form.component';
+import { GoogleMapComponent } from './components/zona/google-map/google-map.component';
+import { AgmCoreModule } from '@agm/core';
+import { FileComponent } from './shared/file/file.component';
+
 
 @NgModule({
   declarations: [
@@ -77,7 +81,9 @@ import { AdjuntosFormComponent } from './components/zona/adjunto/adjuntos-form/a
     NivelListComponent,
     NivelFormComponent,
     AdjuntosFormComponent,
-    FlujoListComponent
+    FlujoListComponent,
+    GoogleMapComponent,
+    FileComponent
 
   ],
   imports: [
@@ -93,7 +99,11 @@ import { AdjuntosFormComponent } from './components/zona/adjunto/adjuntos-form/a
     HttpClientModule,
     MebaModule,
     AgilModule,
-    ZonaModule
+    ZonaModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyD3ByELSiEJB-XjYDI0h7JEkOKSAHyqbzA',
+      libraries: ['places', 'drawing', 'geometry']
+    })
   ],
   entryComponents: [
     ModalComponent,

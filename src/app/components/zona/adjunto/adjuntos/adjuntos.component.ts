@@ -68,7 +68,10 @@ export class AdjuntosComponent implements OnInit {
 
   onCreate() {
     const msg = 'Crear Adjunto';
-    this.openDialog(msg, null);
+    let datos = {
+      IdSolicitud: this.idSolicitud
+    }
+    this.openDialog(msg, datos);
   }
 
   openDialog(menssage: string, datos: any) {

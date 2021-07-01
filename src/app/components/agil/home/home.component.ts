@@ -210,7 +210,7 @@ export class HomeComponent implements AfterViewInit {
                 html: 'Por favor espere mientras se envia el analisis<br><b></b>',
                 allowOutsideClick: false,
                 didOpen: async () => {
-                  
+
                   Swal.showLoading()
 
                   const content = Swal.getContent()
@@ -245,7 +245,7 @@ export class HomeComponent implements AfterViewInit {
                         //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
                         //console.log("Insertndo el | digital", solCarpeta)
                       }
-              
+
                       b.textContent = "Enviando email..."
                       await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, aseso.Director.Correo)
 
@@ -320,10 +320,14 @@ export class HomeComponent implements AfterViewInit {
       margin: 15,
       jsPDF: { format: 'a3', orientation: orintation }
     }
+
     return new Promise(resolve => {
       html2pdf().from(content).set(op).outputPdf()
         .then((pdf) => {
-          return resolve(btoa(pdf))
+          resolve(btoa(pdf))
+        },(err)=>{
+          console.log(err)
+          resolve("")
         });
     })
   }
@@ -333,37 +337,41 @@ export class HomeComponent implements AfterViewInit {
       this.analisisServ.insert(solicitud)
         .subscribe((res) => {
           return resolve(res)
-        },(err)=>{
-          console.log("error insertando analisis base de datos ",err)
+        }, (err) => {
+          console.log("error insertando analisis base de datos ", err)
         });
     })
   }
 
   send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
 
-    let email: Email = new Email;
-    email.To = emailDir;
-    email.Subject = "Analisis de credito"
-    email.Body = `<h3>Buen dia, ` + nombreDir + ` </h3>
-              <p>A continuacion adjunto se encuentra el formato de analisis de credito</p>`
-    email.Base64Pdf = pdfBase64
-    email.Base64PdfAgro = pdfBase64Agro
-
+    let email = {
+      To: emailDir,
+      Subject: "Analisis de credito",
+      Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
+      Base64Pdf: pdfBase64,
+      Base64PdfAgro: pdfBase64Agro
+    }
+    console.log('-----------------------------------------inicio------------------------')
+    console.log("obj mail dir->", JSON.stringify(email))
     return new Promise((resolve, reject) => {
       this.emailServ.Send(email).subscribe(
         (su) => {
           console.log(su)
-          return resolve(su)
+          console.log('-----------------------------------------fin------------------------')
+          resolve(su)
         },
         (er) => {
           console.log(er)
           Swal.close()
           Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.status, 'error')
           this.procesando = false
+          console.log('-----------------------------------------fin------------------------')
           reject(er)
         }
       )
     })
+    
   }
 
   getCarpetaDigital(solicitud: number) {
@@ -381,8 +389,8 @@ export class HomeComponent implements AfterViewInit {
       this._srvCarpeta.insert(solicitud, pfd, tipo)
         .subscribe((res) => {
           return resolve(res)
-        },(err)=>{
-          console.log("error insertando carpeta digital "+err)
+        }, (err) => {
+          console.log("error insertando carpeta digital " + err)
         });
     })
   }

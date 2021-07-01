@@ -28,6 +28,7 @@ import { AdjuntosComponent } from './adjunto/adjuntos/adjuntos.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule
+
   ],
   entryComponents: [
     ModalInfomapComponent

@@ -1,5 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { AdjuntosService } from 'src/app/services/zona/adjuntos.service';
+import { BarrioService } from 'src/app/services/zona/barrio.service';
 import { DepartamentoService } from 'src/app/services/zona/departamento.service';
 import { MunicipioService } from 'src/app/services/zona/municipio.service';
 
@@ -13,25 +17,37 @@ export class AdjuntosFormComponent implements OnInit {
   @Input() datos: any
   aDepartamento: any[]
   aMunicipio: any[]
+  aBarrio: any[] = new Array
+  labelPot = 'POT'
+  labelEot = 'EOT'
+
+  @ViewChild('UploadFileInput') uploadFileInput: ElementRef;
+  @ViewChild('eotFile') eotFile: ElementRef;
+
+  nameEotFile = 'Seleccione EOT';
+  myfilename = 'Seleccione POT';
+
   aTipo: any[] = [
     { id: "1", nombre: "Cambio de Nombre" },
     { id: "2", nombre: "Barrio Nuevo" },
   ]
   loading: boolean = false
+  filteredOptions: Observable<string[]>;
 
   constructor(
     private _srvDepartamento: DepartamentoService,
-    private _srvMunicipio: MunicipioService
+    private _srvMunicipio: MunicipioService,
+    private _srvBarrio: BarrioService,
+    private _srvAdjuntos: AdjuntosService
   ) { }
 
-
   adjuntosForm: FormGroup = new FormGroup({
-    tipo: new FormControl(),
-    estrato: new FormControl(),
-    departamento: new FormControl(),
-    municipio: new FormControl(),
+    tipo: new FormControl('', Validators.required),
+    estrato: new FormControl('', Validators.required),
+    departamento: new FormControl('', Validators.required),
+    municipio: new FormControl('', Validators.required),
     barrio: new FormControl(),
-    barrionuevo:new FormControl(),
+    barrionuevo: new FormControl(),
     pot: new FormControl(),
     eot: new FormControl(),
     opz: new FormControl(),
@@ -39,8 +55,13 @@ export class AdjuntosFormComponent implements OnInit {
   })
 
   async ngOnInit() {
-
+    console.log('datos ', this.datos)
     this.aDepartamento = await this.getDepartamento() as any[]
+    this.filteredOptions = this.adjuntosForm.controls.barrio.valueChanges.pipe(
+      startWith(''),
+      map(value => typeof value === 'string' ? value : value.Nombre),
+      map(name => name ? this._filter(name) : this.aBarrio.slice())
+    );
   }
 
   getDepartamento() {
@@ -67,18 +88,138 @@ export class AdjuntosFormComponent implements OnInit {
     })
   }
 
+  getBarrio(mun, dep) {
+    return new Promise(resolve => {
+      this._srvBarrio.GetByMunDep(mun, dep).subscribe(
+        (suc) => {
+          resolve(suc)
+        }, (err) => {
+          console.log(err)
+          resolve([])
+        })
+    })
+  }
+
   async selectedDepto(e) {
-    console.log(e)
+
     if (e.value) {
       this.aMunicipio = await this.getMunicipio(e.value.Id) as any[]
+      this.aBarrio = new Array
+      this.adjuntosForm.patchValue({
+        barrio: ''
+      }, { emitEvent: false })
     }
   }
   async selectedMun(e) {
-    console.log(e.value)
+
+    if (e.value) {
+      let dep = this.adjuntosForm.value.departamento
+      this.aBarrio = await this.getBarrio(e.value.Id, dep.Id) as any[]
+      this.adjuntosForm.patchValue({
+        barrio: ''
+      }, { emitEvent: false })
+    }
   }
 
-  onSave() {
-    console.log("--->")
+  async onSave() {
+
+    if (this.adjuntosForm.valid) {
+      let idBarrio = 0
+      if (this.adjuntosForm.value.barrio) {
+        idBarrio = this.adjuntosForm.value.barrio.Id
+      }
+      let data = {
+        Estrato: this.adjuntosForm.value.estrato,
+        Barrio: {
+          Id: idBarrio
+        },
+        Municipio: {
+          Id: this.adjuntosForm.value.municipio.Id
+        },
+        Departamento: {
+          Id: this.adjuntosForm.value.departamento.Id
+        },
+        POT: "pot2",
+        EOT: "eot2",
+        OPZ: "OPZ2",
+        Recibo: "recibo2",
+        BarrioNuevo: "Barrio la brecum",
+        Solicitud: {
+          Id: this.datos.IdSolicitud
+        },
+        TipoAdjunto: this.adjuntosForm.value.tipo.id
+      }
+
+      console.log('data', data)
+      let res = await this.onCreate(data)
+      console.log('res', res)
+
+    }
+  }
+
+  onCreate(data) {
+    return new Promise(resolve => {
+      this._srvAdjuntos.create(data).subscribe(
+        (suss) => {
+          resolve(suss)
+        }, (err) => {
+          resolve(null)
+        }
+      )
+    })
+  }
+
+  displayFn(barrio: any): string {
+    return barrio && barrio.Nombre ? barrio.Nombre : '';
+  }
+
+  _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.aBarrio.filter(option => option.Nombre.toLowerCase().includes(filterValue));
+  }
+
+  fileChangeEvent(fileInput: any) {
+
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      this.myfilename = '';
+      Array.from(fileInput.target.files).forEach((file: File) => {
+        this.myfilename += file.name;
+      });
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = rs => {
+          const imgBase64Path = e.target.result;
+        };
+      };
+      reader.readAsDataURL(fileInput.target.files[0]);
+      this.uploadFileInput.nativeElement.value = "";
+    } else {
+      this.myfilename = 'Seleccione Archivo';
+    }
+  }
+
+  fileEotChangeEvent(fileInput: any) {
+
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      this.nameEotFile = '';
+      Array.from(fileInput.target.files).forEach((file: File) => {
+        this.nameEotFile += file.name;
+      });
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = rs => {
+          const imgBase64Path = e.target.result;
+        };
+      };
+      reader.readAsDataURL(fileInput.target.files[0]);
+      this.uploadFileInput.nativeElement.value = "";
+    } else {
+      this.nameEotFile = 'Seleccione Archivo';
+    }
   }
 
 }
