@@ -1,7 +1,7 @@
 
 import {  Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 

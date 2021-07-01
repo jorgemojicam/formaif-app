@@ -1,11 +1,11 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
-import { LoteAgro } from 'src/app/model/loteAgro';
-import { CrucesAgro } from 'src/app/model/crucesagro';
-import { LotePecuario } from 'src/app/model/lotePecuario';
+import { LoteAgro } from 'src/app/model/agil/loteAgro';
+import { CrucesAgro } from 'src/app/model/agil/crucesagro';
+import { LotePecuario } from 'src/app/model/agil/lotePecuario';
 import Utils from '../../../utils';
 import { EncryptService } from 'src/app/services/encrypt.service';
 

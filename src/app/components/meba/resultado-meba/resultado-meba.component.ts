@@ -1,8 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EChartsOption } from 'echarts';
-import { Sensibilidad } from 'src/app/model/sensibilidad';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Sensibilidad } from 'src/app/model/meba/sensibilidad';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';

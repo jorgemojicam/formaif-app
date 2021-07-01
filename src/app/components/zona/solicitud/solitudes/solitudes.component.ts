@@ -7,11 +7,11 @@ import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
 import { SolicitudzonaService } from 'src/app/services/zona/solicitudzona.service';
 
 @Component({
-  selector: 'app-solicitud-form',
-  templateUrl: './solicitud-form.component.html',
-  styleUrls: ['./solicitud-form.component.scss']
+  selector: 'app-solitudes',
+  templateUrl: './solitudes.component.html',
+  styleUrls: ['./solitudes.component.scss']
 })
-export class SolicitudFormComponent implements AfterViewInit {
+export class SolitudesComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['tipo', 'sucursal', 'estado', 'gestion'];
   dataSource: MatTableDataSource<SolicitudZona>;

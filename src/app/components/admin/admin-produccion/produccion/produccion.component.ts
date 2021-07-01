@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TipoProduccion } from 'src/app/model/tipoproduccion';
+import { TipoProduccion } from 'src/app/model/agil/tipoproduccion';
 import { ProduccionService } from 'src/app/services/MEBA/produccion.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 

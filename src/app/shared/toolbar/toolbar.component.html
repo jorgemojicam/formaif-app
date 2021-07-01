@@ -133,14 +133,23 @@
             </ng-container>
 
             <ng-container *ngIf="modul=='zona'">
-                <mat-list-item [routerLink]="['solicitud']" routerLinkActive="active-list-item">
+                <mat-list-item [routerLink]="['solicitudes']" routerLinkActive="active-list-item">
                     <mat-icon mat-list-icon>category</mat-icon>
-                    <div mat-line>Solicitud</div>
+                    <div mat-line>Solicitudes</div>
                 </mat-list-item>           
 
                 <mat-list-item [routerLink]="['nivel']" routerLinkActive="active-list-item">
                     <mat-icon mat-list-icon>switch_account</mat-icon>
-                    <div mat-line>Nivels</div>
+                    <div mat-line>Niveles</div>
+                </mat-list-item>
+
+                <mat-list-item [routerLink]="['flujo']" routerLinkActive="active-list-item">
+                    <mat-icon mat-list-icon>alt_route</mat-icon>
+                    <div mat-line>Flujo</div>
+                </mat-list-item>
+                <mat-list-item [routerLink]="['responsables']" routerLinkActive="active-list-item">
+                    <mat-icon mat-list-icon>badge</mat-icon>
+                    <div mat-line>Responsables</div>
                 </mat-list-item>
             </ng-container>
 

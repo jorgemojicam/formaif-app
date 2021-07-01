@@ -1,5 +1,5 @@
-import { Asesor } from "../asesor";
-import { Sucursal } from "../sucursal";
+import { Asesor } from "../admin/asesor";
+import { Sucursal } from "../admin/sucursal";
 import { Tipo } from "./tipo";
 
 export class SolicitudZona {

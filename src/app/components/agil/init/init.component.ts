@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Asesor } from 'src/app/model/asesor';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Asesor } from 'src/app/model/admin/asesor';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 

@@ -43,11 +43,12 @@ import { ZonaModule } from './components/zona/zona.module';
 import { NivelListComponent } from './components/zona/nivel/nivel-list/nivel-list.component';
 import { NivelFormComponent } from './components/zona/nivel/nivel-form/nivel-form.component';
 import { FlujoListComponent } from './components/zona/flujo/flujo-list/flujo-list.component';
-import { AdjuntosFormComponent } from './components/zona/adjunto/adjuntos-form/adjuntos-form.component';
-import { GoogleMapComponent } from './components/zona/google-map/google-map.component';
+import { AdjuntosFormComponent } from './components/zona/solicitud/adjunto/adjuntos-form/adjuntos-form.component';
+import { GoogleMapComponent } from './components/zona/solicitud/google-map/google-map.component';
 import { AgmCoreModule } from '@agm/core';
 import { FileComponent } from './shared/file/file.component';
-
+import { ZonasComponent } from './components/zona/solicitud/limite/zonas/zonas.component';
+import { ResponsablesFormComponent } from './components/zona/responsable/responsables-form/responsables-form.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,9 @@ import { FileComponent } from './shared/file/file.component';
     AdjuntosFormComponent,
     FlujoListComponent,
     GoogleMapComponent,
-    FileComponent
+    FileComponent,
+    ZonasComponent,
+    ResponsablesFormComponent
 
   ],
   imports: [

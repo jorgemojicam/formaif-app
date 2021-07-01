@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {  MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Respuestas } from 'src/app/model/respuestas';
-import { Resultado } from 'src/app/model/resultado';
+import { Respuestas } from 'src/app/model/meba/respuestas';
+import { Resultado } from 'src/app/model/meba/resultado';
 import { RespuestasService } from 'src/app/services/MEBA/respuestas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 

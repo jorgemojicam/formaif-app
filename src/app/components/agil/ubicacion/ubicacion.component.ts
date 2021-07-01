@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Solicitud } from 'src/app/model/solicitud';
-import { Ubicacion } from 'src/app/model/ubicacion';
+import { Solicitud } from 'src/app/model/agil/solicitud';
+import { Ubicacion } from 'src/app/model/agil/ubicacion';
 import { EncryptService } from 'src/app/services/encrypt.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 

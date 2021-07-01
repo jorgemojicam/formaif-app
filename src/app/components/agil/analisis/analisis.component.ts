@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
 import { EncryptService } from 'src/app/services/encrypt.service';

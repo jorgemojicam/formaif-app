@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
-import { Asesor } from 'src/app/model/asesor';
+import { Asesor } from 'src/app/model/admin/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { EncryptService } from './encrypt.service';
 
 @Injectable({
   providedIn: 'root'

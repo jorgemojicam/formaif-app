@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Pregunta } from 'src/app/model/pregunta';
+import { Pregunta } from 'src/app/model/meba/pregunta';
 import { PreguntasService } from 'src/app/services/MEBA/preguntas.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 

@@ -2,24 +2,34 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ZonaRoutingModule } from './zona-routing.module';
-import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
 import { MaterialModule } from 'src/app/material.module';
-import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
+import { GestionZonaComponent } from './solicitud/gestion-zona/gestion-zona.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MapaComponent } from './mapa/mapa.component';
-import { RegistroFormComponent } from './registro-form/registro-form.component';
+import { MapaComponent } from './solicitud/mapa/mapa.component';
+import { RegistroFormComponent } from './solicitud/registro-form/registro-form.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ModalInfomapComponent } from './modal-infomap/modal-infomap.component';
-import { AdjuntosComponent } from './adjunto/adjuntos/adjuntos.component';
+import { ModalInfomapComponent } from './solicitud/modal-infomap/modal-infomap.component';
+import { AdjuntosComponent } from './solicitud/adjunto/adjuntos/adjuntos.component';
+import { GestionLimiteComponent } from './solicitud/limite/gestion-limite/gestion-limite.component';
+import { LimiteOficinaComponent } from './solicitud/limite/limite-oficina/limite-oficina.component';
+import { LimiteMunicipioComponent } from './solicitud/limite/limite-municipio/limite-municipio.component';
+import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
+import { ResponsablesComponent } from './responsable/responsables/responsables.component';
+import { FlujoFormComponent } from './flujo/flujo-form/flujo-form.component';
 
 @NgModule({
   declarations: [
-    SolicitudFormComponent,
     GestionZonaComponent, 
     MapaComponent,
     RegistroFormComponent, 
     AdjuntosComponent,
-    ModalInfomapComponent
+    ModalInfomapComponent,
+    GestionLimiteComponent,
+    LimiteOficinaComponent,
+    LimiteMunicipioComponent,
+    SolitudesComponent,
+    ResponsablesComponent,
+    FlujoFormComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +38,7 @@ import { AdjuntosComponent } from './adjunto/adjuntos/adjuntos.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule
+    
 
   ],
   entryComponents: [

@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GestionZonaComponent } from './gestion-zona/gestion-zona.component';
-import { GoogleMapComponent } from './google-map/google-map.component';
+import { GestionZonaComponent } from './solicitud/gestion-zona/gestion-zona.component';
+import { GoogleMapComponent } from './solicitud/google-map/google-map.component';
 import { NivelListComponent } from './nivel/nivel-list/nivel-list.component';
-import { SolicitudFormComponent } from './solicitud-form/solicitud-form.component';
 import { ZonaComponent } from './zona.component';
+import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
+import { ResponsablesComponent } from './responsable/responsables/responsables.component';
+import { FlujoListComponent } from './flujo/flujo-list/flujo-list.component';
 
 const routes: Routes = [
   {
@@ -13,15 +15,15 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'solicitud',
+        redirectTo: 'solicitudes',
         pathMatch: 'prefix',
         data: {
-          routerName: 'solicitud'
+          routerName: 'solicitudes'
         }
       },
       {
-        path: 'solicitud',
-        component: SolicitudFormComponent,
+        path: 'solicitudes',
+        component: SolitudesComponent,
         data: {
           routerName: 'solicitud'
         }
@@ -45,6 +47,20 @@ const routes: Routes = [
         component: GoogleMapComponent,
         data: {
           routerName: 'mapa'
+        }
+      },
+      {
+        path: 'responsables',
+        component: ResponsablesComponent,
+        data: {
+          routerName: 'responsables'
+        }
+      },
+      {
+        path: 'flujo',
+        component: FlujoListComponent,
+        data: {
+          routerName: 'flujo'
         }
       }
     ]

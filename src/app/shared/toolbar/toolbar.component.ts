@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ActivatedRoute, ActivationEnd, ActivationStart, NavigationEnd, Router } from '@angular/router';
-import { Asesor } from 'src/app/model/asesor';
+import { Asesor } from 'src/app/model/admin/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { IdbSolicitudService } from '../../services/idb-solicitud.service';
 import { ProfileComponent } from '../../components/admin/profile/profile.component';

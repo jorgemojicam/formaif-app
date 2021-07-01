@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Asesor } from 'src/app/model/asesor';
+import { Asesor } from 'src/app/model/admin/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { Router } from '@angular/router';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';

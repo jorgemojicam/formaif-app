@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Rol } from 'src/app/model/rol';
+import { Rol } from 'src/app/model/admin/rol';
 import { Flujo } from 'src/app/model/zona/flujo';
 import { RolService } from 'src/app/services/rol.service';
 import { FlujoService } from 'src/app/services/zona/flujo.service';

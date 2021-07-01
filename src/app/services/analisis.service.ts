@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Solicitud } from '../model/solicitud';
+import { Solicitud } from '../model/agil/solicitud';
 
 const httpOptions = {
   headers: new HttpHeaders({

@@ -3,11 +3,11 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CrucesAgro } from 'src/app/model/crucesagro';
-import { Egresos } from 'src/app/model/egresos';
-import { LoteAgro } from 'src/app/model/loteAgro';
-import { LotePecuario } from 'src/app/model/lotePecuario';
-import { Solicitud } from 'src/app/model/solicitud';
+import { CrucesAgro } from 'src/app/model/agil/crucesagro';
+import { Egresos } from 'src/app/model/agil/egresos';
+import { LoteAgro } from 'src/app/model/agil/loteAgro';
+import { LotePecuario } from 'src/app/model/agil/lotePecuario';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import Utils from 'src/app/utils';
 import Swal from 'sweetalert2';
 import DataSelect from '../../../../data-select/dataselect.json';

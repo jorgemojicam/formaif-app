@@ -1,22 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Balance } from 'src/app/model/balance';
+import { Balance } from 'src/app/model/agil/balance';
 import DataSelect from '../../../data-select/dataselect.json';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
-import { Solicitud } from 'src/app/model/solicitud';
-import { Inventario } from 'src/app/model/inventario';
-import { ActivosFamilia } from 'src/app/model/activosfamilia';
-import { ActivosNegocio } from 'src/app/model/activosnegocio';
-import { Recuperacion } from 'src/app/model/recuperacion';
-import { Proveedores } from 'src/app/model/proveedores';
-import { Creditos } from 'src/app/model/creditos';
-import { Inversiones } from 'src/app/model/inversiones';
-import { Pasivos } from 'src/app/model/pasivos';
+import { Solicitud } from 'src/app/model/agil/solicitud';
+import { Inventario } from 'src/app/model/agil/inventario';
+import { ActivosFamilia } from 'src/app/model/agil/activosfamilia';
+import { ActivosNegocio } from 'src/app/model/agil/activosnegocio';
+import { Recuperacion } from 'src/app/model/agil/recuperacion';
+import { Proveedores } from 'src/app/model/agil/proveedores';
+import { Creditos } from 'src/app/model/agil/creditos';
+import { Inversiones } from 'src/app/model/agil/inversiones';
+import { Pasivos } from 'src/app/model/agil/pasivos';
 import Utils from '../../../utils'
-import { ProveedoresEstacionales } from 'src/app/model/proveedoresestacinales';
-import { CreditoDetalle } from 'src/app/model/creditodetalle';
+import { ProveedoresEstacionales } from 'src/app/model/agil/proveedoresestacinales';
+import { CreditoDetalle } from 'src/app/model/agil/creditodetalle';
 import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({

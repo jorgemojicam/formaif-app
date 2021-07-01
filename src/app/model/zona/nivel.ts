@@ -1,4 +1,4 @@
-import { Rol } from "../rol";
+import { Rol } from "../admin/rol";
 import { Flujo } from "./flujo";
 
 export class Nivel {

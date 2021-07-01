@@ -1,12 +1,12 @@
-import { Adaptativa } from './adaptativa';
+import { Adaptativa } from '../meba/adaptativa';
 import { Balance } from './balance';
 import { Cruces } from './cruces';
 import { CrucesAgro } from './crucesagro';
 import { Gastos } from './gastos';
 import { Propuesta } from './propuesta';
-import { Sensibilidad } from './sensibilidad';
+import { Sensibilidad } from '../meba/sensibilidad';
 import { Ubicacion } from './ubicacion';
-import { Verificacion } from './verificacion';
+import { Verificacion } from '../meba/verificacion';
 
 export class Solicitud {
     solicitud: number;

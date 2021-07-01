@@ -2,14 +2,14 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { Cruces } from 'src/app/model/cruces';
-import { Solicitud } from 'src/app/model/solicitud';
+import { Cruces } from 'src/app/model/agil/cruces';
+import { Solicitud } from 'src/app/model/agil/solicitud';
 import DataSelect from '../../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../../../services/idb-solicitud.service';
 import Swal from 'sweetalert2'
-import { MateriaPrima } from 'src/app/model/materiaprima';
-import { Compras } from 'src/app/model/compras';
-import { CostoVenta } from 'src/app/model/costoventa';
+import { MateriaPrima } from 'src/app/model/agil/materiaprima';
+import { Compras } from 'src/app/model/agil/compras';
+import { CostoVenta } from 'src/app/model/agil/costoventa';
 import Utils from '../../../../utils';
 import { EncryptService } from 'src/app/services/encrypt.service';
 

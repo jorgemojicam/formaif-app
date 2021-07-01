@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TipoProduccion } from '../../model/tipoproduccion';
+import { TipoProduccion } from '../../model/agil/tipoproduccion';
 
 @Injectable({
   providedIn: 'root'

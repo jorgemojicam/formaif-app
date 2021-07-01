@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ActivatedRoute } from '@angular/router';
-import { Asesor } from 'src/app/model/asesor';
+import { Asesor } from 'src/app/model/admin/asesor';
 import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
 import { FlujoService } from 'src/app/services/zona/flujo.service';
 import { NivelService } from 'src/app/services/zona/nivel.service';
