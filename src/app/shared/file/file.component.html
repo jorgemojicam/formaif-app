@@ -2,7 +2,6 @@
     <mat-label>Adjuntar {{label}}</mat-label>
     <input matInput value="{{filename}}" placeholder="Adjuntar" readonly>
     <mat-icon matSuffix>camera_alt</mat-icon>
-    <input type="file" #UploadFileInput id="UploadFileInput" (change)="fileChangeEvent($event)" class="fileUpload"
+    <input type="file" #UploadFileInput (change)="fileChangeEvent($event)" class="fileUpload"
         accept="image/x-png,image/jpeg,image/gif" />
-    <!-- <mat-hint>Adjunte la imagen</mat-hint> -->
 </mat-form-field>

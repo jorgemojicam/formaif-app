@@ -21,12 +21,6 @@ export class AdjuntosFormComponent implements OnInit {
   labelPot = 'POT'
   labelEot = 'EOT'
 
-  @ViewChild('UploadFileInput') uploadFileInput: ElementRef;
-  @ViewChild('eotFile') eotFile: ElementRef;
-
-  nameEotFile = 'Seleccione EOT';
-  myfilename = 'Seleccione POT';
-
   aTipo: any[] = [
     { id: "1", nombre: "Cambio de Nombre" },
     { id: "2", nombre: "Barrio Nuevo" },
@@ -176,50 +170,6 @@ export class AdjuntosFormComponent implements OnInit {
   _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.aBarrio.filter(option => option.Nombre.toLowerCase().includes(filterValue));
-  }
-
-  fileChangeEvent(fileInput: any) {
-
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      this.myfilename = '';
-      Array.from(fileInput.target.files).forEach((file: File) => {
-        this.myfilename += file.name;
-      });
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = rs => {
-          const imgBase64Path = e.target.result;
-        };
-      };
-      reader.readAsDataURL(fileInput.target.files[0]);
-      this.uploadFileInput.nativeElement.value = "";
-    } else {
-      this.myfilename = 'Seleccione Archivo';
-    }
-  }
-
-  fileEotChangeEvent(fileInput: any) {
-
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      this.nameEotFile = '';
-      Array.from(fileInput.target.files).forEach((file: File) => {
-        this.nameEotFile += file.name;
-      });
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = rs => {
-          const imgBase64Path = e.target.result;
-        };
-      };
-      reader.readAsDataURL(fileInput.target.files[0]);
-      this.uploadFileInput.nativeElement.value = "";
-    } else {
-      this.nameEotFile = 'Seleccione Archivo';
-    }
   }
 
 }

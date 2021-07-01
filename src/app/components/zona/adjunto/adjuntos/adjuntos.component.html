@@ -13,10 +13,16 @@
                         <span *ngIf="row.TipoAdjunto==2">Cambio de nombre</span>
                     </td>
                 </ng-container>
+                <ng-container matColumnDef="municipio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Municipio</th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.Municipio.Nombre}}
+                    </td>
+                </ng-container>
                 <ng-container matColumnDef="estrato">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Estrato</th>
                     <td mat-cell *matCellDef="let row">
-                       {{row.Estrato}}
+                        {{row.Estrato}}
                     </td>
                 </ng-container>
 

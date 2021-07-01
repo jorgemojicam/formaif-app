@@ -16,7 +16,7 @@ export class AdjuntosComponent implements OnInit {
 
   @Input() idSolicitud: any
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  displayedColumns: string[] = ['tipo', 'estrato', 'edit', 'delete'];
+  displayedColumns: string[] = ['tipo','municipio', 'estrato', 'edit', 'delete'];
   dataSource: MatTableDataSource<Adjuntos>;
   @ViewChild(MatSort) sort: MatSort;
   datosPorud: any = []
