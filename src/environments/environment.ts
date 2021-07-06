@@ -10,6 +10,8 @@ export const environment = {
   agro: 'COL-FO-006 Análisis de crédito Agropecuario (PDF Generado Asesor Agil)',
   flujo: 'COL-FO-017 Flujo de Caja Agropecuario (PDF Generado Asesor Agil)',
   meba: 'Resultado de medición EBA  COL-FO-020',
+  director: 'DIRECTOR OFICINA DE INCLUSION FINANCIERA',
+  regional: 'DIRECTOR REGIONAL'
 };
 
 /*

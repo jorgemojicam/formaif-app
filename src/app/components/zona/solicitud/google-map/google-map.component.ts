@@ -148,14 +148,10 @@ export class GoogleMapComponent implements OnInit {
       google.maps.event.addListener(newShape, 'click', function () {
         self.setSelection(newShape);
         google.maps.event.addListener(newShape.getPath(), 'insert_at', function () {
-          //alert('updated shape, go update it in your db');
-          console.log("allshapes index updated =");
           self.allShapes.indexOf(newShape)
         });
         google.maps.event.addListener(newShape.getPath(), 'set_at', function () {
-          self.getShapeCoords(newShape)
-          console.log('shape coords updated');
-          //alert('updated shape, go update it in your db');
+          self.getShapeCoords(newShape)   
         });
       });
       self.allShapes.push(newShape);
@@ -168,10 +164,6 @@ export class GoogleMapComponent implements OnInit {
     google.maps.event.addListener(this.drawingManager, 'drawingmode_changed', self.clearSelection);
 
     this.drawingManager.setMap(map);
-
-    //google.maps.event.addListener(map, 'click', self.clearSelection);
-
-
   }
 
 }

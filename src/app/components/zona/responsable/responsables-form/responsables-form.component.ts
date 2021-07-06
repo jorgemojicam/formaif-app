@@ -13,20 +13,20 @@ import { RolService } from 'src/app/services/rol.service';
 export class ResponsablesFormComponent implements OnInit {
 
   constructor(
-    private _srvRol:RolService,
-    private _srvRegional:RegionalService
-  ){
+    private _srvRol: RolService,
+    private _srvRegional: RegionalService
+  ) {
 
   }
   @Input() datos: any
-  aRol:Rol[]= new Array
-  aRegional:Regional[] = new Array
+  aRol: Rol[] = new Array
+  aRegional: Regional[] = new Array
 
   responsableForm: FormGroup = new FormGroup({
     id: new FormControl(null),
     username: new FormControl(null, Validators.required),
     rol: new FormControl(null, Validators.required),
-    regional: new FormControl(null, Validators.required)    
+    regional: new FormControl(null, Validators.required)
   })
 
   async ngOnInit() {
@@ -34,7 +34,19 @@ export class ResponsablesFormComponent implements OnInit {
     this.aRegional = await this.getRegional() as Regional[]
   }
 
-  async onSave(){
+  async onSave() {
+
+    if (this.responsableForm.valid) {
+      let data = {
+        Username: this.responsableForm.value.username,
+        Regional: {
+          Id: this.responsableForm.value.Regional.Codido
+        },
+        Rol: {
+          Id: this.responsableForm.value.Rol.Id
+        }
+      }
+    }
 
   }
 
@@ -48,11 +60,11 @@ export class ResponsablesFormComponent implements OnInit {
       })
     })
   }
-  getRegional(){
-    return new Promise(resolve=>{
-      this._srvRegional.get().subscribe((suc)=>{
+  getRegional() {
+    return new Promise(resolve => {
+      this._srvRegional.get().subscribe((suc) => {
         resolve(suc)
-      },(err)=>{
+      }, (err) => {
         console.log(err)
         resolve([])
       })

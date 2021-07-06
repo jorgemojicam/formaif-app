@@ -26,6 +26,7 @@ export class GestionZonaComponent implements OnInit {
   flujo: any
   id: any
   identificador: string = null
+  loading: boolean = false
 
   formNiveles: FormGroup = this._formBuilder.group({
     niveles: this._formBuilder.array([])
@@ -65,8 +66,6 @@ export class GestionZonaComponent implements OnInit {
 
     this.tipos = await this.getTipo() as Tipo[]
 
-  
-    
     if (this.id) {
       let stepselect = 0
       let arrayNiveles = this._formBuilder.array([])
@@ -76,7 +75,7 @@ export class GestionZonaComponent implements OnInit {
 
       this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona
       this.dataSeguimiento = await this.getSeguimientoBySol(this.id) as Seguimiento[]
-    
+
       if (this.dataSeguimiento) {
         for (let i = 0; i < this.dataSeguimiento.length; i++) {
           const seg = this.dataSeguimiento[i]
@@ -135,8 +134,8 @@ export class GestionZonaComponent implements OnInit {
   nivel() {
     return this.formNiveles.get('niveles') as FormArray;
   }
-  onRegistro() {
-
+  async onRegistro() {
+    this.loading = true
     if (this.registroForm.valid) {
 
       let data = {
@@ -159,8 +158,32 @@ export class GestionZonaComponent implements OnInit {
           Id: this.flujo.Id
         }
       }
+
       console.log(data)
       console.log(this.registroForm)
+
+      let res = await this.create(data) as SolicitudZona
+      /*
+      if (res) {
+        let nivels = await this.getNivel(this.flujo.Id) as any
+        nivels.forEach(async element => {
+          let dataSeg = {
+            Solicitud: {
+              Id: res.Id
+            },
+            Estado: {
+              Id: 0
+            },
+            Nivel: {
+              Id: element.Id
+            }
+          }
+          let resSeg = await this.createSeguimiento(dataSeg) as Seguimiento
+          console.log('res seguim', resSeg)
+        });
+      }
+      */
+      this.loading = false
     }
   }
 
@@ -246,12 +269,12 @@ export class GestionZonaComponent implements OnInit {
       this._srvSol.create(data).subscribe((res) => {
         let sol = res as SolicitudZona
         if (sol.Id > 0) {
-          resolve({ data: res, error: null })
+          resolve(res)
         } else {
-          resolve({ data: null, error: 'Se presento un error' })
+          resolve(null)
         }
       }, (err) => {
-
+        console.log(err)
       })
     })
   }
@@ -272,9 +295,10 @@ export class GestionZonaComponent implements OnInit {
   createSeguimiento(data) {
     return new Promise(resolve => {
       this._srvSeguimiento.create(data).subscribe((res) => {
-        resolve({ data: res, error: null })
+        resolve(res)
       }, (err) => {
-        resolve({ data: null, error: err })
+        console.log(err)
+        resolve(null)
       })
     })
   }
