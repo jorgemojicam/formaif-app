@@ -1,0 +1,53 @@
+<mat-form-field appearance="standard">
+  <mat-label>Buscar</mat-label>
+  <input matInput (keyup)="applyFilter($event)" autocomplete="off" placeholder="Nombre Asesor" #input>
+</mat-form-field>
+
+<div class="container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="departamento" sticky>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
+      <td mat-cell *matCellDef="let row"> {{row.Departamento.Nombre}} </td>
+    </ng-container>
+    <ng-container matColumnDef="municipio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipio </th>
+      <td mat-cell *matCellDef="let row"> {{row.Municipio.Nombre}} </td>
+    </ng-container>
+    <ng-container matColumnDef="barrio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Barrio </th>
+      <td mat-cell *matCellDef="let row"> {{row.Barrio.Nombre}} </td>
+    </ng-container>
+    <ng-container matColumnDef="asesor">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Asesor </th>
+      <td mat-cell *matCellDef="let row"> {{row.Asesor.Nombre}} </td>
+    </ng-container>
+    <ng-container matColumnDef="estrato">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estrato </th>
+      <td mat-cell *matCellDef="let row"> {{row.Estrato}} </td>
+    </ng-container>
+    <ng-container matColumnDef="localizacion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Localizacion </th>
+      <td mat-cell *matCellDef="let row"> {{row.Localizacion}} </td>
+    </ng-container>
+    <ng-container matColumnDef="cartera">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cartera </th>
+      <td mat-cell *matCellDef="let row"> {{row.ValorCartera}} </td>
+    </ng-container>
+    <ng-container matColumnDef="clientes">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> #Clientes </th>
+      <td mat-cell *matCellDef="let row"> {{row.NumeroClientes}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:'header-1'"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+
+  <mat-paginator class="mat-paginator-sticky" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

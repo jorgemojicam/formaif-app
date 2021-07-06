@@ -75,7 +75,7 @@ export class GestionZonaComponent implements OnInit {
 
       this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona
       this.dataSeguimiento = await this.getSeguimientoBySol(this.id) as Seguimiento[]
-
+      
       if (this.dataSeguimiento) {
         for (let i = 0; i < this.dataSeguimiento.length; i++) {
           const seg = this.dataSeguimiento[i]

@@ -49,6 +49,7 @@ import { AgmCoreModule } from '@agm/core';
 import { FileComponent } from './shared/file/file.component';
 import { ZonasComponent } from './components/zona/solicitud/limite/zonas/zonas.component';
 import { ResponsablesFormComponent } from './components/zona/responsable/responsables-form/responsables-form.component';
+import { FlujoFormComponent } from './components/zona/flujo/flujo-form/flujo-form.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { ResponsablesFormComponent } from './components/zona/responsable/respons
     GoogleMapComponent,
     FileComponent,
     ZonasComponent,
-    ResponsablesFormComponent
+    ResponsablesFormComponent,
+    FlujoFormComponent,
 
   ],
   imports: [

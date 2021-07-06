@@ -14,6 +14,15 @@ export class FlujoService {
   get() {
     return this.http.get(`${environment.AUTH_API}Flujo`);
   }
+  create(data) {
+    return this.http.post(`${environment.AUTH_API}Flujo`,data);
+  }
+  update(data) {
+    return this.http.put(`${environment.AUTH_API}Flujo`,data);
+  }
+  delete(data) {
+    return this.http.delete(`${environment.AUTH_API}Flujo`,data);
+  }
   getByActivo(activo) {
     return this.http.get(`${environment.AUTH_API}Flujo?activo=${activo}`);
   }

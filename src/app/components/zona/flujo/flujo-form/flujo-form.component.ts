@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-flujo-form',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FlujoFormComponent implements OnInit {
 
+  @Input() datos:any
   constructor() { }
 
   ngOnInit(): void {

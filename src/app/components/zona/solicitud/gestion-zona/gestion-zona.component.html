@@ -1,3 +1,9 @@
+<div class="breadcrum">
+    <mat-chip-list aria-label="Fish selection">            
+        <mat-chip color="primary" [routerLink]="['../']" selected>Solicitudes</mat-chip>/
+        <mat-chip>Gestion Solicitud</mat-chip>
+      </mat-chip-list>
+</div>
 <mat-horizontal-stepper #stepper>
     <mat-step [stepControl]="registroForm" [editable]="true">
         <form [formGroup]="registroForm">
@@ -115,5 +121,8 @@
         </div>
     </form>
 </mat-horizontal-stepper>
+<ng-container>
+    
+</ng-container>
 
-<app-registro-form *ngIf="id" [idSolicitud]="id"></app-registro-form>
+<app-registro-form *ngIf="dataSolicitud.Id" [solicitud]="dataSolicitud"></app-registro-form>

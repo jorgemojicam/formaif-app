@@ -15,7 +15,8 @@ import { LimiteOficinaComponent } from './solicitud/limite/limite-oficina/limite
 import { LimiteMunicipioComponent } from './solicitud/limite/limite-municipio/limite-municipio.component';
 import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
 import { ResponsablesComponent } from './responsable/responsables/responsables.component';
-import { FlujoFormComponent } from './flujo/flujo-form/flujo-form.component';
+
+import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/cartera-inicial.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FlujoFormComponent } from './flujo/flujo-form/flujo-form.component';
     LimiteMunicipioComponent,
     SolitudesComponent,
     ResponsablesComponent,
-    FlujoFormComponent
+
+    CarteraInicialComponent
   ],
   imports: [
     CommonModule,
