@@ -233,7 +233,7 @@ export class HomeComponent implements AfterViewInit {
 
                           b.textContent = "Generacion Flujo de caja pdf..."
                           pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
-                          
+
                         } catch (ex) {
                           Swal.close()
                           Swal.fire('Error !', 'Se identifico un error en la construccion del analisis o flujo ' + ex, 'error')
@@ -365,10 +365,10 @@ export class HomeComponent implements AfterViewInit {
     let pdfflu = "error"
 
     if (pdfBase64 || pdfBase64 != "") {
-      pdfagr = pdfBase64.substring(1, 40)
+      pdfagr = pdfBase64.substring(1, 40) +" cantidad ->"+pdfBase64.length
     }
     if (pdfBase64Agro || pdfBase64Agro != "") {
-      pdfflu = pdfBase64Agro.substring(1, 40)
+      pdfflu = pdfBase64Agro.substring(1, 40) +" cantidad ->"+pdfBase64Agro.length
     }
 
     let emailParam = {
