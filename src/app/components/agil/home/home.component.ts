@@ -357,8 +357,8 @@ export class HomeComponent implements AfterViewInit {
       To: emailDir,
       Subject: "Analisis de credito",
       Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
-      Base64Pdf: pdfBase64,
-      Base64PdfAgro: pdfBase64Agro
+      Base64Pdf: pdfBase64.toString(),
+      Base64PdfAgro: pdfBase64Agro.toString()
     }
 
     let pdfagr = "error"
