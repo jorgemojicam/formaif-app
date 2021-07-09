@@ -224,14 +224,20 @@ export class HomeComponent implements AfterViewInit {
 
                       if (this.datasol.asesor == 2) {
 
-                        const contentagro = this.analisisAgro.reporte.nativeElement
-                        const contentflujo = this.flujo.reporte.nativeElement
+                        try {
+                          const contentagro = this.analisisAgro.reporte.nativeElement
+                          const contentflujo = this.flujo.reporte.nativeElement
 
-                        b.textContent = "Generacion Analisis de credito pdf..."
-                        pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
+                          b.textContent = "Generacion Analisis de credito pdf..."
+                          pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
 
-                        b.textContent = "Generacion Flujo de caja pdf..."
-                        pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
+                          b.textContent = "Generacion Flujo de caja pdf..."
+                          pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
+                          
+                        } catch (ex) {
+                          Swal.close()
+                          Swal.fire('Error !', 'Se identifico un error en la construccion del analisis o flujo ' + ex, 'error')
+                        }
 
                         //b.textContent = "Insertando en carpeta digital..."
                         //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)

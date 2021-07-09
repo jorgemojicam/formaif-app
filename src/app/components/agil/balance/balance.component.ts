@@ -568,9 +568,10 @@ export class BalanceComponent implements OnInit {
                 let cuota = Utils.formatNumber(cuo.get('cuota').value)
                 let fecha = cuo.get('fecha').value
 
-                if (fecha != "") {
-                  let mes = fecha.getMonth()
-                  let ano = fecha.getFullYear()
+                if (fecha && fecha != "") {
+                  
+                  let mes = new Date(fecha).getMonth()
+                  let ano = new Date(fecha).getFullYear()
                   let fullfehca = mes + "-" + ano
 
                   if (arrMese.indexOf(fullfehca) < 0) {
@@ -625,7 +626,6 @@ export class BalanceComponent implements OnInit {
 
       this.dataBalance = this.balanceForm.value
       this.dataSolicitud.Balance = this.dataBalance
-      console.log("lo que se guarda ", this.dataSolicitud)
       this._srvSol.saveSol(this.ced, this.dataSolicitud)
     })
 
@@ -645,7 +645,6 @@ export class BalanceComponent implements OnInit {
       porcentajeCobrar: bal.porcentajeCobrar,
       recuperacion: this.loadRecuperacion(bal.recuperacion),
       totalRecuperacion: bal.totalRecuperacion,
-      //inventarioRow: this.loadInventarioRows(bal.inventarioRow),
       inventarioTotal: bal.inventarioTotal,
       actividadNegRows: this.loadActividad(bal.actividadNegRows),
       actnegTotal: bal.actnegTotal,
@@ -679,7 +678,6 @@ export class BalanceComponent implements OnInit {
     this.dataBalance.inventarioRow = data.inventario
     this.dataBalance.inventarioTotal = data.total    
     this.dataSolicitud.Balance = this.dataBalance
-
     this._srvSol.saveSol(this.ced, this.dataSolicitud)
   }
   //------------------------------------------------------------------
@@ -1058,13 +1056,10 @@ export class BalanceComponent implements OnInit {
   loadPasivos(pasivos: Pasivos[]) {
     let pasivosArray = this.fb.array([])
 
-    pasivos.forEach(pas => {
-      let tipopas = [];
+    pasivos.forEach(pas => {   
       let periodocap = [];
       let periodoint = [];
 
-      if (pas.tipo)
-        tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
       if (pas.periodocap)
         periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
       if (pas.periodoint)
@@ -1072,7 +1067,7 @@ export class BalanceComponent implements OnInit {
 
       pasivosArray.push(
         this.fb.group({
-          tipo: [tipopas],
+          tipo: [pas.tipo],
           clase: [pas.clase],
           negociovivienda: [pas.negociovivienda],
           cuotahipoteca: [pas.cuotahipoteca],
