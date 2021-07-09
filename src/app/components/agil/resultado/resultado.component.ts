@@ -62,7 +62,7 @@ export class ResultadoComponent implements OnInit {
         let otrosingresos = 0
         if (this.datasolicitud.Gastos) {
           this.salarios = this.datasolicitud.Gastos.totalRemuneracion
-          this.totalgastosfam = this.datasolicitud.Gastos.totalF
+          this.totalgastosfam =  Utils.formatNumber(this.datasolicitud.Gastos.totalF)
           this.totalotrosingresosfam = this.datasolicitud.Gastos.totalOtros
           this.gastosgenerales = this.datasolicitud.Gastos.totalN
           otrosingresos = Utils.formatNumber(this.datasolicitud.Gastos.totalOtros)
@@ -161,7 +161,8 @@ export class ResultadoComponent implements OnInit {
           this.gastosGeneralesA = (totalgastos / plazo) * formapago
           this.obligacionesA = (totalobligaciones / plazo) * formapago
           this.otrosIngresosA = otrosingresos * formapago
-          this.gastosFamiliaresA = (totalgastosyobfam / plazo) * formapago
+          this.gastosFamiliaresA = ((totalgastosyobfam / plazo) * formapago)
+   
         }
 
       })

@@ -33,7 +33,7 @@
                                     <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                         <mat-form-field>
                                             <mat-label>Tipo Actividad</mat-label>
-                                            <mat-select formControlName="tipo" required>
+                                            <mat-select formControlName="tipo" (selectionChange)="onTipoChange(ac)" required>
                                                 <mat-option>--</mat-option>
                                                 <mat-option *ngFor="let tip of tipoAct" [value]="tip.id">
                                                     {{tip.name}}
@@ -249,7 +249,7 @@
                                             </div>
                                             <div class="gr" fxFlex="33%" fxFlex.xs="27%" fxFlex.sm="20%">
                                                 <mat-form-field appearance="outline">
-                                                    <mat-label>Dias</mat-label>
+                                                    <mat-label>Cant</mat-label>
                                                     <input matInput type="number" matInput placeholder="Dias"
                                                         id="totalDias{{ac}}" formControlName="totalDias">
                                                 </mat-form-field>
@@ -292,7 +292,8 @@
                                                 <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                                                     <mat-form-field>
                                                         <mat-label>Frecuencia</mat-label>
-                                                        <mat-select formControlName="periodohistoricas" [compareWith]="compareFunction" required
+                                                        <mat-select formControlName="periodohistoricas"
+                                                            [compareWith]="compareFunction" required
                                                             (selectionChange)="loadVentas(ac,$event)">
                                                             <mat-option *ngFor="let fre of frecuencia" [value]="fre">
                                                                 {{fre.name}}
@@ -307,11 +308,26 @@
                                                         <ng-container *ngIf="acti.value.periodohistoricas != null">
                                                             <div class="gr" fxFlex="50%" fxFlex.xs="25%"
                                                                 fxFlex.sm="25%">
-                                                                <mat-form-field>
-                                                                    <input type="text" matInput
-                                                                        placeholder="{{acti.value.periodohistoricas.name}}"
-                                                                        id="dia{{ven}}" formControlName="dia" readonly>
-                                                                </mat-form-field>
+                                                                <ng-container *ngIf="acti.value.periodohistoricas.id ==1">
+                                                                    <mat-form-field>
+                                                                        <mat-label>Buenas</mat-label>
+                                                                        <mat-select formControlName="dia">
+                                                                            <mat-option *ngFor="let d of diasSemana"
+                                                                                [value]="d.name">
+                                                                                {{d.name}}
+                                                                            </mat-option>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+
+                                                                </ng-container>
+                                                                <ng-container
+                                                                    *ngIf="acti.value.periodohistoricas.id !=1">
+                                                                    <mat-form-field>
+                                                                        <input type="text" matInput value="{{acti.value.periodohistoricas.name}} {{ven + 1}}"
+                                                                            placeholder="{{acti.value.periodohistoricas.name}}"
+                                                                            formControlName="dia" readonly>
+                                                                    </mat-form-field>
+                                                                </ng-container>
                                                             </div>
                                                             <div class="gr" fxFlex="60%" fxFlex.xs="70%"
                                                                 fxFlex.sm="45%">
@@ -322,7 +338,8 @@
                                                                 </mat-form-field>
                                                             </div>
                                                             <button class="btndelete" color="warn" mat-icon-button
-                                                                [disabled]="ven==0 || acti.value.periodohistoricas.id==1 
+                                                                [disabled]="ven==0 
+                                                                || (acti.value.periodohistoricas.id==1 && ven < 5)
                                                                 || (acti.value.periodohistoricas.id==2 && ven < 3)
                                                                 || (acti.value.periodohistoricas.id==3 && ven < 2)
                                                                 || (acti.value.periodohistoricas.id==4 && ven < 3)"
@@ -344,8 +361,8 @@
                                         </mat-card-content>
                                         <ng-container *ngIf="acti.value.periodohistoricas != null">
                                             <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
-                                                color="accent" (click)="addVentashis(ac)" [disabled]="ventashistoricas(ac).length >= acti.value.periodohistoricas.cant
-                                            || acti.value.periodohistoricas.id==1 ">
+                                                color="accent" (click)="addVentashis(ac)" 
+                                                [disabled]="ventashistoricas(ac).length >= acti.value.periodohistoricas.cant">
                                                 <mat-icon>add</mat-icon>
                                             </button>
                                         </ng-container>
@@ -499,7 +516,8 @@
                                                         <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <mat-label>Unidad Venta</mat-label>
-                                                                <mat-select formControlName="unidad" [compareWith]="compareFunction" required>
+                                                                <mat-select formControlName="unidad"
+                                                                    [compareWith]="compareFunction" required>
                                                                     <mat-option>--</mat-option>
                                                                     <mat-option *ngFor="let un of unidades"
                                                                         [value]="un">
@@ -680,7 +698,8 @@
                                                     <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                         <mat-form-field appearance="outline">
                                                             <mat-label>Frecuencia</mat-label>
-                                                            <mat-select formControlName="rendFrecuencia" [compareWith]="compareFunction" required>
+                                                            <mat-select formControlName="rendFrecuencia"
+                                                                [compareWith]="compareFunction" required>
                                                                 <mat-option>Frecuencia</mat-option>
                                                                 <mat-option *ngFor="let frec of frecuencia"
                                                                     [value]="frec">
@@ -840,7 +859,8 @@
                                                         <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
                                                             <mat-form-field>
                                                                 <mat-label>Frecuencia</mat-label>
-                                                                <mat-select formControlName="frecuencia" [compareWith]="compareFunction"
+                                                                <mat-select formControlName="frecuencia"
+                                                                    [compareWith]="compareFunction"
                                                                     id="frecuencia{{ac}}-{{com}}" required>
                                                                     <mat-option>--</mat-option>
                                                                     <mat-option *ngIf="acti.value.tipo ==4"

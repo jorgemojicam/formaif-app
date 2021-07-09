@@ -17,7 +17,6 @@ import { Pasivos } from 'src/app/model/agil/pasivos';
 import Utils from '../../../utils'
 import { ProveedoresEstacionales } from 'src/app/model/agil/proveedoresestacinales';
 import { CreditoDetalle } from 'src/app/model/agil/creditodetalle';
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-balance',
@@ -26,6 +25,7 @@ import { EncryptService } from 'src/app/services/encrypt.service';
 })
 export class BalanceComponent implements OnInit {
   dataSolicitud: Solicitud = new Solicitud();
+  solicitud:Solicitud
   dataBalance: Balance = new Balance();
 
   //Listas desplegables
@@ -111,6 +111,7 @@ export class BalanceComponent implements OnInit {
     });
 
     this.dataSolicitud = await this.getSol() as Solicitud
+    this.solicitud = this.dataSolicitud
     this.tipoSol = this.dataSolicitud.asesor
 
     if (this.tipoSol == 1) {
@@ -118,13 +119,13 @@ export class BalanceComponent implements OnInit {
       this.tipoActivo = DataSelect.TipoActivoNeg.filter(ac => ac.id != 5)
     }
 
-    if (this.dataSolicitud.Balance) {
+    if (this.dataSolicitud.Balance) { 
       this.loadBalance(this.dataSolicitud.Balance)
     }
 
     //------------Se ejecuta cuando se realiza cualquier cambio en el formulario-----------
     this.balanceForm.valueChanges.subscribe(form => {
-
+      console.log("asdf")
       let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
       let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
       let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
@@ -476,7 +477,13 @@ export class BalanceComponent implements OnInit {
             let nocorriente = 0
             let valor = parseFloat("0.071078")
             let cuotacalcu = monto * valor
-            let cuota = Utils.formatNumber(x.get('cuota').value)
+            let cuotacent = Utils.formatNumber(x.get('cuota').value)
+            let cuotareal = 0
+
+            if(cuotacalcu > cuotacent)
+              cuotareal = cuotacalcu
+            else if(cuotacent > cuotacalcu)
+              cuotareal = cuotacent
 
             if (saldo > 0) {
               nocorriente = saldo - corriente
@@ -494,7 +501,8 @@ export class BalanceComponent implements OnInit {
             }
 
             if (clase == 1) {
-              tcuotaf += cuotacalcu
+              
+              tcuotaf += cuotareal
               tcorrientef += corriente
               tnocorrientef += nocorriente
               x.patchValue({
@@ -502,7 +510,7 @@ export class BalanceComponent implements OnInit {
                 nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
               }, { emitEvent: false })
             } else {
-              tcuotan += cuotacalcu
+              tcuotan += cuotareal
               tcorrienten += corriente
               tnocorrienten += nocorriente
               x.patchValue({
@@ -512,7 +520,7 @@ export class BalanceComponent implements OnInit {
             }
 
             x.patchValue({
-              cuota: isFinite(cuota) ? cuota.toLocaleString() : 0,
+              cuota: isFinite(cuotacent) ? cuotacent.toLocaleString() : 0,
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
 

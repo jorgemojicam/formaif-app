@@ -1,0 +1,79 @@
+<form [formGroup]="inventarioForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Inventario</mat-card-title>
+            <mat-card-subtitle>inventario</mat-card-subtitle>
+            <mat-chip-list class="pull-right">
+                <!-- <mat-chip color="accent" selected>${{inventarioForm.controls.inventarioTotal.value}}</mat-chip> -->
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <div formArrayName="inventarioRow" class="alternate">
+                <div fxLayout="row wrap" class="content"
+                    *ngFor="let itemrow of inventarioForm.controls.inventarioRow['controls']; let inv=index"
+                    [formGroupName]="inv">
+                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-form-field class="example-full-width">
+                            <mat-label>Detalle</mat-label>
+                            <textarea matInput formControlName="descripcion"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <ng-container [ngSwitch]="tipoSol">
+                            <ng-container *ngSwitchCase="1">
+                                <mat-form-field>
+                                    <mat-label>Tipo</mat-label>
+                                    <mat-select formControlName="tipo" id="tipo{{inv}}" required>
+                                        <mat-option>--</mat-option>
+                                        <mat-option *ngFor="let tip of tipoInventario" [value]="tip">
+                                            {{tip.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="2">
+                                <mat-form-field>
+                                    <mat-label>Tipo</mat-label>
+                                    <mat-select formControlName="tipo" id="tipo{{inv}}" required>
+                                        <mat-option>Tipo Inventario</mat-option>
+                                        <mat-option *ngFor="let tip of tipoInventarioAgro" [value]="tip">
+                                            {{tip.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                    <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+                        <mat-form-field>
+                            <input type="number" matInput placeholder="Cantidad" id="cantidad{{inv}}"
+                                formControlName="cantidad">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor unitario" id="vlrUni{{inv}}"
+                                formControlName="vlrUni">
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+                        <mat-form-field>
+                            <input type="tel" matInput placeholder="Valor" id="valor{{inv}}" formControlName="valor"
+                                readonly>
+                        </mat-form-field>
+                    </div>
+                    <button class="btndelete" color="warn" mat-icon-button [disabled]="inv==0"
+                        (click)="deleteInventarioRow(inv)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <button mat-fab aria-label="add" mat-mini-fab class="btnadd"
+                [disabled]="inventarioForm.controls.inventarioRow['controls'].length>=20" type="button" color="accent"
+                (click)="addInventarioRow()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-card-content>
+    </mat-card>
+</form>

@@ -1,0 +1,32 @@
+mat-form-field {
+  width: 100%;
+}
+
+mat-card {
+  margin-top: 22px;
+}
+
+.gr {
+  padding-right: 10px;
+}
+
+div.alternate>div:nth-of-type(odd) {
+  background: rgba(239, 239, 239, 0.58);
+}
+
+.content {
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.btnadd {
+  position: absolute;
+  left: 24px;
+  bottom: -20px;
+}
+
+.btndelete {
+  position: absolute;
+  right: 10px;
+  margin-top: -10px;
+}

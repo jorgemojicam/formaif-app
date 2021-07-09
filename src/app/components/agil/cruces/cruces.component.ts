@@ -31,11 +31,8 @@ export class CrucesComponent implements OnInit {
       });
 
     this.srvSol.getSol(this.ced).subscribe((datasol) => {
-
       this.datasolicitud = JSON.parse(datasol) as Solicitud
-      console.log(this.datasolicitud)
-      this.tipoAsesor = this.datasolicitud.asesor
-    
+      this.tipoAsesor = this.datasolicitud.asesor   
     })
   }
   cahngeLoad(event){

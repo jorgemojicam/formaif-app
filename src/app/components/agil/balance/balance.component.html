@@ -121,6 +121,7 @@
     ..##..##..####..##...##..##.......##..####....##....#########.##...##....##..##.....##   
     .####.##....##....###....########.##....##....##....##.....##.##.....##.####..#######.
     -->
+    <!-- <app-inventario *ngIf="solicitud" [solicitud]="solicitud"></app-inventario> -->
     <mat-card>
         <mat-card-header>
             <mat-card-title>Inventario</mat-card-title>
@@ -1191,7 +1192,7 @@
                         </ng-container>
                     </ng-container>
 
-                    <button class="btndelete" color="warn" mat-icon-button [disabled]="pas==0"
+                    <button class="btndelete" color="warn" mat-icon-button [disabled]="balanceForm.controls.pasivosRows['controls'].length ==1"
                         (click)="deletePasivosRow(pas)">
                         <mat-icon>cancel</mat-icon>
                     </button>

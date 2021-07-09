@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -22,36 +22,26 @@ export class FlujoListComponent implements AfterViewInit {
 
 
   constructor(
-    private _srvFlujo:FlujoService,
+    private _srvFlujo: FlujoService,
     public dialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { }
-  
+
   async ngAfterViewInit() {
     this.aFlujo = await this.get() as Flujo[]
 
-       this.dataSource = new MatTableDataSource(this.aFlujo);
+    this.dataSource = new MatTableDataSource(this.aFlujo);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-  }
-
-  get() {
-    return new Promise(resolve => {
-      this._srvFlujo.get().subscribe((succ) => {        
-        resolve(succ)
-      }, (err) => {
-        console.log(err)
-        resolve([])
-      })
-    })
   }
 
   onCreate() {
     const msg = 'Crear Flujo';
     this.openDialog(msg, null);
   }
-  onEdit(elemen){
+  onEdit(elemen) {
     const msg = 'Editar Flujo'
-    this.openDialog(msg,elemen)
+    this.openDialog(msg, elemen)
   }
 
   openDialog(menssage: string, datos: any) {
@@ -69,9 +59,20 @@ export class FlujoListComponent implements AfterViewInit {
       if (result) {
         this.aFlujo = await this.get() as Flujo[]
         this.dataSource.data = this.aFlujo
-        //this.changeDetectorRefs.detectChanges();
+        this.changeDetectorRefs.detectChanges();
       }
 
+    })
+  }
+
+  get() {
+    return new Promise(resolve => {
+      this._srvFlujo.get().subscribe((succ) => {
+        resolve(succ)
+      }, (err) => {
+        console.log(err)
+        resolve([])
+      })
     })
   }
 

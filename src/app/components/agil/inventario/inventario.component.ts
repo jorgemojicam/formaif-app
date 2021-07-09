@@ -1,0 +1,118 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Balance } from 'src/app/model/agil/balance';
+import { Inventario } from 'src/app/model/agil/inventario';
+import { Solicitud } from 'src/app/model/agil/solicitud';
+import { IdbSolicitudService } from 'src/app/services/idb-solicitud.service';
+import Utils from 'src/app/utils';
+import DataSelect from '../../../data-select/dataselect.json';
+
+@Component({
+  selector: 'app-inventario',
+  templateUrl: './inventario.component.html',
+  styleUrls: ['./inventario.component.scss']
+})
+export class InventarioComponent implements OnInit {
+
+  @Input() solicitud
+  tipoSol
+  ced: string
+  tipoInventario: any = DataSelect.TipoInventario;
+  tipoInventarioAgro: any = DataSelect.TipoInventarioAgro;
+  dataSolicitud: Solicitud = new Solicitud();
+
+  constructor(
+    private _formBuild: FormBuilder,
+    public _srvSol: IdbSolicitudService,
+  ) { }
+
+  inventarioForm: FormGroup = new FormGroup({
+    inventarioRow: this._formBuild.array([this.initInventario()]),
+  })
+
+  ngOnInit() {
+
+    if (this.solicitud) {
+
+      this.dataSolicitud = this.solicitud
+      this.tipoSol = this.dataSolicitud.asesor
+      this.ced = this.dataSolicitud.cedula.toString()
+
+      if (this.dataSolicitud.Balance) {
+        if (this.dataSolicitud.Balance.inventarioRow) {
+          this.load(this.solicitud.Balance.inventarioRow)
+        }
+      }
+    }
+
+    let totalInv = 0
+    this.inventarioForm.valueChanges.subscribe(form => {
+      const inven = <FormArray>this.inventarioForm.controls['inventarioRow'];
+      inven.controls.forEach(x => {
+        let cantidad = Utils.formatNumber(x.get('cantidad').value)
+        let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
+        let valor = vlrUni * cantidad
+        totalInv += valor
+        x.patchValue({
+          valor: isFinite(valor) ? valor.toLocaleString() : 0,
+          vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
+        }, { emitEvent: false })
+      });
+      console.log("inentario ",this.inventarioForm.value.inventarioRow)
+
+
+    });
+  }
+
+  initInventario() {
+    return this._formBuild.group({
+      tipo: ['', Validators.required],
+      cantidad: ['', Validators.required],
+      vlrUni: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      valor: ['']
+    });
+  }
+
+  loadInventarioRows(inventarios: Inventario[]) {
+    let arrayInventario = this._formBuild.array([])
+    inventarios.forEach(inv => {
+      let tipoinv = []
+
+      if (this.tipoSol == 2) {
+        if (inv.tipo) {
+          tipoinv = this.tipoInventarioAgro.find(inve => inve.id == inv.tipo.id)
+        }
+      } else if (this.tipoSol == 1) {
+        if (inv.tipo) {
+          tipoinv = this.tipoInventario.find(inve => inve.id == inv.tipo.id)
+        }
+      }
+      arrayInventario.push(this._formBuild.group({
+        tipo: [tipoinv],
+        cantidad: [inv.cantidad],
+        vlrUni: [inv.vlrUni],
+        descripcion: [inv.descripcion],
+        valor: [inv.valor]
+      }))
+    });
+    return arrayInventario
+  }
+  inventario() {
+    return this.inventarioForm.get('inventarioRow') as FormArray;
+  }
+  addInventarioRow() {
+    this.inventario().push(this.initInventario());
+  }
+  deleteInventarioRow(index: number) {
+    this.inventario().removeAt(index);
+  }
+
+  load(inv: Inventario[]) {
+    this.inventarioForm = this._formBuild.group({
+      inventarioRow: this.loadInventarioRows(inv),
+      //inventarioTotal: bal.inventarioTotal,
+    })
+  }
+
+}

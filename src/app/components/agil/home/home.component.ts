@@ -416,14 +416,7 @@ export class HomeComponent implements AfterViewInit {
     let faltantes: string = ""
 
     if (this.datasol.Balance) {
-
-      if (this.datasol.Balance.inventarioTotal == 0) {
-        faltantes += "<br>Inventario"
-      }
-
-      if (this.datasol.Balance.actnegTotal == 0) {
-        faltantes += "<br>Activos del Negocio"
-      }
+      
       if (this.datasol.Balance.actfamTotal == 0) {
         faltantes += "<br>Activos de la Familia"
       }
@@ -453,7 +446,7 @@ export class HomeComponent implements AfterViewInit {
           let num: number = act + 1
           const cruces = this.datasol.CrucesAgro[act];
           if (cruces.tipo) {
-            if (cruces.tipo == 1) {
+            if (cruces.tipo != 4) {
 
             }
 

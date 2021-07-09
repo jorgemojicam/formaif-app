@@ -213,13 +213,24 @@ export class RuralComponent implements OnInit {
           let area = Utils.formatNumber(lot.get("areacult").value)
           let dsurco = Utils.formatNumber(lot.get("dsurcos").value)
           let dpanta = Utils.formatNumber(lot.get("dplantas").value)
+
+          let proxcocecha = Utils.formatNumber(lot.get("proxcocecha").value)
+
+          let fechaprox = new Date(new Date().setMonth(proxcocecha - 1))
+          let fechatual = new Date()
+          let cantmesescocecha = Utils.formatNumber(lot.get("cantmesescocecha").value)
+
+          let difereciames = fechatual.setMonth(fechaprox.getMonth() - fechatual.getMonth())
+          let numdiferencia = new Date(difereciames).getMonth()
+          console.log("diferecia mes -> ", numdiferencia)
+
           let distancia = area / (dsurco * dpanta)
           let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
 
           //--------------------------Permanente---------------------------
           let rendimientoCos = parseFloat(lot.get("rendimientoCos").value)
           let unidadesCos = parseFloat(lot.get("unidadesCos").value)
-          console.log('unidadesCos ->', unidadesCos)
+
           let perdidaCos = (1 - (unidadesCos / rendimientoCos)) * 100
           let totalCos = unidadesCos * preciopromedio
           if (unidadesCos > rendimientoCos) {
@@ -328,6 +339,7 @@ export class RuralComponent implements OnInit {
             unidadestotales: isFinite(unidadestotales) ? unidadestotales.toLocaleString('es-CO') : 0,
             rendimientoTra: rendimientoTra,
             rendimientoPepeo: rendimientoPepeo,
+            rendiemientolote: rendiemientolote,
             unidadesCos: unidadesCos,
             unidadesTra: isFinite(unidadesTra) ? unidadesTra.toLocaleString('es-CO') : 0,
             unidadesPepeo: isFinite(unidadesPepeo) ? unidadesPepeo.toLocaleString('es-CO') : 0,
@@ -675,11 +687,11 @@ export class RuralComponent implements OnInit {
   }
   itemLotesPecuario() {
     return this.fb.group({
-      numanimales: 0,
-      prodderivado: 0,
-      cantidadxanimal: 0,
+      numanimales: '',
+      prodderivado: '',
+      cantidadxanimal: '',
       frecuencia: '',
-      cantproducida: 0,
+      cantproducida: '',
       unitotalesventa: '',
       perdida: '',
       preciomin: '',
@@ -854,7 +866,7 @@ export class RuralComponent implements OnInit {
       nombre: ""
     }, { emitEvent: false })
   }
-  changeMes(e){
+  changeMes(e) {
     this._snackBar.open("Ingrese la cantidad de meses a partir del mes seleccionado donde tendra produccion y la cantidad de meses donde no tendra produccion", "Ok!", {
       duration: 99000,
     });

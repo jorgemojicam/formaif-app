@@ -161,13 +161,14 @@ export class UrbanoComponent implements OnInit {
         //---------------------Ventas Historicas--------------------------------------
         let total = 0
         let tipoactividad = x.get("tipo").value
-        let frechis = Utils.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.cant)
+        let frechis = 0
         let frechisdias = Utils.formatNumber(x.get("periodohistoricas").value == null ? 0 : x.get("periodohistoricas").value.dias)
 
         const ventashistoricas = <FormArray>x.get('ventasHis')
         ventashistoricas.controls.forEach((ven) => {
           let valor = Utils.formatNumber(ven.get("valor").value)
           total += valor
+          frechis++
           ven.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0
           }, { emitEvent: false })
@@ -433,7 +434,7 @@ export class UrbanoComponent implements OnInit {
           x.patchValue({
             totalCruce3: isFinite(totalcruce) ? totalcruce.toFixed() : 0
           }, { emitEvent: false })
-        } else if (tipoactividad == 3) {
+        } else if (tipoactividad == 3 || tipoactividad == 4) {
           x.patchValue({
             totalCruce3: isFinite(totalcomporas) ? totalcomporas.toFixed() : 0
           }, { emitEvent: false })
@@ -509,7 +510,6 @@ export class UrbanoComponent implements OnInit {
       totalCruce3: ''
     })
   }
-
   loadactividad(cruces: Cruces[]): FormGroup {
     let crucesArray = this.fb.array([])
 
@@ -562,7 +562,6 @@ export class UrbanoComponent implements OnInit {
       act: crucesArray
     })
   }
-
   actividadActual(ac) {
     return this.actividades().at(ac) as FormArray
   }
@@ -583,12 +582,10 @@ export class UrbanoComponent implements OnInit {
       }
     })
   }
-
   addActividad() {
     this.actividades().push(this.itemactividad());
     this.selected.setValue(this.actividades().length - 1);
   }
-
   //---------------------Ventas ---------------------------
   ventashistoricas(ti): FormArray {
     return this.actividades().at(ti).get("ventasHis") as FormArray
@@ -604,7 +601,6 @@ export class UrbanoComponent implements OnInit {
   }
   loadVentas(ac: number, event) {
     let periodo = event.value
-
     let listPeriodo = []
     if (periodo.id == 1) {
       listPeriodo = DataSelect.DiasSemana
@@ -672,7 +668,6 @@ export class UrbanoComponent implements OnInit {
     });
     return produArr
   }
-
   itemProd() {
     return this.fb.group({
       nombre: '',
@@ -792,7 +787,6 @@ export class UrbanoComponent implements OnInit {
       porcentaje: ''
     })
   }
-
   loadMateriaPrima(materiaprima: MateriaPrima[]) {
     let materiaprimaArr = this.fb.array([])
     materiaprima.forEach(mat => {
@@ -853,6 +847,19 @@ export class UrbanoComponent implements OnInit {
     this.save(this.actividadesForm.get('act').value)
 
   }
+
+  onTipoChange(ac) {
+
+    this.actividades().at(ac).get("ventasHis").reset()
+    /*
+    acti.controls.ventasHis = this.fb.array([this.itemventas()])
+    acti.controls.produccion = this.fb.array([this.itemProd()])
+    acti.controls.materiaprima = this.fb.array([this.itemMateriaprima()])
+    acti.controls.compras = this.fb.array([this.itemCompras()])
+    acti.controls.costoventa = this.fb.array([this.itemCostoventa()])
+    */
+  }
+
   compareFunction(o1: any, o2: any) {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
