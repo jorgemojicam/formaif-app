@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Balance } from 'src/app/model/agil/balance';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { Inventario } from 'src/app/model/agil/inventario';
 import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from 'src/app/services/idb-solicitud.service';
@@ -15,6 +15,8 @@ import DataSelect from '../../../data-select/dataselect.json';
 export class InventarioComponent implements OnInit {
 
   @Input() solicitud
+  @Output() newInventario = new EventEmitter<any>();
+
   tipoSol
   ced: string
   tipoInventario: any = DataSelect.TipoInventario;
@@ -28,6 +30,7 @@ export class InventarioComponent implements OnInit {
 
   inventarioForm: FormGroup = new FormGroup({
     inventarioRow: this._formBuild.array([this.initInventario()]),
+    totalInventario: new FormControl(0)
   })
 
   ngOnInit() {
@@ -40,13 +43,13 @@ export class InventarioComponent implements OnInit {
 
       if (this.dataSolicitud.Balance) {
         if (this.dataSolicitud.Balance.inventarioRow) {
-          this.load(this.solicitud.Balance.inventarioRow)
+          this.load(this.solicitud.Balance.inventarioRow, this.solicitud.Balance.inventarioTotal)
         }
       }
     }
-
-    let totalInv = 0
+        
     this.inventarioForm.valueChanges.subscribe(form => {
+      let totalInv = 0
       const inven = <FormArray>this.inventarioForm.controls['inventarioRow'];
       inven.controls.forEach(x => {
         let cantidad = Utils.formatNumber(x.get('cantidad').value)
@@ -58,10 +61,19 @@ export class InventarioComponent implements OnInit {
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
         }, { emitEvent: false })
       });
-      console.log("inentario ",this.inventarioForm.value.inventarioRow)
 
+      this.inventarioForm.patchValue({
+        totalInventario: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
+      }, { emitEvent: false })
 
+      let data = {
+        inventario: this.inventarioForm.value.inventarioRow,
+        total: this.inventarioForm.value.totalInventario
+      }
+      
+      this.newInventario.emit(data);
     });
+   
   }
 
   initInventario() {
@@ -108,10 +120,10 @@ export class InventarioComponent implements OnInit {
     this.inventario().removeAt(index);
   }
 
-  load(inv: Inventario[]) {
+  load(inv: Inventario[], total) {
     this.inventarioForm = this._formBuild.group({
       inventarioRow: this.loadInventarioRows(inv),
-      //inventarioTotal: bal.inventarioTotal,
+      totalInventario: total,
     })
   }
 

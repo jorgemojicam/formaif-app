@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Solicitud } from 'src/app/model/agil/solicitud';
-import { AnalisismebaprodService } from 'src/app/services/analisismebaprod.service';
+import { AnalisismebaprodService } from 'src/app/services/MEBA/analisismebaprod.service';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import * as html2pdf from "html2pdf.js";
 import { ResultadoMebaComponent } from '../resultado-meba/resultado-meba.component';

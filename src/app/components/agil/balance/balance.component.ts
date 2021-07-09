@@ -25,7 +25,7 @@ import { CreditoDetalle } from 'src/app/model/agil/creditodetalle';
 })
 export class BalanceComponent implements OnInit {
   dataSolicitud: Solicitud = new Solicitud();
-  solicitud:Solicitud
+  solicitud: Solicitud
   dataBalance: Balance = new Balance();
 
   //Listas desplegables
@@ -64,7 +64,7 @@ export class BalanceComponent implements OnInit {
     porcentajeCobrar: '',
     recuperacion: this.fb.array([this.initRecuperacion()]),
     totalRecuperacion: '',
-    inventarioRow: this.fb.array([this.initInventarioRows()]),
+    inventarioRow: this.fb.array([]),
     inventarioTotal: '',
     actividadNegRows: this.fb.array([this.initActinegRow()]),
     actnegTotal: '',
@@ -119,13 +119,14 @@ export class BalanceComponent implements OnInit {
       this.tipoActivo = DataSelect.TipoActivoNeg.filter(ac => ac.id != 5)
     }
 
-    if (this.dataSolicitud.Balance) { 
+    if (this.dataSolicitud.Balance) {
       this.loadBalance(this.dataSolicitud.Balance)
     }
 
     //------------Se ejecuta cuando se realiza cualquier cambio en el formulario-----------
+
     this.balanceForm.valueChanges.subscribe(form => {
-      console.log("asdf")
+
       let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
       let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
       let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
@@ -138,6 +139,7 @@ export class BalanceComponent implements OnInit {
       }
 
       let porcentajeCobrar = (incobrable / valorCobrar) * 100
+
       let totalCobrar = 0
       if (incobrable == 0) {
         totalCobrar = valorCobrar - (valorCobrar * 0.1)
@@ -169,6 +171,7 @@ export class BalanceComponent implements OnInit {
 
 
       //Calculo inventario
+      /*
       let totalInv = 0
       const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
       inven.controls.forEach(x => {
@@ -181,6 +184,7 @@ export class BalanceComponent implements OnInit {
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
         }, { emitEvent: false })
       });
+      */
 
       //Calculo creditos fdlm
       let totalCredito = 0
@@ -413,12 +417,12 @@ export class BalanceComponent implements OnInit {
                 duration: 4000,
               });
             }
-            if(saldo > monto){
+            if (saldo > monto) {
               saldo = 0
               this._snackBar.open("Saldo actual no puede superar el monto", "Ok!", {
                 duration: 4000,
               });
-            }     
+            }
 
             let montoneg = (saldo * porcentajeneg) / 100
             let montofam = saldo - montoneg
@@ -450,7 +454,7 @@ export class BalanceComponent implements OnInit {
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
               nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
               corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
-              nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,      
+              nocorrienteF: isFinite(nocorrienteF) ? nocorrienteF.toLocaleString() : 0,
 
             }, { emitEvent: false })
 
@@ -480,9 +484,9 @@ export class BalanceComponent implements OnInit {
             let cuotacent = Utils.formatNumber(x.get('cuota').value)
             let cuotareal = 0
 
-            if(cuotacalcu > cuotacent)
+            if (cuotacalcu > cuotacent)
               cuotareal = cuotacalcu
-            else if(cuotacent > cuotacalcu)
+            else if (cuotacent > cuotacalcu)
               cuotareal = cuotacent
 
             if (saldo > 0) {
@@ -501,7 +505,7 @@ export class BalanceComponent implements OnInit {
             }
 
             if (clase == 1) {
-              
+
               tcuotaf += cuotareal
               tcorrientef += corriente
               tnocorrientef += nocorriente
@@ -531,6 +535,29 @@ export class BalanceComponent implements OnInit {
 
             let pago = x.get('pago').value
             let tasa = Utils.formatNumber(x.get('tasa').value)
+            let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
+            let nocorriente = saldo - corriente
+            let proyeccion = 0
+
+            if (clase == 1) {
+              tcuotaf += isFinite(proyeccion) ? proyeccion : 0
+              tcorrientef += isFinite(corriente) ? corriente : 0
+              tnocorrientef += isFinite(nocorriente) ? nocorriente : 0
+
+              x.patchValue({
+                corrienteF: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                nocorrienteF: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+              }, { emitEvent: false })
+            } else {
+              tcuotan += isFinite(proyeccion) ? proyeccion : 0
+              tcorrienten += isFinite(corriente) ? corriente : 0
+              tnocorrienten += isFinite(nocorriente) ? nocorriente : 0
+
+              x.patchValue({
+                corrienteN: isFinite(corriente) ? corriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+              }, { emitEvent: false })
+            }
 
             //Pago regular
             if (pago == 1) {
@@ -541,7 +568,7 @@ export class BalanceComponent implements OnInit {
                   duration: 4000,
                 });
               }
-              let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
+              //let periodo = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
               let calcinteres = saldo * tasaporcen * periodo
               let calculocap = saldo / (plazo - numcuota)
               x.patchValue({
@@ -602,7 +629,6 @@ export class BalanceComponent implements OnInit {
         recuperacionCobrar: isFinite(recuperacionCobrar) ? recuperacionCobrar.toLocaleString() : 0,
         porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
         totalRecuperacion: isFinite(totalrec) ? totalrec : 0,
-        inventarioTotal: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
         actnegTotal: isFinite(totalactneg) ? totalactneg.toLocaleString() : 0,
         actfamTotal: isFinite(totalactfam) ? totalactfam.toLocaleString() : 0,
         proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
@@ -617,6 +643,7 @@ export class BalanceComponent implements OnInit {
 
       this.dataBalance = this.balanceForm.value
       this.dataSolicitud.Balance = this.dataBalance
+      console.log("lo que se guarda ", this.dataSolicitud)
       this._srvSol.saveSol(this.ced, this.dataSolicitud)
     })
 
@@ -636,7 +663,7 @@ export class BalanceComponent implements OnInit {
       porcentajeCobrar: bal.porcentajeCobrar,
       recuperacion: this.loadRecuperacion(bal.recuperacion),
       totalRecuperacion: bal.totalRecuperacion,
-      inventarioRow: this.loadInventarioRows(bal.inventarioRow),
+      //inventarioRow: this.loadInventarioRows(bal.inventarioRow),
       inventarioTotal: bal.inventarioTotal,
       actividadNegRows: this.loadActividad(bal.actividadNegRows),
       actnegTotal: bal.actnegTotal,
@@ -706,6 +733,16 @@ export class BalanceComponent implements OnInit {
   }
   deleteInventarioRow(index: number) {
     this.inventario().removeAt(index);
+  }
+  insertInventario(data) {
+    console.log("llego inventario ", data)
+
+    this.dataBalance = this.balanceForm.value
+    this.dataBalance.inventarioRow = data.inventario
+    this.dataBalance.inventarioTotal = data.total    
+    this.dataSolicitud.Balance = this.dataBalance
+
+    this._srvSol.saveSol(this.ced, this.dataSolicitud)
   }
   //------------------------------------------------------------------
 
@@ -1084,12 +1121,12 @@ export class BalanceComponent implements OnInit {
     let pasivosArray = this.fb.array([])
 
     pasivos.forEach(pas => {
-      let tipopas = []; 
+      let tipopas = [];
       let periodocap = [];
       let periodoint = [];
 
       if (pas.tipo)
-        tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)     
+        tipopas = this.tipoPasivo.find(el => el.id == pas.tipo.id)
       if (pas.periodocap)
         periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
       if (pas.periodoint)

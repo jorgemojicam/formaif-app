@@ -21,6 +21,7 @@ import { FlujocajaComponent } from '../flujocaja/flujocaja.component';
 import { AnalisisService } from 'src/app/services/analisis.service';
 import { CarpetadigitalService } from 'src/app/services/carpetadigital.service';
 import Utils from 'src/app/utils';
+import { ErrorparamService } from 'src/app/services/errorparam.service';
 
 @Component({
   selector: 'app-home',
@@ -48,10 +49,10 @@ export class HomeComponent implements AfterViewInit {
     private analisisServ: AnalisisService,
     private emailServ: EmailService,
     private _bottomSheet: MatBottomSheet,
-    private _srvCarpeta: CarpetadigitalService
+    private _srvCarpeta: CarpetadigitalService,
+    private _srvErrore: ErrorparamService
   ) {
   }
-
   ngAfterViewInit(): void {
 
     this.srvSol.get().subscribe((sol) => {
@@ -222,11 +223,13 @@ export class HomeComponent implements AfterViewInit {
                       let pdfBase64Agro: string = "";
 
                       if (this.datasol.asesor == 2) {
+
                         const contentagro = this.analisisAgro.reporte.nativeElement
                         const contentflujo = this.flujo.reporte.nativeElement
 
                         b.textContent = "Generacion Analisis de credito pdf..."
                         pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
+
                         b.textContent = "Generacion Flujo de caja pdf..."
                         pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
@@ -320,12 +323,11 @@ export class HomeComponent implements AfterViewInit {
       margin: 15,
       jsPDF: { format: 'a3', orientation: orintation }
     }
-
     return new Promise(resolve => {
       html2pdf().from(content).set(op).outputPdf()
         .then((pdf) => {
           resolve(btoa(pdf))
-        },(err)=>{
+        }, (err) => {
           console.log(err)
           resolve("")
         });
@@ -352,26 +354,41 @@ export class HomeComponent implements AfterViewInit {
       Base64Pdf: pdfBase64,
       Base64PdfAgro: pdfBase64Agro
     }
-    console.log('-----------------------------------------inicio------------------------')
-    console.log("obj mail dir->", JSON.stringify(email))
+
+    let pdfagr = "error"
+    let pdfflu = "error"
+
+    if (pdfBase64 || pdfBase64 != "") {
+      pdfagr = pdfBase64.substring(1, 40)
+    }
+    if (pdfBase64Agro || pdfBase64Agro != "") {
+      pdfflu = pdfBase64Agro.substring(1, 40)
+    }
+
+    let emailParam = {
+      To: emailDir,
+      Subject: "Analisis de credito",
+      Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
+      Base64Pdf: pdfagr,
+      Base64PdfAgro: pdfflu
+    }
+
     return new Promise((resolve, reject) => {
       this.emailServ.Send(email).subscribe(
         (su) => {
-          console.log(su)
-          console.log('-----------------------------------------fin------------------------')
           resolve(su)
         },
-        (er) => {
+        async (er) => {
           console.log(er)
+          await this.insertError(er.status, 'send', JSON.stringify(emailParam), 'agil/home')
           Swal.close()
-          Swal.fire('Error', 'Se ha producido un error en el envio de correo' + er.status, 'error')
+          Swal.fire('Error', 'Se ha producido un error en el envio de correo ' + er.status, 'error')
           this.procesando = false
-          console.log('-----------------------------------------fin------------------------')
           reject(er)
         }
       )
     })
-    
+
   }
 
   getCarpetaDigital(solicitud: number) {
@@ -411,12 +428,32 @@ export class HomeComponent implements AfterViewInit {
     this.openDialog(title, "home", row);
   }
 
+  insertError(err, meth, param, fil) {
+
+    let data = {
+      userIniciales: "JEMM",
+      error: err,
+      method: meth,
+      param: param,
+      file: fil,
+      created_at: new Date().toUTCString()
+    }
+
+    return new Promise(resolve => {
+      this._srvErrore.create(data).subscribe((sus) => {
+        resolve(sus)
+      }, (err) => {
+        resolve(err)
+      })
+    })
+  }
+
   validateSol(): string {
 
     let faltantes: string = ""
 
     if (this.datasol.Balance) {
-      
+
       if (this.datasol.Balance.actfamTotal == 0) {
         faltantes += "<br>Activos de la Familia"
       }

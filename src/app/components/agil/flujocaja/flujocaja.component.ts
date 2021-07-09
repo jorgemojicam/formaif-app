@@ -332,7 +332,7 @@ export class FlujocajaComponent implements OnInit {
 
                   if (mesactual > proxcosecha) {
                     for (let i = proxcosecha; i < mesactual; i++) {
-                      console.log("->",i)
+                      console.log("->", i)
                       if (mesprod > 0) {
                         mesprod--
                       } else if (mesnoprod > 0) {
@@ -587,45 +587,47 @@ export class FlujocajaComponent implements OnInit {
 
                       let mesFlujo = fechacrece.getMonth()
                       let anoFlujo = fechacrece.getFullYear()
+                      
+                      if (pas.fechaproxint) {
 
-                      let mesint = pas.fechaproxint.getMonth()
-                      var calculoint = Utils.formatNumber(pas.calculoint)
-                      let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                        let mesint = pas.fechaproxint.getMonth()
+                        var calculoint = Utils.formatNumber(pas.calculoint)
+                        let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
 
-                      if (!primermesint) {
-                        if (mesFlujo >= mesint) {
-                          primermesint = true
+                        if (!primermesint) {
+                          if (mesFlujo >= mesint) {
+                            primermesint = true
+                          }
+                        }
+                        if (primermesint) {
+                          if (periodoint.id == 1) {
+                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                          } else if (periodoint.id == 2 && f % 2 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                          } else if (periodoint.id == 3 && f % 3 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                          }
+                        }
+
+                        let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                        let mescap = pas.fechaproxcap.getMonth()
+                        var calculocap = Utils.formatNumber(pas.calculocap)
+                        if (!primermescap) {
+                          if (mesFlujo >= mescap) {
+                            primermescap = true
+                          }
+                        }
+
+                        if (primermescap) {
+                          if (periodocap.id == 1) {
+                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                          } else if (periodocap.id == 2 && f % 2 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                          } else if (periodocap.id == 3 && f % 3 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                          }
                         }
                       }
-                      if (primermesint) {
-                        if (periodoint.id == 1) {
-                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                        } else if (periodoint.id == 2 && f % 2 == 0) {
-                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                        } else if (periodoint.id == 3 && f % 3 == 0) {
-                          this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                        }
-                      }
-
-                      let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-                      let mescap = pas.fechaproxcap.getMonth()
-                      var calculocap = Utils.formatNumber(pas.calculocap)
-                      if (!primermescap) {
-                        if (mesFlujo >= mescap) {
-                          primermescap = true
-                        }
-                      }
-
-                      if (primermescap) {
-                        if (periodocap.id == 1) {
-                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                        } else if (periodocap.id == 2 && f % 2 == 0) {
-                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                        } else if (periodocap.id == 3 && f % 3 == 0) {
-                          this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                        }
-                      }
-
                     }
                   }
                 } else if (pas.pago == 2) {

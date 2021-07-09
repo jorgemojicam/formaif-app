@@ -322,14 +322,14 @@
                                                         </mat-chip-list>
                                                     </div>
                                                     <div fxLayout="row wrap" class="contentingresos">
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <input type="tel" matInput
                                                                     placeholder="Rendimiento por lote"
                                                                     formControlName="rendiemientolote">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <input type="tel" matInput
                                                                     placeholder="Unidades totales"
@@ -337,16 +337,16 @@
                                                                     formControlName="unidadestotales">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <input type="tel" matInput placeholder="% Perdida"
                                                                     id="perdida{{ac}}-{{lot}}"
                                                                     formControlName="perdida">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
-                                                                <mat-label>Proxima Cosecha</mat-label>
+                                                                <mat-label>Última Cosecha</mat-label>
                                                                 <mat-select formControlName="proxcocecha" required>
                                                                     <mat-option *ngFor="let mes of meses"
                                                                         [value]="mes.id">
@@ -355,7 +355,7 @@
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <mat-label>Cosecha</mat-label>
                                                                 <input type="number" matInput
@@ -363,7 +363,7 @@
                                                                     formControlName="cantmesescocecha">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                                        <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                                                             <mat-form-field>
                                                                 <mat-label>No produccion</mat-label>
                                                                 <input type="number" matInput
@@ -1048,7 +1048,7 @@
                                                             <div class="gr" fxFlex="33%" fxFlex.xs="33%"
                                                                 fxFlex.sm="33%">
                                                                 <mat-form-field>
-                                                                    <mat-label>Mes Ingreso</mat-label>
+                                                                    <mat-label>Último ciclo</mat-label>
                                                                     <mat-select formControlName="mesingreso"
                                                                         (selectionChange)="changeMes($event)" required>
                                                                         <mat-option *ngFor="let mes of meses"
