@@ -331,8 +331,7 @@ export class FlujocajaComponent implements OnInit {
                   let mesactual = new Date().getMonth() + 2
 
                   if (mesactual > proxcosecha) {
-                    for (let i = proxcosecha; i < mesactual; i++) {
-                      console.log("->", i)
+                    for (let i = proxcosecha; i < mesactual; i++) {              
                       if (mesprod > 0) {
                         mesprod--
                       } else if (mesnoprod > 0) {
@@ -478,18 +477,31 @@ export class FlujocajaComponent implements OnInit {
                 let lotesP: LotePecuario = cruce.lotesPecuario[lote];
                 let flagp = true
 
-                let produccion = 0
-                let noproduccion = 0
+                let produccion = Utils.formatNumber(lotesP.produccion)
+                let noproduccion = Utils.formatNumber(lotesP.noproduccion)
+
+                let totalingresos = Utils.formatNumber(lotesP.ingresomes)
+                let mesingreso = Utils.formatNumber(lotesP.mesingreso)
+                let mesactual = new Date().getMonth() + 2
+
+                if (mesactual > mesingreso) {
+                  for (let i = mesingreso; i < mesactual; i++) {              
+                    if (produccion > 0) {
+                      produccion--
+                    } else if (noproduccion > 0) {
+                      noproduccion--
+                      if (produccion == 0 && noproduccion == 0) {
+                        produccion = Utils.formatNumber(lotesP.produccion)
+                        noproduccion = Utils.formatNumber(lotesP.noproduccion)
+                      }
+                    }
+                  }
+                }
 
                 for (let flujocaja = 0; flujocaja < this.dataFlujo.length; flujocaja++) {
-                  const flujo = this.dataFlujo[flujocaja];
-
-                  let totalingresos = Utils.formatNumber(lotesP.ingresomes)
-                  let mesingreso = Utils.formatNumber(lotesP.mesingreso)
+                  const flujo = this.dataFlujo[flujocaja];        
 
                   if (flujo[1] >= mesingreso && flagp) {
-                    produccion = Utils.formatNumber(lotesP.produccion)
-                    noproduccion = Utils.formatNumber(lotesP.noproduccion)
                     flagp = false
                   }
 

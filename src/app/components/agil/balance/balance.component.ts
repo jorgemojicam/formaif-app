@@ -6,7 +6,6 @@ import DataSelect from '../../../data-select/dataselect.json';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import { Solicitud } from 'src/app/model/agil/solicitud';
-import { Inventario } from 'src/app/model/agil/inventario';
 import { ActivosFamilia } from 'src/app/model/agil/activosfamilia';
 import { ActivosNegocio } from 'src/app/model/agil/activosnegocio';
 import { Recuperacion } from 'src/app/model/agil/recuperacion';
@@ -168,23 +167,6 @@ export class BalanceComponent implements OnInit {
           duration: 3000,
         });
       }
-
-
-      //Calculo inventario
-      /*
-      let totalInv = 0
-      const inven = <FormArray>this.balanceForm.controls['inventarioRow'];
-      inven.controls.forEach(x => {
-        let cantidad = Utils.formatNumber(x.get('cantidad').value)
-        let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
-        let valor = vlrUni * cantidad
-        totalInv += valor
-        x.patchValue({
-          valor: isFinite(valor) ? valor.toLocaleString() : 0,
-          vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
-        }, { emitEvent: false })
-      });
-      */
 
       //Calculo creditos fdlm
       let totalCredito = 0
@@ -691,52 +673,8 @@ export class BalanceComponent implements OnInit {
       tnocorrienten: [bal.tnocorrienten]
     })
   }
-  //----------------Inventario--------------------------------
-  initInventarioRows() {
-    return this.fb.group({
-      tipo: ['', Validators.required],
-      cantidad: ['', Validators.required],
-      vlrUni: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      valor: ['']
-    });
-  }
-  loadInventarioRows(inventarios: Inventario[]) {
-    let arrayInventario = this.fb.array([])
-    inventarios.forEach(inv => {
-      let tipoinv = []
 
-      if (this.tipoSol == 2) {
-        if (inv.tipo) {
-          tipoinv = this.tipoInventarioAgro.find(inve => inve.id == inv.tipo.id)
-        }
-      } else if (this.tipoSol == 1) {
-        if (inv.tipo) {
-          tipoinv = this.tipoInventario.find(inve => inve.id == inv.tipo.id)
-        }
-      }
-      arrayInventario.push(this.fb.group({
-        tipo: [tipoinv],
-        cantidad: [inv.cantidad],
-        vlrUni: [inv.vlrUni],
-        descripcion: [inv.descripcion],
-        valor: [inv.valor]
-      }))
-    });
-    return arrayInventario
-  }
-  inventario() {
-    return this.balanceForm.get('inventarioRow') as FormArray;
-  }
-  addInventarioRow() {
-    this.inventario().push(this.initInventarioRows());
-  }
-  deleteInventarioRow(index: number) {
-    this.inventario().removeAt(index);
-  }
-  insertInventario(data) {
-    console.log("llego inventario ", data)
-
+  insertInventario(data) {    
     this.dataBalance = this.balanceForm.value
     this.dataBalance.inventarioRow = data.inventario
     this.dataBalance.inventarioTotal = data.total    
