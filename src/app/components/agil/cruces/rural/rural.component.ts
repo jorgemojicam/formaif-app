@@ -214,16 +214,6 @@ export class RuralComponent implements OnInit {
           let dsurco = Utils.formatNumber(lot.get("dsurcos").value)
           let dpanta = Utils.formatNumber(lot.get("dplantas").value)
 
-          let proxcocecha = Utils.formatNumber(lot.get("proxcocecha").value)
-
-          let fechaprox = new Date(new Date().setMonth(proxcocecha - 1))
-          let fechatual = new Date()
-          let cantmesescocecha = Utils.formatNumber(lot.get("cantmesescocecha").value)
-
-          let difereciames = fechatual.setMonth(fechaprox.getMonth() - fechatual.getMonth())
-          let numdiferencia = new Date(difereciames).getMonth()
-          console.log("diferecia mes -> ", numdiferencia)
-
           let distancia = area / (dsurco * dpanta)
           let perdida = (1 - (unidadestotales / rendiemientolote)) * 100
 
@@ -861,17 +851,50 @@ export class RuralComponent implements OnInit {
   }
   //-------------------------------------------------------------------
 
-  clear(acti: FormGroup) {
-    acti.patchValue({
-      nombre: ""
-    }, { emitEvent: false })
-  }
   changeMes(e) {
     this._snackBar.open("Ingrese la cantidad de meses a partir del mes seleccionado donde tendra produccion y la cantidad de meses donde no tendra produccion", "Ok!", {
       duration: 99000,
     });
   }
 
+
+  onTipoChange(ac, acti) {
+
+    acti.patchValue({
+      nombre: ''
+    }, { emitEvent: false })
+    /*
+      valorB: '',
+      valorR: '',
+      valorM: '',
+      totalB: '',
+      totalR: '',
+      totalM: '',
+      promedio: '',
+      totalDias: '',
+      totalVentas: '',
+      totalPromedio: '',
+      totalCompras: '',
+      ventasEstimadas: '',
+      margenBruto: '',
+      otrosGastos: '',
+      ingresoLiquido: '',
+      preciomin: [''],
+      precioactual: [''],
+      preciopromedio: [''],
+      mesPepeo: '',
+      mesTra: '',
+      mesCos: '',
+      unidadventa: '',
+    */
+
+    this.actividades().at(ac).get("lotesAgro").reset()
+    this.actividades().at(ac).get("lotesPecuario").reset()
+
+  }
+  changeActi(ac) {
+    this.actividades().at(ac).get("lotesAgro").reset()
+  }
   compareFunction(o1: any, o2: any) {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }

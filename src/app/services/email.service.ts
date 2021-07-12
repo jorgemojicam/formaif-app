@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Email } from '../model/admin/email';
-import { Observable } from 'rxjs';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-type': 'application/json'
+  })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +18,11 @@ export class EmailService {
   ) { }
 
   Send(email: any) {
-    return this.http.post(environment.AUTH_API + 'Envios/Send', email);
+    return this.http.post(environment.AUTH_API + 'Envios/Send', email, httpOptions);
+  }
+
+  SendAdjunto(email: any) {
+    return this.http.post(environment.AUTH_API + 'Envios/SendAdjunto', email, httpOptions);
   }
 
 }

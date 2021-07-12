@@ -849,15 +849,10 @@ export class UrbanoComponent implements OnInit {
   }
 
   onTipoChange(ac) {
-
     this.actividades().at(ac).get("ventasHis").reset()
-    /*
-    acti.controls.ventasHis = this.fb.array([this.itemventas()])
-    acti.controls.produccion = this.fb.array([this.itemProd()])
-    acti.controls.materiaprima = this.fb.array([this.itemMateriaprima()])
-    acti.controls.compras = this.fb.array([this.itemCompras()])
-    acti.controls.costoventa = this.fb.array([this.itemCostoventa()])
-    */
+    this.actividades().at(ac).get("materiaprima").reset()
+    this.actividades().at(ac).get("costoventa").reset()
+    this.actividades().at(ac).get("produccion").reset() 
   }
 
   compareFunction(o1: any, o2: any) {

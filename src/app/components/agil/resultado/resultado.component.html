@@ -2,6 +2,7 @@
     <mat-card-title-group>
         <mat-card-title>Valores Formiik</mat-card-title>
         <mat-card-subtitle>Los valores que se vinculan con formiik</mat-card-subtitle>
+        <span *ngIf="loadResultado()"></span>
     </mat-card-title-group>
 
     <mat-card-content>
@@ -148,6 +149,11 @@
                 </ng-container>
                 <!-- agropecuario -->
                 <ng-container *ngIf="tiposol==2">
+
+                    <div style="display: none;">
+                        <app-flujocaja *ngIf="tiposol" [datossol]="datasolicitud"></app-flujocaja>           
+                    </div>
+
                     <tr>
                         <td>21- Ventas de contado</td>
                         <td>

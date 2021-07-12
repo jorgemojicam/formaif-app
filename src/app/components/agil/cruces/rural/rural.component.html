@@ -34,9 +34,9 @@
                                         <div class="gr" fxFlex="35%" fxFlex.xs="30%" fxFlex.sm="35%">
                                             <mat-form-field>
                                                 <mat-label>Tipo Actividad</mat-label>
-                                                <mat-select formControlName="tipo" required>
+                                                <mat-select formControlName="tipo" (selectionChange)="onTipoChange(ac,acti)" required>
                                                     <mat-option>--</mat-option>
-                                                    <mat-option (click)="clear(acti)" *ngFor="let tip of tipoActRural"
+                                                    <mat-option *ngFor="let tip of tipoActRural"
                                                         [value]="tip.id">
                                                         {{tip.name}}
                                                     </mat-option>
@@ -52,7 +52,7 @@
                                                 <ng-container *ngIf="acti.value.tipo !=3">
                                                     <input type="text" (change)="displayBlack(acti,ac)" matInput
                                                         formControlName="nombre" [matAutocomplete]="auto">
-                                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)='changeActi(ac)' [displayWith]="displayFn">
                                                         <mat-option
                                                             *ngFor="let option of _filter(acti.value.nombre,acti.value.tipo,ac)"
                                                             [value]="option">

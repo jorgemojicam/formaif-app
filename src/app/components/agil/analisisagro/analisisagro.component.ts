@@ -43,6 +43,7 @@ export class AnalisisagroComponent implements OnInit {
           let datasol = JSON.parse(res)
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
+    
         })
       });
     } else {
@@ -66,47 +67,50 @@ export class AnalisisagroComponent implements OnInit {
     if (id == "") {
       return ""
     }
-    let texto = ""
+    let texto:any
     switch (lista) {
       case 'tipoinventario':
         let inventario = DataSelect.TipoInventarioAgro.filter(i => i.id == id);
-        texto = inventario[0].name
+        texto = inventario[0]
         break;
       case 'MesNombre':
         let Mes = DataSelect.Meses.filter(i => i.id == id);        
-        texto = Mes[0].name
+        texto = Mes[0]
         break;
       case 'TipoActividad':
         let act = DataSelect.TipoActividadRural.filter(i => i.id == id);
-        texto = act[0].name
+        texto = act[0]
         break;
       case 'Periodo':
         let periodo = DataSelect.PeriodoEdad.filter(i => i.id == id);
-        texto = periodo[0].name
+        texto = periodo[0]
         break;
       case 'Unidades':
         let uni = DataSelect.Unidades.filter(i => i.id == id);
-        texto = uni[0].name
+        texto = uni[0]
         break;
       case 'PeriodoEdad':
         let priodo = DataSelect.PeriodoEdad.filter(i => i.id == id);
-        texto = priodo[0].name
+        texto = priodo[0]
         break;
       case 'tipoingreso':
         let tipo = DataSelect.OtrosIngresosFamiliar.filter(i => i.id == id);
-        texto = tipo[0].name
+        texto = tipo[0]
         break;
       case 'descripcionegreso':
         let deta = DataSelect.DetalleAgricola.filter(i => i.id == id);
-        texto = deta[0].name
+        texto = deta[0]
         break;
       case 'DescripcionEgresosPec':
         let descripcion = DataSelect.DetallePecuario.filter(i => i.id == id);
-        texto = descripcion[0].name
+        texto = descripcion[0]
         break;
       default:
         texto = ""
         break;
+    }
+    if(texto){
+      return texto.name
     }
     return texto
 

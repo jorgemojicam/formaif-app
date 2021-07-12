@@ -690,49 +690,49 @@
                         <tbody *ngFor="let egTrans of lt.egresosAdecuacion; let cont=index">
                             <tr>
                                 <th style="text-align:center">Adecuación- preparación terreno</th>
-                                <td style="text-align:center">
+                                <td style="text-align:center" *ngIf="egTrans.descripcion">
                                     {{equivalencia(egTrans.descripcion,'descripcionegreso')}}
                                 </td>
                                 <td align="right">{{egTrans.detalle}}</td>
                                 <td align="right">{{egTrans.cantidad}}</td>
                                 <td align="right">${{egTrans.valorunitario}}</td>
                                 <td align="right">${{egTrans.total}}</td>
-                                <td align="right">{{Mes(egTrans.mes)}}</td>
+                                <td align="right" *ngIf="egTrans.mes">{{Mes(egTrans.mes)}}</td>
                             </tr>
                         </tbody>
                         <tbody *ngFor="let egTransSiem of lt.egresosSiembra; let cont=index">
                             <tr>
                                 <th style="text-align:center">Siembra</th>
-                                <td style="text-align:center">
+                                <td style="text-align:center" *ngIf="egTransSiem.descripcion">
                                     {{equivalencia(egTransSiem.descripcion,'descripcionegreso')}}
                                 </td>
                                 <td align="right">{{egTransSiem.detalle}}</td>
                                 <td align="right">{{egTransSiem.cantidad}}</td>
                                 <td align="right">${{egTransSiem.valorunitario}}</td>
                                 <td align="right">${{egTransSiem.total}}</td>
-                                <td align="right">{{Mes(egTransSiem.mes)}}</td>
+                                <td align="right" *ngIf="egTransSiem.mes">{{Mes(egTransSiem.mes)}}</td>
                             </tr>
                         </tbody>
                         <tbody *ngFor="let egTransMan of lt.egresosMante; let cont=index">
                             <tr>
                                 <th style="text-align:center">Mantenimiento</th>
-                                <td align="right">{{equivalencia(egTransMan.descripcion,'descripcionegreso')}}</td>
+                                <td align="right" *ngIf="egTransMan.descripcion">{{equivalencia(egTransMan.descripcion,'descripcionegreso')}}</td>
                                 <td align="right">{{egTransMan.detalle}}</td>
                                 <td align="right">{{egTransMan.cantidad}}</td>
                                 <td align="right">${{egTransMan.valorunitario}}</td>
                                 <td align="right">${{egTransMan.total}}</td>
-                                <td align="right">{{Mes(egTransMan.mes)}}</td>
+                                <td align="right" *ngIf="egTransMan.mes">{{Mes(egTransMan.mes)}}</td>
                             </tr>
                         </tbody>
                         <tbody *ngFor="let egTransCos of lt.egresosCocecha; let cont=index">
                             <tr>
                                 <th style="text-align:center">Cosecha y recolección</th>
-                                <td align="right">{{equivalencia(egTransCos.descripcion,'descripcionegreso')}}</td>
+                                <td align="right" *ngIf="egTransCos.descripcion">{{equivalencia(egTransCos.descripcion,'descripcionegreso')}}</td>
                                 <td align="right">{{egTransCos.detalle}}</td>
                                 <td align="right">{{egTransCos.cantidad}}</td>
                                 <td align="right">${{egTransCos.valorunitario}}</td>
                                 <td align="right">${{egTransCos.total}}</td>
-                                <td align="right">{{Mes(egTransCos.mes)}}</td>
+                                <td align="right" *ngIf="egTransCos.mes">{{Mes(egTransCos.mes)}}</td>
                             </tr>
                         </tbody>
                         <tr>

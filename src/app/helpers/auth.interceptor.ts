@@ -46,7 +46,8 @@ export class AuthInterceptor implements HttpInterceptor {
         let data = {};
         data = {
           reason: error && error.error && error.error.reason ? error.error.reason : '',
-          status: error.status
+          status: error.status,
+          error:error
         };
         if (error.status == 401) {
           this.token.signOut()

@@ -231,8 +231,14 @@ export class HomeComponent implements AfterViewInit {
                           b.textContent = "Generacion Analisis de credito pdf..."
                           pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
 
+                          b.textContent = "Enviando email Analisis..."
+                          await this.send(pdfBase64, aseso.Nombre, aseso.Director.Correo, "Analisis.pdf", "Analisis de credito Agro - " + this.datasol.solicitud)
+
                           b.textContent = "Generacion Flujo de caja pdf..."
                           pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
+
+                          b.textContent = "Enviando email Flujo..."
+                          await this.send(pdfBase64Agro, aseso.Nombre, aseso.Director.Correo, "Flujo.pdf", "Flujo de Caja - " + this.datasol.solicitud)
 
                         } catch (ex) {
                           Swal.close()
@@ -251,12 +257,12 @@ export class HomeComponent implements AfterViewInit {
                         b.textContent = "Generacion Analisis de credito pdf..."
                         pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
 
+                        b.textContent = "Enviando email..."
+                        await this.send(pdfBase64, aseso.Nombre, aseso.Director.Correo, "Analisis.pdf", "Analisis de Credito - " + this.datasol.solicitud)
+
                         //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
                         //console.log("Insertndo el | digital", solCarpeta)
                       }
-
-                      b.textContent = "Enviando email..."
-                      await this.send(pdfBase64, pdfBase64Agro, aseso.Nombre, aseso.Director.Correo)
 
                       b.textContent = "Insertando el analisis..."
                       await this.insert(this.datasol)
@@ -351,36 +357,31 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  send(pdfBase64: string, pdfBase64Agro: string, nombreDir: string, emailDir: string) {
+  send(pdfBase64: string, nombreDir: string, emailDir: string, adjuntoName: string, asunto: string) {
 
     let email = {
       To: emailDir,
-      Subject: "Analisis de credito",
+      Subject: asunto,
       Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
-      Base64Pdf: pdfBase64.toString(),
-      Base64PdfAgro: pdfBase64Agro.toString()
+      Base64Pdf: pdfBase64,
+      AdjuntoName: adjuntoName
     }
 
     let pdfagr = "error"
-    let pdfflu = "error"
-
     if (pdfBase64 || pdfBase64 != "") {
-      pdfagr = pdfBase64.substring(1, 40) +" cantidad ->"+pdfBase64.length
-    }
-    if (pdfBase64Agro || pdfBase64Agro != "") {
-      pdfflu = pdfBase64Agro.substring(1, 40) +" cantidad ->"+pdfBase64Agro.length
+      pdfagr = pdfBase64.substring(1, 40) + " cantidad ->" + pdfBase64.length
     }
 
     let emailParam = {
       To: emailDir,
-      Subject: "Analisis de credito",
+      Subject: asunto,
       Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
       Base64Pdf: pdfagr,
-      Base64PdfAgro: pdfflu
+      AdjuntoName: adjuntoName
     }
-
+    console.log("pdfBase64", pdfBase64)
     return new Promise((resolve, reject) => {
-      this.emailServ.Send(email).subscribe(
+      this.emailServ.SendAdjunto(email).subscribe(
         (su) => {
           resolve(su)
         },
@@ -394,7 +395,6 @@ export class HomeComponent implements AfterViewInit {
         }
       )
     })
-
   }
 
   getCarpetaDigital(solicitud: number) {
