@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-analisis',
@@ -36,6 +35,7 @@ export class AnalisisComponent implements OnInit {
           let datasol = JSON.parse(res)
           this.datasolicitud = datasol as Solicitud;
           this.tipoAsesor = this.datasolicitud.asesor;
+          console.log(this.datasolicitud)
         })
       });
     } else {

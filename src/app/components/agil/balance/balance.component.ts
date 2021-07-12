@@ -139,8 +139,18 @@ export class BalanceComponent implements OnInit {
 
       let porcentajeCobrar = (incobrable / valorCobrar) * 100
 
+      if (porcentajeCobrar < 10) {
+        porcentajeCobrar = 10
+      }
+
       let totalCobrar = 0
       if (incobrable == 0) {
+        totalCobrar = valorCobrar - (valorCobrar * 0.1)
+      } else {
+        totalCobrar = valorCobrar - incobrable
+      }
+
+      if (incobrable < totalCobrar * 0.1) {
         totalCobrar = valorCobrar - (valorCobrar * 0.1)
       } else {
         totalCobrar = valorCobrar - incobrable
@@ -372,6 +382,7 @@ export class BalanceComponent implements OnInit {
             }
 
             x.patchValue({
+              valor: isFinite(valor) ? valor.toLocaleString() : 0,
               proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
               descuentolibranza: descuentolibranza
             }, { emitEvent: false })
@@ -471,6 +482,8 @@ export class BalanceComponent implements OnInit {
             else if (cuotacent > cuotacalcu)
               cuotareal = cuotacent
 
+            valor = cuotareal
+
             if (saldo > 0) {
               nocorriente = saldo - corriente
               if (periodo == 1) {
@@ -487,7 +500,6 @@ export class BalanceComponent implements OnInit {
             }
 
             if (clase == 1) {
-
               tcuotaf += cuotareal
               tcorrientef += corriente
               tnocorrientef += nocorriente
@@ -499,17 +511,18 @@ export class BalanceComponent implements OnInit {
               tcuotan += cuotareal
               tcorrienten += corriente
               tnocorrienten += nocorriente
-              x.patchValue({
+
+              x.patchValue({               
                 corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
               }, { emitEvent: false })
             }
-
+         
             x.patchValue({
+              valor: isFinite(valor) ? valor.toLocaleString() : 0,
               cuota: isFinite(cuotacent) ? cuotacent.toLocaleString() : 0,
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
-
 
           }
           //Otras periodicidades
@@ -598,7 +611,6 @@ export class BalanceComponent implements OnInit {
           saldo: isFinite(saldo) ? saldo.toLocaleString() : 0,
           plazo: isFinite(plazo) ? plazo.toLocaleString() : 0,
           monto: isFinite(monto) ? monto.toLocaleString() : 0,
-          valor: isFinite(valor) ? valor.toLocaleString() : 0,
           numcoutaneto: netocuota
         }, { emitEvent: false })
       });
@@ -627,6 +639,7 @@ export class BalanceComponent implements OnInit {
       this.dataBalance = this.balanceForm.value
       if (this.dataSolicitud.Balance) {
         this.dataBalance.inventarioRow = this.dataSolicitud.Balance.inventarioRow
+        this.dataBalance.inventarioTotal = this.dataSolicitud.Balance.inventarioTotal
       }
       this.dataSolicitud.Balance = this.dataBalance
       this._srvSol.saveSol(this.ced, this.dataSolicitud)
@@ -937,7 +950,8 @@ export class BalanceComponent implements OnInit {
   }
   initCreditos() {
     return this.fb.group({
-      valor: ['']
+      valor: [''],
+      obligacion: ['']
     });
   }
   loadCreditos(creaditos: Creditos[]) {
@@ -945,7 +959,8 @@ export class BalanceComponent implements OnInit {
     creaditos.forEach(cred => {
       creditosArr.push(
         this.fb.group({
-          valor: cred.valor
+          valor: cred.valor,
+          obligacion: cred.obligacion
         })
       )
     });

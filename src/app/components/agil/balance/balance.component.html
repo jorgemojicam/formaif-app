@@ -473,8 +473,14 @@
                         <div fxLayout="row wrap" class="content"
                             *ngFor="let itemrow of balanceForm.controls.creditos['controls']; let cre=index"
                             [formGroupName]="cre">
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field>
+                                    <input type="text" autocomplete="off" matInput placeholder="Obligación" id="obligacion{{cre}}"
+                                        formControlName="obligacion">
+                                </mat-form-field>
+                            </div>
 
-                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                 <mat-form-field>
                                     <input type="tel" autocomplete="off" matInput placeholder="Valor" id="valor{{cre}}"
                                         formControlName="valor">
