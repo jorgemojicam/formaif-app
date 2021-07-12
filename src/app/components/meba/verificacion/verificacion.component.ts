@@ -60,9 +60,9 @@ export class VerificacionComponent implements OnInit {
     //Si tiene respuestas en el local storage carguelas
     if (this.dSolicitud.verificacion) {
       //Construye el array de preguntas 
-      await this.loadPreguntas(this.dSolicitud.verificacion, 0)
+      await this.loadPreguntas(this.dSolicitud.verificacion)
     } else {
-      await this.loadPreguntas(this.dataVerificacion, 0)
+      await this.loadPreguntas(this.dataVerificacion)
     }
 
     this.verificacionForm.get('verificacion').valueChanges.subscribe(values => {
@@ -131,7 +131,7 @@ export class VerificacionComponent implements OnInit {
    * Nombre: loadPreguntas
    * Descripcion se construye el Tema los encabezados
    */
-  async loadPreguntas(aPreguntas: any[], total) {
+  async loadPreguntas(aPreguntas: any[]) {
 
     let arrayForm = this._formbuild.array([])
 
@@ -144,7 +144,7 @@ export class VerificacionComponent implements OnInit {
           aplicapregunta: [element.aplicapregunta],
           Preguntas: this.loadRespuestas(element.Preguntas),
           Total: [element.Total],
-          totalAcumulado: [total]
+          totalAcumulado: [element.totalAcumulado]
         })
       )
     });

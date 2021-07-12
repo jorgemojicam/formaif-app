@@ -5,6 +5,7 @@ import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestio
 import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { RolComponent } from './admin-rol/rol/rol.component';
+import { LobbyComponent } from '../lobby/lobby.component';
 
 const routes: Routes = [
   {
@@ -41,16 +42,16 @@ const routes: Routes = [
         },
         canActivate: [AuthGuard]
       },
-      {
-        path: 'home',
-        redirectTo: 'lobby',
-        data: {
-          routerName: 'lobby'
-        },
-        canActivate: [AuthGuard]
-      },
     ]
-  }
+  },
+  {
+    path: 'home',
+    component: LobbyComponent,
+    data: {
+      routerName: 'home'
+    },
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

@@ -569,7 +569,7 @@ export class BalanceComponent implements OnInit {
                 let fecha = cuo.get('fecha').value
 
                 if (fecha && fecha != "") {
-                  
+
                   let mes = new Date(fecha).getMonth()
                   let ano = new Date(fecha).getFullYear()
                   let fullfehca = mes + "-" + ano
@@ -625,6 +625,9 @@ export class BalanceComponent implements OnInit {
       }, { emitEvent: false })
 
       this.dataBalance = this.balanceForm.value
+      if (this.dataSolicitud.Balance) {
+        this.dataBalance.inventarioRow = this.dataSolicitud.Balance.inventarioRow
+      }
       this.dataSolicitud.Balance = this.dataBalance
       this._srvSol.saveSol(this.ced, this.dataSolicitud)
     })
@@ -645,7 +648,6 @@ export class BalanceComponent implements OnInit {
       porcentajeCobrar: bal.porcentajeCobrar,
       recuperacion: this.loadRecuperacion(bal.recuperacion),
       totalRecuperacion: bal.totalRecuperacion,
-      inventarioTotal: bal.inventarioTotal,
       actividadNegRows: this.loadActividad(bal.actividadNegRows),
       actnegTotal: bal.actnegTotal,
       activosFamRows: this.loadActividadFam(bal.activosFamRows),
@@ -673,10 +675,17 @@ export class BalanceComponent implements OnInit {
     })
   }
 
-  insertInventario(data) {    
+  insertInventario(data) {
     this.dataBalance = this.balanceForm.value
     this.dataBalance.inventarioRow = data.inventario
-    this.dataBalance.inventarioTotal = data.total    
+    this.dataBalance.inventarioTotal = data.total
+    this.dataSolicitud.Balance = this.dataBalance
+    this._srvSol.saveSol(this.ced, this.dataSolicitud)
+  }
+  insertActivosNeg(data) {
+    this.dataBalance = this.balanceForm.value
+    this.dataBalance.actividadNegRows = data.inventario
+    this.dataBalance.actnegTotal = data.total
     this.dataSolicitud.Balance = this.dataBalance
     this._srvSol.saveSol(this.ced, this.dataSolicitud)
   }
@@ -1056,7 +1065,7 @@ export class BalanceComponent implements OnInit {
   loadPasivos(pasivos: Pasivos[]) {
     let pasivosArray = this.fb.array([])
 
-    pasivos.forEach(pas => {   
+    pasivos.forEach(pas => {
       let periodocap = [];
       let periodoint = [];
 
