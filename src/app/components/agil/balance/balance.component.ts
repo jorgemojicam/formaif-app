@@ -84,6 +84,8 @@ export class BalanceComponent implements OnInit {
     totalInversiones: 0,
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [0],
+    saldoF: [0],
+    saldoN: [0],
     tcorrientef: [0],
     tnocorrientef: [0],
     tcuotan: [0],
@@ -327,16 +329,17 @@ export class BalanceComponent implements OnInit {
         if (tipo) {
           // Entidades Financieras
           if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
-
+            
+            let cuotacalcu = Utils.formatNumber(x.get('cuotacalcu').value)
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
             let nocorriente = saldo - corriente
-            let proyeccion = valor / periodo
+            let proyeccion = cuotacalcu / periodo
 
             let descuentolibranza = false
             if (tipo.id == 3) {
               descuentolibranza = x.get('descuentolibranza').value
               if (descuentolibranza) {
-                valor = 0
+                cuotacalcu = 0
                 proyeccion = 0
               }
             } else if (tipo.id == "5") {
@@ -382,7 +385,8 @@ export class BalanceComponent implements OnInit {
             }
 
             x.patchValue({
-              valor: isFinite(valor) ? valor.toLocaleString() : 0,
+              cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
+              valor: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
               proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
               descuentolibranza: descuentolibranza
             }, { emitEvent: false })
@@ -420,6 +424,9 @@ export class BalanceComponent implements OnInit {
             let montoneg = (saldo * porcentajeneg) / 100
             let montofam = saldo - montoneg
 
+            let saldoneg = (monto * porcentajeneg) / 100
+            let saldofam = monto - saldoneg
+
             let corrienteN = 0
             let corrienteF = 0
             let neto = plazo - numcuota
@@ -440,10 +447,13 @@ export class BalanceComponent implements OnInit {
 
             x.patchValue({
               clase: 0,
+             
               porcentajeneg: isFinite(porcentajeneg) ? porcentajeneg.toLocaleString() : 0,
               cuotahipoteca: isFinite(cuotahipoteca) ? cuotahipoteca.toLocaleString() : 0,
               montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
               montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
+              saldoF: isFinite(saldofam) ? saldofam.toLocaleString() : 0,
+              saldoN: isFinite(saldoneg) ? saldoneg.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
               nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
               corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
@@ -456,13 +466,17 @@ export class BalanceComponent implements OnInit {
           // Pagadiario
           else if (tipo.id == "4") {
 
-            let corrienteN = numcuota * 30
+            let proyeccion = Utils.formatNumber(x.get('proyeccion').value)
+            valor = proyeccion * 30
             tcorrienten += saldo
-            tcuotan += corrienteN
+            tcuotan += valor
+
             x.patchValue({
               clase: 2,
-              cuota: isFinite(numcuota) ? numcuota.toLocaleString() : 0,
-              corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0
+              cuota: 0, 
+              proyeccion :isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+              valor: isFinite(valor) ? valor.toLocaleString() : 0,
+              corrienteN: isFinite(saldo) ? saldo.toLocaleString() : 0
             }, { emitEvent: false })
 
 
@@ -472,9 +486,9 @@ export class BalanceComponent implements OnInit {
 
             let corriente = 0
             let nocorriente = 0
-            let valor = parseFloat("0.071078")
-            let cuotacalcu = monto * valor
-            let cuotacent = Utils.formatNumber(x.get('cuota').value)
+            let taza = parseFloat("0.071078")
+            let cuotacalcu = monto * taza
+            let cuotacent = Utils.formatNumber(x.get('valor').value)
             let cuotareal = 0
 
             if (cuotacalcu > cuotacent)
@@ -512,15 +526,15 @@ export class BalanceComponent implements OnInit {
               tcorrienten += corriente
               tnocorrienten += nocorriente
 
-              x.patchValue({               
+              x.patchValue({
                 corrienteN: isFinite(corriente) ? corriente.toLocaleString() : 0,
                 nocorrienteN: isFinite(nocorriente) ? nocorriente.toLocaleString() : 0,
               }, { emitEvent: false })
             }
-         
+
             x.patchValue({
-              valor: isFinite(valor) ? valor.toLocaleString() : 0,
-              cuota: isFinite(cuotacent) ? cuotacent.toLocaleString() : 0,
+              valor: isFinite(cuotacent) ? cuotacent.toLocaleString() : 0,
+              cuota: 0,
               cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
             }, { emitEvent: false })
 
@@ -1118,6 +1132,8 @@ export class BalanceComponent implements OnInit {
           fechaproxcap: [pas.fechaproxcap],
           montoF: [pas.montoF],
           montoN: [pas.montoN],
+          saldoF: [pas.saldoF],
+          saldoN: [pas.saldoN],
           cuotaN: [pas.cuotaN],
           cuotaF: [pas.cuotaF],
           proyeccion: [pas.proyeccion],

@@ -45,6 +45,8 @@ export class Pasivos {
     cuotahipoteca:number
     cuotafam: number
     coutaneg: number
+    saldoF: string
+    saldoN: string
     montoF: string;
     montoN: string;
     cuotaN: string;

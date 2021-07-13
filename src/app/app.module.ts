@@ -51,6 +51,7 @@ import { ZonasComponent } from './components/zona/solicitud/limite/zonas/zonas.c
 import { ResponsablesFormComponent } from './components/zona/responsable/responsables-form/responsables-form.component';
 import { FlujoFormComponent } from './components/zona/flujo/flujo-form/flujo-form.component';
 import { InventarioComponent } from './components/agil/inventario/inventario.component';
+import { ActivosComponent } from './components/agil/activos/activos.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { InventarioComponent } from './components/agil/inventario/inventario.com
     ResponsablesFormComponent,
     FlujoFormComponent,
     InventarioComponent,
+    ActivosComponent
 
   ],
   imports: [

@@ -43,10 +43,9 @@ export class ActivosComponent implements OnInit {
         }
       }
     }
-
+    let totalactneg = 0
     this.activosForm.valueChanges.subscribe(form => {
-      //Calculo activos negocio
-      let totalactneg = 0
+     
       const actneg = <FormArray>this.activosForm.controls['activos'];
       actneg.controls.forEach(x => {
         let cantidad = Utils.formatNumber(x.get('cantidad').value)
@@ -58,6 +57,17 @@ export class ActivosComponent implements OnInit {
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
         }, { emitEvent: false });
       });
+
+      this.activosForm.patchValue({
+        totalActivos: isFinite(totalactneg) ? totalactneg.toLocaleString() : 0,
+      }, { emitEvent: false })
+
+      let data = {
+        inventario: this.activosForm.value.activos,
+        total: this.activosForm.value.totalActivos
+      }
+      
+      this.newActivo.emit(data);
 
     });
 

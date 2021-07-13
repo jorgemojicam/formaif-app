@@ -168,7 +168,8 @@ export class RuralComponent implements OnInit {
         } else {
           ventasestimadas = totalpromedio
         }
-        const realmargen = 100 / margenBruto
+        const realmargen =  margenBruto / 100
+  
         let totalliquido = (ventasestimadas * realmargen) - otrosGastos
 
         let preciomin = Utils.formatNumber(x.get("preciomin").value)

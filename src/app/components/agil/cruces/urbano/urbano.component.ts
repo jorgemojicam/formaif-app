@@ -11,7 +11,6 @@ import { MateriaPrima } from 'src/app/model/agil/materiaprima';
 import { Compras } from 'src/app/model/agil/compras';
 import { CostoVenta } from 'src/app/model/agil/costoventa';
 import Utils from '../../../../utils';
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-urbano',
@@ -415,6 +414,7 @@ export class UrbanoComponent implements OnInit {
             total = cantidad * valor * frec
           }
           totalcomporas += total
+          console.log(totalcomporas)
           com.patchValue({
             valor: valor.toLocaleString(),
             total: isFinite(total) ? total.toLocaleString() : 0,
@@ -496,6 +496,7 @@ export class UrbanoComponent implements OnInit {
       produccion: this.fb.array([this.itemProd()]),
       totalProduccion: '',
       compras: this.fb.array([this.itemCompras()]),
+      totalCompras:'',
       costoventa: this.fb.array([this.itemCostoventa()]),
       materiaprima: this.fb.array([this.itemMateriaprima()]),
       margen: '',
@@ -616,7 +617,7 @@ export class UrbanoComponent implements OnInit {
       if (listPeriodo.length > 0) {
         valordia = listPeriodo[i].name
       } else {
-        valordia = (i + 1).toString()
+        valordia = "Mes "+(i + 1).toString()
       }
 
       this.ventashistoricas(ac).push(
