@@ -84,8 +84,6 @@ export class BalanceComponent implements OnInit {
     totalInversiones: 0,
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [0],
-    saldoF: [0],
-    saldoN: [0],
     tcorrientef: [0],
     tnocorrientef: [0],
     tcuotan: [0],
@@ -313,7 +311,7 @@ export class BalanceComponent implements OnInit {
       let tcuotaf = 0
       let tcuotan = totalCredito
 
-      ctrl.controls.forEach((x) => {
+      ctrl.controls.forEach((x, i) => {
         let tipo = x.get('tipo').value
         let clase = x.get('clase').value
         let periodo = (x.get('periodo').value ? x.get('periodo').value.period : 0)
@@ -329,7 +327,7 @@ export class BalanceComponent implements OnInit {
         if (tipo) {
           // Entidades Financieras
           if (tipo.id == "1" || tipo.id == "3" || tipo.id == "5" || tipo.id == "8") {
-            
+
             let cuotacalcu = Utils.formatNumber(x.get('cuotacalcu').value)
             let corriente = (saldo / netocuota) * meses > saldo ? saldo : (saldo / netocuota) * meses
             let nocorriente = saldo - corriente
@@ -395,6 +393,7 @@ export class BalanceComponent implements OnInit {
           // Hipotecario
           else if (tipo.id == "2") {
             let porcentajeneg = x.get('porcentajeneg').value ? x.get('porcentajeneg').value : 0
+            let valorcomercial = Utils.formatNumber(x.get('valorcomercial').value ? x.get('valorcomercial').value : 0)
             let negociovivienda = x.get('negociovivienda').value ? x.get('negociovivienda').value : false
             let cuotahipoteca = Utils.formatNumber(x.get('cuotahipoteca').value ? x.get('cuotahipoteca').value : 0)
 
@@ -427,8 +426,12 @@ export class BalanceComponent implements OnInit {
             let saldoneg = (monto * porcentajeneg) / 100
             let saldofam = monto - saldoneg
 
+            let comercialneg = (valorcomercial * porcentajeneg) / 100
+            let comercialfam = valorcomercial - comercialneg
+
             let corrienteN = 0
             let corrienteF = 0
+
             let neto = plazo - numcuota
             if (neto < 12) {
               corrienteN = montoneg
@@ -445,15 +448,51 @@ export class BalanceComponent implements OnInit {
             tcorrienten += corrienteN
             tnocorrienten += nocorrienteN
 
+            const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
+            actfam.controls.forEach(x => {
+              let pasivo = x.get('pasivo').value
+
+              if (pasivo == i) {
+                //totalactfam += comercialfam
+                x.patchValue({
+                  tipo: { id: 4, name: "Inmuebles o terrenos" },
+                  detalle: 'Casa aval Negocio',
+                  cantidad: 1,
+                  valor: isFinite(comercialfam) ? comercialfam.toLocaleString() : 0,
+                  vlrUni: isFinite(comercialfam) ? comercialfam.toLocaleString() : 0,
+                }, { emitEvent: false });
+              }
+            });
+
+            if (negociovivienda) {
+
+              const actfam = <FormArray>this.balanceForm.controls['actividadNegRows'];
+              actfam.controls.forEach(x => {
+                let pasivo = x.get('pasivo').value
+
+                if (pasivo == i) {
+                  //totalactneg += comercialneg
+                  x.patchValue({
+                    cantidad: 1,
+                    tipo: { id: 4, name: "Inmuebles o terrenos" },
+                    detalle: 'Casa aval Negocio',
+                    valor: isFinite(comercialneg) ? comercialneg.toLocaleString() : 0,
+                    vlrUni: isFinite(comercialneg) ? comercialneg.toLocaleString() : 0,
+                  }, { emitEvent: false });
+                }
+              });
+
+            }
+
             x.patchValue({
               clase: 0,
-             
               porcentajeneg: isFinite(porcentajeneg) ? porcentajeneg.toLocaleString() : 0,
               cuotahipoteca: isFinite(cuotahipoteca) ? cuotahipoteca.toLocaleString() : 0,
               montoF: isFinite(montofam) ? montofam.toLocaleString() : 0,
               montoN: isFinite(montoneg) ? montoneg.toLocaleString() : 0,
               saldoF: isFinite(saldofam) ? saldofam.toLocaleString() : 0,
               saldoN: isFinite(saldoneg) ? saldoneg.toLocaleString() : 0,
+              valorcomercial: isFinite(valorcomercial) ? valorcomercial.toLocaleString() : 0,
               corrienteN: isFinite(corrienteN) ? corrienteN.toLocaleString() : 0,
               nocorrienteN: isFinite(nocorrienteN) ? nocorrienteN.toLocaleString() : 0,
               corrienteF: isFinite(corrienteF) ? corrienteF.toLocaleString() : 0,
@@ -473,8 +512,8 @@ export class BalanceComponent implements OnInit {
 
             x.patchValue({
               clase: 2,
-              cuota: 0, 
-              proyeccion :isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
+              cuota: 0,
+              proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
               valor: isFinite(valor) ? valor.toLocaleString() : 0,
               corrienteN: isFinite(saldo) ? saldo.toLocaleString() : 0
             }, { emitEvent: false })
@@ -701,7 +740,6 @@ export class BalanceComponent implements OnInit {
       tnocorrienten: [bal.tnocorrienten]
     })
   }
-
   insertInventario(data) {
     this.dataBalance = this.balanceForm.value
     this.dataBalance.inventarioRow = data.inventario
@@ -725,26 +763,23 @@ export class BalanceComponent implements OnInit {
       detalle: ['', Validators.required],
       cantidad: ['', Validators.required],
       vlrUni: ['', Validators.required],
-      valor: [null, Validators.required]
+      valor: [null, Validators.required],
+      pasivo: [-1]
     });
   }
   loadActividad(act: ActivosNegocio[]) {
     let activosArr = this.fb.array([]);
 
     act.forEach(a => {
-      let tipo = []
-
-      if (a.tipo) {
-        tipo = this.tipoActivo.find(inve => inve.id == a.tipo.id)
-      }
 
       activosArr.push(
         this.fb.group({
-          tipo: [tipo, Validators.required],
+          tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
           valor: a.valor,
+          pasivo: a.pasivo
         })
       )
     });
@@ -768,25 +803,21 @@ export class BalanceComponent implements OnInit {
       detalle: ['', Validators.required],
       cantidad: ['', Validators.required],
       vlrUni: ['', Validators.required],
-      valor: ['', Validators.required]
+      valor: ['', Validators.required],
+      pasivo: [-1]
     });
   }
   loadActividadFam(act: ActivosFamilia[]) {
     let activosArr = this.fb.array([]);
     act.forEach(a => {
-
-      let tipo = []
-
-      if (a.tipo) {
-        tipo = this.tipoActivoFam.find(actt => actt.id == a.tipo.id)
-      }
       activosArr.push(
         this.fb.group({
-          tipo: [tipo, Validators.required],
+          tipo: [a.tipo, Validators.required],
           detalle: [a.detalle, Validators.required],
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
           valor: a.valor,
+          pasivo: [a.pasivo]
         })
       )
     });
@@ -1056,6 +1087,7 @@ export class BalanceComponent implements OnInit {
       tipo: ['', Validators.required],
       clase: [''],
       negociovivienda: [false],
+      valorcomercial: [0],
       cuotahipoteca: [0],
       cuotafam: [0],
       coutaneg: [0],
@@ -1082,6 +1114,8 @@ export class BalanceComponent implements OnInit {
       montoN: '',
       cuotaN: [''],
       cuotaF: [''],
+      saldoF: [0],
+      saldoN: [0],
       proyeccion: [''],
       corrienteF: [],
       nocorrienteF: [],
@@ -1108,6 +1142,7 @@ export class BalanceComponent implements OnInit {
           tipo: [pas.tipo],
           clase: [pas.clase],
           negociovivienda: [pas.negociovivienda],
+          valorcomercial: [pas.valorcomercial],
           cuotahipoteca: [pas.cuotahipoteca],
           cuotafam: [pas.cuotafam],
           coutaneg: [pas.coutaneg],
@@ -1188,7 +1223,30 @@ export class BalanceComponent implements OnInit {
       this.cuotas(ti).push(this.itemsCuotas());
     }
   }
-  changeHipoteca(pasivo: FormGroup) {
+
+  changeHipoteca(pasivo: FormGroup, e, pass: number) {
+
+    const ctrlneg = this.activosNegocio();
+    ctrlneg.controls.forEach((x, i) => {
+      let pasivo = x.get('pasivo').value
+      if (pasivo == pass) {
+        this.deleteActNegRow(i)
+      }
+    })
+
+    if (e.checked) {
+      this.activosNegocio().push(
+        this.fb.group({
+          tipo: [{ id: 4, name: "Inmuebles o terrenos" }],
+          detalle: ['Casa aval Negocio'],
+          cantidad: [1],
+          vlrUni: [0],
+          valor: [0],
+          pasivo: [pass]
+        })
+      );
+    }
+
     pasivo.patchValue({
       porcentajeneg: 0,
       montoN: 0,
@@ -1197,6 +1255,40 @@ export class BalanceComponent implements OnInit {
     }, { emitEvent: false })
 
   }
+
+  changeTipo(e, pas) {
+
+    const ctrlfam = this.activosFamilia();
+    ctrlfam.controls.forEach((x, i) => {
+      let pasivo = x.get('pasivo').value
+      if (pasivo == pas) {
+        this.deleteActFamRow(i)
+      }
+    })
+
+    const ctrlneg = this.activosNegocio();
+    ctrlneg.controls.forEach((x, i) => {
+      let pasivo = x.get('pasivo').value
+      if (pasivo == pas) {
+        this.deleteActNegRow(i)
+      }
+    })
+
+    if (e.value.id == 2) {
+
+      this.activosFamilia().push(
+        this.fb.group({
+          tipo: [{ id: 4, name: "Inmuebles o terrenos" }],
+          detalle: ['Casa aval Negocio'],
+          cantidad: [1],
+          vlrUni: [0],
+          valor: [0],
+          pasivo: [pas]
+        })
+      );
+    }
+  }
+
   clear(form, name) {
     form.clear()
     switch (name) {
@@ -1216,6 +1308,7 @@ export class BalanceComponent implements OnInit {
         break
     }
   }
+
   compareFunction(o1: any, o2: any) {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }

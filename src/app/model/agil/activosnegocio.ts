@@ -4,4 +4,5 @@ export class ActivosNegocio {
     valor:number;
     cantidad:number;
     vlrUni:number;
+    pasivo:number
   }

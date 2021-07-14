@@ -6,6 +6,7 @@ export class Pasivos {
     };
     clase: number;
     negociovivienda: boolean;
+    valorcomercial:number;
     porcentajeneg: number;
     descuentolibranza: boolean;
     acreedor: string;

@@ -7,11 +7,9 @@ import { Gastos } from 'src/app/model/agil/gastos';
 import { OtrosIngresos } from 'src/app/model/agil/otrosingresosfamilia';
 import { Remuneracion } from 'src/app/model/agil/remuneracion';
 import { Solicitud } from 'src/app/model/agil/solicitud';
-import { EncryptService } from 'src/app/services/encrypt.service';
 import Utils from 'src/app/utils';
 import DataSelect from '../../../data-select/dataselect.json';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
-
 
 @Component({
   selector: 'app-gastos',

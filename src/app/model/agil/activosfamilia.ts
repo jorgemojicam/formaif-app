@@ -4,4 +4,5 @@ export class ActivosFamilia {
   valor: number;
   cantidad: number;
   vlrUni: number;
+  pasivo: number;
 }

@@ -265,8 +265,6 @@ export class FlujocajaComponent implements OnInit {
                               totalegresos = Utils.formatNumber(egreso.total)
                               this.dataFlujo[flujocaja][columnEgresos] = totalegresos
 
-                              console.log("flujocaja", flujocaja, " columnEgresos", columnEgresos)
-
                               let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
                               this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + totalegresos)
 
@@ -616,7 +614,7 @@ export class FlujocajaComponent implements OnInit {
 
                       if (pas.fechaproxint) {
 
-                        let mesint = pas.fechaproxint.getMonth()
+                        let mesint = new Date(pas.fechaproxint).getMonth()
                         var calculoint = Utils.formatNumber(pas.calculoint)
                         let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
 
@@ -626,31 +624,37 @@ export class FlujocajaComponent implements OnInit {
                           }
                         }
                         if (primermesint) {
-                          if (periodoint.id == 1) {
-                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                          } else if (periodoint.id == 2 && f % 2 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                          } else if (periodoint.id == 3 && f % 3 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                        
+                          if (periodoint) {
+                            if (periodoint.id == 1) {
+                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                            } else if (periodoint.id == 2 && f % 2 == 0) {
+                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                            } else if (periodoint.id == 3 && f % 3 == 0) {
+                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                            }
                           }
                         }
 
                         let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-                        let mescap = pas.fechaproxcap.getMonth()
-                        var calculocap = Utils.formatNumber(pas.calculocap)
-                        if (!primermescap) {
-                          if (mesFlujo >= mescap) {
-                            primermescap = true
-                          }
-                        }
+                        if (pas.fechaproxcap) {
 
-                        if (primermescap) {
-                          if (periodocap.id == 1) {
-                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                          } else if (periodocap.id == 2 && f % 2 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                          } else if (periodocap.id == 3 && f % 3 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                          let mescap = new Date(pas.fechaproxcap).getMonth()
+                          var calculocap = Utils.formatNumber(pas.calculocap)
+                          if (!primermescap) {
+                            if (mesFlujo >= mescap) {
+                              primermescap = true
+                            }
+                          }
+
+                          if (primermescap) {
+                            if (periodocap.id == 1) {
+                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                            } else if (periodocap.id == 2 && f % 2 == 0) {
+                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                            } else if (periodocap.id == 3 && f % 3 == 0) {
+                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                            }
                           }
                         }
                       }
