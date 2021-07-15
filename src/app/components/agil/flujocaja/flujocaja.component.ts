@@ -438,19 +438,21 @@ export class FlujocajaComponent implements OnInit {
 
                       for (let eg = 0; eg < lotesA.egresosSiembra.length; eg++) {
                         const egreso = lotesA.egresosSiembra[eg];
-                        for (let me = 0; me < egreso.mes.length; me++) {
-                          const mes = egreso.mes[me];
-                          if (flujo[1] == mes) {
+                        if (egreso.mes) {
+                          for (let me = 0; me < egreso.mes.length; me++) {
+                            const mes = egreso.mes[me];
+                            if (flujo[1] == mes) {
 
-                            totalegresos += Utils.formatNumber(egreso.total)
-                            this.dataFlujo[flujocaja][columnEgresos] = totalegresos
+                              totalegresos += Utils.formatNumber(egreso.total)
+                              this.dataFlujo[flujocaja][columnEgresos] = totalegresos
 
-                            let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
-                            this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
+                              let totalMesegresos = Utils.formatNumber(this.dataFlujo[flujocaja][columnaTotalEgreos])
+                              this.dataFlujo[flujocaja][columnaTotalEgreos] = (totalMesegresos + Utils.formatNumber(egreso.total))
 
-                            let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
-                            this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
+                              let totalEgAcumu = Utils.formatNumber(this.dataFlujoAcumulado[flujocaja][5])
+                              this.dataFlujoAcumulado[flujocaja][5] = (Utils.formatNumber(egreso.total) + totalEgAcumu)
 
+                            }
                           }
                         }
                       }
@@ -624,7 +626,7 @@ export class FlujocajaComponent implements OnInit {
                           }
                         }
                         if (primermesint) {
-                        
+
                           if (periodoint) {
                             if (periodoint.id == 1) {
                               this.dataFlujoAcumulado[f][9] = totalint + calculoint
@@ -648,12 +650,14 @@ export class FlujocajaComponent implements OnInit {
                           }
 
                           if (primermescap) {
-                            if (periodocap.id == 1) {
-                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                            } else if (periodocap.id == 2 && f % 2 == 0) {
-                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                            } else if (periodocap.id == 3 && f % 3 == 0) {
-                              this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                            if (periodocap) {
+                              if (periodocap.id == 1) {
+                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                              } else if (periodocap.id == 2 && f % 2 == 0) {
+                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                              } else if (periodocap.id == 3 && f % 3 == 0) {
+                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                              }
                             }
                           }
                         }
