@@ -54,7 +54,7 @@ export class BalanceComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) { }
 
-   balanceForm: FormGroup = this.fb.group({
+  balanceForm: FormGroup = this.fb.group({
     efectivo: '',
     clienteCobrar: '',
     observacionesCobrar: '',
@@ -193,7 +193,7 @@ export class BalanceComponent implements OnInit {
 
       //Calculo creditos FDLM agro
       const creditosDetalle = <FormArray>this.balanceForm.controls['creditosDetalle'];
-      let totalcreditosDetalle = 0
+   
       creditosDetalle.controls.forEach(x => {
         const cuotas = <FormArray>x.get('cuotas')
         let total = 0
@@ -202,10 +202,9 @@ export class BalanceComponent implements OnInit {
           let valor = Utils.formatNumber(cuo.get('valor').value)
           let fecha = cuo.get('fecha').value
 
-          if (fecha != "") {
-            fecha as Date
-            let mes = fecha.getMonth()
-            let ano = fecha.getFullYear()
+          if (fecha && fecha != "") {
+            let mes = new Date(fecha).getMonth()
+            let ano = new Date(fecha).getFullYear()
             let fullfecha = mes + "-" + ano
             if (arrMese.indexOf(fullfecha) < 0)
               arrMese.push(fullfecha)
@@ -220,7 +219,7 @@ export class BalanceComponent implements OnInit {
           }, { emitEvent: false });
         });
 
-        totalcreditosDetalle += total
+        totalCredito += total
         x.patchValue({
           total: isFinite(total) ? total.toLocaleString() : 0,
         }, { emitEvent: false });

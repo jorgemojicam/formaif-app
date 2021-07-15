@@ -422,7 +422,7 @@
                             <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                 <mat-form-field>
                                     <mat-label>Periodo</mat-label>
-                                    <mat-select formControlName="frecuencia" required>
+                                    <mat-select formControlName="frecuencia"  [compareWith]="compareFunction" required>
                                         <mat-option>--</mat-option>
                                         <mat-option *ngFor="let pe of periodo" [value]="pe">
                                             {{pe.name}}

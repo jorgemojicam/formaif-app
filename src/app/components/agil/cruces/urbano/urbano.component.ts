@@ -413,8 +413,7 @@ export class UrbanoComponent implements OnInit {
           } else {
             total = cantidad * valor * frec
           }
-          totalcomporas += total
-          console.log(totalcomporas)
+          totalcomporas += total       
           com.patchValue({
             valor: valor.toLocaleString(),
             total: isFinite(total) ? total.toLocaleString() : 0,

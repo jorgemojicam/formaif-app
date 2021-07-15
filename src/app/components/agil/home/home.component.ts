@@ -174,7 +174,7 @@ export class HomeComponent implements AfterViewInit {
           return
         }
 
-        let aseso = await this.getDirector() as Asesor
+        let asesor = await this.getDirector() as Asesor
         /*
         let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
         let solCarpeta = JSON.parse(strcarpetaDig)
@@ -185,10 +185,11 @@ export class HomeComponent implements AfterViewInit {
           return
         }
        */
-        if (aseso) {
 
-          let emailDirector = aseso.Director.Correo
-          let nombreDirector = aseso.Director.Nombre
+        if (asesor.Director) {
+
+          let emailDirector = asesor.Director.Correo
+          let nombreDirector = asesor.Director.Nombre
 
           Swal.fire({
             title: '¿Desea Enviar Analisis de credito?',
@@ -196,7 +197,7 @@ export class HomeComponent implements AfterViewInit {
         <br><b>${nombreDirector}</b>, 
         <br><small>${emailDirector}</small>
         <br><b>Solicitud :</b>${numeroCedula}
-        <br><b>Oficina :</b>${aseso.Sucursales.Nombre}`,
+        <br><b>Oficina :</b>${asesor.Sucursales.Nombre}`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, Enviar!',
@@ -220,30 +221,31 @@ export class HomeComponent implements AfterViewInit {
                     if (b) {
 
                       let pdfBase64: string = "";
-                      let pdfBase64Agro: string = "";
+                      let pdfBase64flujo: string = "";
 
                       if (this.datasol.asesor == 2) {
 
-                        try {
-                          const contentagro = this.analisisAgro.reporte.nativeElement
-                          const contentflujo = this.flujo.reporte.nativeElement
+                        const contentagro = this.analisisAgro.reporte.nativeElement
+                        const contentflujo = this.flujo.reporte.nativeElement
 
-                          b.textContent = "Generacion Analisis de credito pdf..."
-                          pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
+                        b.textContent = "Generacion Analisis de credito pdf..."
+                        pdfBase64 = await this.createpdf(contentagro, "Analisis de credito", numeroCedula, "p") as string
 
-                          b.textContent = "Enviando email Analisis..."
-                          await this.send(pdfBase64, aseso.Nombre, aseso.Director.Correo, "Analisis.pdf", "Analisis de credito Agro - " + this.datasol.solicitud)
+                        b.textContent = "Generacion Flujo de caja pdf..."
+                        pdfBase64flujo = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
 
-                          b.textContent = "Generacion Flujo de caja pdf..."
-                          pdfBase64Agro = await this.createpdf(contentflujo, "Flujo de caja", numeroCedula, "l") as string
-
-                          b.textContent = "Enviando email Flujo..."
-                          await this.send(pdfBase64Agro, aseso.Nombre, aseso.Director.Correo, "Flujo.pdf", "Flujo de Caja - " + this.datasol.solicitud)
-
-                        } catch (ex) {
-                          Swal.close()
-                          Swal.fire('Error !', 'Se identifico un error en la construccion del analisis o flujo ' + ex, 'error')
-                        }
+                        let listBase64 = [
+                          {
+                            Base64Pdf: pdfBase64,
+                            Name: "AnalisisDeCredito.pdf"
+                          },
+                          {
+                            Base64Pdf: pdfBase64flujo,
+                            Name: "FlujoDeCaja.pdf"
+                          }
+                        ]
+                        b.textContent = "Enviando email Flujo..."
+                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
 
                         //b.textContent = "Insertando en carpeta digital..."
                         //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
@@ -257,8 +259,15 @@ export class HomeComponent implements AfterViewInit {
                         b.textContent = "Generacion Analisis de credito pdf..."
                         pdfBase64 = await this.createpdf(contentana, "Analisis de credito", numeroCedula, "p") as string
 
+                        let listBase64 = [
+                          {
+                            Base64Pdf: pdfBase64,
+                            Name: "AnalisisDeCredito.pdf"
+                          }
+                        ]
+
                         b.textContent = "Enviando email..."
-                        await this.send(pdfBase64, aseso.Nombre, aseso.Director.Correo, "Analisis.pdf", "Analisis de Credito - " + this.datasol.solicitud)
+                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
 
                         //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
                         //console.log("Insertndo el | digital", solCarpeta)
@@ -347,8 +356,20 @@ export class HomeComponent implements AfterViewInit {
   }
 
   insert(solicitud: Solicitud) {
+
+    let data = {
+      Solicitud: solicitud.solicitud,
+      Identificacion: solicitud.cedula,
+      Oficina: solicitud.oficina,
+      Fecha_Inicio: solicitud.fechacreacion,
+      Fecha_Fin: new Date(),
+      Usuario: solicitud.usuario,
+      Tipo: solicitud.asesor
+    }
+    console.log(data)
+
     return new Promise(resolve => {
-      this.analisisServ.insert(solicitud)
+      this.analisisServ.insert(data)
         .subscribe((res) => {
           return resolve(res)
         }, (err) => {
@@ -357,29 +378,23 @@ export class HomeComponent implements AfterViewInit {
     })
   }
 
-  send(pdfBase64: string, nombreDir: string, emailDir: string, adjuntoName: string, asunto: string) {
+  send(pdfBase64, nombreDir, emailDir, asunto, nombreAsesor) {
 
     let email = {
       To: emailDir,
       Subject: asunto,
-      Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
-      Base64Pdf: pdfBase64,
-      AdjuntoName: adjuntoName
-    }
-
-    let pdfagr = "error"
-    if (pdfBase64 || pdfBase64 != "") {
-      pdfagr = pdfBase64.substring(1, 40) + " cantidad ->" + pdfBase64.length
+      Body: `<h3>Buen dia,</h3>
+      <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`, ListBase64Pdf: pdfBase64
     }
 
     let emailParam = {
       To: emailDir,
       Subject: asunto,
-      Body: "Buen dia, " + nombreDir + " continuacion adjunto se encuentra el formato de analisis de credito",
-      Base64Pdf: pdfagr,
-      AdjuntoName: adjuntoName
+      Body: `<h3>Buen dia,</h3>
+            <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`,
+      ListBase64Pdf: pdfBase64.length
     }
-    console.log("pdfBase64", pdfBase64)
+
     return new Promise((resolve, reject) => {
       this.emailServ.SendAdjunto(email).subscribe(
         (su) => {
@@ -422,7 +437,7 @@ export class HomeComponent implements AfterViewInit {
   getDirector() {
     let asesores: Asesor = this.tokenStorage.getUser()
 
-    if (asesores.Director) {
+    if (asesores) {
       return asesores as Asesor
     } else {
       return null
