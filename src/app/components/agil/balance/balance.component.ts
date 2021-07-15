@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Balance } from 'src/app/model/agil/balance';
@@ -16,6 +16,7 @@ import { Pasivos } from 'src/app/model/agil/pasivos';
 import Utils from '../../../utils'
 import { ProveedoresEstacionales } from 'src/app/model/agil/proveedoresestacinales';
 import { CreditoDetalle } from 'src/app/model/agil/creditodetalle';
+import { ActivosComponent } from '../activos/activos.component';
 
 @Component({
   selector: 'app-balance',
@@ -26,6 +27,7 @@ export class BalanceComponent implements OnInit {
   dataSolicitud: Solicitud = new Solicitud();
   solicitud: Solicitud
   dataBalance: Balance = new Balance();
+  @ViewChild(ActivosComponent) activos: ActivosComponent;
 
   //Listas desplegables
   tipoActivoFam: any = DataSelect.TipoActivoFam;
@@ -52,7 +54,7 @@ export class BalanceComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) { }
 
-  balanceForm: FormGroup = this.fb.group({
+   balanceForm: FormGroup = this.fb.group({
     efectivo: '',
     clienteCobrar: '',
     observacionesCobrar: '',
