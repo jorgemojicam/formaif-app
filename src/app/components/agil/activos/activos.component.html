@@ -45,7 +45,7 @@
                                 readonly>
                         </mat-form-field>
                     </div>
-                    <button class="btndelete" color="warn" mat-icon-button [disabled]="activos().controls.length==1"
+                    <button class="btndelete" color="warn" mat-icon-button [disabled]="itemrow.value.pasivo>=0 || activos().controls.length==1"
                         (click)="delete(act)">
                         <mat-icon>cancel</mat-icon>
                     </button>

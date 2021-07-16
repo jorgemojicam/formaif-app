@@ -17,6 +17,7 @@ export class ActivosComponent implements OnChanges {
   @Input() total
   @Input() tipoSol
   @Output() newActivo = new EventEmitter<any>();
+  totalActivos
 
   activosForm: FormGroup = new FormGroup({
     activos: this._formbuilder.array([this.initActinegRow()]),
@@ -36,13 +37,13 @@ export class ActivosComponent implements OnChanges {
     }
 
     this.activosForm.valueChanges.subscribe(form => {
-      let total = 0
+      this.totalActivos = 0
       const actneg = <FormArray>this.activosForm.controls['activos'];
       actneg.controls.forEach(x => {
         let cantidad = Utils.formatNumber(x.get('cantidad').value)
         let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
         let valor = cantidad * vlrUni
-        total += valor
+        this.totalActivos += valor
         x.patchValue({
           valor: isFinite(valor) ? valor.toLocaleString() : 0,
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
@@ -50,7 +51,7 @@ export class ActivosComponent implements OnChanges {
       });
 
       this.activosForm.patchValue({
-        totalActivos: isFinite(total) ? total.toLocaleString() : 0,
+        totalActivos: isFinite(this.totalActivos) ? this.totalActivos.toLocaleString() : 0,
       }, { emitEvent: false })
 
       let data = {
@@ -67,7 +68,8 @@ export class ActivosComponent implements OnChanges {
       detalle: ['', Validators.required],
       cantidad: ['', Validators.required],
       vlrUni: ['', Validators.required],
-      valor: [null, Validators.required]
+      valor: [null, Validators.required],
+      pasivo:[-1]
     });
   }
   loadActivos(act: Activos[]) {
@@ -82,6 +84,7 @@ export class ActivosComponent implements OnChanges {
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
           valor: a.valor,
+          pasivo:a.pasivo
         })
       )
     });

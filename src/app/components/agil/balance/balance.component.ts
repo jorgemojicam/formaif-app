@@ -135,6 +135,7 @@ export class BalanceComponent implements OnInit {
       this.totalActFam = this.dataSolicitud.Balance.actfamTotal
 
       this.aInventario = this.dataSolicitud.Balance.inventarioRow
+      this.totalInv = this.dataSolicitud.Balance.inventarioTotal
 
       this.loadBalance(this.dataSolicitud.Balance)
     }
@@ -435,12 +436,12 @@ export class BalanceComponent implements OnInit {
             tcorrienten += corrienteN
             tnocorrienten += nocorrienteN
 
-            const actfam = <FormArray>this.balanceForm.controls['activosFamRows'];
+            const actfam = this.activosFam.activos();
             actfam.controls.forEach(x => {
               let pasivo = x.get('pasivo').value
 
               if (pasivo == i) {
-                //totalactfam += comercialfam
+                
                 x.patchValue({
                   tipo: { id: 4, name: "Inmuebles o terrenos" },
                   detalle: 'Casa aval Negocio',
@@ -453,12 +454,10 @@ export class BalanceComponent implements OnInit {
 
             if (negociovivienda) {
 
-              const actfam = <FormArray>this.balanceForm.controls['actividadNegRows'];
-              actfam.controls.forEach(x => {
+              const actneg = this.activosNeg.activos();
+              actneg.controls.forEach(x => {
                 let pasivo = x.get('pasivo').value
-
-                if (pasivo == i) {
-                  //totalactneg += comercialneg
+                if (pasivo == i) {               
                   x.patchValue({
                     cantidad: 1,
                     tipo: { id: 4, name: "Inmuebles o terrenos" },
@@ -468,7 +467,6 @@ export class BalanceComponent implements OnInit {
                   }, { emitEvent: false });
                 }
               });
-
             }
 
             x.patchValue({
@@ -717,17 +715,17 @@ export class BalanceComponent implements OnInit {
   }
 
   insert() {
-    console.log("asdf")
+   
     this.dataBalance = this.balanceForm.value
 
     this.dataBalance['inventarioRow'] = this.inventario.inventario().value
-    this.dataBalance['inventarioTotal'] = this.inventario.total
+    this.dataBalance['inventarioTotal'] = this.inventario.totalInventaio
 
     this.dataBalance.activosFamRows= this.activosFam.activos().value
-    this.dataBalance.actfamTotal = this.activosFam.total
+    this.dataBalance.actfamTotal = this.activosFam.totalActivos
 
     this.dataBalance.actividadNegRows = this.activosNeg.activos().value
-    this.dataBalance.actnegTotal = this.activosNeg.total
+    this.dataBalance.actnegTotal = this.activosNeg.totalActivos
 
     this.dataSolicitud.Balance = this.dataBalance
     this._srvSol.saveSol(this.ced, this.dataSolicitud)

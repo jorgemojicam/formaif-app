@@ -18,6 +18,7 @@ export class InventarioComponent implements OnChanges {
   @Input() total
   @Input() tipoSol
   @Output() newInventario = new EventEmitter<any>();
+  totalInventaio
 
   tipoInventario: any = DataSelect.TipoInventario;
   tipoInventarioAgro: any = DataSelect.TipoInventarioAgro;
@@ -39,13 +40,13 @@ export class InventarioComponent implements OnChanges {
     }
 
     this.inventarioForm.valueChanges.subscribe(form => {
-      let totalInv = 0
+      this.totalInventaio = 0
       const inven = <FormArray>this.inventarioForm.controls['inventarioRow'];
       inven.controls.forEach(x => {
         let cantidad = Utils.formatNumber(x.get('cantidad').value)
         let vlrUni = Utils.formatNumber(x.get('vlrUni').value)
         let valor = vlrUni * cantidad
-        totalInv += valor
+        this.totalInventaio += valor
         x.patchValue({
           valor: isFinite(valor) ? valor.toLocaleString() : 0,
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
@@ -53,7 +54,7 @@ export class InventarioComponent implements OnChanges {
       });
 
       this.inventarioForm.patchValue({
-        totalInventario: isFinite(totalInv) ? totalInv.toLocaleString() : 0,
+        totalInventario: isFinite(this.totalInventaio) ? this.totalInventaio.toLocaleString() : 0,
       }, { emitEvent: false })
 
       let data = {
