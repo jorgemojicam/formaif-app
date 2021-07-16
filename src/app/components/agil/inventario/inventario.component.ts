@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Inventario } from 'src/app/model/agil/inventario';
@@ -12,16 +12,15 @@ import DataSelect from '../../../data-select/dataselect.json';
   templateUrl: './inventario.component.html',
   styleUrls: ['./inventario.component.scss']
 })
-export class InventarioComponent implements OnInit {
+export class InventarioComponent implements OnChanges {
 
-  @Input() solicitud
+  @Input() dataInventario
+  @Input() total
+  @Input() tipoSol
   @Output() newInventario = new EventEmitter<any>();
 
-  tipoSol
-  ced: string
   tipoInventario: any = DataSelect.TipoInventario;
   tipoInventarioAgro: any = DataSelect.TipoInventarioAgro;
-  dataSolicitud: Solicitud = new Solicitud();
 
   constructor(
     private _formBuild: FormBuilder,
@@ -33,21 +32,12 @@ export class InventarioComponent implements OnInit {
     totalInventario: new FormControl(0)
   })
 
-  ngOnInit() {
+  ngOnChanges() {
 
-    if (this.solicitud) {
-
-      this.dataSolicitud = this.solicitud
-      this.tipoSol = this.dataSolicitud.asesor
-      this.ced = this.dataSolicitud.cedula.toString()
-
-      if (this.dataSolicitud.Balance) {
-        if (this.dataSolicitud.Balance.inventarioRow) {
-          this.load(this.solicitud.Balance.inventarioRow, this.solicitud.Balance.inventarioTotal)
-        }
-      }
+    if (this.dataInventario) {
+      this.load(this.dataInventario)
     }
-        
+
     this.inventarioForm.valueChanges.subscribe(form => {
       let totalInv = 0
       const inven = <FormArray>this.inventarioForm.controls['inventarioRow'];
@@ -70,10 +60,10 @@ export class InventarioComponent implements OnInit {
         inventario: this.inventarioForm.value.inventarioRow,
         total: this.inventarioForm.value.totalInventario
       }
-      
+
       this.newInventario.emit(data);
     });
-   
+
   }
 
   initInventario() {
@@ -120,10 +110,10 @@ export class InventarioComponent implements OnInit {
     this.inventario().removeAt(index);
   }
 
-  load(inv: Inventario[], total) {
+  load(inv: Inventario[]) {
     this.inventarioForm = this._formBuild.group({
       inventarioRow: this.loadInventarioRows(inv),
-      totalInventario: total,
+      totalInventario: this.total,
     })
   }
 

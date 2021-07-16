@@ -115,136 +115,18 @@
         </mat-card>
     </ng-container>
     <!-- inventario -->
-    <app-inventario *ngIf="solicitud" (newInventario)="insertInventario($event)" [solicitud]="solicitud">
+    <app-inventario [dataInventario]="aInventario" (newInventario)="insertInventario($event)"
+        [total]="totalInv" [tipoSol]="tipoSol">
     </app-inventario>
-
     <!-- activos negocio-->
-    <!-- <app-activos *ngIf="solicitud" (newActivo)="insertActivosNeg($event)" [solicitud]="solicitud"></app-activos> -->
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>Activos del Negocio</mat-card-title>
-            <mat-card-subtitle>Registre unicamente activos, inmuebles o terrenos libres de credito hipotecario
-            </mat-card-subtitle>
-            <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected>${{balanceForm.controls.actnegTotal.value}}</mat-chip>
-            </mat-chip-list>
-        </mat-card-header>
-        <mat-card-content>
-            <div formArrayName="actividadNegRows" class="alternate">
-                <div fxLayout="row wrap" class="content"
-                    *ngFor="let itemrow of activosNegocio().controls; let actneg=index" [formGroupName]="actneg">
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-form-field>
-                            <mat-label>Detalle</mat-label>
-                            <textarea matInput formControlName="detalle"></textarea>
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-form-field>
-                            <mat-label>Tipo</mat-label>
-                            <mat-select formControlName="tipo" id="tipo{{actneg}}" [compareWith]="compareFunction"
-                                required>
-                                <mat-option>Tipo</mat-option>
-                                <mat-option *ngFor="let tip of tipoActivo" [value]="tip">
-                                    {{tip.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
-                        <mat-form-field>
-                            <input type="number" matInput placeholder="Cantidad" id="cantidad{{actneg}}"
-                                formControlName="cantidad">
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                        <mat-form-field>
-                            <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{actneg}}"
-                                formControlName="vlrUni">
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                        <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actneg}}" formControlName="valor">
-                        </mat-form-field>
-                    </div>
-                    <button class="btndelete" color="warn" mat-icon-button
-                        [disabled]="activosNegocio().controls.length ==1 || itemrow.value.pasivo >= 0"
-                        (click)="deleteActNegRow(actneg)">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <button mat-fab aria-label="add" [disabled]="activosNegocio().controls.length >=20" mat-mini-fab
-                class="btnadd" type="button" color="accent" (click)="addActNegNewRow()">
-                <mat-icon>add</mat-icon>
-            </button>
-        </mat-card-content>
-    </mat-card>
+    <app-activos #activosNegocio (newActivo)="insertActivosNeg($event)" [listTipo]="tipoActivo"
+        [dataActivos]="aActivosNeg" [total]="totalActNeg" [tipoSol]="tipoSol" [activo]="tituloActivoNeg">
+    </app-activos>
     <!-- activos familia -->
-    <mat-card>
-        <mat-card-header>
-            <mat-card-title>Activos de la Familia</mat-card-title>
-            <mat-card-subtitle>
-                Registre unicamente activos, inmuebles o terrenos libres de credito hipotecario
-            </mat-card-subtitle>
-            <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected>${{balanceForm.controls.actfamTotal.value}}</mat-chip>
-            </mat-chip-list>
-        </mat-card-header>
-        <mat-card-content>
-            <div formArrayName="activosFamRows" class="alternate">
-                <div fxLayout="row wrap" class="content"
-                    *ngFor="let itemrow of activosFamilia().controls; let actfam=index" [formGroupName]="actfam">
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-form-field>
-                            <mat-label>Detalle</mat-label>
-                            <textarea matInput formControlName="detalle"></textarea>
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-                        <mat-form-field>
-                            <mat-label>Tipo</mat-label>
-                            <mat-select formControlName="tipo" id="tipo{{actfam}}" [compareWith]="compareFunction"
-                                required>
-                                <mat-option>--</mat-option>
-                                <mat-option *ngFor="let tipfam of tipoActivoFam" [value]="tipfam">
-                                    {{tipfam.name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
-                        <mat-form-field>
-                            <input type="number" matInput placeholder="Cantidad" id="cantidad{{actfam}}"
-                                formControlName="cantidad">
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                        <mat-form-field>
-                            <input type="tel" matInput placeholder="Vlr unitario" id="vlrUni{{actfam}}"
-                                formControlName="vlrUni">
-                        </mat-form-field>
-                    </div>
-                    <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-                        <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" id="valor{{actfam}}" formControlName="valor"
-                                readonly>
-                        </mat-form-field>
-                    </div>
-                    <button class="btndelete" color="warn" mat-icon-button
-                        [disabled]="activosFamilia().controls.length==1 || itemrow.value.pasivo >= 0"
-                        (click)="deleteActFamRow(actfam)">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
-                </div>
-            </div>
-            <button mat-mini-fab aria-label="add" class="btnadd" type="button" color="accent"
-                (click)="addActFamNewRow()" [disabled]="activosFamilia().controls.length >=20">
-                <mat-icon>add</mat-icon>
-            </button>
-        </mat-card-content>
-    </mat-card>
+    <app-activos #activosFamilia (newActivo)="insertActivosFam($event)" [listTipo]="tipoActivoFam"
+        [dataActivos]="aActivosFam" [total]="totalActFam" [tipoSol]="tipoSol" [activo]="tituloActivoFam">
+    </app-activos>
+
     <!-- proveedores -->
     <mat-card>
         <mat-card-header>
@@ -422,7 +304,7 @@
                             <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                 <mat-form-field>
                                     <mat-label>Periodo</mat-label>
-                                    <mat-select formControlName="frecuencia"  [compareWith]="compareFunction" required>
+                                    <mat-select formControlName="frecuencia" [compareWith]="compareFunction" required>
                                         <mat-option>--</mat-option>
                                         <mat-option *ngFor="let pe of periodo" [value]="pe">
                                             {{pe.name}}
