@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Inventario } from 'src/app/model/agil/inventario';
-import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from 'src/app/services/idb-solicitud.service';
 import Utils from 'src/app/utils';
 import DataSelect from '../../../data-select/dataselect.json';

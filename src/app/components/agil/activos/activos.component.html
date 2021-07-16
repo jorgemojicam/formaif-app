@@ -1,9 +1,10 @@
 <form [formGroup]="activosForm">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Activos {{activo}}</mat-card-title>   
+            <mat-card-title>Activos {{activo}}</mat-card-title>
             <mat-chip-list class="pull-right">
-                <mat-chip color="accent" selected>${{activosForm.controls.totalActivos.value}}</mat-chip>
+                <mat-chip color="accent" selected>{{activosForm.controls.totalActivos.value | currency:'$': 'symbol' :
+                    '1.0-0'}}</mat-chip>
             </mat-chip-list>
         </mat-card-header>
         <mat-card-content>
@@ -13,46 +14,52 @@
                     <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
                         <mat-form-field>
                             <mat-label>Detalle</mat-label>
-                            <textarea matInput formControlName="detalle"></textarea>
+                            <textarea matInput [readonly]="itemrow.value.pasivo>=0" formControlName="detalle"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                    <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%" *ngIf="itemrow.value.pasivo<0">
                         <mat-form-field>
                             <mat-label>Tipo</mat-label>
                             <mat-select formControlName="tipo" [compareWith]="compareFunction" required>
-                                <mat-option>Tipo</mat-option>
+                                <mat-option disabled>-Seleccione Tipo-</mat-option>
                                 <mat-option *ngFor="let tip of listTipo" [value]="tip">
                                     {{tip.name}}
                                 </mat-option>
                             </mat-select>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="gr" fxFlex="100%" *ngIf="itemrow.value.pasivo>=0" fxFlex.xs="100%" fxFlex.sm="100%">
+                        <mat-form-field>
+                            <input type="text" [readonly]="true" matInput placeholder="Tipo"
+                                value="{{itemrow.value.tipo.name}}">
                         </mat-form-field>
                     </div>
                     <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
                         <mat-form-field>
-                            <input type="number" matInput placeholder="Cantidad" 
+                            <input type="number" [readonly]="itemrow.value.pasivo>=0" matInput placeholder="Cantidad"
                                 formControlName="cantidad">
                         </mat-form-field>
                     </div>
                     <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Vlr unitario" 
+                            <input type="tel" [readonly]="itemrow.value.pasivo>=0" matInput placeholder="Vlr unitario"
                                 formControlName="vlrUni">
                         </mat-form-field>
                     </div>
                     <div class="gr" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
                         <mat-form-field>
-                            <input type="tel" matInput placeholder="Valor" formControlName="valor"
-                                readonly>
+                            <input type="tel" matInput placeholder="Valor" formControlName="valor" readonly>
                         </mat-form-field>
                     </div>
-                    <button class="btndelete" color="warn" mat-icon-button [disabled]="itemrow.value.pasivo>=0 || activos().controls.length==1"
-                        (click)="delete(act)">
+                    <button class="btndelete" color="warn" mat-icon-button
+                        [disabled]="itemrow.value.pasivo>=0 || activos().controls.length==1" (click)="delete(act)">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </div>
             </div>
-            <button mat-fab aria-label="add" [disabled]="activos().controls.length >=20"
-                mat-mini-fab class="btnadd" type="button" color="accent" (click)="addActNegNewRow()">
+            <button mat-fab aria-label="add" [disabled]="activos().controls.length >=20" mat-mini-fab class="btnadd"
+                type="button" color="accent" (click)="addActNegNewRow()">
                 <mat-icon>add</mat-icon>
             </button>
         </mat-card-content>

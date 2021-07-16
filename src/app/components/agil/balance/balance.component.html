@@ -819,7 +819,7 @@
                                     <div class="gr" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
                                         <mat-form-field appearance="outline">
                                             <mat-label>Periodo Interes</mat-label>
-                                            <mat-select formControlName="periodoint" id="periodoint{{pas}}" required>
+                                            <mat-select formControlName="periodoint" [compareWith]="compareFunction" id="periodoint{{pas}}" required>
                                                 <mat-option>-Seleccione-</mat-option>
                                                 <mat-option *ngFor="let pe of periodo" [value]="pe">
                                                     {{pe.name}}
@@ -1010,8 +1010,8 @@
                     </ng-container>
 
                     <button class="btndelete" color="warn" mat-icon-button
-                        [disabled]="balanceForm.controls.pasivosRows['controls'].length ==1"
-                        (click)="deletePasivosRow(pas)">
+                        [disabled]="pasivos().controls.length ==1"
+                        (click)="deletePasivosRow(pas,itemrow.value.tipo)">
                         <mat-icon>cancel</mat-icon>
                     </button>
 

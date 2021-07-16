@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Activos } from 'src/app/model/agil/activos';
-import { Solicitud } from 'src/app/model/agil/solicitud';
 import Utils from 'src/app/utils';
 
 @Component({
@@ -37,6 +36,7 @@ export class ActivosComponent implements OnChanges {
     }
 
     this.activosForm.valueChanges.subscribe(form => {
+
       this.totalActivos = 0
       const actneg = <FormArray>this.activosForm.controls['activos'];
       actneg.controls.forEach(x => {
@@ -51,7 +51,7 @@ export class ActivosComponent implements OnChanges {
       });
 
       this.activosForm.patchValue({
-        totalActivos: isFinite(this.totalActivos) ? this.totalActivos.toLocaleString() : 0,
+        totalActivos: isFinite(this.totalActivos) ? this.totalActivos : 0,
       }, { emitEvent: false })
 
       let data = {

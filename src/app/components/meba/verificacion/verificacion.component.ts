@@ -56,7 +56,7 @@ export class VerificacionComponent implements OnInit {
 
     //Consulta BD
     this.dataVerificacion = await this.getPreguntas()
-    console.log(this.dSolicitud)
+
     //Si tiene respuestas en el local storage carguelas
     if (this.dSolicitud.verificacion) {
       //Construye el array de preguntas 
@@ -80,35 +80,39 @@ export class VerificacionComponent implements OnInit {
           let peso = pre.get("Peso").value / 100
 
           if (resultado) {
+
             if (multiple) {
-              let check1 = 0
-              let check2 = 0
 
-              for (let re = 0; re < resultado.length; re++) {
-                const resul = resultado[re];
+              if (resultado.length > 0) {
+                
+                let check1 = 0
+                let check2 = 0
 
-                let puntaje = Utils.formatNumber(resul.Punaje)
-                if (puntaje == 1) {
-                  check1 += 1
-                } else if (puntaje == 2) {
-                  check2 += 1
+                for (let re = 0; re < resultado.length; re++) {
+                  const resul = resultado[re];
+
+                  let puntaje = Utils.formatNumber(resul.Punaje)
+                  if (puntaje == 1) {
+                    check1 += 1
+                  } else if (puntaje == 2) {
+                    check2 += 1
+                  }
                 }
-              }
 
-              let result = 0
-              if (check1 == total) {
-                result += 3
+                let result = 0
+                if (check1 == total) {
+                  result += 3
+                }
+                if (check2 == 1) {
+                  result += 1
+                } else if (check2 >= 2) {
+                  result += 2
+                }
+                acumulado += peso * result
               }
-              if (check2 == 1) {
-                result += 1
-              } else if (check2 >= 2) {
-                result += 2
-              }
-              acumulado += peso * result
             } else {
               acumulado += peso * Utils.formatNumber(resultado.Punaje)
             }
-
           }
 
         });
@@ -117,7 +121,7 @@ export class VerificacionComponent implements OnInit {
           totalAcumulado: acumulado.toFixed(2)
         }, { emitEvent: false })
       })
-      console.log(this.verificacionForm)
+
       this.dVerificacion = this.verificacionForm.value.verificacion
       this.dSolicitud.verificacion = this.dVerificacion
       this.srvSol.saveSol(this.ced, this.dSolicitud)
@@ -170,11 +174,11 @@ export class VerificacionComponent implements OnInit {
         if (pre.Multiple) {
 
           pre.Resultado.forEach(resultado => {
-            let arRes = pre.Respuestas.find(a=> a.Id == resultado.Id)
+            let arRes = pre.Respuestas.find(a => a.Id == resultado.Id)
             res.push(arRes)
           });
-        }else{
-          res = pre.Respuestas.find(a=> a.Id == pre.Resultado.Id)    
+        } else {
+          res = pre.Respuestas.find(a => a.Id == pre.Resultado.Id)
         }
       }
       aRespuestas.push(this._formbuild.group({
@@ -228,11 +232,19 @@ export class VerificacionComponent implements OnInit {
   }
   clear(event, pre) {
 
+    let verificacion = this.verificacion()
+
+    verificacion.controls.forEach(element => {
+      element.patchValue({
+        totalAcumulado: 0,
+      }, { emitEvent: false })
+    }, { emitEvent: false })
+
     if (!event.checked) {
       let preguntas = this.verificacion().at(pre).get("Preguntas") as FormArray
       preguntas.controls.forEach(element => {
         element.patchValue({
-          resultado: ""
+          resultado: "",
         }, { emitEvent: false })
       });
     }
