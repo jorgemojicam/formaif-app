@@ -680,7 +680,7 @@ export class FlujocajaComponent implements OnInit {
                       if (item.fecha) {
                         let mes = new Date(item.fecha).getMonth()
                         let ano = new Date(item.fecha).getFullYear()
-                        if (mesFlujo == mes && ano == anoFlujo) {
+                        if (mesFlujo == mes && ano == anoFlujo) {                          
                           this.dataFlujoAcumulado[f][9] = Utils.formatNumber(item.cuota) + totalacomula
                         }
                       }
@@ -762,7 +762,7 @@ export class FlujocajaComponent implements OnInit {
           //Obligaciones Finacieras
           let valorObligaciones = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
           this.dataFlujoAcumulado[f][9] = valorObligaciones + totalObligaciones
-
+          
           let ingreso = Utils.formatNumber(this.dataFlujoAcumulado[f][3])
           let recuperacion = Utils.formatNumber(this.dataFlujoAcumulado[f][4])
           let costo = Utils.formatNumber(this.dataFlujoAcumulado[f][5])

@@ -321,7 +321,7 @@
                             </div>
 
                             <!-- cuotas del credito que le hacen falta  -->
-                            <div formArrayName="cuotas">
+                            <div formArrayName="cuotas" style="width: 100%;">
                                 <div fxLayout="row wrap"
                                     *ngFor="let proveedor of cuotasCreditos(cre).controls; let cuo=index"
                                     [formGroupName]="cuo">
@@ -343,10 +343,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Total</mat-label>
-                                    <input matInput type="Total" readonly formControlName="total">
+                                    <input matInput type="text" readonly formControlName="total">
+                                    <mat-icon matSuffix>attach_money</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Proyeccion</mat-label>
+                                    <input matInput type="text" readonly formControlName="proyeccion">
                                     <mat-icon matSuffix>attach_money</mat-icon>
                                 </mat-form-field>
                             </div>

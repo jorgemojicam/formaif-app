@@ -213,10 +213,12 @@ export class BalanceComponent implements OnInit {
         const cuotas = <FormArray>x.get('cuotas')
         let total = 0
         let arrMese = []
+        let frecuencia = x.value.frecuencia        
+      
         cuotas.controls.forEach(cuo => {
           let valor = Utils.formatNumber(cuo.get('valor').value)
           let fecha = cuo.get('fecha').value
-
+              
           if (fecha && fecha != "") {
             let mes = new Date(fecha).getMonth()
             let ano = new Date(fecha).getFullYear()
@@ -225,18 +227,23 @@ export class BalanceComponent implements OnInit {
               arrMese.push(fullfecha)
             else
               fecha = ""
-          }
-
-          total += valor
+          }              
+          total += valor          
           cuo.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0,
             fecha: fecha
           }, { emitEvent: false });
-        });
+        }); 
+        
+        let proyeccion = 0     
+        if(frecuencia){
+          proyeccion = (total / cuotas.length ) / frecuencia.period
+        }
 
-        totalCredito += total
+        totalCredito += proyeccion
         x.patchValue({
           total: isFinite(total) ? total.toLocaleString() : 0,
+          proyeccion: isFinite(proyeccion) ? proyeccion.toLocaleString() : 0,
         }, { emitEvent: false });
       });
 
@@ -842,6 +849,7 @@ export class BalanceComponent implements OnInit {
   initCreditosDetalle() {
     return this.fb.group({
       frecuencia: '',
+      proyeccion: '',
       numcuota: '',
       total: 0,
       cuotas: this.fb.array([])
@@ -860,6 +868,7 @@ export class BalanceComponent implements OnInit {
             numcuota: cred.numcuota,
             frecuencia: cred.frecuencia,
             total: cred.total,
+            proyeccion: cred.proyeccion,
             cuotas: this.loadcuotaCredito(cred.cuotas)
           })
         )
