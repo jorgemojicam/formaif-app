@@ -147,6 +147,7 @@ export class BalanceComponent implements OnInit {
       let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
       let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
       let recuperacionCobrar = Utils.formatNumber(this.balanceForm.controls.recuperacionCobrar.value)
+      
       if (incobrable > valorCobrar) {
         incobrable = 0
         this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {

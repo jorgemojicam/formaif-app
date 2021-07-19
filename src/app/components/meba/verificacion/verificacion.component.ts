@@ -84,7 +84,7 @@ export class VerificacionComponent implements OnInit {
             if (multiple) {
 
               if (resultado.length > 0) {
-                
+
                 let check1 = 0
                 let check2 = 0
 
@@ -108,7 +108,9 @@ export class VerificacionComponent implements OnInit {
                 } else if (check2 >= 2) {
                   result += 2
                 }
+                console.log("result",result)
                 acumulado += peso * result
+                
               }
             } else {
               acumulado += peso * Utils.formatNumber(resultado.Punaje)
@@ -232,13 +234,10 @@ export class VerificacionComponent implements OnInit {
   }
   clear(event, pre) {
 
-    let verificacion = this.verificacion()
-
-    verificacion.controls.forEach(element => {
-      element.patchValue({
-        totalAcumulado: 0,
-      }, { emitEvent: false })
-    }, { emitEvent: false })
+    let verificacion = this.verificacion().at(pre) as FormGroup
+    verificacion.patchValue({
+      totalAcumulado: 0,
+    }, { emitEvent: false }) 
 
     if (!event.checked) {
       let preguntas = this.verificacion().at(pre).get("Preguntas") as FormArray
