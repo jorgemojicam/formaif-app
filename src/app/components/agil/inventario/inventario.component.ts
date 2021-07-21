@@ -37,7 +37,7 @@ export class InventarioComponent implements OnChanges {
     if (this.dataInventario) {
       this.load(this.dataInventario)
     }
-
+    this.totalInventaio = this.total
     this.inventarioForm.valueChanges.subscribe(form => {
       this.totalInventaio = 0
       const inven = <FormArray>this.inventarioForm.controls['inventarioRow'];
@@ -53,7 +53,7 @@ export class InventarioComponent implements OnChanges {
       });
 
       this.inventarioForm.patchValue({
-        totalInventario: isFinite(this.totalInventaio) ? this.totalInventaio.toLocaleString() : 0,
+        totalInventario: isFinite(this.totalInventaio) ? this.totalInventaio : 0,
       }, { emitEvent: false })
 
       let data = {

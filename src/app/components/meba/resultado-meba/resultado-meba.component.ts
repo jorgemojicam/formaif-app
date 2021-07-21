@@ -71,16 +71,18 @@ export class ResultadoMebaComponent implements OnInit {
       if (this.dataSolicitud.verificacion) {
         for (let a = 0; a < this.dataSolicitud.verificacion.length; a++) {
           let verifica = this.dataSolicitud.verificacion[a];
-          if (verifica.Preguntas) {
-            for (let ve = 0; ve < verifica.Preguntas.length; ve++) {
+          if (verifica.aplicapregunta) {
+            if (verifica.Preguntas) {
+              for (let ve = 0; ve < verifica.Preguntas.length; ve++) {
 
-              const preguntas = verifica.Preguntas[ve];
-              let total = Utils.formatFloat(preguntas.Total)
+                const preguntas = verifica.Preguntas[ve];
+                let total = Utils.formatFloat(preguntas.Total)
 
-              if (total < 3) {
-                this.verificacion.push(preguntas)
+                if (total < 3) {
+                  this.verificacion.push(preguntas)
+                }
+
               }
-
             }
           }
 

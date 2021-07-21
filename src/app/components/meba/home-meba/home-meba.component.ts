@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 import { TemasService } from 'src/app/services/MEBA/temas.service';
 import { EncryptService } from 'src/app/services/encrypt.service';
+import { ErrorparamService } from 'src/app/services/errorparam.service';
 
 @Component({
   selector: 'app-home-meba',
@@ -51,6 +52,7 @@ export class HomeMebaComponent implements AfterViewInit {
     private _srvCarpeta: CarpetadigitalService,
     private _srvResultado: ResultadoService,
     private _srvToken: TokenStorageService,
+    private _srvErrore: ErrorparamService,
     private _srvSolicitud: SolicitudService,
     public dialog: MatDialog
   ) { }
@@ -242,7 +244,16 @@ export class HomeMebaComponent implements AfterViewInit {
 
                   b.textContent = "Enviando email..."
                   let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
-                  let envio = await this.send(pdfBase64, "", "Soporte", email)
+
+                  let listBase64 = [
+                    {
+                      Base64Pdf: pdfBase64,
+                      Name: "AnalisisDeCredito.pdf"
+                    }
+                  ]
+
+
+                  let evio =  await this.send(listBase64, asesores.Director.Nombre, asesores.Director.Correo, "MEBA", asesores.Nombre)
 
                   b.textContent = "Cargando en base de datos..."
                   let idAnalisis: any = await this.setAnalisis(datos)
@@ -485,25 +496,57 @@ export class HomeMebaComponent implements AfterViewInit {
  * @param {string} emaildestinatario email de la persona a la que va dirigido
  *
  */
-  send(pdfBase64: string, pdfBase64Agro: string, destinatario: string, emaildestinatario: string) {
+   send(pdfBase64, nombreDir, emailDir, asunto, nombreAsesor) {
 
-    let email: Email = new Email;
-    email.To = emaildestinatario;
-    email.Subject = "Analisis de credito"
-    email.Body = `<h3>Buen dia, ` + destinatario + ` </h3>
-              <p>A continuacion adjunto se encuentra el estudio MEBA</p>`
-    email.Base64Pdf = pdfBase64
-    email.Base64PdfAgro = pdfBase64Agro
+    let email = {
+      To: emailDir,
+      Subject: asunto,
+      Body: `<h3>Buen dia,</h3>
+      <p>${nombreDir} a continuación adjunto se encuentra el formato de MEBA por el asesor ${nombreAsesor}</p>`, ListBase64Pdf: pdfBase64
+    }
+
+    let emailParam = {
+      To: emailDir,
+      Subject: asunto,
+      Body: `<h3>Buen dia,</h3>
+            <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`,
+      ListBase64Pdf: pdfBase64.length
+    }
 
     return new Promise((resolve, reject) => {
-      this._srvEmail.Send(email).subscribe(
+      this._srvEmail.SendAdjunto(email).subscribe(
         (su) => {
-          return resolve(su)
+          resolve(su)
         },
-        (er) => {
+        async (er) => {
+          console.log(er)
+          await this.insertError(er.status, 'send', JSON.stringify(emailParam), 'agil/home')
+          Swal.close()
+          Swal.fire('Error', 'Se ha producido un error en el envio de correo ' + er.status, 'error')
+          this.procesando = false
           reject(er)
         }
       )
+    })
+  }
+
+  insertError(err, meth, param, fil) {
+
+    let data = {
+      userIniciales: "JEMM",
+      error: err,
+      method: meth,
+      param: param,
+      file: fil,
+      created_at: new Date().toUTCString()
+    }
+
+    return new Promise(resolve => {
+      this._srvErrore.create(data).subscribe((sus) => {
+        resolve(sus)
+      }, (err) => {
+        resolve(err)
+      })
     })
   }
 

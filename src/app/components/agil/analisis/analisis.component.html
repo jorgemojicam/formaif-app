@@ -81,7 +81,7 @@
             <tfoot>
                 <tr>
                     <td>Total</td>
-                    <td style="text-align:right" colspan=5>${{datasolicitud.Balance.inventarioTotal}}</td>
+                    <td style="text-align:right" colspan=5>{{datasolicitud.Balance.inventarioTotal  | currency:'$': 'symbol' : '1.0-0' }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -104,14 +104,14 @@
                     <td *ngIf="act.tipo">{{act.tipo.name}}</td>
                     <td *ngIf="act.detalle">{{act.detalle}}</td>
                     <td>{{act.cantidad}}</td>
-                    <td style="text-align: right;">{{act.vlrUni}}</td>
+                    <td style="text-align: right;">${{act.vlrUni}}</td>
                     <td align="right">${{act.valor}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td>Total</td>
-                    <td align="right" colspan=4>${{datasolicitud.Balance.actnegTotal}}</td>
+                    <td align="right" colspan=4>{{datasolicitud.Balance.actnegTotal  | currency:'$': 'symbol' : '1.0-0' }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -134,14 +134,14 @@
                     <td *ngIf="act.tipo">{{act.tipo.name}}</td>
                     <td>{{act.detalle}}</td>
                     <td>{{act.cantidad}}</td>
-                    <td style="text-align: right;">{{act.vlrUni}}</td>
+                    <td style="text-align: right;">${{act.vlrUni}}</td>
                     <td align="right">${{act.valor}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td>Total</td>
-                    <td align="right" colspan=4>${{datasolicitud.Balance.actfamTotal}}</td>
+                    <td align="right" colspan=4>{{datasolicitud.Balance.actfamTotal  | currency:'$': 'symbol' : '1.0-0' }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -416,7 +416,7 @@
         <table>
             <thead>
                 <tr>
-                    <th colspan="2">Remuneración de personal</th>
+                    <th colspan="4">Remuneración de personal</th>
                 </tr>
                 <tr>
                     <th style="text-align:center">Cargo</th>
@@ -517,7 +517,7 @@
             <table>
                 <tr>
                     <td colspan="4" style="text-align:center">Ventas</td>
-                    <td colspan="2" style="text-align:center">Dias</td>
+                    <td colspan="2" style="text-align:center">Cant</td>
                     <td colspan="2" style="text-align:center">Numero</td>
                     <td colspan="2" style="text-align:center">Total</td>
                 </tr>
@@ -549,7 +549,7 @@
                 <tr>
                     <th>Promedio</th>
                     <td style="text-align:right">{{act.promedio}}</td>
-                    <th style="text-align:center">Dias</th>
+                    <th style="text-align:center">Cant</th>
                     <td style="text-align:center">{{act.totalDias}}</td>
                     <th style="text-align:center">Total Promedio</th>
                     <td colspan="4" style="text-align:right">${{act.totalPromedio}}</td>

@@ -32,9 +32,10 @@ export class ActivosComponent implements OnChanges {
       if (this.tipoSol == 1) {
         this.listTipo = this.listTipo.filter(ac => ac.id != 5)
       }
-      this.load(this.dataActivos)
+      this.load(this.dataActivos, this.total)
     }
-
+    this.totalActivos = this.total
+    
     this.activosForm.valueChanges.subscribe(form => {
 
       this.totalActivos = 0
@@ -49,6 +50,7 @@ export class ActivosComponent implements OnChanges {
           vlrUni: isFinite(vlrUni) ? vlrUni.toLocaleString() : 0,
         }, { emitEvent: false });
       });
+
 
       this.activosForm.patchValue({
         totalActivos: isFinite(this.totalActivos) ? this.totalActivos : 0,
@@ -69,7 +71,7 @@ export class ActivosComponent implements OnChanges {
       cantidad: ['', Validators.required],
       vlrUni: ['', Validators.required],
       valor: [null, Validators.required],
-      pasivo:[-1]
+      pasivo: [-1]
     });
   }
   loadActivos(act: Activos[]) {
@@ -84,16 +86,16 @@ export class ActivosComponent implements OnChanges {
           cantidad: [a.cantidad],
           vlrUni: [a.vlrUni],
           valor: a.valor,
-          pasivo:a.pasivo
+          pasivo: a.pasivo
         })
       )
     });
     return activosArr;
   }
-  load(act: Activos[]) {
+  load(act: Activos[], total) {
     this.activosForm = this._formbuilder.group({
       activos: this.loadActivos(act),
-      totalActivos: this.total,
+      totalActivos: total,
     })
   }
   activos() {
