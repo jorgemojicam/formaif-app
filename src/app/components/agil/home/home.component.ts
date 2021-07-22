@@ -13,7 +13,6 @@ import { AnalisisComponent } from '../analisis/analisis.component';
 import * as html2pdf from "html2pdf.js";
 import { Asesor } from 'src/app/model/admin/asesor';
 import { EmailService } from 'src/app/services/email.service';
-import { Email } from 'src/app/model/admin/email';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ProfileComponent } from '../../admin/profile/profile.component';
 import { AnalisisagroComponent } from '../analisisagro/analisisagro.component';
