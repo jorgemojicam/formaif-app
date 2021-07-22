@@ -7,7 +7,6 @@ import { Solicitud } from 'src/app/model/agil/solicitud';
 import { IdbSolicitudService } from '../../../services/idb-solicitud.service';
 import DataSelect from '../../../data-select/dataselect.json';
 import Utils from '../../../utils'
-import { EncryptService } from 'src/app/services/encrypt.service';
 
 @Component({
   selector: 'app-propuesta',
@@ -80,7 +79,8 @@ export class PropuestaComponent implements OnInit {
       let valor = Utils.formatNumber(form.valor)
       let valorcapital = Utils.formatNumber(form.valorcapital)
       let valorcouta = Utils.formatNumber(form.valorcouta)
-      
+      let tipocuota = form.tipocuota
+
 
       if (valor > montorecomentado) {
         valor = 0
@@ -104,36 +104,38 @@ export class PropuestaComponent implements OnInit {
       const irregular = <FormArray>this.propuestaForm.controls['irregular'];
       let arrDate = []
 
-      irregular.controls.forEach(x => {
+      if (tipocuota == 2) {
+        irregular.controls.forEach(x => {
 
-        let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
-        let fecha = x.get('fechacuota').value
+          let valorcuota = Utils.formatNumber(x.get('valorcuota').value)
+          let fecha = x.get('fechacuota').value
 
-        if (fecha != "" || fecha != null) {
+          if (fecha || fecha != "" || fecha != null) {
 
-          if (fecha == "") {
-            console.log("No tiene mes")
-          } else {
-            fecha as Date
+            if (fecha == "") {
+              console.log("No tiene mes")
+            } else {
 
-            let ano = fecha.getMonth()
-            let mes = fecha.getFullYear()
-            let fulldate = ano + "-" + mes
 
-            if (arrDate.indexOf(fulldate) >= 0) {
-              this._snackBar.open("La cuota del mes ya se ingreso", "Ok!", {
-                duration: 9000,
-              });
-              fecha = ""
+              let ano = new Date(fecha).getMonth()
+              let mes = new Date(fecha).getFullYear()
+              let fulldate = ano + "-" + mes
+
+              if (arrDate.indexOf(fulldate) >= 0) {
+                this._snackBar.open("La cuota del mes ya se ingreso", "Ok!", {
+                  duration: 9000,
+                });
+                fecha = ""
+              }
+              arrDate.push(fulldate)
             }
-            arrDate.push(fulldate)
           }
-        }
-        x.patchValue({
-          valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0,
-          fechacuota: fecha
-        }, { emitEvent: false })
-      });
+          x.patchValue({
+            valorcuota: isFinite(valorcuota) ? valorcuota.toLocaleString() : 0,
+            fechacuota: fecha
+          }, { emitEvent: false })
+        });
+      }
 
       this.propuestaForm.patchValue({
         montorecomendado: isFinite(montorecomentado) ? montorecomentado.toLocaleString() : 0,
@@ -190,7 +192,7 @@ export class PropuestaComponent implements OnInit {
 
 
   loadPropuesta(propuestas: Propuesta) {
-    
+
     let per = []
     if (propuestas.formapgo) {
       per = this.periodo.find(a => a.id == propuestas.formapgo.id)
@@ -209,5 +211,14 @@ export class PropuestaComponent implements OnInit {
       numerocuotas: propuestas.numerocuotas,
       irregular: this.loadCuotas(propuestas.irregular)
     })
+  }
+
+  onChangeTipo(e) {
+  
+    this.propuestaForm.patchValue({
+      numerocuotas: 0 
+    }, { emitEvent: false })
+    this.cuotas().clear()
+    
   }
 }
