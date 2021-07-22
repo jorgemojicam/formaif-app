@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Rol } from 'src/app/model/admin/rol';
+import { Rol } from 'src/app/model/rol';
 import { RolService } from 'src/app/services/rol.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 

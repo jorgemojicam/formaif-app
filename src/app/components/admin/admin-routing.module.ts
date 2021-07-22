@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
-import { CuestionarioComponent } from "./admin-cuestionario/cuestionario/cuestionario.component";
-import { ProduccionComponent } from './admin-produccion/produccion/produccion.component';
 import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { RolComponent } from './admin-rol/rol/rol.component';
-import { LobbyComponent } from '../lobby/lobby.component';
 
 const routes: Routes = [
   {
@@ -14,24 +11,10 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'cuestionario',
+        redirectTo: 'rol',
         pathMatch: 'prefix',
         data: {
-          routerName: 'cuestionario'
-        }
-      },
-      {
-        path: 'cuestionario',
-        component: CuestionarioComponent,
-        data: {
-          routerName: 'cuestionario'
-        }
-      },
-      {
-        path: 'produccion',
-        component: ProduccionComponent,
-        data: {
-          routerName: 'produccion'
+          routerName: 'rol'
         }
       },
       {
@@ -39,19 +22,10 @@ const routes: Routes = [
         component: RolComponent,
         data: {
           routerName: 'rol'
-        },
-        canActivate: [AuthGuard]
+        }
       },
     ]
-  },
-  {
-    path: 'home',
-    component: LobbyComponent,
-    data: {
-      routerName: 'home'
-    },
-    canActivate: [AuthGuard]
-  },
+  }
 ];
 
 @NgModule({

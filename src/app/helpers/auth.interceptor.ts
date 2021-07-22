@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (token != null) {
       request = request.clone({
         url: request.url.replace('http://', 'https://'),
-        headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
+        //headers: request.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token)
       });
     }
     
@@ -51,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
         };
         if (error.status == 401) {
           this.token.signOut()
-          this.route.navigate(['auth'])
+          this.route.navigate(['admin'])
           this._snackBar.open("Epa! Debe volver a iniciar sesion para enviar el analisis", "Ok!", {
             duration: 10000,
           });

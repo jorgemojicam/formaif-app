@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StorageMap } from '@ngx-pwa/local-storage';
-import { Asesor } from 'src/app/model/admin/asesor';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Injectable({
@@ -26,19 +25,19 @@ export class IdbSolicitudService {
   }
 
   delete() {
-    const asesores: Asesor = this.tokenStorage.getUser()
+    const asesores = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
     this.storage.delete(user.toString()).subscribe(() => { });
   }
 
   save(data: any,) {
-    const asesores: Asesor = this.tokenStorage.getUser()
+    const asesores = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
     this.storage.set(user.toString(), data).subscribe(() => { });
   }
 
   get(): any {
-    const asesores: Asesor = this.tokenStorage.getUser()
+    const asesores: any = this.tokenStorage.getUser()
     const user = asesores.Clave.toLocaleLowerCase()
     return this.storage.get(user.toString());
   }

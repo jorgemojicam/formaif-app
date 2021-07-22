@@ -2,41 +2,13 @@
 
 <mat-dialog-content>
     <ng-container [ngSwitch]="data.form">
-        
-        <ng-container *ngSwitchCase="'home'">
-            <app-init [datos]="data.content"></app-init>
-        </ng-container>
-        <ng-container *ngSwitchCase="'home-meba'">
-            <app-init [datos]="data.content"></app-init>
-        </ng-container>
-        <ng-container *ngSwitchCase="'produccion'">
-            <app-produccion-form [datos]="data.content"></app-produccion-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Temas'">
-            <app-temas-form [datos]="data.content"></app-temas-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Preguntas'">
-            <app-preguntas-form [datos]="data.content"></app-preguntas-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Respuestas'">
-            <app-respuestas-form [datos]="data.content"></app-respuestas-form>
-        </ng-container>
+
+
         <ng-container *ngSwitchCase="'Rol'">
             <app-rol-form [datos]="data.content"></app-rol-form>
         </ng-container>
-        <ng-container *ngSwitchCase="'Nivel'">
-            <app-nivel-form [datos]="data.content"></app-nivel-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Adjuntos'">
-            <app-adjuntos-form [datos]="data.content"></app-adjuntos-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Responsables'">
-            <app-responsables-form [datos]="data.content"></app-responsables-form>
-        </ng-container>
-        <ng-container *ngSwitchCase="'Flujo'">
-            <app-flujo-form [datos]="data.content"></app-flujo-form>
-        </ng-container>
-    
+
+
     </ng-container>
-    
+
 </mat-dialog-content>
