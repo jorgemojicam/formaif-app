@@ -2,6 +2,7 @@
     <mat-card>
         <mat-card-header>
             <mat-card-title>Activos {{activo}}</mat-card-title>
+            <mat-card-subtitle><i>Registre solo los activos</i></mat-card-subtitle>
             <mat-chip-list class="pull-right">
                 <mat-chip color="accent" selected>{{activosForm.controls.totalActivos.value | currency:'$': 'symbol' :
                     '1.0-0'}}</mat-chip>

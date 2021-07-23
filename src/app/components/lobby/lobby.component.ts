@@ -20,7 +20,7 @@ export class LobbyComponent implements OnInit {
     private _srvTokn: TokenStorageService,    
     private _bottomSheet: MatBottomSheet,
   ) {
-    console.log(this.perfil)
+
   }
 
   ngOnInit(): void {
