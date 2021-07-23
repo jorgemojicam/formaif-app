@@ -357,5 +357,8 @@ export class GastosComponent implements OnInit {
       return parseInt(num == "0" || num == "" || num == null ? "0" : num.replace(/\D/g, '').replace(/^0+/, ''))
     }
   }
+  compareFunction(o1: any, o2: any) {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
+  }
 
 }

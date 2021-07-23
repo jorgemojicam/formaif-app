@@ -179,6 +179,27 @@ export class AnalisisagroComponent implements OnInit {
       return ""
     }
   }
+  diaNombre(dias: [], periodo: number) {
+    let nombres = ""
+    let aNombre = []
+    
+    if (!periodo)
+      return ""
+    if (!dias)
+      return ""
+
+    if (periodo == 1) {
+      aNombre = DataSelect.DiasSemana
+    } else if (periodo == 2) {
+      aNombre = DataSelect.Semanas
+    } else if (periodo == 3) {
+      aNombre = DataSelect.Quince
+    }
+    for (let d = 0; d < dias.length; d++) {
+      nombres += " " + aNombre.find(a => a.id == dias[d]).name;
+    }
+    return nombres
+  }
 }
 
 

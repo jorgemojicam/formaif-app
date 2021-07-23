@@ -1051,79 +1051,92 @@
 
         <!--ventas buenas -->
         <ng-container *ngIf="act.tipo==3">
+
             <table>
                 <thead>
                     <tr>
-                        <td style="text-align:center">Actividad</td>
-                        <td style="text-align:center">{{act.tipo}}</td>
-                        <td style="text-align:center">Nombre de la actividad</td>
-                        <td style="text-align:center">{{act.nombre}}</td>
-                        <td style="text-align:center">Tipo de producción</td>
-                        <td style="text-align:center">{{act.tipoproduccion}}</td>
-                        <td style="text-align:center">Ingreso</td>
-                        <td style="text-align:center">0</td>
-                        <td style="text-align:center">Egreso</td>
-                        <td style="text-align:center">0</td>
-                    </tr>
+                        <td style="text-align: center;">
+                            <mat-icon class="mat-18">add_business</mat-icon>
+                        </td>
+                        <td colspan="4" style="text-align: center;">
+                            {{equivalencia(act.tipo,'TipoActividad')}} <b>{{act.nombre}}</b>
+                        </td>
+                        <td style="text-align:center">
+                            Tipo de producción: <b *ngIf="act.tipoproduccion ==1">Conercial</b>
+                            <b *ngIf="act.tipoproduccion ==2">Produccion</b>
+                            <b *ngIf="act.tipoproduccion ==3">Servicios</b>
+                            <b *ngIf="act.tipoproduccion ==4">Arriendos</b>
+                        </td>                      
+                    </tr>                   
                 </thead>
             </table>
+
             <table>
                 <thead>
                     <tr>
                         <th colspan=10>Ventas buenas/ regulares/ malas</th>
                     </tr>
-                    <tr>
-                        <td style="text-align:center">Ventas</td>
-                        <td style="text-align:center">Dias</td>
-                        <td style="text-align:center">Numero</td>
-                        <td style="text-align:center">Dias</td>
-                        <td style="text-align:center">Valor</td>
-                        <td style="text-align:center">Total</td>
-                        <td style="text-align:center">Total compras</td>
-                        <td colspan=3 style="text-align:center"></td>
-                    </tr>
+                </thead>
+                <tr>
+                    <td colspan="4" style="text-align:center">Ventas</td>
+                    <td colspan="2" style="text-align:center">Cant</td>
+                    <td colspan="2" style="text-align:center">Numero</td>
+                    <td colspan="2" style="text-align:center">Total</td>
+                </tr>
+                <tr>
+                    <th colspan="2" style="text-align:center">Buenas</th>
+                    <td colspan="2">{{diaNombre(act.diasB,act.periodoventas)}}</td>
+                    <td colspan="2">{{act.diasB.length}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorB}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalB}}</td>
+                </tr>
+                <tr *ngIf="act.periodoventas != 3">
+                    <th colspan="2" style="text-align:center">Regulares</th>
+                    <td colspan="2">{{diaNombre(act.diasR,act.periodoventas)}}</td>
+                    <td colspan="2">{{act.diasR.length}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorR}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalR}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2" style="text-align:center">Malas</th>
+                    <td colspan="2">{{diaNombre(act.diasM,act.periodoventas)}}</td>
+                    <td colspan="2">{{act.diasM.length}}</td>
+                    <td colspan="2" style="text-align:right">${{act.valorM}}</td>
+                    <td colspan="2" style="text-align:right">${{act.totalM}}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Total</th>
+                    <td style="text-align:right" colspan="7">${{act.totalVentas}}</td>
+                </tr>
+                <tr>
+                    <th>Promedio</th>
+                    <td style="text-align:right">${{act.promedio}}</td>
+                    <th style="text-align:center">Cant</th>
+                    <td style="text-align:center">{{act.totalDias}}</td>
+                    <th style="text-align:center">Total Promedio</th>
+                    <td colspan="4" style="text-align:right">${{act.totalPromedio}}</td>
+                </tr>
+            </table>
 
+
+            <table>
+                <thead>
                     <tr>
-                        <td style="text-align:center">Buenas</td>
-                        <td style="text-align:center">{{act.diasB}}</td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center">{{act.diasB}}</td>
-                        <td style="text-align:center">${{act.valorB}}</td>
-                        <td style="text-align:center">${{act.totalB}}</td>
                         <td style="text-align:center">Ventas estimadas</td>
-                        <td colspan=3 style="text-align:center">{{act.ventasEstimadas}}</td>
+                        <td colspan=3 style="text-align:center">${{act.ventasEstimadas}}</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center">Regulares</td>
-                        <td style="text-align:center">{{act.diasR}}</td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center">{{act.diasR}}</td>
-                        <td style="text-align:center">${{act.valorR}}</td>
-                        <td style="text-align:center">${{act.totalR}}</td>
                         <td style="text-align:center">Margen bruto</td>
-                        <td colspan=3 style="text-align:center">{{act.margenBruto}}</td>
+                        <td colspan=3 style="text-align:center">${{act.margenBruto}}</td>
                     </tr>
                     <tr>
-                        <td style="text-align:center">Malas</td>
-                        <td style="text-align:center">{{act.diasM}}</td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center">{{act.diasM}}</td>
-                        <td style="text-align:center">${{act.valorM}}</td>
-                        <td style="text-align:center">${{act.totalM}}</td>
                         <td style="text-align:center">Otros gastos</td>
-                        <td colspan=3 style="text-align:center">{{act.otrosGastos}}</td>
+                        <td colspan=3 style="text-align:center">${{act.otrosGastos}}</td>
                     </tr>
                     <tr>
-                        <th style="text-align:center">Total</th>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center">{{act.totalDias}}</td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center">${{act.totalVentas}}</td>
                         <td style="text-align:center">Ingreso liquido estimado</td>
-                        <td colspan=3 style="text-align:center">{{act.ingresoLiquido}}</td>
+                        <td colspan=3 style="text-align:center">${{act.ingresoLiquido}}</td>
                     </tr>
-
                 </thead>
             </table>
         </ng-container>

@@ -291,9 +291,9 @@
                     <div class="gr" fxFlex="33%" fxFlex.xs="50%" fxFlex.sm="50%">
                         <mat-form-field>
                             <mat-label>Ingreso</mat-label>
-                            <mat-select formControlName="ingreso" id="ingreso{{ot}}" required>
+                            <mat-select formControlName="ingreso" [compareWith]="compareFunction" id="ingreso{{ot}}" required>
                                 <mat-option>--</mat-option>
-                                <mat-option *ngFor="let ing of otroIngreso" [value]="ing.id">
+                                <mat-option *ngFor="let ing of otroIngreso" [value]="ing">
                                     {{ing.name}}
                                 </mat-option>
                             </mat-select>

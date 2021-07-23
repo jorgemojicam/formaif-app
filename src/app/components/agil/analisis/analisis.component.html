@@ -455,7 +455,7 @@
             </thead>
             <tbody *ngFor="let otr of datasolicitud.Gastos.otrosIngresosRow; let cont=index">
                 <tr>
-                    <td>{{TipoIngreso(otr.ingreso,'tipoingreso')}}</td>
+                    <td *ngIf="otr.ingreso">{{otr.ingreso.name}}</td>
                     <td style="text-align:right">${{otr.valor}}</td>
                     <td>{{otr.observacion}}</td>
                 </tr>
