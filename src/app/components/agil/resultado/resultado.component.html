@@ -28,7 +28,7 @@
                     <td>4-Total Inventarios </td>
                     <td>
                         <mat-chip-list>
-                            <mat-chip>${{totalinventarios}}</mat-chip>
+                            <mat-chip>{{totalinventarios| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
                         </mat-chip-list>
                     </td>
                 </tr>
@@ -36,7 +36,7 @@
                     <td>6- Total Activo fijo</td>
                     <td>
                         <mat-chip-list>
-                            <mat-chip>${{totalactivosneg}}</mat-chip>
+                            <mat-chip>{{totalactivosneg| currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
                         </mat-chip-list>
                     </td>
                 </tr>
@@ -68,7 +68,7 @@
                     <td>17- Total Activos familiar </td>
                     <td>
                         <mat-chip-list>
-                            <mat-chip>${{totalactivosfam}}</mat-chip>
+                            <mat-chip>{{totalactivosfam | currency:'$' : 'symbol' : '1.0-0'}}</mat-chip>
                         </mat-chip-list>
                     </td>
                 </tr>
@@ -151,7 +151,7 @@
                 <ng-container *ngIf="tiposol==2">
 
                     <div style="display: none;">
-                        <app-flujocaja *ngIf="tiposol" [datossol]="datasolicitud"></app-flujocaja>           
+                        <app-flujocaja *ngIf="tiposol" [datossol]="datasolicitud"></app-flujocaja>
                     </div>
 
                     <tr>
