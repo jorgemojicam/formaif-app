@@ -305,7 +305,7 @@ export class BalanceComponent implements OnInit {
       let tcorrienten = 0
       let tnocorrienten = 0
       let tcuotaf = 0
-      let tcuotan = totalCredito
+      let tcuotan = 0
 
       ctrl.controls.forEach((x, i) => {
         let tipo = x.get('tipo').value
@@ -523,7 +523,7 @@ export class BalanceComponent implements OnInit {
             let nocorriente = 0
             let taza = parseFloat("0.071078")
             let cuotacalcu = monto * taza
-            let cuotacent = Utils.formatNumber(x.get('valor').value)
+            let cuotacent = Utils.formatNumber(x.get('proyeccion').value)
             let cuotareal = 0
 
             if (cuotacalcu > cuotacent)
@@ -568,9 +568,10 @@ export class BalanceComponent implements OnInit {
             }
 
             x.patchValue({
-              valor: isFinite(cuotacent) ? cuotacent.toLocaleString() : 0,
+              proyeccion: isFinite(cuotacent) ? cuotacent.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+              valor: isFinite(valor) ? valor.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
               cuota: 0,
-              cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString() : 0,
+              cuotacalcu: isFinite(cuotacalcu) ? cuotacalcu.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
             }, { emitEvent: false })
 
           }
@@ -1050,12 +1051,10 @@ export class BalanceComponent implements OnInit {
 
     pasivos.forEach(pas => {
       let periodocap = [];
-      let periodoint = [];
 
       if (pas.periodocap)
         periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
       
-
       pasivosArray.push(
         this.fb.group({
           tipo: [pas.tipo],
