@@ -1,0 +1,54 @@
+<!-- tabla -->
+<div class="container">
+    <div fxLayout="row wrap">
+
+        <div class="gr" fxFlex="90%" fxFlex.xs="90%" fxFlex.sm="90%">
+            <mat-form-field appearance="fill">
+                <mat-label>Seleccione Rol</mat-label>
+                <mat-select (selectionChange)="changeRol($event.value)" [(ngModel)]="selectedRoles">
+                    <mat-option *ngFor="let item of datosRol" [value]="item">
+                        {{item.Nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
+            <button mat-mini-fab type="button" class="btnadd" color="primary" [disabled]="!selectedRoles"
+                (click)="onCreate()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+
+        <div class="mat-elevation-z8 table-data">
+            <mat-progress-bar *ngIf="!dataSource" mode="indeterminate"></mat-progress-bar>
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Modulo</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Modulo.Nombre}} </td>
+                </ng-container>
+                <ng-container style="width: 10%;" matColumnDef="titulo">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Titulo</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Modulo.Titulo}} </td>
+                </ng-container>
+                <ng-container style="width: 10%;" matColumnDef="descripcion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
+                    <td mat-cell *matCellDef="let row"> {{row.Modulo.Descripcion}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="accent" (click)="onEdit(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+    </div>

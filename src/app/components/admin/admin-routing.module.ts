@@ -6,6 +6,7 @@ import { ProduccionComponent } from './admin-produccion/produccion/produccion.co
 import { AuthGuard } from 'src/app/helpers/auth.guard';
 import { RolComponent } from './admin-rol/rol/rol.component';
 import { LobbyComponent } from '../lobby/lobby.component';
+import { ModulosComponent } from './modulo/modulos/modulos.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,14 @@ const routes: Routes = [
         component: RolComponent,
         data: {
           routerName: 'rol'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'modulo',
+        component: ModulosComponent,
+        data: {
+          routerName: 'modulo'
         },
         canActivate: [AuthGuard]
       },

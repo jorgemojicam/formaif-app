@@ -52,6 +52,7 @@ import { ResponsablesFormComponent } from './components/zona/responsable/respons
 import { FlujoFormComponent } from './components/zona/flujo/flujo-form/flujo-form.component';
 import { InventarioComponent } from './components/agil/inventario/inventario.component';
 import { ActivosComponent } from './components/agil/activos/activos.component';
+import { ModulosFormComponent } from './components/admin/modulo/modulos-form/modulos-form.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { ActivosComponent } from './components/agil/activos/activos.component';
     ResponsablesFormComponent,
     FlujoFormComponent,
     InventarioComponent,
-    ActivosComponent
+    ActivosComponent,
+    ModulosFormComponent
 
   ],
   imports: [

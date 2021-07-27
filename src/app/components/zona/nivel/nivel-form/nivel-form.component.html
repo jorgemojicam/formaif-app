@@ -1,14 +1,16 @@
 <form [formGroup]="nivelForm" (ngSubmit)="onSave()">
     <div fxLayout="row wrap">
 
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-form-field>
+        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
                 <input type="text" matInput placeholder="Nombre" formControlName="nombre">
             </mat-form-field>
         </div>
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-form-field>
-                <mat-select formControlName="flujo" placeholder="">
+        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+            <mat-form-field appearance="outline">
+                <mat-label>Flujo</mat-label>
+                <mat-select formControlName="flujo" [compareWith]="compareFunction">
                     <mat-option disabled>Seleccione </mat-option>
                     <mat-option *ngFor="let fl of aFlujo" [value]="fl">
                         {{fl.Nombre}}
@@ -16,8 +18,9 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-form-field>
+        <div class="gr" fxFlex="80%" fxFlex.xs="80%" fxFlex.sm="80%">
+            <mat-form-field appearance="outline">
+                <mat-label>Seleccione Responsable</mat-label>
                 <mat-select formControlName="rol" placeholder="">
                     <mat-option disabled>Seleccione </mat-option>
                     <mat-option *ngFor="let ro of aRol" [value]="ro">
@@ -26,9 +29,11 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
-            <mat-form-field>
-                <input type="number" matInput placeholder="Orden" formControlName="orden">
+
+        <div class="gr" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+            <mat-form-field appearance="outline">
+                <mat-label>Orden</mat-label>
+                <input type="number" readonly matInput placeholder="Orden" formControlName="orden">
             </mat-form-field>
         </div>
 

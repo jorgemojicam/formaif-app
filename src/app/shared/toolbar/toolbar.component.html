@@ -130,6 +130,10 @@
                     <mat-icon mat-list-icon>manage_accounts</mat-icon>
                     <div mat-line>Roles</div>
                 </mat-list-item>
+                <mat-list-item [routerLink]="['modulo']" routerLinkActive="active-list-item">
+                    <mat-icon mat-list-icon>apps</mat-icon>
+                    <div mat-line>Modulos</div>
+                </mat-list-item>
             </ng-container>
 
             <ng-container *ngIf="modul=='zona'">

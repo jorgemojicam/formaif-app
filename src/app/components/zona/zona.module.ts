@@ -17,7 +17,6 @@ import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
 import { ResponsablesComponent } from './responsable/responsables/responsables.component';
 
 import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/cartera-inicial.component';
-
 @NgModule({
   declarations: [
     GestionZonaComponent, 
@@ -30,7 +29,6 @@ import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/car
     LimiteMunicipioComponent,
     SolitudesComponent,
     ResponsablesComponent,
-
     CarteraInicialComponent
   ],
   imports: [
@@ -39,9 +37,7 @@ import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/car
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
-    
-
+    FlexLayoutModule 
   ],
   entryComponents: [
     ModalInfomapComponent

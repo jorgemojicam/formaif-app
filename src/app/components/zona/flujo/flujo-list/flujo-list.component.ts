@@ -19,6 +19,7 @@ export class FlujoListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   aFlujo: Flujo[] = new Array()
+  
 
 
   constructor(
@@ -75,5 +76,7 @@ export class FlujoListComponent implements AfterViewInit {
       })
     })
   }
+
+
 
 }

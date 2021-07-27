@@ -61,11 +61,8 @@ export class FlujoFormComponent implements OnInit {
           this._snackBar.open('Se presento un error insertando', "Ok!", { duration: 4000, });
           this.dialogRef.close(false)
         }
-
       }
-
     }
-
   }
 
   create(data) {

@@ -1,5 +1,4 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +8,7 @@ import { Nivel } from 'src/app/model/zona/nivel';
 import { FlujoService } from 'src/app/services/zona/flujo.service';
 import { NivelService } from 'src/app/services/zona/nivel.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import {  CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-nivel-list',
@@ -22,56 +22,31 @@ export class NivelListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   aNiveles: Nivel[] = new Array()
+  niveles: any
   aFlujo: Flujo[] = new Array()
 
   nivel: Nivel = new Nivel()
-  flujo = new FormControl('');
-  nombre = new FormControl('');
-
-
+  flujo;
+  nombre;
+  
   constructor(
     public dialog: MatDialog,
     private _srvNivel: NivelService,
     private _srvFlujo: FlujoService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
-
   }
 
   async ngAfterViewInit() {
-    this.aNiveles = await this.get() as Nivel[]
+    this.niveles = await this.get() as Nivel[]
     this.aFlujo = await this.getFlujo() as Flujo[]
-
-    this.flujo = new FormControl(this.aFlujo[0]);
-    
-    this.dataSource = new MatTableDataSource(this.aNiveles);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-
-    this.dataSource.filterPredicate = function (data, filter: any): boolean {
-      let searchTerms = JSON.parse(filter);
-      return data.Flujo.Id === searchTerms.Flujo.Id &&
-        data.Nombre.toLowerCase().indexOf(searchTerms.Nombre) !== -1
-    };
-
-    this.nivel.Nombre = ''
-    this.nivel.Flujo = this.aFlujo[0]
-    this.dataSource.filter = JSON.stringify(this.nivel);
-
-    this.flujo.valueChanges.subscribe(val => {
-      this.nivel.Flujo = val
-      this.dataSource.filter = JSON.stringify(this.nivel);
-    })
-
-    this.nombre.valueChanges.subscribe(val => {
-      this.nivel.Nombre = val
-      this.dataSource.filter = JSON.stringify(this.nivel);
-    })
+    this.flujo = this.aFlujo[0];
+    this.aNiveles = this.niveles.filter(a => a.Flujo.Id == this.flujo.Id)
   }
 
   get() {
     return new Promise(resolve => {
-      this._srvNivel.get().subscribe((succ) => {        
+      this._srvNivel.get().subscribe((succ) => {
         resolve(succ)
       }, (err) => {
         console.log(err)
@@ -91,7 +66,14 @@ export class NivelListComponent implements AfterViewInit {
 
   onCreate() {
     const msg = 'Crear Nivel';
-    this.openDialog(msg, null);
+    let data = {
+      Flujo: {
+        Id: this.flujo.Id,
+        Nombre: this.flujo.Nombre
+      },
+      Orden: this.aNiveles.length + 1
+    }
+    this.openDialog(msg, data);
   }
 
   openDialog(menssage: string, datos: any) {
@@ -108,7 +90,6 @@ export class NivelListComponent implements AfterViewInit {
 
       if (result) {
         this.aNiveles = await this.get() as Nivel[]
-        this.dataSource.data = this.aNiveles
         this.changeDetectorRefs.detectChanges();
       }
 
@@ -117,6 +98,50 @@ export class NivelListComponent implements AfterViewInit {
 
   compareFunction(o1: any, o2: any) {
     return o1 && o2 ? o1.Id === o2.Id : o1 === o2;
+  }
+
+  async drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.aNiveles, event.previousIndex, event.currentIndex);
+
+    this.aNiveles.forEach(async (value, index) => {
+      value.Orden = index + 1
+     
+      let data = {
+        Id: value.Id,
+        Flujo: {
+          Id: value.Flujo.Id
+        },
+        Nombre: value.Nombre,
+        Orden: index + 1,
+        Rol: {
+          Id: value.Rol.Id
+        }
+      }      
+      let res = await this.update(data)     
+      console.log(res)
+
+    });
+
+    
+
+  }
+
+
+  changeFlujo(e) {
+    this.aNiveles = new Array()
+    this.aNiveles = this.niveles.filter(a => a.Flujo.Id == e.Id)
+    console.log(e)
+  }
+
+  update(data) {
+    return new Promise(resolve => {
+      this._srvNivel.update(data).subscribe((sus) => {
+        resolve(sus)
+      }, (err) => {
+        console.log(err)
+        resolve(null)
+      })
+    })
   }
 
 

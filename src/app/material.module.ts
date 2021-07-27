@@ -31,6 +31,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTreeModule} from '@angular/material/tree';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 const myCompm = [
   MatCardModule,
@@ -63,7 +64,8 @@ const myCompm = [
   MatSliderModule,
   MatBottomSheetModule,
   MatProgressBarModule,
-  MatTreeModule
+  MatTreeModule,
+  DragDropModule,
 ];
 
 @NgModule({

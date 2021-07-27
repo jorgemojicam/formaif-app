@@ -337,9 +337,8 @@ export class HomeComponent implements AfterViewInit {
 
     const op = {
       filename: namefile + numeroSolicitud + '.pdf',
-      image: { type: 'jpeg' },
-      html2canvas: {
-      },
+      image: { type: 'jpeg' },    
+      html2canvas:  { dpi: 192, letterRendering: true},
       margin: 15,
       jsPDF: { format: 'a3', orientation: orintation }
     }
