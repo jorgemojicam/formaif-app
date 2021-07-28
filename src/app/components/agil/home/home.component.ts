@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,7 +27,7 @@ import { ErrorparamService } from 'src/app/services/errorparam.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo', 'cedula', 'gestion', 'delete', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
@@ -52,14 +52,21 @@ export class HomeComponent implements AfterViewInit {
     private _srvErrore: ErrorparamService
   ) {
   }
-  ngAfterViewInit(): void {
 
-    this.srvSol.get().subscribe((sol) => {
-      this.dataSource = new MatTableDataSource(sol);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+
+  getSol() {
+    return new Promise(resolve => {
+      this.srvSol.get().subscribe((sol) => {
+        resolve(sol)
+      })
     })
+  }
 
+  async ngOnInit() {
+    this.dataSolicitudes = await this.getSol() as Solicitud[]
+    this.dataSource = new MatTableDataSource(this.dataSolicitudes);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
@@ -86,22 +93,19 @@ export class HomeComponent implements AfterViewInit {
       }
     };
     const dialogRef = this.dialog.open(ModalComponent, config);
-    dialogRef.afterClosed().subscribe(result => {
-
-      this.srvSol.get().subscribe((sol) => {
-        this.dataSource = new MatTableDataSource(sol);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      })
-    })
-  }
-
-  onLoad() {
-    this.srvSol.get().subscribe((sol) => {
-      this.dataSource = new MatTableDataSource(sol);
+    dialogRef.afterClosed().subscribe(async result => {
+      this.dataSolicitudes = await this.getSol() as Solicitud[]
+      this.dataSource = new MatTableDataSource(this.dataSolicitudes);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
+  }
+
+  async onLoad() {
+    this.dataSolicitudes = await this.getSol() as Solicitud[]
+    this.dataSource = new MatTableDataSource(this.dataSolicitudes);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   onLogout() {
@@ -337,8 +341,8 @@ export class HomeComponent implements AfterViewInit {
 
     const op = {
       filename: namefile + numeroSolicitud + '.pdf',
-      image: { type: 'jpeg' },    
-      html2canvas:  { dpi: 192, letterRendering: true},
+      image: { type: 'jpeg' },
+      html2canvas: { dpi: 192, letterRendering: true },
       margin: 15,
       jsPDF: { format: 'a3', orientation: orintation }
     }

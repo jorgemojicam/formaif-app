@@ -4,6 +4,7 @@ export class Pasivos {
         name: string;
         template: string;
     };
+    fechaprox: Date;
     clase: number;
     negociovivienda: boolean;
     valorcomercial:number;

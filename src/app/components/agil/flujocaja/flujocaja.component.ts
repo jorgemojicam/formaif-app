@@ -596,11 +596,13 @@ export class FlujocajaComponent implements OnInit {
             const pas = this.datasolicitud.Balance.pasivosRows[p];
             if (pas.tipo && pas.clase) {
 
+              let periodo = pas.periodo
               let periodoint = pas.periodoint
               let periodocap = pas.periodocap
               let cantida = pas.plazo - pas.cuota
               let primermesint = false
               let primermescap = false
+              let primermes = false
 
               if (pas.clase == 2 && pas.tipo.id == 7) {
                 if (pas.pago == 1) {
@@ -688,6 +690,60 @@ export class FlujocajaComponent implements OnInit {
                     }
                   }
                 }
+              } else if (pas.tipo.id == 1 || pas.tipo.id == 3 || pas.tipo.id == 5 || pas.tipo.id == 8) {
+
+                for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+                  if (cantida > 0) {
+
+                    let addmonth = f + 1
+                    var fechahyo = new Date()
+                    var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+
+                    let mesFlujo = fechacrece.getMonth()
+                    let anoFlujo = fechacrece.getFullYear()
+
+                    if (pas.fechaprox) {
+
+                      let mes = new Date(pas.fechaprox).getMonth()
+                      let ano = new Date(pas.fechaprox).getFullYear()
+                      var cuotacalcu = Utils.formatNumber(pas.cuotacalcu)
+                      let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+
+
+                      if (!primermes) {
+                        if (mesFlujo == mes && ano == anoFlujo) {
+                          primermes = true
+                        }
+                      }
+                      if (primermes) {
+
+                        if (periodo) {
+                          cantida--
+                          if (periodo.id == 1) {
+                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
+                          } else if (periodo.id == 2 && f % 2 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
+                          } else if (periodo.id == 3 && f % 3 == 0) {
+                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              } else if (pas.tipo.id == 6) {
+
+                for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+                  var valor = Utils.formatNumber(pas.valor)
+                  let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                  this.dataFlujoAcumulado[f][9] = totalint + valor
+                }
+              }else if (pas.tipo.id == 4) {
+                for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+                  var valor = Utils.formatNumber(pas.valor)
+                  let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                  this.dataFlujoAcumulado[f][9] = totalint + valor
+                }
               }
             }
           }
@@ -762,7 +818,7 @@ export class FlujocajaComponent implements OnInit {
 
           //Obligaciones Finacieras
           let valorObligaciones = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-          this.dataFlujoAcumulado[f][9] = valorObligaciones + totalObligaciones
+          //this.dataFlujoAcumulado[f][9] = valorObligaciones + totalObligaciones
 
           let ingreso = Utils.formatNumber(this.dataFlujoAcumulado[f][3])
           let recuperacion = Utils.formatNumber(this.dataFlujoAcumulado[f][4])

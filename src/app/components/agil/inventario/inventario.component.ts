@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { Inventario } from 'src/app/model/agil/inventario';
-import { IdbSolicitudService } from 'src/app/services/idb-solicitud.service';
 import Utils from 'src/app/utils';
 import DataSelect from '../../../data-select/dataselect.json';
 
@@ -24,7 +22,6 @@ export class InventarioComponent implements OnChanges {
 
   constructor(
     private _formBuild: FormBuilder,
-    public _srvSol: IdbSolicitudService,
   ) { }
 
   inventarioForm: FormGroup = new FormGroup({

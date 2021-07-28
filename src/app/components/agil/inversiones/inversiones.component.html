@@ -1,0 +1,66 @@
+<form [formGroup]="inversionesForm">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-subtitle>¿Ha realizado alguna inversión el ultimo año ?</mat-card-subtitle>
+            <mat-chip-list>
+                <mat-chip color="accent" selected>{{inversionesForm.controls.totalInversiones.value | currency:'$': 'symbol' : '1.0-0'}}</mat-chip>
+            </mat-chip-list>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card-content>
+                No
+                <mat-slide-toggle (change)="clear(inversionesForm.controls.inversiones)"
+                    formControlName="aplicaInversiones">
+                </mat-slide-toggle>
+                Si
+            </mat-card-content>
+            <div formArrayName="inversiones" class="alternate">
+                <ng-container *ngIf="inversionesForm.controls.aplicaInversiones.value">
+
+                    <div fxLayout="row wrap" class="content" *ngFor="let itemrow of inversiones().controls; let inver=index" [formGroupName]="inver">
+
+                        <div class="gr" fxFlex="70%" fxFlex.xs="70%" fxFlex.sm="70%">
+                            <mat-form-field>
+                                <input type="text" matInput placeholder="Detalle" id="detalle{{inver}}"
+                                    formControlName="detalle">
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="30%" fxFlex.xs="30%" fxFlex.sm="30%">
+                            <mat-form-field>
+                                <mat-label>Mes</mat-label>
+                                <mat-select formControlName="mes" id="mes{{inver}}" [compareWith]="compareFunction"
+                                    required>
+                                    <mat-option>--</mat-option>
+                                    <mat-option *ngFor="let mes of meses" [value]="mes">
+                                        {{mes.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                            <mat-form-field>
+                                <input type="text" matInput placeholder="Origen" id="origen{{inver}}"
+                                    formControlName="origen">
+                            </mat-form-field>
+                        </div>
+                        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+                            <mat-form-field>
+                                <input type="tel" autocomplete="off" matInput placeholder="Valor" id="valor{{inver}}"
+                                    formControlName="valor">
+                            </mat-form-field>
+                        </div>
+                        <button class="btndelete" color="warn" mat-icon-button [disabled]="inver==0"
+                            (click)="deleteInversion(inver)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+
+                    <button mat-fab aria-label="add" mat-mini-fab class="btnadd" type="button"
+                        [disabled]="inversiones().controls.length >=4" color="accent" (click)="addInversion()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </ng-container>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

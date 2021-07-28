@@ -18,6 +18,7 @@ import { ActivosComponent } from '../activos/activos.component';
 import { Activos } from 'src/app/model/agil/activos';
 import { InventarioComponent } from '../inventario/inventario.component';
 import { Inventario } from 'src/app/model/agil/inventario';
+import { InversionesComponent } from '../inversiones/inversiones.component';
 
 @Component({
   selector: 'app-balance',
@@ -33,6 +34,7 @@ export class BalanceComponent implements OnInit {
   @ViewChild("activosNegocio") activosNeg: ActivosComponent;
   @ViewChild("activosFamilia") activosFam: ActivosComponent;
   @ViewChild(InventarioComponent) inventario: InventarioComponent;
+  @ViewChild(InversionesComponent) inversiones: InversionesComponent;
 
   tituloActivoNeg = "Negocio"
   tituloActivoFam = "Familia"
@@ -47,6 +49,9 @@ export class BalanceComponent implements OnInit {
   totalActFam
   aInventario: Inventario[]
   totalInv
+  aInversion: Inversiones[]
+  totalInversiones
+  aplicaInversiones
 
   tipoPasivo: any = DataSelect.TipoPasivo;
   clasePasivo: any = DataSelect.ClasePasivo;
@@ -89,9 +94,7 @@ export class BalanceComponent implements OnInit {
     totalCreditos: '',
     creditosDetalle: this.fb.array([this.initCreditosDetalle()]),
     totalcreditosDetalle: [0],
-    aplicaInversiones: '',
-    inversiones: this.fb.array([this.initInversiones()]),
-    totalInversiones: 0,
+    
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [0],
     tcorrientef: [0],
@@ -136,6 +139,10 @@ export class BalanceComponent implements OnInit {
 
       this.aInventario = this.dataSolicitud.Balance.inventarioRow
       this.totalInv = this.dataSolicitud.Balance.inventarioTotal
+
+      this.aplicaInversiones = this.dataSolicitud.Balance.aplicaInversiones
+      this.aInversion = this.dataSolicitud.Balance.inversiones
+      this.totalInversiones = this.dataSolicitud.Balance.totalInversiones      
 
       this.loadBalance(this.dataSolicitud.Balance)
     }
@@ -284,17 +291,6 @@ export class BalanceComponent implements OnInit {
         totalProv += total
         x.patchValue({
           total: isFinite(total) ? total.toLocaleString() : 0
-        }, { emitEvent: false });
-      });
-
-      //calculo inversiones
-      let totalInversiones = 0
-      const inversiones = <FormArray>this.balanceForm.controls['inversiones'];
-      inversiones.controls.forEach(x => {
-        let valor = Utils.formatNumber(x.get('valor').value)
-        totalInversiones += valor
-        x.patchValue({
-          valor: isFinite(valor) ? valor.toLocaleString() : 0
         }, { emitEvent: false });
       });
 
@@ -505,7 +501,7 @@ export class BalanceComponent implements OnInit {
             valor = proyeccion * 30
             tcorrienten += saldo
             tcuotan += valor
-
+           
             x.patchValue({
               clase: 2,
               cuota: 0,
@@ -674,8 +670,7 @@ export class BalanceComponent implements OnInit {
         recuperacionCobrar: isFinite(recuperacionCobrar) ? recuperacionCobrar.toLocaleString() : 0,
         porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
         totalRecuperacion: isFinite(totalrec) ? totalrec : 0,
-        proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
-        totalInversiones: isFinite(totalInversiones) ? totalInversiones.toLocaleString() : 0,
+        proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,      
         tcuotaf: isFinite(tcuotaf) ? tcuotaf.toFixed() : 0,
         tcuotan: isFinite(tcuotan) ? tcuotan.toFixed() : 0,
         tcorrientef: isFinite(tcorrientef) ? tcorrientef.toFixed() : 0,
@@ -713,9 +708,6 @@ export class BalanceComponent implements OnInit {
       totalCreditos: bal.totalCreditos,
       creditosDetalle: this.loadCreditoDetalle(bal.creditosDetalle),
       totalcreditosDetalle: bal.totalcreditosDetalle,
-      aplicaInversiones: bal.aplicaInversiones,
-      inversiones: this.loadInversiones(bal.inversiones),
-      totalInversiones: bal.totalInversiones,
       pasivosRows: this.loadPasivos(bal.pasivosRows),
       tcuotaf: [bal.tcuotaf],
       tcorrientef: [bal.tcorrientef],
@@ -739,6 +731,10 @@ export class BalanceComponent implements OnInit {
     this.dataBalance.actividadNegRows = this.activosNeg.activos().value
     this.dataBalance.actnegTotal = this.activosNeg.totalActivos
 
+    this.dataBalance.inversiones = this.inversiones.inversiones().value
+    this.dataBalance.totalInversiones = this.inversiones.totalInversion
+    this.dataBalance.aplicaInversiones = this.inversiones.inversionesForm.value.aplicaInversiones
+
     this.dataSolicitud.Balance = this.dataBalance
     this._srvSol.saveSol(this.ced, this.dataSolicitud)
   }
@@ -749,6 +745,9 @@ export class BalanceComponent implements OnInit {
     this.insert()
   }
   insertActivosFam(data) {
+    this.insert()
+  }
+  insertInversion(data) {
     this.insert()
   }
   //------------------------------------------------------------------
@@ -940,40 +939,6 @@ export class BalanceComponent implements OnInit {
   }
   //--------------------------------------------------
 
-  //---------------Inversiones-------------------------
-  inversiones() {
-    return this.balanceForm.get('inversiones') as FormArray;
-  }
-  initInversiones() {
-    return this.fb.group({
-      detalle: [''],
-      mes: [''],
-      origen: [''],
-      valor: [''],
-    });
-  }
-  loadInversiones(inversiones: Inversiones[]) {
-    let inversionesArra = this.fb.array([])
-    inversiones.forEach(inv => {
-      inversionesArra.push(
-        this.fb.group({
-          detalle: inv.detalle,
-          mes: inv.mes,
-          origen: inv.origen,
-          valor: inv.valor,
-        })
-      )
-    });
-    return inversionesArra
-  }
-  addInversion() {
-    this.inversiones().push(this.initInversiones());
-  }
-  deleteInversion(index: number) {
-    this.inversiones().removeAt(index);
-  }
-  //--------------------------------------------------
-
   //--------------Recuperacion cartera-------------------------
   recuperacion() {
     return this.balanceForm.get('recuperacion') as FormArray;
@@ -1006,6 +971,7 @@ export class BalanceComponent implements OnInit {
   initPasivoRows() {
     return this.fb.group({
       tipo: ['', Validators.required],
+      fechaprox: [''],
       clase: [''],
       negociovivienda: [false],
       valorcomercial: [0],
@@ -1058,6 +1024,7 @@ export class BalanceComponent implements OnInit {
       pasivosArray.push(
         this.fb.group({
           tipo: [pas.tipo],
+          fechaprox: [pas.fechaprox],
           clase: [pas.clase],
           negociovivienda: [pas.negociovivienda],
           valorcomercial: [pas.valorcomercial],
@@ -1233,10 +1200,7 @@ export class BalanceComponent implements OnInit {
     switch (name) {
       case 'creditoactual':
         this.addNewCredito()
-        break
-      case 'inversiones':
-        this.addInversion()
-        break
+        break     
       case 'proveedores':
         if (this.tipoSol == 1) {
           this.addNewProvRow()
