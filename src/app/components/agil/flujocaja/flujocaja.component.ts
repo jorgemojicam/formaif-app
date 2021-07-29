@@ -598,18 +598,26 @@ export class FlujocajaComponent implements OnInit {
 
               let periodo = pas.periodo
               let periodoint = pas.periodoint
-              let periodocap = pas.periodocap
+              //let periodocap = pas.periodocap
               let cantida = pas.plazo - pas.cuota
+              let cantidadint = cantida
+              let cantidadcap = cantida
               let primermesint = false
               let primermescap = false
               let primermes = false
 
-              if (pas.clase == 2 && pas.tipo.id == 7) {
+              if (pas.tipo.id == 7) {
+
                 if (pas.pago == 1) {
 
+                  let contarmesesint = 0
+                  let contarmesescap = 0
+
                   for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
-                    if (cantida > 0) {
-                      cantida--
+
+
+                    if (cantidadint > 0) {
+
                       let addmonth = f + 1
                       var fechahyo = new Date()
                       var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
@@ -620,47 +628,145 @@ export class FlujocajaComponent implements OnInit {
                       if (pas.fechaproxint) {
 
                         let mesint = new Date(pas.fechaproxint).getMonth()
+                        let anoint = new Date(pas.fechaproxint).getFullYear()
                         var calculoint = Utils.formatNumber(pas.calculoint)
-                        let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+
+                        let valor = 0
+                        if (pas.clase == 2) {
+                          let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                          valor = totalint + calculoint
+                        } else {
+                          let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
+                          valor = totalint + calculoint
+                        }
 
                         if (!primermesint) {
-                          if (mesFlujo >= mesint) {
+                          if (mesFlujo == mesint && anoint == anoFlujo) {
                             primermesint = true
+                            contarmesesint = 0
                           }
                         }
                         if (primermesint) {
 
                           if (periodoint) {
                             if (periodoint.id == 1) {
-                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                            } else if (periodoint.id == 2 && f % 2 == 0) {
-                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
-                            } else if (periodoint.id == 3 && f % 3 == 0) {
-                              this.dataFlujoAcumulado[f][9] = totalint + calculoint
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
+                            } else if (periodoint.id == 2 && contarmesesint % 2 == 0) {
+
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
+                            } else if (periodoint.id == 3 && contarmesesint % 3 == 0) {
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
+                            } else if (periodoint.id == 4 && contarmesesint % 4 == 0) {
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
+                            } else if (periodoint.id == 5 && contarmesesint % 6 == 0) {
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
+                            } else if (periodoint.id == 6 && contarmesesint % 12 == 0) {
+                              if (pas.clase == 2) {
+                                this.dataFlujoAcumulado[f][9] = valor
+                              } else {
+                                this.dataFlujoAcumulado[f][13] = valor
+                              }
+                              cantidadint--
                             }
+
+                            contarmesesint++
                           }
                         }
-
-                        let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                      }
+                      if (cantidadcap > 0) {
+                      
                         if (pas.fechaproxcap) {
 
                           let mescap = new Date(pas.fechaproxcap).getMonth()
+                          let anocap = new Date(pas.fechaproxcap).getFullYear()
                           var calculocap = Utils.formatNumber(pas.calculocap)
+
+                          let valor = 0
+                          if (pas.clase == 2) {
+                            let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                            valor = totalcap + calculocap
+                          } else {
+                            let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
+                            valor = totalcap + calculocap
+                          }
                           if (!primermescap) {
-                            if (mesFlujo >= mescap) {
+                            if (mesFlujo == mescap && anocap == anoFlujo) {
                               primermescap = true
+                              contarmesescap = 0
                             }
                           }
 
                           if (primermescap) {
-                            if (periodocap) {
-                              if (periodocap.id == 1) {
-                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                              } else if (periodocap.id == 2 && f % 2 == 0) {
-                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
-                              } else if (periodocap.id == 3 && f % 3 == 0) {
-                                this.dataFlujoAcumulado[f][9] = totalcap + calculocap
+                            if (periodo) {
+                              if (periodo.id == 1) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
+                              } else if (periodo.id == 2 && contarmesescap % 2 == 0) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
+                              } else if (periodo.id == 3 && contarmesescap % 3 == 0) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
+                              } else if (periodo.id == 4 && contarmesescap % 4 == 0) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
+                              } else if (periodo.id == 5 && contarmesescap % 6 == 0) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
+                              } else if (periodo.id == 6 && contarmesescap % 12 == 0) {
+                                if (pas.clase == 2) {
+                                  this.dataFlujoAcumulado[f][9] = valor
+                                } else {
+                                  this.dataFlujoAcumulado[f][13] = valor
+                                }
+                                cantidadcap--
                               }
+                              contarmesescap++
                             }
                           }
                         }
@@ -692,7 +798,9 @@ export class FlujocajaComponent implements OnInit {
                 }
               } else if (pas.tipo.id == 1 || pas.tipo.id == 3 || pas.tipo.id == 5 || pas.tipo.id == 8) {
 
+                let contarmeses = 0
                 for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
+
                   if (cantida > 0) {
 
                     let addmonth = f + 1
@@ -707,27 +815,72 @@ export class FlujocajaComponent implements OnInit {
                       let mes = new Date(pas.fechaprox).getMonth()
                       let ano = new Date(pas.fechaprox).getFullYear()
                       var cuotacalcu = Utils.formatNumber(pas.cuotacalcu)
-                      let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
 
-
+                      let valor = 0
+                      if (pas.clase == 2) {
+                        let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                        valor = totalint + cuotacalcu
+                      } else {
+                        let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
+                        valor = totalint + cuotacalcu
+                      }
                       if (!primermes) {
                         if (mesFlujo == mes && ano == anoFlujo) {
                           primermes = true
+                          contarmeses = 0
                         }
                       }
-                      if (primermes) {
 
+                      if (primermes) {
                         if (periodo) {
-                          cantida--
                           if (periodo.id == 1) {
-                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
-                          } else if (periodo.id == 2 && f % 2 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
-                          } else if (periodo.id == 3 && f % 3 == 0) {
-                            this.dataFlujoAcumulado[f][9] = totalint + cuotacalcu
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
+                          } else if (periodo.id == 2 && contarmeses % 2 == 0) {
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
+                          } else if (periodo.id == 3 && contarmeses % 3 == 0) {
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
+                          } else if (periodo.id == 4 && contarmeses % 4 == 0) {
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
+                          } else if (periodo.id == 5 && contarmeses % 6 == 0) {
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
+                          } else if (periodo.id == 6 && contarmeses % 12 == 0) {
+                            if (pas.clase == 2) {
+                              this.dataFlujoAcumulado[f][9] = valor
+                            } else {
+                              this.dataFlujoAcumulado[f][13] = valor
+                            }
+                            cantida--
                           }
+
+                          contarmeses++
                         }
                       }
+
                     }
                   }
                 }
@@ -735,14 +888,24 @@ export class FlujocajaComponent implements OnInit {
 
                 for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
                   var valor = Utils.formatNumber(pas.valor)
-                  let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-                  this.dataFlujoAcumulado[f][9] = totalint + valor
+                  if (pas.clase == 2) {
+                    let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    this.dataFlujoAcumulado[f][9] = totalint + valor
+                  } else {
+                    let total = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    this.dataFlujoAcumulado[f][13] = total + valor
+                  }
                 }
-              }else if (pas.tipo.id == 4) {
+              } else if (pas.tipo.id == 4) {
                 for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
                   var valor = Utils.formatNumber(pas.valor)
-                  let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-                  this.dataFlujoAcumulado[f][9] = totalint + valor
+                  if (pas.clase == 2) {
+                    let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    this.dataFlujoAcumulado[f][9] = totalint + valor
+                  } else {
+                    let total = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    this.dataFlujoAcumulado[f][13] = total + valor
+                  }
                 }
               }
             }
@@ -773,7 +936,6 @@ export class FlujocajaComponent implements OnInit {
                 }
               }
             }
-
           }
 
           //Remuneracion de personal
@@ -808,7 +970,9 @@ export class FlujocajaComponent implements OnInit {
             }
 
             this.dataFlujoAcumulado[f][7] = (totalEstacionalN + totalGastosN)
-            this.dataFlujoAcumulado[f][13] = (totalEstacionalF + totalGastosF + totalObligacionesF)
+            //Gastos y obligaciones familiares
+            let acumObligacionesFam = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
+            this.dataFlujoAcumulado[f][13] = (totalEstacionalF + totalGastosF + acumObligacionesFam)
           }
 
           //Imprevistos Operativos

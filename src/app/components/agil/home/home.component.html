@@ -1,7 +1,7 @@
 <div class="container">
 
   <div fxLayout="row wrap">
-    <div *ngIf="dataSolicitudes && dataSolicitudes.length < 8" class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="40%">
+    <div *ngIf="dataSolicitudes.length < 8" class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="40%">
       <button mat-raised-button color="accent" (click)="onInitSol()">Crear Solicitud</button>
     </div>
     <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="40%">

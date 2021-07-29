@@ -64,7 +64,7 @@ export class BalanceComponent implements OnInit {
   totalProv: number;
   ced: string;
   minDate = new Date();
-  minDatenxt = new Date(this.minDate.setMonth(this.minDate.getMonth() + 1))
+  minDatenxt = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 1, 1)
 
   constructor(
     public _srvSol: IdbSolicitudService,
@@ -94,7 +94,7 @@ export class BalanceComponent implements OnInit {
     totalCreditos: '',
     creditosDetalle: this.fb.array([this.initCreditosDetalle()]),
     totalcreditosDetalle: [0],
-    
+
     pasivosRows: this.fb.array([this.initPasivoRows()]),
     tcuotaf: [0],
     tcorrientef: [0],
@@ -142,19 +142,19 @@ export class BalanceComponent implements OnInit {
 
       this.aplicaInversiones = this.dataSolicitud.Balance.aplicaInversiones
       this.aInversion = this.dataSolicitud.Balance.inversiones
-      this.totalInversiones = this.dataSolicitud.Balance.totalInversiones      
+      this.totalInversiones = this.dataSolicitud.Balance.totalInversiones
 
       this.loadBalance(this.dataSolicitud.Balance)
     }
     //------------Se ejecuta cuando se realiza cualquier cambio en el formulario-----------
 
     this.balanceForm.valueChanges.subscribe(form => {
-      
+
       let efectivo = Utils.formatNumber(this.balanceForm.controls.efectivo.value)
       let incobrable = Utils.formatNumber(this.balanceForm.controls.incobrableCobrar.value)
       let valorCobrar = Utils.formatNumber(this.balanceForm.controls.valorCobrar.value)
       let recuperacionCobrar = Utils.formatNumber(this.balanceForm.controls.recuperacionCobrar.value)
-      
+
       if (incobrable > valorCobrar) {
         incobrable = 0
         this._snackBar.open("Valor incobrable no pude ser mayor al valor", "Ok!", {
@@ -221,12 +221,12 @@ export class BalanceComponent implements OnInit {
         const cuotas = <FormArray>x.get('cuotas')
         let total = 0
         let arrMese = []
-        let frecuencia = x.value.frecuencia        
-      
+        let frecuencia = x.value.frecuencia
+
         cuotas.controls.forEach(cuo => {
           let valor = Utils.formatNumber(cuo.get('valor').value)
           let fecha = cuo.get('fecha').value
-              
+
           if (fecha && fecha != "") {
             let mes = new Date(fecha).getMonth()
             let ano = new Date(fecha).getFullYear()
@@ -235,17 +235,17 @@ export class BalanceComponent implements OnInit {
               arrMese.push(fullfecha)
             else
               fecha = ""
-          }              
-          total += valor          
+          }
+          total += valor
           cuo.patchValue({
             valor: isFinite(valor) ? valor.toLocaleString() : 0,
             fecha: fecha
           }, { emitEvent: false });
-        }); 
-        
-        let proyeccion = 0     
-        if(frecuencia){
-          proyeccion = (total / cuotas.length ) / frecuencia.period
+        });
+
+        let proyeccion = 0
+        if (frecuencia) {
+          proyeccion = (total / cuotas.length) / frecuencia.period
         }
 
         totalCredito += proyeccion
@@ -443,10 +443,10 @@ export class BalanceComponent implements OnInit {
             const actfam = this.activosFam.activos();
             //let totalFamilia = Utils.formatNumber(this.totalActFam ) + comercialfam          
             this.totalActFam = comercialfam
-                  
+
             actfam.controls.forEach(x => {
-              let pasivo = x.get('pasivo').value              
-              if (pasivo == i) {                           
+              let pasivo = x.get('pasivo').value
+              if (pasivo == i) {
 
                 x.patchValue({
                   tipo: { id: 4, name: "Inmuebles o terrenos" },
@@ -458,13 +458,13 @@ export class BalanceComponent implements OnInit {
               }
             });
 
-            if (negociovivienda) {          
+            if (negociovivienda) {
               const actneg = this.activosNeg.activos();
               //this.totalActNeg = Utils.formatNumber(this.totalActNeg ) + comercialneg          
 
               actneg.controls.forEach(x => {
-                let pasivo = x.get('pasivo').value          
-                if (pasivo == i) {                  
+                let pasivo = x.get('pasivo').value
+                if (pasivo == i) {
                   x.patchValue({
                     cantidad: 1,
                     tipo: { id: 4, name: "Inmuebles o terrenos" },
@@ -501,7 +501,7 @@ export class BalanceComponent implements OnInit {
             valor = proyeccion * 30
             tcorrienten += saldo
             tcuotan += valor
-           
+
             x.patchValue({
               clase: 2,
               cuota: 0,
@@ -670,7 +670,7 @@ export class BalanceComponent implements OnInit {
         recuperacionCobrar: isFinite(recuperacionCobrar) ? recuperacionCobrar.toLocaleString() : 0,
         porcentajeCobrar: isFinite(porcentajeCobrar) ? porcentajeCobrar.toFixed() : 0,
         totalRecuperacion: isFinite(totalrec) ? totalrec : 0,
-        proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,      
+        proveedoresTotal: isFinite(totalProv) ? totalProv.toLocaleString() : 0,
         tcuotaf: isFinite(tcuotaf) ? tcuotaf.toFixed() : 0,
         tcuotan: isFinite(tcuotan) ? tcuotan.toFixed() : 0,
         tcorrientef: isFinite(tcorrientef) ? tcorrientef.toFixed() : 0,
@@ -1020,7 +1020,7 @@ export class BalanceComponent implements OnInit {
 
       if (pas.periodocap)
         periodocap = this.periodo.find(pe => pe.id == pas.periodocap.id)
-      
+
       pasivosArray.push(
         this.fb.group({
           tipo: [pas.tipo],
@@ -1136,10 +1136,10 @@ export class BalanceComponent implements OnInit {
     ctrlneg.controls.forEach((x, i) => {
       let pasivo = x.get('pasivo').value
       if (pasivo == pass) {
-        this.activosNeg.delete(i)       
+        this.activosNeg.delete(i)
       }
     })
- 
+
     if (e.checked) {
       this.activosNeg.activos().push(
         this.fb.group({
@@ -1155,7 +1155,7 @@ export class BalanceComponent implements OnInit {
 
     pasivo.patchValue({
       porcentajeneg: 0,
-      montoN: 0,     
+      montoN: 0,
       corrienteN: 0,
       nocorrienteN: 0
     }, { emitEvent: false })
@@ -1200,7 +1200,7 @@ export class BalanceComponent implements OnInit {
     switch (name) {
       case 'creditoactual':
         this.addNewCredito()
-        break     
+        break
       case 'proveedores':
         if (this.tipoSol == 1) {
           this.addNewProvRow()

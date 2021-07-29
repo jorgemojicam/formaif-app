@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './solitudes.component.html',
   styleUrls: ['./solitudes.component.scss']
 })
-export class SolitudesComponent implements AfterViewInit {
+export class SolitudesComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo', 'sucursal', 'estado', 'gestion'];
   dataSource: MatTableDataSource<SolicitudZona>;
@@ -37,26 +37,26 @@ export class SolitudesComponent implements AfterViewInit {
     console.log(this.dataUsuario.Rol.Nombre)
   }
 
-  async ngAfterViewInit() {
+  async ngOnInit() {
     const that = this
     if (this.dataUsuario.Rol.Nombre == environment.director) {
       this.isOficce = true
       this.oficina = this.dataUsuario.Sucursales.Codigo     
       that.data = await this.getByOfi(this.oficina) as any
     
-    } else if (this.dataUsuario.Rol.Nombre == environment.regional) {
+    } 
+    else if (this.dataUsuario.Rol.Nombre == environment.regional) {
       this.oficina = this.dataUsuario.Sucursales.Codigo      
       that.data = await this.getByOfi(this.oficina) as any
       
     }
     else {
       that.data = await this.get() as any
-    }    
+    }
     that.dataSource = new MatTableDataSource(that.data);
     that.dataSource.paginator = that.paginator;
     that.dataSource.sort = that.sort;
-    that.loading = false
-    
+    that.loading = false    
   }
 
   get() {

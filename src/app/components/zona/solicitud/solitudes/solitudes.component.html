@@ -1,6 +1,6 @@
 <div class="container">
     <div class="mat-elevation-z8 table-sol">
-        <button mat-mini-fab type="button" class="btnadd" color="primary" (click)="onCreate()">
+        <button *ngIf="isOficce" mat-mini-fab type="button" class="btnadd" color="primary" (click)="onCreate()">
             <mat-icon>add</mat-icon>
         </button>
         <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>

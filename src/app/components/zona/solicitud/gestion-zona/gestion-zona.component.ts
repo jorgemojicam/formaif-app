@@ -65,7 +65,7 @@ export class GestionZonaComponent implements OnInit {
     const that = this
 
     this.tipos = await this.getTipo() as Tipo[]
-
+    
     if (this.id) {
       let stepselect = 0
       let arrayNiveles = this._formBuilder.array([])
@@ -126,6 +126,7 @@ export class GestionZonaComponent implements OnInit {
       });
       let resFlujo = await this.getFlujo() as any
       this.flujo = resFlujo.data
+      console.log(this.flujo)
       this.stepper.selectedIndex = 0;
     }
 

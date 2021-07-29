@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo', 'cedula', 'gestion', 'delete', 'upload'];
   dataSource: MatTableDataSource<Solicitud>;
-  dataSolicitudes: any;
+  dataSolicitudes: Solicitud[] = [];
   datasol: Solicitud;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -56,9 +56,14 @@ export class HomeComponent implements OnInit {
 
   getSol() {
     return new Promise(resolve => {
-      this.srvSol.get().subscribe((sol) => {
-        resolve(sol)
-      })
+      this.srvSol.get().subscribe(
+        (sol) => {
+          if (sol) {
+            resolve(sol)
+          } else {
+            resolve([])
+          }
+        })
     })
   }
 
