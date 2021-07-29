@@ -2,7 +2,9 @@
     <mat-card-title-group>
         <mat-card-title>Valores Formiik</mat-card-title>
         <mat-card-subtitle>Los valores que se vinculan con formiik</mat-card-subtitle>
-        <span *ngIf="loadResultado()"></span>
+        <ng-container *ngIf="loadflujo">
+            <span *ngIf="loadResultado()"></span>
+        </ng-container>        
     </mat-card-title-group>
 
     <mat-card-content>

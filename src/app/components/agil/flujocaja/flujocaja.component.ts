@@ -980,10 +980,6 @@ export class FlujocajaComponent implements OnInit {
           let imprevistos = costos * 0.1
           this.dataFlujoAcumulado[f][8] = imprevistos
 
-          //Obligaciones Finacieras
-          let valorObligaciones = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
-          //this.dataFlujoAcumulado[f][9] = valorObligaciones + totalObligaciones
-
           let ingreso = Utils.formatNumber(this.dataFlujoAcumulado[f][3])
           let recuperacion = Utils.formatNumber(this.dataFlujoAcumulado[f][4])
           let costo = Utils.formatNumber(this.dataFlujoAcumulado[f][5])

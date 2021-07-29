@@ -40,6 +40,7 @@ export class ResultadoComponent implements OnInit {
   gastosFamiliaresA: number = 0;
   Costodeventa: number = 0;
   VentasContado: number = 0;
+  loadflujo = true
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -68,9 +69,11 @@ export class ResultadoComponent implements OnInit {
   }
 
   async loadResultado() {
-
+   
     this.datasolicitud = await this.getSolicitud() as Solicitud
-    this.flujo = this.datasolicitud.Flujo
+    if (this.tiposol == 2) {
+      this.flujo = this.datasolicitud.Flujo
+    }
 
     let totalrecuperacion = 0
     let otrosingresos = 0
@@ -135,46 +138,51 @@ export class ResultadoComponent implements OnInit {
     let ventastotales = this.recuperacion + this.VentasContado
     this.Costodeventa = ventastotales * costototal;
 
-    if (this.datasolicitud.Flujo) {
-      let formapago = 0
-      let plazo = 0
-      if (this.datasolicitud.Propuesta) {
-        if (this.datasolicitud.Propuesta.tipocuota == 2) {
-          formapago = 3
-        } else {
-          formapago = this.datasolicitud.Propuesta.formapgo.period
+    if (this.tiposol == 2) {
+      
+      if (this.datasolicitud.Flujo) {
+        let formapago = 0
+        let plazo = 0
+        if (this.datasolicitud.Propuesta) {
+          if (this.datasolicitud.Propuesta.tipocuota == 2) {
+            formapago = 3
+          } else {
+            formapago = this.datasolicitud.Propuesta.formapgo.period
+          }
+          plazo = Utils.formatNumber(this.datasolicitud.Propuesta.plazo)
         }
-        plazo = Utils.formatNumber(this.datasolicitud.Propuesta.plazo)
-      }
-      let totalingreso = 0
-      let totalegresos = 0
-      let totalgastos = 0
-      let totalobligaciones = 0
-      let totalgastosyobfam = 0
+        let totalingreso = 0
+        let totalegresos = 0
+        let totalgastos = 0
+        let totalobligaciones = 0
+        let totalgastosyobfam = 0
 
-      for (let i = 0; i < this.flujo.length; i++) {
-        const flujo = this.flujo[i]
-        let ingresosagro = flujo[3]
-        let egresosagro = flujo[5]
-        let gastosneg = flujo[7]
-        let obligaciones = flujo[9]
-        let gastosyobfam = flujo[13]
+        for (let i = 0; i < this.flujo.length; i++) {
+          const flujo = this.flujo[i]
+          let ingresosagro = flujo[3]
+          let egresosagro = flujo[5]
+          let gastosneg = flujo[7]
+          let obligaciones = flujo[9]
+          let gastosyobfam = flujo[13]
 
-        totalingreso += Utils.formatNumber(ingresosagro)
-        totalegresos += Utils.formatNumber(egresosagro)
-        totalgastos += Utils.formatNumber(gastosneg)
-        totalobligaciones += Utils.formatNumber(obligaciones)
-        totalgastosyobfam += Utils.formatNumber(gastosyobfam)
+          totalingreso += Utils.formatNumber(ingresosagro)
+          totalegresos += Utils.formatNumber(egresosagro)
+          totalgastos += Utils.formatNumber(gastosneg)
+          totalobligaciones += Utils.formatNumber(obligaciones)
+          totalgastosyobfam += Utils.formatNumber(gastosyobfam)
+        }
+        this.totalingreosflujo = (totalingreso / plazo) * formapago
+        this.costodeventaA = (totalegresos / plazo) * formapago
+        this.totalrecuperacioncartera = totalrecuperacion * formapago
+        this.salariosA = Utils.formatNumber(this.salarios) * formapago
+        this.gastosGeneralesA = (totalgastos / plazo) * formapago
+        this.obligacionesA = (totalobligaciones / plazo) * formapago
+        this.otrosIngresosA = otrosingresos * formapago
+        this.gastosFamiliaresA = ((totalgastosyobfam / plazo) * formapago)
       }
-      this.totalingreosflujo = (totalingreso / plazo) * formapago
-      this.costodeventaA = (totalegresos / plazo) * formapago
-      this.totalrecuperacioncartera = totalrecuperacion * formapago
-      this.salariosA = Utils.formatNumber(this.salarios) * formapago
-      this.gastosGeneralesA = (totalgastos / plazo) * formapago
-      this.obligacionesA = (totalobligaciones / plazo) * formapago
-      this.otrosIngresosA = otrosingresos * formapago
-      this.gastosFamiliaresA = ((totalgastosyobfam / plazo) * formapago)
     }
+    this.loadflujo = false
+    return false
   }
 
 }

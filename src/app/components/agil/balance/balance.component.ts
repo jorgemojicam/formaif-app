@@ -612,9 +612,18 @@ export class BalanceComponent implements OnInit {
               let periodoint = Utils.formatNumber(x.get('periodoint').value ? x.get('periodoint').value.period : 0)
               let calcinteres = saldo * tasaporcen * periodoint
               let calculocap = saldo / (plazo - numcuota)
+              
+              let cuotaint = (calcinteres / periodoint)
+              let cuotacap = (calculocap / periodo)
+              if (clase == 2) {
+                tcuotan += (cuotaint + cuotacap)
+              } else {
+                tcuotaf += (cuotaint + cuotacap)
+              }
+
               x.patchValue({
-                calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString() : 0,
-                calculocap: isFinite(calculocap) ? calculocap.toLocaleString() : 0,
+                calculoint: isFinite(calcinteres) ? calcinteres.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
+                calculocap: isFinite(calculocap) ? calculocap.toLocaleString(undefined, { maximumFractionDigits: 0 }) : 0,
               }, { emitEvent: false })
 
             }
