@@ -169,7 +169,7 @@ export class HomeComponent implements OnInit {
       if (navigator.onLine) {
 
         const numeroCedula: string = element.cedula.toString();
-        this.datasol = await this.getSolicitud(numeroCedula) as Solicitud
+        this.datasol = await this.getSolicitud(numeroCedula) as Solicitud        
         let faltante = this.validateSol()
         if (faltante != "") {
           this.procesando = false
@@ -181,31 +181,41 @@ export class HomeComponent implements OnInit {
           })
           return
         }
-
+        const numSolicitud = this.datasol.solicitud
         let asesor = await this.getDirector() as Asesor
-        /*
-        let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Carpeta digital',
+          html: 'Consultando la carpeta...',
+          didOpen: async () => {
+            Swal.showLoading()
+          }
+        })
+
+        let strcarpetaDig = await this.getCarpetaDigital(numSolicitud) as string
         let solCarpeta = JSON.parse(strcarpetaDig)
-  
+
         if (solCarpeta.EstadoCarpeta !== "Abierto") {
-          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o esta en estado ' + solCarpeta.EstadoCarpeta, 'info')
           this.procesando = false
           return
         }
-       */
+
 
         if (asesor.Director) {
 
-          let emailDirector = asesor.Director.Correo
-          let nombreDirector = asesor.Director.Nombre
+          let nombreCliente = solCarpeta.NombreCli
+          let codigoCarpeta = solCarpeta.codCarpeta
 
           Swal.fire({
             title: '¿Desea Enviar Analisis de credito?',
-            html: `Se enviara email al director:
-        <br><b>${nombreDirector}</b>, 
-        <br><small>${emailDirector}</small>
-        <br><b>Solicitud :</b>${numeroCedula}
-        <br><b>Oficina :</b>${asesor.Sucursales.Nombre}`,
+            html: `Se insetara el Analisis de credito en carpeta digital del cliente:
+            <br><b>${nombreCliente}</b>
+            <br><b>Cedula: </b>${numeroCedula}  
+        <br><b>Solicitud: </b>${numSolicitud}
+        <br><b>Oficina: </b>${asesor.Sucursales.Nombre}
+        <br><b>Codigo carpeta: </b>${codigoCarpeta}`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Si, Enviar!',
@@ -252,12 +262,12 @@ export class HomeComponent implements OnInit {
                             Name: "FlujoDeCaja.pdf"
                           }
                         ]
-                        b.textContent = "Enviando email Flujo..."
-                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
+                        //b.textContent = "Enviando email Flujo..."
+                        //await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
 
-                        //b.textContent = "Insertando en carpeta digital..."
-                        //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
-                        //console.log("Insetando analisis el carpeta digital", resCarpeta)
+                        b.textContent = "Insertando Analisis en carpeta digital..."
+                        let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
+                        console.log("Insetando analisis el carpeta digital", resCarpeta)
 
                         //let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64Agro, 3)
                         //console.log("Insertando flujo en carpeta", resCarpetaFlujo)
@@ -274,14 +284,15 @@ export class HomeComponent implements OnInit {
                           }
                         ]
 
-                        b.textContent = "Enviando email..."
-                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
+                        //b.textContent = "Enviando email..."
+                        //await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
 
-                        //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
-                        //console.log("Insertndo el | digital", solCarpeta)
+                        b.textContent = "Insertando Analisis en carpeta digital..."
+                        let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
+                        console.log("Insertndo en carpeta digital", solCarpeta)
                       }
 
-                      b.textContent = "Insertando el analisis..."
+                      b.textContent = "Insertando Analisis en tabla..."
                       await this.insert(this.datasol)
 
                       Swal.close()
@@ -430,11 +441,17 @@ export class HomeComponent implements OnInit {
   }
 
   inserCarpetaDigital(solicitud: Solicitud, pfd: string, tipo: number) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this._srvCarpeta.insert(solicitud, pfd, tipo)
         .subscribe((res) => {
           return resolve(res)
-        }, (err) => {
+        }, async (err) => {
+
+          await this.insertError(err.status, 'send', JSON.stringify({ solicitud: solicitud.asesor }), 'agil/home')
+          Swal.close()
+          Swal.fire('Error', 'Se ha producido un error en el envio de correo ' + err.status, 'error')
+          this.procesando = false
+          reject(err)
           console.log("error insertando carpeta digital " + err)
         });
     })

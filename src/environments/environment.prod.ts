@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  //AUTH_API: 'https://fidelapipruebas.fundaciondelamujer.com:54000/api/',
-  AUTH_API: 'https://fidelapi.fundaciondelamujer.com:55000/api/',
+  AUTH_API: 'https://fidelapipruebas.fundaciondelamujer.com:54000/api/',
+  //AUTH_API: 'https://fidelapi.fundaciondelamujer.com:55000/api/',
   appVersion: require('../../package.json').version,
   analisi: 'COL-FO-001 Análisis de crédito (PDF Generado Asesor Agil)',
   agro: 'COL-FO-006 Análisis de crédito Agropecuario (PDF Generado Asesor Agil)',

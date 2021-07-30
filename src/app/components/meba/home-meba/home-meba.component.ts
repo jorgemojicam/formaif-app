@@ -114,14 +114,14 @@ export class HomeMebaComponent implements AfterViewInit {
       this.loading = true
       const cedula: string = element.cedula.toString();
       let datos = await this.getSolicitud(cedula) as Solicitud
-      
+
       if (!datos.solicitud) {
         Swal.fire('Incompleto!', 'Por favor ingresar el numero de solicitud en Asesor Agil', 'info')
         this.loading = false
         return
       }
 
-      /*
+
       let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
       let solCarpeta = JSON.parse(strsolCarpeta)
 
@@ -130,7 +130,7 @@ export class HomeMebaComponent implements AfterViewInit {
         Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
         return
       }
-      */
+
 
       let asesores: Asesor = this._srvToken.getUser()
       this.loading = false
@@ -169,7 +169,7 @@ export class HomeMebaComponent implements AfterViewInit {
           }
         });
       } else {
-        Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Capacidad Adaptativa', 'info') 
+        Swal.fire('Incompleto!', 'Por favor complete el cuestionario de Capacidad Adaptativa', 'info')
         return
       }
       //Recorre las espuestas de verificacion
@@ -236,14 +236,14 @@ export class HomeMebaComponent implements AfterViewInit {
                 const b = content.querySelector('b')
                 if (b) {
 
-                  b.textContent = "Creando pdf..."                  
+                  b.textContent = "Creando pdf..."
                   let pdfBase64: string = "";
                   const resultado = this.resultado.reporte.nativeElement
                   pdfBase64 = await this.createpdf(resultado, "MEBA_", datos.solicitud, "p") as string
                   this.datasol = null
 
-                  b.textContent = "Enviando email..."
-                  let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
+                  //b.textContent = "Enviando email..."
+                  //let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
 
                   let listBase64 = [
                     {
@@ -253,7 +253,7 @@ export class HomeMebaComponent implements AfterViewInit {
                   ]
 
 
-                  let evio =  await this.send(listBase64, asesores.Director.Nombre, asesores.Director.Correo, "MEBA", asesores.Nombre)
+                  //let evio =  await this.send(listBase64, asesores.Director.Nombre, asesores.Director.Correo, "MEBA", asesores.Nombre)
 
                   b.textContent = "Cargando en base de datos..."
                   let idAnalisis: any = await this.setAnalisis(datos)
@@ -271,7 +271,7 @@ export class HomeMebaComponent implements AfterViewInit {
                       let resulrespuestas = await this.setResultado(idAnalisis, listRespuestas);
                       console.log('resultado analisis ->', resulrespuestas)
                     }
-                    if(listTemas.length>0){
+                    if (listTemas.length > 0) {
                       b.textContent = "Cargando Totales..."
                       let resultemas = await this.setAnalisisTemas(idAnalisis, listTemas);
                       console.log('resultado temas analisis ->', resultemas)
@@ -422,35 +422,35 @@ export class HomeMebaComponent implements AfterViewInit {
     })
   }
 
-    /**
-   * Autor: Jorge Enrique Mojica Martinez
-   * Fecha: 2021-03-26
-   * Nombre: setAnalisisTemas
-   * Descripcion : Insertar en la tabla que analisis temas el id del del analisis el id del tema y el total por cada tema
-   * 
-   * @param {number} idAnalisis 
-   * @param {Array} analisisArr
-   *
-   * @return {string} archivo pdf en base64
-   */
-     setAnalisisTemas(idAnalisis: number, analisisArr) {
+  /**
+ * Autor: Jorge Enrique Mojica Martinez
+ * Fecha: 2021-03-26
+ * Nombre: setAnalisisTemas
+ * Descripcion : Insertar en la tabla que analisis temas el id del del analisis el id del tema y el total por cada tema
+ * 
+ * @param {number} idAnalisis 
+ * @param {Array} analisisArr
+ *
+ * @return {string} archivo pdf en base64
+ */
+  setAnalisisTemas(idAnalisis: number, analisisArr) {
 
-      let dataprod = {
-        listTema: analisisArr,
-        AnalisisMeba: {
-          Id: idAnalisis
-        }
+    let dataprod = {
+      listTema: analisisArr,
+      AnalisisMeba: {
+        Id: idAnalisis
       }
-      return new Promise((resolve, reject) => {
-        this._srvTemas.createByAnalisis(dataprod).subscribe(
-          (a) => {
-            return resolve(a)
-          },
-          (err) => {
-            reject(err)
-          })
-      })
     }
+    return new Promise((resolve, reject) => {
+      this._srvTemas.createByAnalisis(dataprod).subscribe(
+        (a) => {
+          return resolve(a)
+        },
+        (err) => {
+          reject(err)
+        })
+    })
+  }
 
   /**
  * Autor: Jorge Enrique Mojica Martinez
@@ -496,7 +496,7 @@ export class HomeMebaComponent implements AfterViewInit {
  * @param {string} emaildestinatario email de la persona a la que va dirigido
  *
  */
-   send(pdfBase64, nombreDir, emailDir, asunto, nombreAsesor) {
+  send(pdfBase64, nombreDir, emailDir, asunto, nombreAsesor) {
 
     let email = {
       To: emailDir,
