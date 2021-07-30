@@ -1,7 +1,7 @@
 {
     "name": "com.asesor.agil",
     "displayName": "asesorAgil",
-    "version": "2.0.9",
+    "version": "2.0.4",
     "description": "Formulario de agilidad en la captura y generacion de los formatos de analisis de credito.",
     "main": "index.js",
     "scripts": {
