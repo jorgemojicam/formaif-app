@@ -14,4 +14,13 @@ export class TipoService {
   get() {
     return this.http.get(`${environment.AUTH_API}Tipo`);
   }
+  create(data) {
+    return this.http.post(`${environment.AUTH_API}Tipo`, data);
+  }
+  update(data) {
+    return this.http.put(`${environment.AUTH_API}Tipo`, data);
+  }
+  delete(id) {
+    return this.http.delete(`${environment.AUTH_API}Tipo`);
+  }
 }

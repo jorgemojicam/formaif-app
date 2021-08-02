@@ -7,6 +7,7 @@ import { ZonaComponent } from './zona.component';
 import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
 import { ResponsablesComponent } from './responsable/responsables/responsables.component';
 import { FlujoListComponent } from './flujo/flujo-list/flujo-list.component';
+import { TiposComponent } from './tipo/tipos/tipos.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,13 @@ const routes: Routes = [
         component: FlujoListComponent,
         data: {
           routerName: 'flujo'
+        }
+      },
+      {
+        path: 'tipo',
+        component: TiposComponent,
+        data: {
+          routerName: 'tipo'
         }
       }
     ]

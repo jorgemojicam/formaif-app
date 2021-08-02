@@ -55,6 +55,7 @@ import { ActivosComponent } from './components/agil/activos/activos.component';
 import { ModulosFormComponent } from './components/admin/modulo/modulos-form/modulos-form.component';
 import { InventarioComponent } from './components/agil/inventario/inventario.component';
 import { InversionesComponent } from './components/agil/inversiones/inversiones.component';
+import { TipoFormComponent } from './components/zona/tipo/tipo-form/tipo-form.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { InversionesComponent } from './components/agil/inversiones/inversiones.
     ZonasComponent,
     ResponsablesFormComponent,
     FlujoFormComponent,
+    TipoFormComponent,
     InventarioComponent,
     ActivosComponent,
     ModulosFormComponent,

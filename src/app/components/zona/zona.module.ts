@@ -17,6 +17,7 @@ import { SolitudesComponent } from './solicitud/solitudes/solitudes.component';
 import { ResponsablesComponent } from './responsable/responsables/responsables.component';
 
 import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/cartera-inicial.component';
+import { TiposComponent } from './tipo/tipos/tipos.component';
 @NgModule({
   declarations: [
     GestionZonaComponent, 
@@ -29,7 +30,8 @@ import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/car
     LimiteMunicipioComponent,
     SolitudesComponent,
     ResponsablesComponent,
-    CarteraInicialComponent
+    CarteraInicialComponent,
+    TiposComponent,
   ],
   imports: [
     CommonModule,
