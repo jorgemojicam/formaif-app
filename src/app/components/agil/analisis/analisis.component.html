@@ -161,7 +161,7 @@
             <tbody *ngFor="let inv of datasolicitud.Balance.inversiones; let cont=index">
                 <tr>
                     <td>{{inv.detalle}}</td>
-                    <td>{{MesNombre(inv.mes,'MesNombre')}}</td>
+                    <td *ngIf="inv.mes">{{inv.mes.name}}</td>
                     <td>{{inv.origen}}</td>
                     <td align="right">${{inv.valor}}</td>
                 </tr>

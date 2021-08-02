@@ -27,7 +27,7 @@ export class AnalisisComponent implements OnInit {
     let hoy = new Date()
     let mes: number = hoy.getMonth() + 1
     this.fechahoy = hoy.getDate() + "/" + mes + "/" + hoy.getFullYear()
-
+    
     if (!this.datossol) {
       this.activeRoute.queryParamMap.subscribe((params) => {
         let ced = params.get('cedula')

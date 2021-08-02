@@ -58,6 +58,7 @@ export class TiposComponent implements OnInit {
 
       if (result) {
         this.aTipo = await this.get() as Tipo[]
+        console.log(this.aTipo)
         this.dataSource.data = this.aTipo
         this.changeDetectorRefs.detectChanges();
       }
