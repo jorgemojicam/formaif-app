@@ -147,7 +147,7 @@ export class ResultadoComponent implements OnInit {
           if (this.datasolicitud.Propuesta.tipocuota == 2) {
             formapago = 3
           } else {
-            formapago = this.datasolicitud.Propuesta.formapgo.period
+            formapago = this.datasolicitud.Propuesta.formapgo ? this.datasolicitud.Propuesta.formapgo.period : 0
           }
           plazo = Utils.formatNumber(this.datasolicitud.Propuesta.plazo)
         }
@@ -187,8 +187,14 @@ export class ResultadoComponent implements OnInit {
         totalotroing += Utils.formatNumber(element.ingresoLiquido)
       });
       let totalotringfam = isNaN(this.otrosIngresosA) ? 0 : Utils.formatNumber(this.otrosIngresosA)
-      console.log(totalotringfam)
-      this.otrosIngresosA = totalotringfam + totalotroing
+
+      if (this.datasolicitud.Propuesta) {
+        console.log(this.datasolicitud.Propuesta.formapgo)
+        if (this.datasolicitud.Propuesta.formapgo) {
+          let periodo = this.datasolicitud.Propuesta.formapgo          
+          this.otrosIngresosA = (totalotringfam + totalotroing) * periodo.period
+        }
+      }
 
     }
     this.loadflujo = false
