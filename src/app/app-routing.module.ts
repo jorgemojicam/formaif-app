@@ -47,8 +47,7 @@ const routes: Routes = [
     path: 'zona', loadChildren: () => import('./components/zona/zona.module').then(m => m.ZonaModule),
     canActivate: [AuthGuard]
   },
-  { path: 'lobby', loadChildren: () => import('./components/lobby/lobby.module').then(m => m.LobbyModule) },
-
+  { path: 'lobby', loadChildren: () => import('./components/lobby/lobby.module').then(m => m.LobbyModule) },  
   {
     path: '**',
     redirectTo: '/404'

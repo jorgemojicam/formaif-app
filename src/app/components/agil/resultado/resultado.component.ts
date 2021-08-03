@@ -69,7 +69,7 @@ export class ResultadoComponent implements OnInit {
   }
 
   async loadResultado() {
-   
+
     this.datasolicitud = await this.getSolicitud() as Solicitud
     if (this.tiposol == 2) {
       this.flujo = this.datasolicitud.Flujo
@@ -139,7 +139,7 @@ export class ResultadoComponent implements OnInit {
     this.Costodeventa = ventastotales * costototal;
 
     if (this.tiposol == 2) {
-      
+
       if (this.datasolicitud.Flujo) {
         let formapago = 0
         let plazo = 0
@@ -180,6 +180,16 @@ export class ResultadoComponent implements OnInit {
         this.otrosIngresosA = otrosingresos * formapago
         this.gastosFamiliaresA = ((totalgastosyobfam / plazo) * formapago)
       }
+    }
+    if (this.datasolicitud.CrucesAgro) {
+      let totalotroing = 0
+      this.datasolicitud.CrucesAgro.forEach(element => {
+        totalotroing += Utils.formatNumber(element.ingresoLiquido)
+      });
+      let totalotringfam = isNaN(this.otrosIngresosA) ? 0 : Utils.formatNumber(this.otrosIngresosA)
+      console.log(totalotringfam)
+      this.otrosIngresosA = totalotringfam + totalotroing
+
     }
     this.loadflujo = false
     return false

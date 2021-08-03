@@ -16,7 +16,8 @@ export class NivelFormComponent implements OnInit {
   constructor(
     private _srvRol: RolService,
     private _srvFlujo: FlujoService,
-    private _srvNivel: NivelService,
+    private _srvNivel: NivelService 
+   
   ) { }
 
   @Input() datos: any
@@ -32,6 +33,7 @@ export class NivelFormComponent implements OnInit {
   })
 
   async ngOnInit() {
+
     this.aRol = await this.getRol() as Rol[]
     this.aFlujo = await this.getFlujo() as Flujo[]
     this.nivelForm.patchValue({
@@ -93,12 +95,13 @@ export class NivelFormComponent implements OnInit {
 
   create(data) {
     return new Promise(resolve => {
-      this._srvNivel.create(data).subscribe((sus) => {
-        resolve(sus)
-      }, (err) => {
-        console.log(err)
-        resolve(null)
-      })
+      this._srvNivel.create(data).subscribe(
+        (sus) => {
+          resolve(sus)
+        }, (err) => {
+          console.log(err)
+          resolve(null)
+        })
     })
   }
   update(data) {
