@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Tipo } from 'src/app/model/zona/tipo';
 import { TipoService } from 'src/app/services/zona/tipo.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tipos',
@@ -14,8 +15,8 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
 })
 export class TiposComponent implements OnInit {
 
-  
-  displayedColumns: string[] = ['nombre', 'edit', 'delete'];
+
+  displayedColumns: string[] = ['nombre', 'iniciales', 'flujo', 'edit', 'delete'];
   dataSource: MatTableDataSource<Tipo>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,7 +41,7 @@ export class TiposComponent implements OnInit {
     this.openDialog(msg, null);
   }
   onEdit(elemen) {
-    const msg = 'Editar Tipo'
+    const msg = 'Editar Tipo'  
     this.openDialog(msg, elemen)
   }
 
@@ -75,6 +76,30 @@ export class TiposComponent implements OnInit {
         resolve([])
       })
     })
+  }
+
+  onDeleting(element) {
+    let id = element.Id
+    Swal.fire({
+      icon: 'warning',
+      title: '¿Esta seguro de Eliminar?',
+      html: `Se eliminara permanentemente la informacion de la solicitud`,
+      showDenyButton: true,
+      confirmButtonText: `Eliminar`,
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._srvTipo.delete(id).subscribe(
+          (res) => {
+            if (res) {
+              Swal.fire('Información eliminada!', '', 'success')
+            }
+          },(err)=>{
+            Swal.fire('Se presento error eliminando registro', '', 'error')
+          })
+      }
+    })
+
   }
 
 }

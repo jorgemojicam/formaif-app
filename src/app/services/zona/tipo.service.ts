@@ -21,6 +21,6 @@ export class TipoService {
     return this.http.put(`${environment.AUTH_API}Tipo`, data);
   }
   delete(id) {
-    return this.http.delete(`${environment.AUTH_API}Tipo`);
+    return this.http.delete(`${environment.AUTH_API}Tipo`,id);
   }
 }
