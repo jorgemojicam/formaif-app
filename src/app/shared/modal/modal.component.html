@@ -42,7 +42,9 @@
         <ng-container *ngSwitchCase="'Tipo'">
             <app-tipo-form [datos]="data.content"></app-tipo-form>
         </ng-container>
-    
+        <ng-container *ngSwitchCase="'Correos'">
+            <app-correos-form [datos]="data.content"></app-correos-form>
+        </ng-container>
     </ng-container>
     
 </mat-dialog-content>

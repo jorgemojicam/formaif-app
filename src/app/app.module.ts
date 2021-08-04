@@ -56,6 +56,7 @@ import { ModulosFormComponent } from './components/admin/modulo/modulos-form/mod
 import { InventarioComponent } from './components/agil/inventario/inventario.component';
 import { InversionesComponent } from './components/agil/inversiones/inversiones.component';
 import { TipoFormComponent } from './components/zona/tipo/tipo-form/tipo-form.component';
+import { CorreosFormComponent } from './components/zona/correo/correos-form/correos-form.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { TipoFormComponent } from './components/zona/tipo/tipo-form/tipo-form.co
     InventarioComponent,
     ActivosComponent,
     ModulosFormComponent,
-    InversionesComponent
+    InversionesComponent,
+    CorreosFormComponent
   ],
   imports: [
     BrowserModule,
