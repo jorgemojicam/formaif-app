@@ -1,45 +1,47 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Flujo } from 'src/app/model/zona/flujo';
-import { FlujoService } from 'src/app/services/zona/flujo.service';
+import { Correo } from 'src/app/model/zona/correos';
+import { CorreosService } from 'src/app/services/zona/correos.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
-  selector: 'app-flujo-list',
-  templateUrl: './flujo-list.component.html',
-  styleUrls: ['./flujo-list.component.scss']
+  selector: 'app-correos',
+  templateUrl: './correos.component.html',
+  styleUrls: ['./correos.component.scss']
 })
-export class FlujoListComponent implements AfterViewInit {
+export class CorreosComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'edit', 'delete'];
-  dataSource: MatTableDataSource<Flujo>;
+  displayedColumns: string[] = ['nombre','asunto','cuerpo','img','estado', 'edit', 'delete'];
+  dataSource: MatTableDataSource<Correo>;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  aFlujo: Flujo[] = new Array()
-
+  
+  aCorreo: Correo[] = new Array()
+  
   constructor(
-    private _srvFlujo: FlujoService,
+    private _srvCorreos: CorreosService,
     public dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef
   ) { }
 
-  async ngAfterViewInit() {
-    this.aFlujo = await this.get() as Flujo[]
+  async ngOnInit() {
+    this.aCorreo = await this.get() as Correo[]
 
-    this.dataSource = new MatTableDataSource(this.aFlujo);
+    this.dataSource = new MatTableDataSource(this.aCorreo);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   onCreate() {
-    const msg = 'Crear Flujo';
+    const msg = 'Crear Configuracion de correo';
     this.openDialog(msg, null);
   }
   onEdit(elemen) {
-    const msg = 'Editar Flujo'
+    const msg = 'Editar Configuracion'
     this.openDialog(msg, elemen)
   }
 
@@ -48,7 +50,7 @@ export class FlujoListComponent implements AfterViewInit {
     const config = {
       data: {
         mensaje: menssage,
-        form: 'Flujo',
+        form: 'Correos',
         content: datos
       }
     };
@@ -56,8 +58,8 @@ export class FlujoListComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(async result => {
 
       if (result) {
-        this.aFlujo = await this.get() as Flujo[]
-        this.dataSource.data = this.aFlujo
+        this.aCorreo = await this.get() as Correo[]
+        this.dataSource.data = this.aCorreo
         this.changeDetectorRefs.detectChanges();
       }
 
@@ -66,7 +68,7 @@ export class FlujoListComponent implements AfterViewInit {
 
   get() {
     return new Promise(resolve => {
-      this._srvFlujo.get().subscribe((succ) => {
+      this._srvCorreos.get().subscribe((succ) => {
         resolve(succ)
       }, (err) => {
         console.log(err)
@@ -74,7 +76,5 @@ export class FlujoListComponent implements AfterViewInit {
       })
     })
   }
-
-
 
 }
