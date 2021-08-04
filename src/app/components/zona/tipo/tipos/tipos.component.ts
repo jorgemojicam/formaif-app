@@ -30,7 +30,6 @@ export class TiposComponent implements OnInit {
 
   async ngOnInit() {
     this.aTipo = await this.get() as Tipo[]
-
     this.dataSource = new MatTableDataSource(this.aTipo);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -58,8 +57,7 @@ export class TiposComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async result => {
 
       if (result) {
-        this.aTipo = await this.get() as Tipo[]
-        console.log(this.aTipo)
+        this.aTipo = await this.get() as Tipo[]     
         this.dataSource.data = this.aTipo
         this.changeDetectorRefs.detectChanges();
       }
@@ -78,21 +76,26 @@ export class TiposComponent implements OnInit {
     })
   }
 
-  onDeleting(element) {
-    let id = element.Id
+  onDeleting(element) {    
+ 
     Swal.fire({
       icon: 'warning',
       title: '¿Esta seguro de Eliminar?',
-      html: `Se eliminara permanentemente la informacion de la solicitud`,
+      html: `Se eliminara permanentemente la informacion del registro`,
       showDenyButton: true,
       confirmButtonText: `Eliminar`,
       denyButtonText: `Cancelar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        this._srvTipo.delete(id).subscribe(
-          (res) => {
+        this._srvTipo.delete(element.Id).subscribe(
+          async (res) => {
             if (res) {
               Swal.fire('Información eliminada!', '', 'success')
+              this.aTipo = await this.get() as Tipo[]     
+              this.dataSource.data = this.aTipo
+              this.changeDetectorRefs.detectChanges();
+            }else{
+              Swal.fire('Se presento error eliminando registro', '', 'error')  
             }
           },(err)=>{
             Swal.fire('Se presento error eliminando registro', '', 'error')

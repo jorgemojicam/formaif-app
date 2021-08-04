@@ -38,10 +38,11 @@ export class NivelListComponent implements AfterViewInit {
   }
 
   async ngAfterViewInit() {
-    this.niveles = await this.get() as Nivel[]
+   
     this.aFlujo = await this.getFlujo() as Flujo[]
     this.flujo = this.aFlujo[0];
-    this.aNiveles = this.niveles.filter(a => a.Flujo.Id == this.flujo.Id)
+    this.changeFlujo(this.flujo)
+    console.log(this.aNiveles)
   }
 
   get() {
@@ -89,11 +90,17 @@ export class NivelListComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(async result => {
 
       if (result) {
-        this.aNiveles = await this.get() as Nivel[]
+        
+        this.changeFlujo(this.flujo)
         this.changeDetectorRefs.detectChanges();
       }
 
     })
+  }
+
+  onEdit(elemen) {
+    const msg = 'Editar Nivel'
+    this.openDialog(msg, elemen)
   }
 
   compareFunction(o1: any, o2: any) {
@@ -115,22 +122,20 @@ export class NivelListComponent implements AfterViewInit {
         Orden: index + 1,
         Rol: {
           Id: value.Rol.Id
-        }
+        },
+        DiasNotificacion:value.DiasNotificacion,
+        DiasANS: value.DiasANS
       }      
       let res = await this.update(data)     
       console.log(res)
-
-    });
-
-    
+    });    
 
   }
 
 
-  changeFlujo(e) {
-    this.aNiveles = new Array()
-    this.aNiveles = this.niveles.filter(a => a.Flujo.Id == e.Id)
-    console.log(e)
+  async changeFlujo(e) {   
+    this.niveles = await this.get() as Nivel[]
+    this.aNiveles = this.niveles.filter(a => a.Flujo.Id == e.Id)   
   }
 
   update(data) {

@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Regional } from 'src/app/model/admin/regional';
 import { Rol } from 'src/app/model/admin/rol';
 import { RegionalService } from 'src/app/services/regional.service';
 import { RolService } from 'src/app/services/rol.service';
+import { ResponsablesService } from 'src/app/services/zona/responsables.service';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'app-responsables-form',
@@ -14,7 +17,9 @@ export class ResponsablesFormComponent implements OnInit {
 
   constructor(
     private _srvRol: RolService,
-    private _srvRegional: RegionalService
+    private _srvRegional: RegionalService,
+    private _srvResponsable:ResponsablesService,  
+    private dialogRef: MatDialogRef<ModalComponent>,
   ) {
 
   }
@@ -35,17 +40,21 @@ export class ResponsablesFormComponent implements OnInit {
   }
 
   async onSave() {
-
+    console.log(this.responsableForm.value)
     if (this.responsableForm.valid) {
       let data = {
         Username: this.responsableForm.value.username,
         Regional: {
-          Id: this.responsableForm.value.Regional.Codido
+          Id: this.responsableForm.value.regional.Codido
         },
         Rol: {
-          Id: this.responsableForm.value.Rol.Id
+          Id: this.responsableForm.value.rol.Id
         }
       }
+
+      let res = await this.create(data)
+      console.log("->",res)
+      this.dialogRef.close(res)
     }
 
   }
@@ -63,6 +72,16 @@ export class ResponsablesFormComponent implements OnInit {
   getRegional() {
     return new Promise(resolve => {
       this._srvRegional.get().subscribe((suc) => {
+        resolve(suc)
+      }, (err) => {
+        console.log(err)
+        resolve([])
+      })
+    })
+  }
+  create(data){
+    return new Promise(resolve => {
+      this._srvResponsable.create(data).subscribe((suc) => {
         resolve(suc)
       }, (err) => {
         console.log(err)

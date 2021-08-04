@@ -23,7 +23,6 @@ export class GestionZonaComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  flujo: any
   id: any
   identificador: string = null
   loading: boolean = false
@@ -65,8 +64,10 @@ export class GestionZonaComponent implements OnInit {
     const that = this
 
     this.tipos = await this.getTipo() as Tipo[]
-    
-    if (this.id) {
+   
+    //Si la solicitud es nueva
+    if (this.id) 
+    {
       let stepselect = 0
       let arrayNiveles = this._formBuilder.array([])
       this.formNiveles = this._formBuilder.group({
@@ -109,8 +110,11 @@ export class GestionZonaComponent implements OnInit {
         asesoresactual: [this.dataSolicitud.NumeroActual],
         asesoresaprobados: [this.dataSolicitud.NumeroAprobado]
       });
+
       this.stepper.selectedIndex = stepselect;
-    } else {
+    } 
+    //la solicitud ya existe
+    else {
 
       let arrayNiveles = that._formBuilder.array([])
       this.formNiveles = this._formBuilder.group({
@@ -124,9 +128,7 @@ export class GestionZonaComponent implements OnInit {
         asesoresactual: [null],
         asesoresaprobados: [null]
       });
-      let resFlujo = await this.getFlujo() as any
-      this.flujo = resFlujo.data
-      console.log(this.flujo)
+     
       this.stepper.selectedIndex = 0;
     }
 
@@ -154,36 +156,9 @@ export class GestionZonaComponent implements OnInit {
         Fecha: new Date(),
         Usuario: {
           Clave: this.dataUsuario.Clave
-        },
-        Flujo: {
-          Id: this.flujo.Id
         }
       }
-
-      console.log(data)
-      console.log(this.registroForm)
-
       let res = await this.create(data) as SolicitudZona
-      /*
-      if (res) {
-        let nivels = await this.getNivel(this.flujo.Id) as any
-        nivels.forEach(async element => {
-          let dataSeg = {
-            Solicitud: {
-              Id: res.Id
-            },
-            Estado: {
-              Id: 0
-            },
-            Nivel: {
-              Id: element.Id
-            }
-          }
-          let resSeg = await this.createSeguimiento(dataSeg) as Seguimiento
-          console.log('res seguim', resSeg)
-        });
-      }
-      */
       this.loading = false
     }
   }
@@ -191,7 +166,7 @@ export class GestionZonaComponent implements OnInit {
   async onGestion(estado) {
     if (estado == 3) {
 
-      let nivel = await this.getNivel(this.dataSolicitud.Flujo.Id) as any
+      let nivel = await this.getNivel(this.dataSolicitud.Tipo.Flujo.Id) as any
 
       nivel.forEach(async element => {
         let data = {
@@ -211,6 +186,9 @@ export class GestionZonaComponent implements OnInit {
       });
 
       this.dataSolicitud.Estado.Id = estado
+      console.log("datasoliucit ",this.dataSolicitud)
+      let updatesol = await this.update(this.dataSolicitud)
+      console.log(updatesol)
 
     }
   }

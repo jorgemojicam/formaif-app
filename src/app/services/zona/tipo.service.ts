@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,6 @@ export class TipoService {
     return this.http.put(`${environment.AUTH_API}Tipo`, data);
   }
   delete(id) {
-    return this.http.delete(`${environment.AUTH_API}Tipo`,id);
+    return this.http.delete(`${environment.AUTH_API}Tipo/${id}`);
   }
 }

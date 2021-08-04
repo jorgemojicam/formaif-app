@@ -14,9 +14,6 @@ export class SolicitudZona {
     Estado: {
         Id: number;
         Nombre: string;
-    };
-    Flujo: {
-        Id: number;
-    }
+    };    
 
 }

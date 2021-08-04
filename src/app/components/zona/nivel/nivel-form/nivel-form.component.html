@@ -21,7 +21,7 @@
         <div class="gr" fxFlex="80%" fxFlex.xs="80%" fxFlex.sm="80%">
             <mat-form-field appearance="outline">
                 <mat-label>Seleccione Responsable</mat-label>
-                <mat-select formControlName="rol" placeholder="">
+                <mat-select formControlName="rol" [compareWith]="compareFunction">
                     <mat-option disabled>Seleccione </mat-option>
                     <mat-option *ngFor="let ro of aRol" [value]="ro">
                         {{ro.Nombre}}
@@ -37,12 +37,28 @@
             </mat-form-field>
         </div>
 
-        <br>
-        <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-            <button type="submit" mat-raised-button [disabled]="!nivelForm.valid" color="primary">Guardar</button>
+        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+            <mat-form-field appearance="outline">
+                <mat-label>ANS</mat-label>
+                <input type="number" matInput placeholder="Numero de Dias" formControlName="diasans">
+            </mat-form-field>
         </div>
-        <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
-            <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+
+        <div class="gr" fxFlex="50%" fxFlex.xs="50%" fxFlex.sm="50%">
+            <mat-form-field appearance="outline">
+                <mat-label>Notificacion</mat-label>
+                <input type="number" matInput placeholder="Numero de Dias" formControlName="diasnotificacion">
+            </mat-form-field>
+        </div>
+
+        <br>
+        <div class="btnsoli" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+            <button style="width: 100%;" type="submit" mat-raised-button [disabled]="!nivelForm.valid" color="primary">Guardar</button>
+        </div>
+        <div fxFlex="60%" fxFlex.xs="60%" fxFlex.sm="60%">
+        </div>
+        <div class="btnsoli" fxFlex="20%" fxFlex.xs="20%" fxFlex.sm="20%">
+            <button style="width: 100%;" mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
         </div>
     </div>
 </form>

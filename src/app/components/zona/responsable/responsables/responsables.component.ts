@@ -82,6 +82,12 @@ export class ResponsablesComponent implements AfterViewInit {
     })
   }
 
+  onEdit(elemen) {
+    const msg = 'Editar Responsables'
+    this.openDialog(msg, elemen)
+  }
+
+
   compareFunction(o1: any, o2: any) {
     return o1 && o2 ? o1.Id === o2.Id : o1 === o2;
   }
