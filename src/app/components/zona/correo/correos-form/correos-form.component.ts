@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CorreosService } from 'src/app/services/zona/correos.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
+
 @Component({
   selector: 'app-correos-form',
   templateUrl: './correos-form.component.html',
@@ -19,10 +20,20 @@ export class CorreosFormComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) { }
 
+  aEstado = [
+    { Nombre: "Pendiente", Id: 1 },
+    { Nombre: "Aprobado", Id: 2 },
+    { Nombre: "Rechazado", Id: 3 },
+    { Nombre: "En Traamite", Id: 4 },
+  ]
+
   correoForm: FormGroup = new FormGroup({
     id: new FormControl(null),
-    nombre: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    asunto: new FormControl('', [Validators.required])
+    nombre: new FormControl('', [Validators.required]),
+    asunto: new FormControl('', [Validators.required]),
+    cuerpo: new FormControl('', [Validators.required]),
+    img: new FormControl('', [Validators.required]),
+    estado: new FormControl('', [Validators.required]),
   })
 
   async ngOnInit() {
@@ -31,7 +42,10 @@ export class CorreosFormComponent implements OnInit {
       this.correoForm.patchValue({
         id: this.datos.Id,
         nombre: this.datos.Nombre,
-        asunto: this.datos.Asunto
+        asunto: this.datos.Asunto,
+        cuerpo: this.datos.Cuerpo,
+        img: this.datos.Img,
+        estado: this.datos.Estado,
       }, { emitEvent: false })
     }
   }
@@ -39,13 +53,14 @@ export class CorreosFormComponent implements OnInit {
   async onSave() {
 
     if (this.correoForm.valid) {
-      let flujo = this.correoForm.value
+      let correos = this.correoForm.value
+      console.log(correos)
       let data = {
         id: null,
-        nombre: flujo.nombre
+        nombre: correos.nombre
       }
-      if (flujo.id) {
-        data.id = flujo.id
+      if (correos.id) {
+        data.id = correos.id
         let res = await this.update(data) as any
         if (res) {
           this._snackBar.open('Se actualizo correctamente', "Ok!", { duration: 4000, });
@@ -89,6 +104,10 @@ export class CorreosFormComponent implements OnInit {
           resolve(null)
         })
     })
+  }
+
+  compareFunction(o1: any, o2: any) {
+    return o1 && o2 ? o1.Id === o2.Id : o1 === o2;
   }
 
 }
