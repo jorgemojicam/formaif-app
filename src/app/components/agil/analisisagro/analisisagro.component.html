@@ -1037,7 +1037,7 @@
                             <td style="text-align:center">{{egrePec.cantidad}}</td>
                             <td style="text-align:right">${{egrePec.valorunitario}}</td>
                             <td style="text-align:right">${{egrePec.total}}</td>
-                            <td style="text-align:center">{{Mes(egrePec.mes)}}</td>
+                            <td style="text-align:center" *ngIf="egrePec.mes">{{Mes(egrePec.mes)}}</td>
                         </tr>
                     </tbody>
                     <tr>
@@ -1117,7 +1117,6 @@
                     <td colspan="4" style="text-align:right">${{act.totalPromedio}}</td>
                 </tr>
             </table>
-
 
             <table>
                 <thead>

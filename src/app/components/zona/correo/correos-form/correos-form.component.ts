@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CorreosService } from 'src/app/services/zona/correos.service';
+import { EstadosService } from 'src/app/services/zona/estados.service';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 
@@ -16,16 +17,12 @@ export class CorreosFormComponent implements OnInit {
   @Input() datos: any
   constructor(
     private _srvCorreos: CorreosService,
+    private _srvEstados: EstadosService,
     private dialogRef: MatDialogRef<ModalComponent>,
     private _snackBar: MatSnackBar,
   ) { }
 
-  aEstado = [
-    { Nombre: "Pendiente", Id: 1 },
-    { Nombre: "Aprobado", Id: 2 },
-    { Nombre: "Rechazado", Id: 3 },
-    { Nombre: "En Traamite", Id: 4 },
-  ]
+  aEstado = []
 
   correoForm: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -37,8 +34,11 @@ export class CorreosFormComponent implements OnInit {
   })
 
   async ngOnInit() {
+
+    this.aEstado = await this.getEstados() as []
+
     if (this.datos) {
-      console.log(this.datos)
+
       this.correoForm.patchValue({
         id: this.datos.Id,
         nombre: this.datos.Nombre,
@@ -54,13 +54,19 @@ export class CorreosFormComponent implements OnInit {
 
     if (this.correoForm.valid) {
       let correos = this.correoForm.value
-      console.log(correos)
+
       let data = {
-        id: null,
-        nombre: correos.nombre
+        Id: null,
+        Nombre: correos.nombre,
+        Asunto: correos.asunto,
+        Cuerpo: correos.cuerpo,
+        Img: correos.img,
+        Estado: {
+          Id: correos.estado.Id
+        }
       }
-      if (correos.id) {
-        data.id = correos.id
+      if (this.datos) {
+        data.Id = correos.id
         let res = await this.update(data) as any
         if (res) {
           this._snackBar.open('Se actualizo correctamente', "Ok!", { duration: 4000, });
@@ -97,6 +103,17 @@ export class CorreosFormComponent implements OnInit {
   update(data) {
     return new Promise(resolve => {
       this._srvCorreos.update(data).subscribe(
+        (suss) => {
+          resolve(suss)
+        }, (err) => {
+          this._snackBar.open('Error enviando peticion ' + err, "Ok!", { duration: 4000, });
+          resolve(null)
+        })
+    })
+  }
+  getEstados() {
+    return new Promise(resolve => {
+      this._srvEstados.get().subscribe(
         (suss) => {
           resolve(suss)
         }, (err) => {

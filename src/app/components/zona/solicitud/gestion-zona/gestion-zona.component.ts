@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Asesor } from 'src/app/model/admin/asesor';
 import { SolicitudZona } from 'src/app/model/zona/solicitudzona';
 import { FlujoService } from 'src/app/services/zona/flujo.service';
@@ -13,6 +13,8 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { SeguimientoService } from 'src/app/services/zona/seguimiento.service';
 import { Seguimiento } from 'src/app/model/zona/seguimiento';
 import { Tipo } from 'src/app/model/zona/tipo';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Nivel } from 'src/app/model/zona/nivel';
 
 @Component({
   selector: 'app-gestion-zona',
@@ -44,6 +46,8 @@ export class GestionZonaComponent implements OnInit {
   dataUsuario: Asesor = this._srvStorage.getUser();
   dataSolicitud: SolicitudZona = new SolicitudZona
   dataSeguimiento: Seguimiento[]
+  aNivel:Nivel[]
+  primerApr:Boolean = false
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -54,7 +58,9 @@ export class GestionZonaComponent implements OnInit {
     private _srvNivel: NivelService,
     private _srvSeguimiento: SeguimientoService,
     private _srvHistorial: HistorialService,
-    private _actiro: ActivatedRoute
+    private _actiro: ActivatedRoute,
+    private _route: Router,
+    private _snackBar: MatSnackBar,
   ) {
     this._actiro.queryParamMap.subscribe((params) => {
       this.id = params.get('id')
@@ -64,19 +70,25 @@ export class GestionZonaComponent implements OnInit {
     const that = this
 
     this.tipos = await this.getTipo() as Tipo[]
-   
+    
     //Si la solicitud es nueva
-    if (this.id) 
-    {
+    if (this.id) {
       let stepselect = 0
       let arrayNiveles = this._formBuilder.array([])
       this.formNiveles = this._formBuilder.group({
         niveles: arrayNiveles
       })
-
-      this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona
+     
+      this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona      
       this.dataSeguimiento = await this.getSeguimientoBySol(this.id) as Seguimiento[]
+      this.aNivel = await this.getNivel(this.dataSolicitud.Tipo.Flujo.Id) as Nivel[]
+            
+      let nivelDos = this.aNivel.find(a => a.Orden == 2)
       
+      if(nivelDos.Rol.Id == this.dataUsuario.Rol.Id){
+        this.primerApr = true        
+      }      
+
       if (this.dataSeguimiento) {
         for (let i = 0; i < this.dataSeguimiento.length; i++) {
           const seg = this.dataSeguimiento[i]
@@ -112,7 +124,7 @@ export class GestionZonaComponent implements OnInit {
       });
 
       this.stepper.selectedIndex = stepselect;
-    } 
+    }
     //la solicitud ya existe
     else {
 
@@ -128,7 +140,7 @@ export class GestionZonaComponent implements OnInit {
         asesoresactual: [null],
         asesoresaprobados: [null]
       });
-     
+
       this.stepper.selectedIndex = 0;
     }
 
@@ -159,7 +171,17 @@ export class GestionZonaComponent implements OnInit {
         }
       }
       let res = await this.create(data) as SolicitudZona
+      console.log(res)
+      if (res.Id) {
+        this._snackBar.open('Se ingreso correctamente la solicitud', "Ok!", { duration: 4000, });
+        this._route.navigate(['zona/gestion'], { queryParams: { id: res.Id } });
+        this.ngOnInit()
+        
+      }else{
+        this._snackBar.open('Se presento error', "Ok!", { duration: 4000, });
+      }
       this.loading = false
+
     }
   }
 
@@ -186,7 +208,7 @@ export class GestionZonaComponent implements OnInit {
       });
 
       this.dataSolicitud.Estado.Id = estado
-      console.log("datasoliucit ",this.dataSolicitud)
+      console.log("datasoliucit ", this.dataSolicitud)
       let updatesol = await this.update(this.dataSolicitud)
       console.log(updatesol)
 
