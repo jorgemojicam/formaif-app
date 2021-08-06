@@ -1,0 +1,58 @@
+<div class="container">
+
+    <div class="mat-elevation-z8">
+
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
+            </ng-container>
+            <ng-container matColumnDef="asunto">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Asunto</th>
+                <td mat-cell *matCellDef="let row"> {{row.Asunto}} </td>
+            </ng-container>
+            <ng-container matColumnDef="cuerpo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Cuerpo</th>
+                <td mat-cell *matCellDef="let row"> {{row.Cuerpo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="img">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Imagen</th>
+                <td mat-cell *matCellDef="let row"> {{row.Img}} </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+                <td mat-cell *matCellDef="let row"> {{row.Estado.Nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="accent" (click)="onEdit(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <button mat-mini-fab type="button" color="primary" (click)="onCreate()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No se encontraron registros</td>
+            </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>

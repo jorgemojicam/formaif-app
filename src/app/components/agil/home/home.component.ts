@@ -182,16 +182,18 @@ export class HomeComponent implements OnInit {
           return
         }
         let asesor = await this.getDirector() as Asesor
-        /*
+        
         let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
         let solCarpeta = JSON.parse(strcarpetaDig)
+
+        console.log(solCarpeta)
   
-        if (solCarpeta.EstadoCarpeta !== "Abierto") {
-          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+        if (solCarpeta.EstadoCarpeta !== "Trámite") {
+          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Tramitado', 'info')
           this.procesando = false
           return
         }
-       */
+     
         if (asesor.Director) {
           let emailDirector = asesor.Director.Correo
           let nombreDirector = asesor.Director.Nombre
@@ -371,7 +373,8 @@ export class HomeComponent implements OnInit {
       To: emailDir,
       Subject: asunto,
       Body: `<h3>Buen dia,</h3>
-      <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`, ListBase64Pdf: pdfBase64
+      <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`, 
+      ListBase64Pdf: pdfBase64
     }
 
     let emailParam = {

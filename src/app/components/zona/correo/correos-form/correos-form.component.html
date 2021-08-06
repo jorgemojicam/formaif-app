@@ -1,0 +1,43 @@
+<form [formGroup]="correoForm" (ngSubmit)="onSave()">
+    <div fxLayout="row wrap">
+
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="text" autocomplete="off" matInput placeholder="Nombre" formControlName="nombre">
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="text" autocomplete="off" matInput placeholder="Asunto" formControlName="asunto">
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="80%" fxFlex.xs="80%" fxFlex.sm="80%">
+            <mat-form-field>
+                <mat-label>Seleccione Estado</mat-label>
+                <mat-select formControlName="estado" [compareWith]="compareFunction">
+                    <mat-option disabled>Seleccione </mat-option>
+                    <mat-option *ngFor="let esta of aEstado" [value]="esta">
+                        {{esta.Nombre}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="text" autocomplete="off" matInput placeholder="Cuerpo" formControlName="cuerpo">
+            </mat-form-field>
+        </div>
+        <div class="gr" fxFlex="100%" fxFlex.xs="100%" fxFlex.sm="100%">
+            <mat-form-field>
+                <input type="text" autocomplete="off" matInput placeholder="URL Imagen" formControlName="img">
+            </mat-form-field>
+        </div>
+        <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button type="submit" mat-raised-button [disabled]="!correoForm.valid" color="primary">Guardar</button>
+        </div>
+        <div class="btnsoli" fxFlex="40%" fxFlex.xs="40%" fxFlex.sm="40%">
+            <button mat-raised-button color="accent" mat-dialog-close>Cerrar</button>
+        </div>
+
+    </div>
+</form>

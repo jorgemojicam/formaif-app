@@ -9,4 +9,6 @@ export class Nivel {
     Orden:number;
     Flujo:Flujo    
     Editable:boolean;
+    DiasNotificacion:number;
+    DiasANS:number;
 }

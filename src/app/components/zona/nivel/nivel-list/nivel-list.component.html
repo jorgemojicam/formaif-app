@@ -51,7 +51,7 @@
                     {{item.Rol.Nombre}}
                 </div>
                 <div class="gr" fxFlex="10%" fxFlex.xs="10%" fxFlex.sm="10%">
-                    <button mat-icon-button color="accent">
+                    <button mat-icon-button (click)="onEdit(item)" color="accent">
                         <mat-icon>edit</mat-icon>
                     </button>
                 </div>

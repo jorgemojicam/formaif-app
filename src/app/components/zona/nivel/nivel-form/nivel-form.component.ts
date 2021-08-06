@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Rol } from 'src/app/model/admin/rol';
 import { Flujo } from 'src/app/model/zona/flujo';
 import { RolService } from 'src/app/services/rol.service';
 import { FlujoService } from 'src/app/services/zona/flujo.service';
 import { NivelService } from 'src/app/services/zona/nivel.service';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
 
 @Component({
   selector: 'app-nivel-form',
@@ -16,8 +19,9 @@ export class NivelFormComponent implements OnInit {
   constructor(
     private _srvRol: RolService,
     private _srvFlujo: FlujoService,
-    private _srvNivel: NivelService 
-   
+    private _srvNivel: NivelService,
+    private dialogRef: MatDialogRef<ModalComponent>,
+    private _snackBar: MatSnackBar,
   ) { }
 
   @Input() datos: any
@@ -29,7 +33,9 @@ export class NivelFormComponent implements OnInit {
     nombre: new FormControl(null, Validators.required),
     flujo: new FormControl(null, Validators.required),
     orden: new FormControl('', Validators.required),
-    rol: new FormControl(null, Validators.required)
+    rol: new FormControl(null, Validators.required),
+    diasans: new FormControl(null, Validators.required),
+    diasnotificacion: new FormControl(null, Validators.required),
   })
 
   async ngOnInit() {
@@ -40,6 +46,14 @@ export class NivelFormComponent implements OnInit {
       flujo: this.datos.Flujo,
       orden: this.datos.Orden
     }, { emitEvent: false })
+    if (this.datos) {
+      this.nivelForm.patchValue({
+        nombre: this.datos.Nombre,
+        rol: this.datos.Rol,
+        diasans: this.datos.DiasNotificacion,
+        diasnotificacion: this.datos.DiasNotificacion,
+      }, { emitEvent: false })
+    }
   }
 
   async onSave() {
@@ -53,17 +67,25 @@ export class NivelFormComponent implements OnInit {
       Orden: this.nivelForm.value.orden,
       Rol: {
         Id: this.nivelForm.value.rol.Id
-      }
+      },
+      DiasNotificacion: parseInt(this.nivelForm.value.diasnotificacion),
+      DiasANS: parseInt(this.nivelForm.value.diasans)
     }
-
-    console.log(data)
 
     if (this.datos.Id) {
       data.Id = this.datos.Id
+      console.log(data)
       let res = await this.update(data)
+      if (res) {
+        this._snackBar.open('Se modifico correctamente', "Ok!", { duration: 4000, });
+        this.dialogRef.close(true)
+      }else{
+        this._snackBar.open('Se presento un error', "Ok!", { duration: 4000, });
+      }
+      console.log("update->", res)
     } else {
       let res = await this.create(data)
-
+      console.log("create->", res)
     }
 
   }
@@ -110,7 +132,7 @@ export class NivelFormComponent implements OnInit {
         resolve(sus)
       }, (err) => {
         console.log(err)
-        resolve(null)
+        resolve(false)
       })
     })
   }

@@ -19,7 +19,6 @@ export class RegistroFormComponent implements OnInit {
     if(this.solicitud){
       this.id = this.solicitud.Id
       this.datasolicitud = this.solicitud
-      console.log('registro',this.datasolicitud)
     }
   }
 

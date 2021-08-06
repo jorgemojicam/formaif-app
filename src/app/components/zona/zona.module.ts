@@ -18,6 +18,7 @@ import { ResponsablesComponent } from './responsable/responsables/responsables.c
 
 import { CarteraInicialComponent } from './solicitud/cartera/cartera-inicial/cartera-inicial.component';
 import { TiposComponent } from './tipo/tipos/tipos.component';
+import { CorreosComponent } from './correo/correos/correos.component';
 @NgModule({
   declarations: [
     GestionZonaComponent, 
@@ -32,6 +33,7 @@ import { TiposComponent } from './tipo/tipos/tipos.component';
     ResponsablesComponent,
     CarteraInicialComponent,
     TiposComponent,
+    CorreosComponent    
   ],
   imports: [
     CommonModule,

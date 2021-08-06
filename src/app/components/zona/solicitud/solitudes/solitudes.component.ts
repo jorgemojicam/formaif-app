@@ -27,7 +27,7 @@ export class SolitudesComponent implements OnInit {
   loading: boolean = true
   dataUsuario: Asesor = this._srvStorage.getUser();
   oficina
-  isOficce:boolean = false
+  isOficce:boolean = true
 
   constructor(
     private _srvSolicitudZ: SolicitudzonaService,
