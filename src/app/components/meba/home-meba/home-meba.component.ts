@@ -121,16 +121,16 @@ export class HomeMebaComponent implements AfterViewInit {
         return
       }
 
-      /*
-            let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
-            let solCarpeta = JSON.parse(strsolCarpeta)
-      
-            if (solCarpeta.EstadoCarpeta !== "Abierto") {
-              this.loading = false
-              Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
-              return
-            }
-      */
+
+      let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
+      let solCarpeta = JSON.parse(strsolCarpeta)
+
+      if (solCarpeta.EstadoCarpeta !== "Abierto") {
+        this.loading = false
+        Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+        return
+      }
+
 
       let asesores: Asesor = this._srvToken.getUser()
       this.loading = false
@@ -209,9 +209,8 @@ export class HomeMebaComponent implements AfterViewInit {
       this.datasol = datos
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
-        html: `Se enviara email a:
-      <br><b>`+ asesores.Director.Nombre + `</b>, 
-      <br><small>${asesores.Director.Correo}</small>
+        html: `Insertara el analisis en carpeta digital:
+      
       <br><b>Solicitud :</b>` + datos.solicitud + `
       <br><b>Oficina :</b> `+ asesores.Sucursales.Nombre,
         icon: 'warning',
@@ -243,7 +242,7 @@ export class HomeMebaComponent implements AfterViewInit {
                   this.datasol = null
 
                   //b.textContent = "Enviando email..."
-                  let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
+                  //let email = `${asesores.Clave.toLocaleLowerCase()}@fundaciondelamujer.com`;
 
                   let listBase64 = [
                     {
@@ -253,7 +252,7 @@ export class HomeMebaComponent implements AfterViewInit {
                   ]
 
 
-                  let evio =  await this.send(listBase64, asesores.Director.Nombre, asesores.Director.Correo, "MEBA", asesores.Nombre)
+                  //let evio = await this.send(listBase64, asesores.Director.Nombre, asesores.Director.Correo, "MEBA", asesores.Nombre)
 
                   b.textContent = "Cargando en base de datos..."
                   let idAnalisis: any = await this.setAnalisis(datos)
@@ -278,11 +277,11 @@ export class HomeMebaComponent implements AfterViewInit {
                     }
 
                   }
-                  /*
+                  
                   b.textContent = "Insertando en carpeta digital..."
                   let insertaCarpeta = await this.inserCarpetaDigital(datos, pdfBase64, 4)
                   console.log("Insertndo el carpeta digital ", insertaCarpeta)
-                  */
+                  
                   Swal.close()
                   Swal.fire('Enviado!', 'Se envio correctamente', 'success')
                   this.procesando = false

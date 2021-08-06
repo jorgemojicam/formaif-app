@@ -185,13 +185,21 @@ export class HomeComponent implements OnInit {
         
         let strcarpetaDig = await this.getCarpetaDigital(this.datasol.solicitud) as string
         let solCarpeta = JSON.parse(strcarpetaDig)
-
-        console.log(solCarpeta)
-  
-        if (solCarpeta.EstadoCarpeta !== "Trámite") {
-          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Tramitado', 'info')
+ 
+        if (solCarpeta.EstadoCarpeta !== "Abierto") {                   
+          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
           this.procesando = false
           return
+        }else{
+         
+          solCarpeta.lstMetadata.forEach(element => {  
+             
+            if(element.Nombre.toLowerCase().trimEnd() =="estado credito" && element.Valor != "En Trámite"){
+              Swal.fire('Carpeta Digital', `El estado del credito es <b>${element.Valor}</b> por lo tanto no puede insertar en carpeta digital`, 'info')
+              this.procesando = false
+              return
+            }
+          }); 
         }
      
         if (asesor.Director) {
@@ -199,9 +207,7 @@ export class HomeComponent implements OnInit {
           let nombreDirector = asesor.Director.Nombre
           Swal.fire({
             title: '¿Desea Enviar Analisis de credito?',
-            html: `Se enviara email al director:
-        <br><b>${nombreDirector}</b>, 
-        <br><small>${emailDirector}</small>
+            html: `Insertara el analisis en carpeta digital:     
         <br><b>Solicitud :</b>${numeroCedula}
         <br><b>Oficina :</b>${asesor.Sucursales.Nombre}`,
             icon: 'warning',
@@ -242,13 +248,13 @@ export class HomeComponent implements OnInit {
                             Name: "FlujoDeCaja.pdf"
                           }
                         ]
-                        b.textContent = "Enviando email Flujo..."
-                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
-                        //b.textContent = "Insertando en carpeta digital..."
-                        //let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
-                        //console.log("Insetando analisis el carpeta digital", resCarpeta)
-                        //let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64Agro, 3)
-                        //console.log("Insertando flujo en carpeta", resCarpetaFlujo)
+                        //b.textContent = "Enviando email Flujo..."
+                        //await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
+                        b.textContent = "Insertando en carpeta digital..."
+                        let resCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 2)
+                        console.log("Insetando analisis el carpeta digital", resCarpeta)
+                        let resCarpetaFlujo = await this.inserCarpetaDigital(this.datasol, pdfBase64flujo, 3)
+                        console.log("Insertando flujo en carpeta", resCarpetaFlujo)
                       } else if (this.datasol.asesor == 1) {
                         const contentana = this.analisis.reporte.nativeElement
                         b.textContent = "Generacion Analisis de credito pdf..."
@@ -259,10 +265,11 @@ export class HomeComponent implements OnInit {
                             Name: "AnalisisDeCredito.pdf"
                           }
                         ]
-                        b.textContent = "Enviando email..."
-                        await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
-                        //let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
-                        //console.log("Insertndo el | digital", solCarpeta)
+                        //b.textContent = "Enviando email..."
+                        //await this.send(listBase64, nombreDirector, emailDirector, "Analisis de Credito - " + this.datasol.solicitud, asesor.Nombre)
+                        b.textContent = "Insertando en carpeta digital..."
+                        let solCarpeta = await this.inserCarpetaDigital(this.datasol, pdfBase64, 1)
+                        console.log("Insertndo en carpeta digital", solCarpeta)
                       }
                       b.textContent = "Insertando el analisis..."
                       await this.insert(this.datasol)
