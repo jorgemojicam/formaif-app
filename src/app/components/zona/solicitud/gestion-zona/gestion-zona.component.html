@@ -99,25 +99,32 @@
                                     <mat-list-item class="content-obser mat-elevation-z1"
                                         *ngFor="let his of niv.value.Historial">
                                         <mat-icon mat-list-icon>account_circle</mat-icon>
+                                        <div mat-line><b>{{his.Usuario}}</b></div>
                                         <div mat-line>{{his.Comentario}}</div>
-                                        <div mat-line><small> {{his.Fecha | date:'yyyy-MM-dd HH:mm'}}</small> </div>
+                                        <div mat-line><small style="position: absolute;right: 20px;"> {{his.Fecha |
+                                                date:'yyyy-MM-dd HH:mm'}}</small> </div>
                                     </mat-list-item>
                                 </mat-list>
                             </div>
-                            <div *ngIf="niv.value.isEditable" class="gr" fxFlex="100%" fxFlex.xs="100%"
-                                fxFlex.sm="100%">
-                                <mat-form-field>
-                                    <mat-label>Nueva Observacion</mat-label>
-                                    <textarea formControlName="Observacion" matInput></textarea>
-                                </mat-form-field>
-                            </div>
+                            <ng-container *ngIf="niv.value.Estado.Id ==2">
+                                <div *ngIf="niv.value.isEditable" class="container-obser" fxFlex="100%" fxFlex.xs="100%"
+                                    fxFlex.sm="100%">
+                                    <mat-form-field hintLabel="Minimo 50">
+                                        <mat-label>Nueva Observacion</mat-label>
+                                        <textarea #input formControlName="Observacion" matInput></textarea>
+                                        <mat-hint align="end">{{input.value?.length || 0}}/50</mat-hint>
+                                    </mat-form-field>
+                                </div>
 
-                            <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                                <button mat-raised-button color="primary">APROBAR</button>
-                            </div>
-                            <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
-                                <button mat-raised-button color="warn">DEVOLVER</button>
-                            </div>
+                                <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                    <button mat-raised-button [disabled]="!niv.valid" (click)="gestionHistorial(3,niv)"
+                                        color="primary">APROBAR</button>
+                                </div>
+                                <div *ngIf="niv.value.isEditable" fxFlex="33%" fxFlex.xs="33%" fxFlex.sm="33%">
+                                    <button mat-raised-button [disabled]="!niv.valid" (click)="gestionHistorial(2,niv)"
+                                        color="warn">DEVOLVER</button>
+                                </div>
+                            </ng-container>
 
                         </div>
                     </form>

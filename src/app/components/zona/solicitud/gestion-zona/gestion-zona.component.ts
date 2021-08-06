@@ -15,6 +15,7 @@ import { Seguimiento } from 'src/app/model/zona/seguimiento';
 import { Tipo } from 'src/app/model/zona/tipo';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Nivel } from 'src/app/model/zona/nivel';
+import { EmailService } from 'src/app/services/email.service';
 
 @Component({
   selector: 'app-gestion-zona',
@@ -46,8 +47,8 @@ export class GestionZonaComponent implements OnInit {
   dataUsuario: Asesor = this._srvStorage.getUser();
   dataSolicitud: SolicitudZona = new SolicitudZona
   dataSeguimiento: Seguimiento[]
-  aNivel:Nivel[]
-  primerApr:Boolean = false
+  aNivel: Nivel[]
+  primerApr: Boolean = false
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -58,6 +59,7 @@ export class GestionZonaComponent implements OnInit {
     private _srvNivel: NivelService,
     private _srvSeguimiento: SeguimientoService,
     private _srvHistorial: HistorialService,
+    private _srvEmail: EmailService,
     private _actiro: ActivatedRoute,
     private _route: Router,
     private _snackBar: MatSnackBar,
@@ -68,9 +70,9 @@ export class GestionZonaComponent implements OnInit {
   }
   async ngOnInit() {
     const that = this
-
-    this.tipos = await this.getTipo() as Tipo[]
     
+    this.tipos = await this.getTipo() as Tipo[]
+
     //Si la solicitud es nueva
     if (this.id) {
       let stepselect = 0
@@ -78,16 +80,15 @@ export class GestionZonaComponent implements OnInit {
       this.formNiveles = this._formBuilder.group({
         niveles: arrayNiveles
       })
-     
-      this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona      
+
+      this.dataSolicitud = await this.getSolicitud(this.id) as SolicitudZona
       this.dataSeguimiento = await this.getSeguimientoBySol(this.id) as Seguimiento[]
       this.aNivel = await this.getNivel(this.dataSolicitud.Tipo.Flujo.Id) as Nivel[]
-            
       let nivelDos = this.aNivel.find(a => a.Orden == 2)
-      
-      if(nivelDos.Rol.Id == this.dataUsuario.Rol.Id){
-        this.primerApr = true        
-      }      
+
+      if (nivelDos.Rol.Id == this.dataUsuario.Rol.Id && this.dataSolicitud.Estado.Id == 1) {
+        this.primerApr = true
+      }
 
       if (this.dataSeguimiento) {
         for (let i = 0; i < this.dataSeguimiento.length; i++) {
@@ -101,9 +102,10 @@ export class GestionZonaComponent implements OnInit {
           let dataHistorial = await this.getHistorial(seg.Id)
 
           arrayNiveles.push(that._formBuilder.group({
+            Seguimiento: [seg],
             Nombre: [seg.Nivel.Nombre],
-            Estado: ['', Validators.required],
-            Observacion: ['', Validators.required],
+            Estado: [seg.Estado],
+            Observacion: ['', [Validators.required, Validators.minLength(50)]],
             Historial: [dataHistorial],
             isEditable: [edit]
           }))
@@ -176,8 +178,8 @@ export class GestionZonaComponent implements OnInit {
         this._snackBar.open('Se ingreso correctamente la solicitud', "Ok!", { duration: 4000, });
         this._route.navigate(['zona/gestion'], { queryParams: { id: res.Id } });
         this.ngOnInit()
-        
-      }else{
+
+      } else {
         this._snackBar.open('Se presento error', "Ok!", { duration: 4000, });
       }
       this.loading = false
@@ -186,11 +188,9 @@ export class GestionZonaComponent implements OnInit {
   }
 
   async onGestion(estado) {
-    if (estado == 3) {
+    if (estado == 5) {
 
-      let nivel = await this.getNivel(this.dataSolicitud.Tipo.Flujo.Id) as any
-
-      nivel.forEach(async element => {
+      this.aNivel.forEach(async element => {
         let data = {
           Solicitud: {
             Id: this.dataSolicitud.Id
@@ -211,10 +211,59 @@ export class GestionZonaComponent implements OnInit {
       console.log("datasoliucit ", this.dataSolicitud)
       let updatesol = await this.update(this.dataSolicitud)
       console.log(updatesol)
-
     }
   }
 
+  async gestionHistorial(estado, niv) {
+    console.log("estado->", estado, " nivel->", niv.value)
+
+    let dataSeg = niv.value.Seguimiento
+    let oldEstado = niv.value.Estado.Id
+    dataSeg.Estado.Id = estado
+    let resSeg = await this.updateSeguimiento(dataSeg)
+
+    if (resSeg) {
+      let dataHis = {
+        Seguimiento: {
+          Id: dataSeg.Id
+        },
+        Comentario: niv.value.Observacion,
+        Fecha: new Date(),
+        Usuario: this.dataUsuario.Clave,
+        EstadoOld: {
+          Id: oldEstado
+        },
+        EstadoNew: {
+          Id: estado
+        }
+      }
+
+      let resHis = await this.createHistorial(dataHis) as any
+
+      if (resHis && resHis.Id > 0) {
+        this._snackBar.open('Se seguimiento registrado correctamente', "Ok!", { duration: 4000, });
+        this.ngOnInit()
+      } else {
+        this._snackBar.open('Se presento un error registrando seguimiento', "Ok!", { duration: 4000, });
+      }
+
+    } else {
+      this._snackBar.open('Se presento un error registrando seguimiento', "Ok!", { duration: 4000, });
+    }
+
+  }
+
+  async gestionEmail(){
+    let email = {
+      To: 'jorge.mojica@fundaciondelamujer.com',
+      Subject: 'asunto',
+      Body: `<h3>Buen dia,</h3>
+      <p>Hola <b>Esto claramente es una prueba</b> nado por el asesor</p>`, 
+      ListBase64Pdf: []
+    }
+
+    await this.sendEmail(email)
+  }
   getFlujo() {
     return new Promise(resolve => {
       this._srvFLujo.getByActivo(true).subscribe((res) => {
@@ -303,6 +352,16 @@ export class GestionZonaComponent implements OnInit {
       })
     })
   }
+  updateSeguimiento(data) {
+    return new Promise(resolve => {
+      this._srvSeguimiento.update(data).subscribe((res) => {
+        resolve(res)
+      }, (err) => {
+        console.log(err)
+        resolve(null)
+      })
+    })
+  }
   getSeguimientoBySol(idSol) {
     return new Promise(resolve => {
       this._srvSeguimiento.getBySol(idSol).subscribe((res) => {
@@ -311,6 +370,35 @@ export class GestionZonaComponent implements OnInit {
         resolve(null)
       })
     })
+  }
+  createHistorial(data) {
+    return new Promise(resolve => {
+      this._srvHistorial.create(data).subscribe(
+        (res) => {
+          if (res) {
+            resolve(res)
+          } else {
+            resolve(null)
+          }
+        }, (err) => {
+          resolve(null)
+        })
+    })
+  }
+  sendEmail(data){
+    return new Promise(resolve => {
+      this._srvEmail.Send(data).subscribe(
+        (res) => {
+          if (res) {
+            resolve(res)
+          } else {
+            resolve(null)
+          }
+        }, (err) => {
+          resolve(null)
+        })
+    })
+
   }
   compareFunction(o1: Tipo, o2: Tipo) {
     return o1 && o2 ? o1.Id === o2.Id : o1 === o2;

@@ -371,7 +371,8 @@ export class HomeComponent implements OnInit {
       To: emailDir,
       Subject: asunto,
       Body: `<h3>Buen dia,</h3>
-      <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`, ListBase64Pdf: pdfBase64
+      <p>${nombreDir} a continuación adjunto se encuentra el formato de analisis de credito gestionado por el asesor ${nombreAsesor}</p>`, 
+      ListBase64Pdf: pdfBase64
     }
 
     let emailParam = {
