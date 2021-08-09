@@ -192,7 +192,7 @@ export class ResultadoComponent implements OnInit {
         console.log(this.datasolicitud.Propuesta.formapgo)
         if (this.datasolicitud.Propuesta.formapgo) {
           let periodo = this.datasolicitud.Propuesta.formapgo          
-          this.otrosIngresosA = (totalotringfam + totalotroing) * periodo.period
+          this.otrosIngresosA = totalotringfam + totalotroing * periodo.period
         }
       }
 
