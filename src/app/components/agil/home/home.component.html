@@ -13,6 +13,7 @@
 
     <!-- tabla -->
     <div class="mat-elevation-z8 table-sol">
+      <mat-progress-bar mode="indeterminate" *ngIf="procesando"></mat-progress-bar>
       <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="tipo">

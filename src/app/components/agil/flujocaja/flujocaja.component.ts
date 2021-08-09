@@ -337,6 +337,7 @@ export class FlujocajaComponent implements OnInit {
                   let mesactual = new Date().getMonth() + 2
 
                   if (mesactual > proxcosecha) {
+                    console.log("entrooo")
                     for (let i = proxcosecha; i < mesactual; i++) {
                       if (mesprod > 0) {
                         mesprod--
@@ -361,7 +362,7 @@ export class FlujocajaComponent implements OnInit {
 
                     if (!flag) {
                       if (mesprod > 0) {
-
+                        
                         let sumatoriaTotalmes = Utils.formatNumber(this.dataFlujo[flujocaja][columnIngreso])
                         this.dataFlujo[flujocaja][columnIngreso] = (sumatoriaTotalmes + totalmes)
 
