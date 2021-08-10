@@ -138,6 +138,8 @@ export class ResultadoComponent implements OnInit {
     let ventastotales = this.recuperacion + this.VentasContado
     this.Costodeventa = ventastotales * costototal;
 
+  
+
     if (this.tiposol == 2) {
 
       if (this.datasolicitud.Flujo) {
@@ -184,15 +186,36 @@ export class ResultadoComponent implements OnInit {
     if (this.datasolicitud.CrucesAgro) {
       let totalotroing = 0
       this.datasolicitud.CrucesAgro.forEach(element => {
-        totalotroing += Utils.formatNumber(element.ingresoLiquido)
+        // Verificar que no contenga decimales
+        let valorIngresoLiquido: number = Utils.formatNumber(element.ingresoLiquido)
+        const positionDecimal: number = `${element.ingresoLiquido}`.indexOf(",")
+        if (positionDecimal > -1) {
+          const aValor = `${element.ingresoLiquido}`.split(",")
+          if (Array.isArray(aValor) && aValor.length > 0) {
+            valorIngresoLiquido = Utils.formatNumber(aValor[0]) + parseFloat(`0.${aValor[1]}`)
+          }
+        }
+        totalotroing += valorIngresoLiquido
       });
       let totalotringfam = isNaN(this.otrosIngresosA) ? 0 : Utils.formatNumber(this.otrosIngresosA)
 
+      // Forma de pago
+      let formaPago2 = 0
+      if (this.datasolicitud) {
+        if (this.datasolicitud.Propuesta) {
+          if (this.datasolicitud.Propuesta.tipocuota == 2) {
+            formaPago2 = 3
+          } else {
+            formaPago2 = this.datasolicitud.Propuesta.formapgo ? this.datasolicitud.Propuesta.formapgo.period : 0
+          }
+        }
+      }
+
+
       if (this.datasolicitud.Propuesta) {
-        console.log(this.datasolicitud.Propuesta.formapgo)
         if (this.datasolicitud.Propuesta.formapgo) {
-          let periodo = this.datasolicitud.Propuesta.formapgo          
-          this.otrosIngresosA = totalotringfam + totalotroing * periodo.period
+          let periodo = formaPago2
+          this.otrosIngresosA = totalotringfam + totalotroing * periodo
         }
       }
 
