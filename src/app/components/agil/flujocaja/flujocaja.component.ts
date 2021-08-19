@@ -592,7 +592,6 @@ export class FlujocajaComponent implements OnInit {
           }
         }
         if (this.datasolicitud.Balance) {
-
           for (let p = 0; p < this.datasolicitud.Balance.pasivosRows.length; p++) {
             const pas = this.datasolicitud.Balance.pasivosRows[p];
             if (pas.tipo && pas.clase) {
@@ -893,7 +892,7 @@ export class FlujocajaComponent implements OnInit {
                     let totalint = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
                     this.dataFlujoAcumulado[f][9] = totalint + valor
                   } else {
-                    let total = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
+                    let total = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
                     this.dataFlujoAcumulado[f][13] = total + valor
                   }
                 }
@@ -916,6 +915,7 @@ export class FlujocajaComponent implements OnInit {
         let primermes = true;
         let primermes1 = true;
         let primermes2 = true;
+        console.log('this.dataFlujoAcumulado',this.dataFlujoAcumulado)
         for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
           const flujo = this.dataFlujoAcumulado[f];
 
