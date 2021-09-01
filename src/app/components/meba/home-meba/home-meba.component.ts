@@ -121,15 +121,32 @@ export class HomeMebaComponent implements AfterViewInit {
         return
       }
 
-
+      
       let strsolCarpeta = await this.getCarpetaDigital(datos.solicitud) as string
       let solCarpeta = JSON.parse(strsolCarpeta)
 
-      if (solCarpeta.EstadoCarpeta !== "Abierto") {
+      /*if (solCarpeta.EstadoCarpeta !== "Abierto") {
         this.loading = false
         Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
         return
-      }
+      }*/
+      if (solCarpeta.EstadoCarpeta !== "Abierto") {                   
+          Swal.fire('Carpeta Digital', 'La solicitud no se encontro en Carpeta Digital o no tiene estado Abierto', 'info')
+          this.loading = false
+          return
+        }else{
+          let noPuedeInsertar = false
+          solCarpeta.lstMetadata.forEach(element => {  
+             
+            if(element.Nombre.toLowerCase().trimEnd() =="estado credito" && element.Valor != "En Trámite"){
+              Swal.fire('Carpeta Digital', `El estado del credito es <b>${element.Valor}</b> por lo tanto no puede insertar en carpeta digital`, 'info')
+              this.loading = false
+              noPuedeInsertar = true
+              return
+            }
+          }); 
+          if (noPuedeInsertar) return
+        }
 
 
       let asesores: Asesor = this._srvToken.getUser()
@@ -209,7 +226,10 @@ export class HomeMebaComponent implements AfterViewInit {
       this.datasol = datos
       Swal.fire({
         title: '¿Desea Enviar el Resultado MEBA?',
-        html: `Insertara el analisis en carpeta digital:
+        //html: `Se enviara email a:
+        //<br><b>`+ asesores.Director.Nombre + `</b>, 
+        //<br><small>${asesores.Director.Correo}</small>
+        html: `Insertara el analisis en carpeta digital: 
       
       <br><b>Solicitud :</b>` + datos.solicitud + `
       <br><b>Oficina :</b> `+ asesores.Sucursales.Nombre,
