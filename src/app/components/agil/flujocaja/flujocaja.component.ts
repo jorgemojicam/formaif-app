@@ -64,7 +64,7 @@ export class FlujocajaComponent implements OnInit {
     }
 
     const afterInit = async () => {
-      let hoy = new Date()
+      let hoy = new Date("2021-08-31 18:00:00")
       let meshoy: number = hoy.getMonth() + 1
       this.fechahoy = hoy.getDate() + "/" + meshoy + "/" + hoy.getFullYear()
       this.datasolicitud = await obtenerSol() as Solicitud
@@ -334,10 +334,9 @@ export class FlujocajaComponent implements OnInit {
                   let totalingresos = Utils.formatNumber(lotesA.totalIngreso)
                   let proxcosecha = Utils.formatNumber(lotesA.proxcocecha)
                   let cantcosecha = Utils.formatNumber(lotesA.cantmesescocecha)
-                  let mesactual = new Date().getMonth() + 2
+                  let mesactual = new Date("2021-08-31 18:00:00").getMonth() + 2
 
                   if (mesactual > proxcosecha) {
-                    console.log("entrooo")
                     for (let i = proxcosecha; i < mesactual; i++) {
                       if (mesprod > 0) {
                         mesprod--
@@ -496,7 +495,7 @@ export class FlujocajaComponent implements OnInit {
 
                 let totalingresos = Utils.formatNumber(lotesP.ingresomes)
                 let mesingreso = Utils.formatNumber(lotesP.mesingreso)
-                let mesactual = new Date().getMonth() + 2
+                let mesactual = new Date("2021-08-31 18:00:00").getMonth() + 2
 
                 if (mesactual > mesingreso) {
                   for (let i = mesingreso; i < mesactual; i++) {
@@ -614,18 +613,17 @@ export class FlujocajaComponent implements OnInit {
                   let contarmesescap = 0
 
                   for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
-
-
-                    if (cantidadint > 0) {
+                    if (cantidadint > 0 || cantidadcap > 0) {
 
                       let addmonth = f + 1
-                      var fechahyo = new Date()
-                      var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                      var fechahyo = new Date("2021-08-31 18:00:00")
+                      //var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                      var fechacrece = new Date(fechahyo.getFullYear(), fechahyo.getMonth()+addmonth, 1)
 
                       let mesFlujo = fechacrece.getMonth()
                       let anoFlujo = fechacrece.getFullYear()
 
-                      if (pas.fechaproxint) {
+                      if (cantidadint > 0 && pas.fechaproxint) {
 
                         let mesint = new Date(pas.fechaproxint).getMonth()
                         let anoint = new Date(pas.fechaproxint).getFullYear()
@@ -657,7 +655,6 @@ export class FlujocajaComponent implements OnInit {
                               }
                               cantidadint--
                             } else if (periodoint.id == 2 && contarmesesint % 2 == 0) {
-
                               if (pas.clase == 2) {
                                 this.dataFlujoAcumulado[f][9] = valor
                               } else {
@@ -714,6 +711,7 @@ export class FlujocajaComponent implements OnInit {
                             let totalcap = Utils.formatNumber(this.dataFlujoAcumulado[f][13])
                             valor = totalcap + calculocap
                           }
+                          
                           if (!primermescap) {
                             if (mesFlujo == mescap && anocap == anoFlujo) {
                               primermescap = true
@@ -778,8 +776,9 @@ export class FlujocajaComponent implements OnInit {
                   for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
 
                     let addmonth = f + 1
-                    var fechahyo = new Date()
-                    var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                    var fechahyo = new Date("2021-08-31 18:00:00")
+                    //var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                    var fechacrece = new Date(fechahyo.getFullYear(), fechahyo.getMonth()+addmonth, 1)
                     let totalacomula = Utils.formatNumber(this.dataFlujoAcumulado[f][9])
                     let mesFlujo = fechacrece.getMonth()
                     let anoFlujo = fechacrece.getFullYear()
@@ -804,14 +803,14 @@ export class FlujocajaComponent implements OnInit {
                   if (cantida > 0) {
 
                     let addmonth = f + 1
-                    var fechahyo = new Date()
-                    var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                    var fechahyo = new Date("2021-08-31 18:00:00")
+                    //var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+                    var fechacrece = new Date(fechahyo.getFullYear(), fechahyo.getMonth()+addmonth, 1)
 
                     let mesFlujo = fechacrece.getMonth()
                     let anoFlujo = fechacrece.getFullYear()
 
                     if (pas.fechaprox) {
-
                       let mes = new Date(pas.fechaprox).getMonth()
                       let ano = new Date(pas.fechaprox).getFullYear()
                       var cuotacalcu = Utils.formatNumber(pas.cuotacalcu)
@@ -915,13 +914,13 @@ export class FlujocajaComponent implements OnInit {
         let primermes = true;
         let primermes1 = true;
         let primermes2 = true;
-        console.log('this.dataFlujoAcumulado',this.dataFlujoAcumulado)
         for (let f = 0; f < this.dataFlujoAcumulado.length; f++) {
           const flujo = this.dataFlujoAcumulado[f];
 
           let addmonth = f + 1
-          var fechahyo = new Date()
-          var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+          var fechahyo = new Date("2021-08-31 18:00:00")
+          //var fechacrece = new Date(fechahyo.setMonth(fechahyo.getMonth() + addmonth));
+          var fechacrece = new Date(fechahyo.getFullYear(), fechahyo.getMonth()+addmonth, 1)
 
           //-Existe Balance
           if (this.datasolicitud.Balance) {
